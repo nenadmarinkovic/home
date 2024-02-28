@@ -1,0 +1,15 @@
+.banner {
+  font-size: 100px;
+  font-weight: 500;
+  line-height: 1;
+  margin-top: 50px;
+  color: var(--color-white);
+  text-align: center;
+}
+
+.linear {
+  background: linear-gradient(75deg, #2ba3f9, #90ff50);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

@@ -1,0 +1,7 @@
+.header {
+  color: var(--color-white);
+  padding: 15px 0;
+  text-align: center;
+  border-bottom: 1px solid #eaeaea;
+  width: 100%;
+}
