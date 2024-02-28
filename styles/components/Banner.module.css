@@ -7,6 +7,12 @@
   text-align: center;
 }
 
+@media screen and (max-width: 768px) {
+  .banner {
+    font-size: 40px;
+  }
+}
+
 .linear {
   background: linear-gradient(75deg, #2ba3f9, #90ff50);
   background-clip: text;

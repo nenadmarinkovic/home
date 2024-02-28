@@ -9,6 +9,8 @@
 
   --color-white: #fff;
   --color-black: #000;
+
+  --max-width-tablet: 768px;
 }
 
 * {
