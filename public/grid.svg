@@ -1,0 +1,34 @@
+<svg width="1920" height="440" viewBox="0 0 1920 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_235_150" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-210" y="0" width="2904" height="440">
+<line y1="-0.5" x2="820.658" y2="-0.5" transform="matrix(-0.845663 0.533718 -0.789203 -0.614133 647 1)" stroke="white"/>
+<line x1="-210" y1="438.5" x2="2694" y2="438.5" stroke="white"/>
+<line x1="-210" y1="364.215" x2="2694" y2="364.215" stroke="white"/>
+<line x1="-210" y1="299.742" x2="2694" y2="299.742" stroke="white"/>
+<line x1="-210" y1="240.875" x2="2694" y2="240.875" stroke="white"/>
+<line x1="-210" y1="189.015" x2="2694" y2="189.015" stroke="white"/>
+<line x1="-210" y1="144.865" x2="2694" y2="144.865" stroke="white"/>
+<line x1="-210" y1="104.919" x2="2694" y2="104.919" stroke="white"/>
+<line x1="-210" y1="72.6824" x2="2694" y2="72.6824" stroke="white"/>
+<line x1="-210" y1="44.6504" x2="2694" y2="44.6504" stroke="white"/>
+<line y1="-0.5" x2="615.9" y2="-0.5" transform="matrix(-0.703036 0.711154 -0.899579 -0.436758 700 1)" stroke="white"/>
+<line y1="-0.5" x2="616.604" y2="-0.5" transform="matrix(0.703856 0.710343 -0.899182 0.437574 1224 1)" stroke="white"/>
+<line y1="-0.5" x2="824.044" y2="-0.5" transform="matrix(0.847043 0.531525 -0.787488 0.61633 1274 1)" stroke="white"/>
+<line y1="-0.5" x2="522.56" y2="-0.5" transform="matrix(0.545392 -0.838181 0.952544 0.3044 473 439)" stroke="white"/>
+<line y1="-0.5" x2="449.049" y2="-0.5" transform="matrix(0.220466 -0.975395 0.993895 0.110329 791 439)" stroke="white"/>
+<line y1="-0.5" x2="449.049" y2="-0.5" transform="matrix(-0.220466 -0.975395 -0.993895 0.110329 1134 439)" stroke="white"/>
+<line y1="-0.5" x2="473.165" y2="-0.5" transform="matrix(0.378304 -0.925682 0.980447 0.196785 639 439)" stroke="white"/>
+<line y1="-0.5" x2="473.165" y2="-0.5" transform="matrix(-0.378304 -0.925682 -0.980447 0.196785 1284 439)" stroke="white"/>
+<line y1="-0.5" x2="519.627" y2="-0.5" transform="matrix(-0.548471 -0.83617 0.951831 -0.306625 1449 435.496)" stroke="white"/>
+<line x1="962.5" y1="439" x2="962.5" y2="0.999969" stroke="white"/>
+</mask>
+<g mask="url(#mask0_235_150)">
+<rect x="-263" y="-50.1587" width="2335" height="509.482" fill="url(#paint0_linear_235_150)"/>
+<rect x="-263" y="-50.1587" width="2335" height="509.482" fill="black" fill-opacity="0.1"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_235_150" x1="846.5" y1="-153.176" x2="907" y2="496.44" gradientUnits="userSpaceOnUse">
+<stop stop-color="#121516"/>
+<stop offset="1" stop-color="#272D30"/>
+</linearGradient>
+</defs>
+</svg>
