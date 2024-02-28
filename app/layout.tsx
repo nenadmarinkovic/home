@@ -29,6 +29,11 @@ const markpro = MarkPro({
       weight: '300',
       style: 'normal',
     },
+    {
+      path: '../public/fonts/JetBrainsMono-Thin.woff2',
+      weight: '200',
+      style: 'normal',
+    },
   ],
 });
 
