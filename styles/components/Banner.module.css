@@ -29,7 +29,7 @@
   height: 300px;
   z-index: 0;
 
-  & img {
+  & .grid_image {
     object-fit: cover;
   }
 }

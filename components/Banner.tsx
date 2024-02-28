@@ -13,7 +13,13 @@ export default function Banner() {
         and apps.
       </div>
       <div className={styles.grid}>
-        <Image src="/grid.svg" alt="Grid" priority={true} fill />
+        <Image
+          className={styles.grid_image}
+          src="/grid.svg"
+          alt="Grid"
+          priority={true}
+          fill
+        />
       </div>
     </>
   );
