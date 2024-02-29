@@ -9,6 +9,8 @@
 
   --color-white: #fff;
   --color-black: #000;
+
+  --linear-gradient: linear-gradient(75deg, #0f98f3, #42e7e8);
 }
 
 * {
@@ -28,4 +30,18 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+#doodle {
+  stroke-dasharray: 540;
+  animation: reveal 10s linear;
+}
+
+@keyframes reveal {
+  0% {
+    stroke-dashoffset: 540;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }
