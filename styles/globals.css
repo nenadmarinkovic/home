@@ -8,7 +8,13 @@
     monospace;
 
   --color-white: #fff;
-  --color-black: #000;
+  --color-black: #0d0f17;
+
+  --color-green: #d5ff05;
+  --color-blue: ##0838f8;
+  --color-grey: #5d5d5d;
+
+  --color-grid-black: #303645;
 
   --linear-gradient: linear-gradient(75deg, #0f98f3, #42e7e8);
 }
@@ -22,9 +28,10 @@
 html,
 body {
   height: 100%;
+  font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  background-color: var(--color-black);
+  font-family: var(--font-sans-serif);
 }
 
 a {

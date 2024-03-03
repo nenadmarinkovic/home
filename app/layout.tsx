@@ -1,35 +1,27 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+
 import '../styles/globals.css';
 
-import MarkPro from 'next/font/local';
-const markpro = MarkPro({
+const suisseIntl = localFont({
   src: [
     {
-      path: '../public/fonts/MarkPro-Black.woff2',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/MarkPro-Heavy.woff2',
-      weight: '600',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/MarkPro-Medium.woff2',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/MarkPro-Regular.woff2',
+      path: '../public/fonts/SuisseIntl-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../public/fonts/MarkPro-Light.woff2',
-      weight: '300',
+      path: '../public/fonts/SuisseIntl-Medium.woff2',
+      weight: '500',
       style: 'normal',
     },
   ],
+  variable: '--font-sans-serif',
+});
+
+const suisseWorks = localFont({
+  src: '../public/fonts/SuisseWorks-Regular.woff2',
+  variable: '--font-serif',
 });
 
 export const metadata: Metadata = {
@@ -44,7 +36,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={markpro.className}>{children}</body>
+      <body
+        className={`${suisseIntl.variable} ${suisseWorks.variable}`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

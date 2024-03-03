@@ -1,0 +1,9 @@
+.container {
+  font-family: var(--font-sans-serif);
+  background-color: white;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  line-height: 1.75;
+  padding: 75px 0;
+}
