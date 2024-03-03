@@ -8,7 +8,9 @@
     height: auto;
     background-image: url('../../public/grid.svg');
     background-position: center center;
-    padding: 75px;
+    padding: 125px;
+    background-size: 5vw;
+    background-position: 0px 5vw;
   }
 
   & .banner_text {
