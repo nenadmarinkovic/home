@@ -88,25 +88,23 @@
 .more {
   cursor: pointer;
   position: relative;
+}
 
-  &::after {
-    content: '→';
-    position: absolute;
-    display: inline;
-    transform: translateX(10px);
-    transition: 0.35s;
-  }
+.more::after {
+  content: '→';
+  position: absolute;
+  display: inline;
+  transform: translateX(10px);
+  transition: 0.35s;
+}
 
-  &:hover::after {
-    transform: translateX(20px);
-  }
+.more:hover::after {
+  transform: translateX(20px);
 }
 
 .button:hover {
   transform: scale(1.05);
 }
-
-/* Panel */
 
 .panel {
   display: flex;
