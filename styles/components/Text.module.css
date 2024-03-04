@@ -2,9 +2,5 @@
   background-color: white;
   line-height: 1.75;
   padding: 75px 0;
-
-  & p {
-    margin-bottom: 10px;
-    font-family: var(--font-serif);
-  }
+  font-family: var(--font-serif);
 }
