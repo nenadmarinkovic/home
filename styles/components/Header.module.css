@@ -4,4 +4,23 @@
   background-color: var(--color-black);
   width: 100%;
   border-bottom: 0.5px solid var(--color-grid-black);
+  height: 50px;
+  position: fixed;
+
+  & .header_inside {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & .header_ul {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  & .header_li {
+    font-size: 14px;
+    font-weight: 500;
+    color: #808489;
+  }
 }

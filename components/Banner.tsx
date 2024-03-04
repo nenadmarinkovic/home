@@ -5,8 +5,8 @@ export default function Banner() {
   return (
     <>
       <div className={styles.banner}>
-        <div className={styles.banner_grid}>
-          <Container>
+        <Container>
+          <div className={styles.banner_inside}>
             <h1 className={styles.banner_text}>
               I build
               <span className={styles.highlighted_text}>
@@ -21,9 +21,162 @@ export default function Banner() {
               interfaces, and APIs, with a versatile skill set in
               various web technologies.
             </p>
-            <button className={styles.button}>Contact</button>
-          </Container>
-        </div>
+            <div className={styles.info}>
+              <button className={styles.button}>Contact</button>
+              <span className={styles.more}>More about me</span>
+            </div>
+          </div>
+
+          <div className={styles.panel}>
+            <h3 className={styles.panel_title}>
+              Lorem ipsum dolor, sit amet consectetur
+            </h3>
+            <p className={styles.panel_text}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Sapiente officia nesciunt vel. Distinctio, nobis libero!
+              Nostrum, neque.
+            </p>
+            <div className={styles.panel_items}>
+              <div className={styles.panel_item}>
+                <span className={styles.panel_item_title}>
+                  <svg
+                    className={styles.panel_item_icon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
+                    />
+                  </svg>
+                  Web interfaces
+                </span>
+                <span className={styles.panel_item_text}>
+                  Nostrum, neque. Porro vel laudantium consequuntur
+                  quisquam.
+                </span>
+              </div>
+              <div className={styles.panel_item}>
+                <span className={styles.panel_item_title}>
+                  <svg
+                    className={styles.panel_item_icon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
+                    />
+                  </svg>
+                  Web interfaces
+                </span>
+                <span className={styles.panel_item_text}>
+                  Nostrum, neque. Porro vel exercit laudantium
+                  consequuntur quisquam.
+                </span>
+              </div>
+              <div className={styles.panel_item}>
+                <span className={styles.panel_item_title}>
+                  <svg
+                    className={styles.panel_item_icon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
+                    />
+                  </svg>
+                  Web interfaces
+                </span>
+                <span className={styles.panel_item_text}>
+                  Nostrum, neque. Porro vel laudantium consequuntur
+                  quisquam.
+                </span>
+              </div>
+              <div className={styles.panel_item}>
+                <span className={styles.panel_item_title}>
+                  <svg
+                    className={styles.panel_item_icon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
+                    />
+                  </svg>
+                  Web interfaces
+                </span>
+                <span className={styles.panel_item_text}>
+                  Nostrum, neque. Porro laudantium consequuntur
+                  quisquam.
+                </span>
+              </div>
+              <div className={styles.panel_item}>
+                <span className={styles.panel_item_title}>
+                  <svg
+                    className={styles.panel_item_icon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
+                    />
+                  </svg>
+                  Web interfaces
+                </span>
+                <span className={styles.panel_item_text}>
+                  Nostrum, neque. Laudantium consequuntur quisquam.
+                </span>
+              </div>
+              <div className={styles.panel_item}>
+                <span className={styles.panel_item_title}>
+                  <svg
+                    className={styles.panel_item_icon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
+                    />
+                  </svg>
+                  Web interfaces
+                </span>
+                <span className={styles.panel_item_text}>
+                  Nostrum, neque. Porro vel laudantium consequuntur
+                  quisquam.
+                </span>
+              </div>
+            </div>
+          </div>
+        </Container>
       </div>
     </>
   );
