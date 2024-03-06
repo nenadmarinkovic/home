@@ -6,10 +6,12 @@ import Text from '@/components/Text';
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <>
       <Header />
-      <Banner />
-      <Text />
-    </main>
+      <main className={styles.main}>
+        <Banner />
+        <Text />
+      </main>
+    </>
   );
 }

@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <div className={styles.header}>
+    <header className={styles.header}>
       <Container>
         <div className={styles.header_inside}>
           <div>Nenad Marinković</div>
@@ -28,6 +28,6 @@ export default function Header() {
           </nav>
         </div>
       </Container>
-    </div>
+    </header>
   );
 }

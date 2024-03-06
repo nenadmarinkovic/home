@@ -3,9 +3,13 @@
   --border-radius: 12px;
 
   --color-white: #fff;
-  --color-black: #000000;
-  --color-dimmed: #3d3d3d;
-  --color-grey: #a0a0a0;
+  --color-black: #0c0e12;
+  --color-dimmed: #30363d;
+  --color-black-dimmed: #343747;
+  --color-black-grid: #1a1e22;
+
+  --color-grey-dark: #1d1d22;
+  --color-grey-light: #8a949d;
 
   --color-green: #d5ff05;
   --color-blue: #0838f8;

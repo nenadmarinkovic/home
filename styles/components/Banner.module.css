@@ -3,14 +3,18 @@
   background-color: var(--color-black);
   width: 100%;
   min-height: calc(100vh - 50px);
-  margin-top: 50px;
+  margin-top: 49px;
   background-size: 80px 80px;
   background-image: linear-gradient(
       to right,
-      rgb(30, 30, 30) 1px,
+      var(--color-black-grid) 1px,
       transparent 1px
     ),
-    linear-gradient(to bottom, rgb(30, 30, 30) 1px, transparent 1px);
+    linear-gradient(
+      to bottom,
+      var(--color-black-grid) 1px,
+      transparent 1px
+    );
 
   & .banner_inside {
     padding: 120px 0;
@@ -24,11 +28,11 @@
   }
 
   & .banner_paragraph {
-    font-size: 18px;
+    font-size: 21px;
     line-height: 1.75;
     padding-top: 30px;
-    color: var(--color-grey);
-    width: 60%;
+    color: var(--color-grey-light);
+    width: 70%;
   }
 
   & .highlighted_text {
@@ -114,6 +118,7 @@
   & .panel_title {
     text-align: center;
     font-size: 42px;
+    font-weight: 500;
     margin: 0 auto;
     max-width: 70%;
     margin: 0 auto;
@@ -121,10 +126,11 @@
 
   & .panel_text {
     text-align: center;
-    font-size: 18px;
-    color: var(--color-grey);
+    font-size: 19px;
+    color: var(--color-grey-light);
     line-height: 1.5;
     max-width: 70%;
+    line-height: 1.75;
     margin: 0 auto;
     padding: 20px 0 45px 0;
   }
@@ -132,20 +138,22 @@
   & .panel_items {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
     padding-top: 20px;
+    gap: 45px;
+    justify-content: space-between;
   }
 
   & .panel_item {
     width: 30%;
-    border: 0.5px solid var(--color-dimmed);
-    background-color: var(--color-black);
+    border: 1px solid var(--color-dimmed);
+    background-color: var(--color-grey-dark);
     padding: 15px;
     border-radius: 15px;
   }
 
   & .panel_item_title {
     display: flex;
+    font-weight: 500;
     gap: 10px;
     font-size: 14px;
     font-weight: bold;
@@ -158,8 +166,10 @@
   }
 
   & .panel_item_text {
-    color: var(--color-grey);
+    color: var(--color-grey-light);
+    margin-top: 5px;
+    display: block;
     font-size: 14px;
-    line-height: 1;
+    line-height: 1.5;
   }
 }
