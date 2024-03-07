@@ -24,9 +24,9 @@ export default function Banner() {
         </div>
 
         <div className={styles.panel}>
-          <h3 className={styles.panel_title}>
+          <h2 className={styles.panel_title}>
             Lorem ipsum dolor, sit amet consectetur
-          </h3>
+          </h2>
           <p className={styles.panel_text}>
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
             Sapiente officia nesciunt vel. Distinctio, nobis libero!
