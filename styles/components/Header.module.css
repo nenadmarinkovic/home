@@ -1,18 +1,14 @@
 .header {
-  padding: 15px 0;
+  padding: 10px 0;
   color: var(--color-white);
-  background: rgba(12, 14, 18, 0.75);
-  backdrop-filter: saturate(70%) blur(3px);
-  z-index: 2;
-  contain: layout;
+  background: transparent;
   width: 100%;
-  border-bottom: 1px solid var(--color-black-grid);
-  height: 50px;
   position: fixed;
 
   & .header_inside {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   & .header_ul {
@@ -21,9 +17,13 @@
     gap: 40px;
   }
 
+  & .homelink {
+    max-width: 100px;
+  }
+
   & .header_li {
     font-size: 14px;
     font-weight: 500;
-    color: #808489;
+    color: var(--color-green-light);
   }
 }

@@ -4,14 +4,13 @@
 
   --color-white: #fff;
   --color-black: #0c0e12;
-  --color-dimmed: #30363d;
-  --color-black-dimmed: #343747;
-  --color-black-grid: #1a1e22;
 
   --color-grey-dark: #1d1d22;
-  --color-grey-light: #8a949d;
+  --color-grey-light: #abbfd2;
 
   --color-green: #d5ff05;
+  --color-green-light: #9fbbbb;
+
   --color-blue: #0838f8;
 
   --linear-gradient: linear-gradient(75deg, #0f98f3, #42e7e8);

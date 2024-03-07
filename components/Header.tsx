@@ -9,7 +9,7 @@ export default function Header() {
     <header className={styles.header}>
       <Container>
         <div className={styles.header_inside}>
-          <div>Nenad Marinković</div>
+          <div className={styles.homelink}>Nenad Marinković</div>
           <nav>
             <ul className={styles.header_ul}>
               <li className={styles.header_li}>
