@@ -1,6 +1,7 @@
 .container {
-  background-color: white;
+  background-color: var(--color-black);
   line-height: 1.75;
   padding: 75px 0;
   font-family: var(--font-serif);
+  min-height: 100vh;
 }

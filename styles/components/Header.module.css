@@ -1,9 +1,10 @@
 .header {
   padding: 10px 0;
-  color: var(--color-white);
-  background: transparent;
   width: 100%;
+  background: transparent;
   position: fixed;
+  color: var(--color-white);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 
   & .header_inside {
     display: flex;
@@ -25,5 +26,26 @@
     font-size: 14px;
     font-weight: 500;
     color: var(--color-green-light);
+  }
+}
+
+.hidden {
+  opacity: 0;
+
+  transform: translateY(-100%);
+}
+
+.fixed {
+  backdrop-filter: blur(6px) saturate(180%);
+  position: fixed;
+  opacity: 1;
+  top: 0;
+}
+
+@media screen and (max-width: 560px) {
+  .header {
+    & .header_ul {
+      display: none;
+    }
   }
 }

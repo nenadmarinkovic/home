@@ -1,9 +1,9 @@
 .banner {
   color: var(--color-white);
   width: 100%;
-  background: linear-gradient(170deg, #12283c 15%, #01080f 75%);
+  background: linear-gradient(170deg, #083c4d 0%, #000 80%);
 
-  .banner_inside {
+  & .banner_inside {
     padding: 150px 0;
   }
 
@@ -29,10 +29,6 @@
 
 @media screen and (max-width: 1024px) {
   .banner {
-    & .banner_inside {
-      padding: 75px 0;
-    }
-
     & .banner_text {
       font-size: 70px;
     }
@@ -42,16 +38,17 @@
 @media screen and (max-width: 768px) {
   .banner {
     & .banner_inside {
-      padding: 55px 0;
+      padding: 100px 0 55px 0;
     }
 
     & .banner_text {
       font-size: 40px;
-      line-height: 1.5;
+      line-height: 1.2;
     }
 
     & .banner_paragraph {
-      font-size: 16px;
+      font-size: 18px;
+      line-height: 150%;
       padding-top: 20px;
       width: 100%;
     }
@@ -115,7 +112,6 @@
     text-align: center;
     font-size: 19px;
     color: var(--color-green-light);
-    line-height: 1.5;
     max-width: 70%;
     line-height: 1.75;
     margin: 0 auto;
@@ -131,8 +127,8 @@
   }
 
   & .panel_item {
-    width: 30%;
-    border: 1px solid var(--color-grey-light);
+    flex-basis: calc(33.333% - 30px);
+    border: 1px solid var(--color-dimmed);
     background-color: transparent;
     padding: 15px;
     border-radius: 15px;
@@ -158,5 +154,57 @@
     display: block;
     font-size: 14px;
     line-height: 1.5;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .panel {
+    & .panel_title {
+      font-size: 32px;
+    }
+
+    & .panel_text {
+      font-size: 18px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .panel {
+    & .panel_title {
+      max-width: 80%;
+    }
+
+    & .panel_text {
+      max-width: 80%;
+    }
+
+    & .panel_items {
+      justify-content: space-evenly;
+    }
+
+    & .panel_item {
+      flex-basis: calc(47% - 25px);
+    }
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .panel {
+    & .panel_title {
+      max-width: 100%;
+    }
+
+    & .panel_text {
+      max-width: 100%;
+    }
+
+    & .panel_items {
+      gap: 20px;
+    }
+
+    & .panel_item {
+      flex-basis: calc(100% - 25px); /* Adjusted for the gap */
+    }
   }
 }
