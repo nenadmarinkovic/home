@@ -70,7 +70,8 @@
   color: var(--color-black);
   border-radius: 20px;
   transition: 0.25s;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
   z-index: 3;
 }
@@ -89,11 +90,14 @@
 .more {
   cursor: pointer;
   position: relative;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .more::after {
-  content: '→';
+  content: url(../../public/icons/arrow-right.svg);
   position: absolute;
+  top: 2px;
   display: inline;
   transform: translateX(10px);
   transition: 0.35s;
@@ -111,7 +115,7 @@
   background: var(--color-green);
   text-align: center;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 1.2px;
   text-transform: uppercase;
   line-height: 2;
@@ -168,7 +172,7 @@
 
   & .panel_item_title {
     display: flex;
-    font-weight: 500;
+    font-weight: 600;
     gap: 10px;
     font-size: 14px;
     font-weight: bold;
@@ -185,7 +189,7 @@
     margin-top: 5px;
     display: block;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.75;
   }
 }
 
