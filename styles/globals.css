@@ -33,7 +33,7 @@ body {
   font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: var(--font-sans-serif);
+  font-family: var(--font-inter);
 }
 
 a {
