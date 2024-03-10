@@ -21,6 +21,7 @@
 
   & .homelink {
     max-width: 100px;
+    font-size: 14px;
     font-weight: 600;
   }
 
@@ -33,7 +34,6 @@
 
 .hidden {
   opacity: 0;
-
   transform: translateY(-100%);
 }
 
