@@ -19,11 +19,6 @@ const suisseIntl = localFont({
   variable: '--font-sans-serif',
 });
 
-const suisseWorks = localFont({
-  src: '../public/fonts/SuisseWorks-Regular.woff2',
-  variable: '--font-serif',
-});
-
 export const metadata: Metadata = {
   title: 'Nenad Marinković — Frontend Developer',
   description: 'I build websites, web interfaces, and applications.',
@@ -36,11 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${suisseIntl.variable} ${suisseWorks.variable}`}
-      >
-        {children}
-      </body>
+      <body className={`${suisseIntl.variable}`}>{children}</body>
     </html>
   );
 }
