@@ -5,6 +5,7 @@
   position: fixed;
   color: var(--color-white);
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  z-index: 5;
 
   & .header_inside {
     display: flex;
@@ -38,6 +39,7 @@
 .fixed {
   backdrop-filter: blur(6px) saturate(180%);
   position: fixed;
+  border-bottom: 0.5px solid hsla(0, 0%, 100%, 0.1);
   opacity: 1;
   top: 0;
 }

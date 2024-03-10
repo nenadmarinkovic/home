@@ -13,8 +13,8 @@ export default function Header() {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
       const shouldHideHeader =
-        scrollPosition >= 115 && scrollPosition <= 800;
-      const shouldFixHeader = scrollPosition > 801;
+        scrollPosition >= 115 && scrollPosition <= 1000;
+      const shouldFixHeader = scrollPosition > 1001;
 
       setIsFixed(shouldFixHeader);
       setIsHidden(shouldHideHeader);

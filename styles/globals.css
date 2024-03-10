@@ -4,6 +4,7 @@
 
   --color-white: #fff;
   --color-black: #000;
+  --color-muted: #101010;
   --color-dimmed: #4f4f4f;
 
   --color-green: #d5ff05;
@@ -12,6 +13,11 @@
   --color-blue: #0838f8;
 
   --linear-gradient: linear-gradient(75deg, #0f98f3, #42e7e8);
+
+  --tw-gradient-stops: var(--tw-gradient-from), #000000 100%,
+    var(--tw-gradient-to);
+  --tw-gradient-from: #0e4449 100%;
+  --tw-gradient-to: #55dc72 100%;
 }
 
 * {
