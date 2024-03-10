@@ -27,7 +27,7 @@
 
   & .header_li {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--color-green-light);
   }
 }
