@@ -1,7 +1,12 @@
+'use client';
+import { useEffect, useState } from 'react';
 import styles from '../styles/components/Banner.module.css';
 import Container from '@/containers/Container';
+import fetchGitHubData from '../utils/fetchGithub';
 
 export default function Banner() {
+  const [languages, setLanguages] = useState([]);
+
   return (
     <section className={styles.banner}>
       <Container>

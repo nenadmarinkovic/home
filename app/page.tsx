@@ -3,6 +3,7 @@ import Banner from '@/components/Banner';
 
 import styles from './page.module.css';
 import Text from '@/components/Text';
+import Develop from '@/components/Develop';
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <main className={styles.main}>
         <Banner />
         <Text />
+        <Develop />
       </main>
     </>
   );

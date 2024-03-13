@@ -1,0 +1,33 @@
+// GitHub API types
+
+export interface Language {
+  language: string;
+  count: number;
+}
+
+interface RepositoryLanguage {
+  name: string;
+}
+
+export interface Repository {
+  name: string;
+  languages: {
+    nodes: RepositoryLanguage[];
+  };
+}
+
+interface RepositoriesPageInfo {
+  endCursor: string | null;
+  hasNextPage: boolean;
+}
+
+export interface UserRepositories {
+  nodes: Repository[];
+  pageInfo: RepositoriesPageInfo;
+}
+
+export interface UserData {
+  user: {
+    repositories: UserRepositories;
+  };
+}
