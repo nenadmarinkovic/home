@@ -1,10 +1,6 @@
 import styles from '../styles/components/Text.module.css';
 import { fetchRepoLanguages, fetchUserRepos } from '../utils/github';
-
-interface RepoData {
-  name: string;
-  languages: Record<string, number>;
-}
+import { RepoData, Repo } from '../types/types';
 
 async function getAllReposData(): Promise<RepoData[]> {
   let page = 1;
@@ -17,7 +13,7 @@ async function getAllReposData(): Promise<RepoData[]> {
       break;
     }
 
-    const repoDataPromises = repos.map(async (repo: any) => {
+    const repoDataPromises = repos.map(async (repo: Repo) => {
       const languages = await fetchRepoLanguages(repo.languages_url);
       return {
         name: repo.name,

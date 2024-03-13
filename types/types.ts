@@ -31,3 +31,13 @@ export interface UserData {
     repositories: UserRepositories;
   };
 }
+
+export interface Repo {
+  name: string;
+  languages_url: string;
+}
+
+export interface RepoData {
+  name: string;
+  languages: Record<string, number>;
+}
