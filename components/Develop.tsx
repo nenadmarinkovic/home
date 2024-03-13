@@ -1,28 +1,9 @@
-import { ReactNode } from 'react';
 import styles from '../styles/components/Text.module.css';
+import { fetchRepoLanguages, fetchUserRepos } from '../utils/github';
 
 interface RepoData {
   name: string;
   languages: Record<string, number>;
-}
-
-const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
-const GITHUB_USERNAME = 'nenadmarinkovic';
-
-async function getLanguages(
-  url: string
-): Promise<Record<string, number>> {
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch languages data');
-  }
-
-  return res.json();
 }
 
 async function getAllReposData(): Promise<RepoData[]> {
@@ -30,30 +11,14 @@ async function getAllReposData(): Promise<RepoData[]> {
   let allRepos: RepoData[] = [];
 
   while (true) {
-    const res = await fetch(
-      `https://api.github.com/user/repos?per_page=100&page=${page}&visibility=all`,
-      {
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-        },
-      }
-    );
-
-    if (!res.ok) {
-      throw new Error('Failed to fetch data');
-    }
-
-    const repos = await res.json();
+    const repos = await fetchUserRepos(page);
 
     if (repos.length === 0) {
-      // No more repositories, break the loop
       break;
     }
 
     const repoDataPromises = repos.map(async (repo: any) => {
-      console.log(repo);
-
-      const languages = await getLanguages(repo.languages_url);
+      const languages = await fetchRepoLanguages(repo.languages_url);
       return {
         name: repo.name,
         languages,
@@ -71,7 +36,6 @@ async function getAllReposData(): Promise<RepoData[]> {
 export default async function Develop() {
   const repoData = await getAllReposData();
 
-  // Calculate total counts for each language
   const totalCounts: Record<string, number> = {};
   repoData.forEach((repo) => {
     for (const [language, count] of Object.entries(repo.languages)) {
@@ -79,13 +43,11 @@ export default async function Develop() {
     }
   });
 
-  // Calculate total lines of code
   const totalLinesOfCode = Object.values(totalCounts).reduce(
     (sum, count) => sum + count,
     0
   );
 
-  // Calculate percentages
   const languagePercentages: Record<string, number> = {};
   for (const [language, count] of Object.entries(totalCounts)) {
     const percentage = (count / totalLinesOfCode) * 100;
