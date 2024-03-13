@@ -31,7 +31,7 @@ async function getAllReposData(): Promise<RepoData[]> {
 
   while (true) {
     const res = await fetch(
-      `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&page=${page}`,
+      `https://api.github.com/user/repos?per_page=100&page=${page}&visibility=all`,
       {
         headers: {
           Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -51,6 +51,8 @@ async function getAllReposData(): Promise<RepoData[]> {
     }
 
     const repoDataPromises = repos.map(async (repo: any) => {
+      console.log(repo);
+
       const languages = await getLanguages(repo.languages_url);
       return {
         name: repo.name,
@@ -102,6 +104,23 @@ export default async function Develop() {
           )
         )}
       </ul>
+      <h2>Repositories</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Languages</th>
+          </tr>
+        </thead>
+        <tbody>
+          {repoData.map((repo) => (
+            <tr key={repo.name}>
+              <td>{repo.name}</td>
+              <td>{Object.keys(repo.languages).join(', ')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
