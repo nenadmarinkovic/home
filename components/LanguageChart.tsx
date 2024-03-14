@@ -2,14 +2,17 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+interface LanguageData {
+  language: string;
+  percentage: number;
+}
+
 interface LanguageChartProps {
-  data: { language: string; percentage: number }[];
-  maxPercentage: number;
+  data: LanguageData[];
 }
 
 export const LanguageChart: React.FC<LanguageChartProps> = ({
   data,
-  maxPercentage,
 }) => {
   const chartRef = useRef<SVGSVGElement | null>(null);
   const [inView, setInView] = useState(false);
@@ -22,10 +25,8 @@ export const LanguageChart: React.FC<LanguageChartProps> = ({
       const chartRect = chart.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
 
-      // Adjusting the threshold as needed, here 0.2 means 20% of the element is visible
-      const threshold = 0.2;
+      const threshold = 0.1;
 
-      // Check if the top and bottom of the SVG element is within the viewport
       const topVisible =
         chartRect.top < viewportHeight * (1 - threshold);
       const bottomVisible =
@@ -39,22 +40,37 @@ export const LanguageChart: React.FC<LanguageChartProps> = ({
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial position
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const maxPercentage = Math.max(
+    ...data.map((item) => item.percentage)
+  );
+
+  let restPercentage = 0;
+  const groupedData = data.filter(({ language, percentage }) => {
+    if (percentage < 0.1) {
+      restPercentage += percentage;
+      return false;
+    }
+    return true;
+  });
+
+  groupedData.push({ language: 'Rest', percentage: restPercentage });
+
   return (
-    <svg width="600" height={data.length * 80} ref={chartRef}>
-      {data.map(({ language, percentage }, i) => (
-        <g key={i} transform={`translate(100, ${i * 40})`}>
+    <svg width="600" height={groupedData.length * 80} ref={chartRef}>
+      {groupedData.map(({ language, percentage }, i) => (
+        <g key={i} transform={`translate(100, ${i * 35})`}>
           <rect
             width={inView ? (percentage / maxPercentage) * 400 : 0}
             height="20"
             fill={`hsl(84, 77%, ${
-              50 - (i / (data.length - 1)) * 50
+              50 - (i / (groupedData.length - 1)) * 50
             }%)`}
             style={{
-              opacity: 1 - i / data.length / 2,
+              opacity: 1 - i / groupedData.length / 2,
               transition: 'width 1s',
             }}
           />
@@ -70,7 +86,8 @@ export const LanguageChart: React.FC<LanguageChartProps> = ({
             dx="5"
             style={{
               opacity: inView ? 1 : 0,
-              transition: 'opacity 1s ease-in-out 1s', // Add delay here
+              transition: 'opacity 1s ease-in-out 1s',
+              visibility: inView ? 'visible' : 'hidden',
             }}
           >
             {percentage.toFixed(2)}%
