@@ -1,15 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-
-interface LanguageData {
-  language: string;
-  percentage: number;
-}
-
-interface LanguageChartProps {
-  data: LanguageData[];
-}
+import { LanguageChartProps } from '../types/types';
 
 export const LanguageChart: React.FC<LanguageChartProps> = ({
   data,

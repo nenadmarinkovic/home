@@ -41,3 +41,8 @@ export interface RepoData {
   name: string;
   languages: Record<string, number>;
 }
+
+export interface LanguageChartProps {
+  data: { language: string; percentage: number }[];
+  maxPercentage: number;
+}
