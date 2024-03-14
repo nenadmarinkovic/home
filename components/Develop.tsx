@@ -4,31 +4,19 @@ import { RepoData, Repo } from '../types/types';
 import { LanguageChart } from './LanguageChart';
 
 async function getAllReposData(): Promise<RepoData[]> {
-  let page = 1;
-  let allRepos: RepoData[] = [];
+  const repos = await fetchUserRepos(1);
 
-  while (true) {
-    const repos = await fetchUserRepos(page);
+  const repoDataPromises = repos.map(async (repo: Repo) => {
+    const languages = await fetchRepoLanguages(repo.languages_url);
+    return {
+      name: repo.name,
+      languages,
+    };
+  });
 
-    if (repos.length === 0) {
-      break;
-    }
+  const repoData = await Promise.all(repoDataPromises);
 
-    const repoDataPromises = repos.map(async (repo: Repo) => {
-      const languages = await fetchRepoLanguages(repo.languages_url);
-
-      return {
-        name: repo.name,
-        languages,
-      };
-    });
-
-    const repoData = await Promise.all(repoDataPromises);
-    allRepos = [...allRepos, ...repoData];
-    page++;
-  }
-
-  return allRepos;
+  return repoData;
 }
 
 export default async function Develop() {

@@ -26,6 +26,6 @@ export async function fetchRepoLanguages(
 
 export async function fetchUserRepos(page: number): Promise<Repo[]> {
   return fetchFromGithub(
-    `https://api.github.com/user/repos?per_page=100&page=${page}&visibility=all`
+    `https://api.github.com/user/repos?per_page=100&page=0&visibility=all`
   );
 }
