@@ -7,17 +7,17 @@
   --color-muted: #101010;
   --color-dimmed: #4f4f4f;
 
-  --color-green: #d5ff05;
+  --color-green: #84e119;
   --color-green-light: #9fbbbb;
 
   --color-blue: #0838f8;
 
-  --linear-gradient: linear-gradient(75deg, #0f98f3, #42e7e8);
+  --linear-gradient: linear-gradient(75deg, #55dc72, #fbbb6d);
 
   --tw-gradient-stops: var(--tw-gradient-from), #000000 100%,
     var(--tw-gradient-to);
-  --tw-gradient-from: #0e4449 100%;
-  --tw-gradient-to: #55dc72 100%;
+  --tw-gradient-from: #0d3d51 100%;
+  --tw-gradient-to: #acf22e 100%;
 }
 
 * {
@@ -58,4 +58,21 @@ li {
   100% {
     stroke-dashoffset: 0;
   }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-delay: 1s; /* Delay the animation until the bar animation has finished */
+  animation-play-state: paused; /* Pause the animation initially */
 }

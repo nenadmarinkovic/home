@@ -12,6 +12,10 @@
     font-weight: 600;
     line-height: 1;
     letter-spacing: 0.35px;
+
+    /* background: var(--linear-gradient);
+    background-clip: text;
+    -webkit-text-fill-color: transparent; */
   }
 
   & .banner_paragraph {

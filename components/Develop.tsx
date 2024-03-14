@@ -1,6 +1,7 @@
 import styles from '../styles/components/Text.module.css';
 import { fetchRepoLanguages, fetchUserRepos } from '../utils/github';
 import { RepoData, Repo } from '../types/types';
+import { LanguageChart } from './LanguageChart';
 
 async function getAllReposData(): Promise<RepoData[]> {
   let page = 1;
@@ -15,6 +16,7 @@ async function getAllReposData(): Promise<RepoData[]> {
 
     const repoDataPromises = repos.map(async (repo: Repo) => {
       const languages = await fetchRepoLanguages(repo.languages_url);
+
       return {
         name: repo.name,
         languages,
@@ -50,35 +52,24 @@ export default async function Develop() {
     languagePercentages[language] = percentage;
   }
 
+  const sortedLanguagePercentages = Object.entries(
+    languagePercentages
+  ).sort(
+    ([, aPercentage], [, bPercentage]) => bPercentage - aPercentage
+  );
+
+  const maxPercentage = Math.max(
+    ...Object.values(languagePercentages)
+  );
+
   return (
     <div className={styles.container}>
-      <h1>Programming Language Usage Percentages</h1>
-      <ul>
-        {Object.entries(languagePercentages).map(
-          ([language, percentage]) => (
-            <li key={language}>
-              <strong>{language}:</strong> {percentage.toFixed(2)}%
-            </li>
-          )
+      <LanguageChart
+        data={sortedLanguagePercentages.map(
+          ([language, percentage]) => ({ language, percentage })
         )}
-      </ul>
-      <h2>Repositories</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Languages</th>
-          </tr>
-        </thead>
-        <tbody>
-          {repoData.map((repo) => (
-            <tr key={repo.name}>
-              <td>{repo.name}</td>
-              <td>{Object.keys(repo.languages).join(', ')}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        maxPercentage={maxPercentage}
+      />
     </div>
   );
 }
