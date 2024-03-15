@@ -1,10 +1,10 @@
 .banner {
   color: var(--color-white);
   width: 100%;
-  background: linear-gradient(170deg, #083c4d 0%, #000 80%);
+  background: linear-gradient(170deg, #043f5b 0%, #000 80%);
 
   & .banner_inside {
-    padding: 150px 0;
+    padding: 160px 0 80px 0;
   }
 
   & .banner_text {
@@ -12,10 +12,6 @@
     font-weight: 600;
     line-height: 1;
     letter-spacing: 0.35px;
-
-    /* background: var(--linear-gradient);
-    background-clip: text;
-    -webkit-text-fill-color: transparent; */
   }
 
   & .banner_paragraph {
@@ -131,7 +127,7 @@
 .panel {
   display: flex;
   flex-direction: column;
-  padding: 60px 0 120px 0;
+  padding-bottom: 80px;
 
   & .panel_title {
     text-align: center;

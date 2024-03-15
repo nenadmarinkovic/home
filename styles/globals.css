@@ -8,9 +8,11 @@
   --color-dimmed: #4f4f4f;
 
   --color-green: #84e119;
-  --color-green-light: #9fbbbb;
-
+  --color-yellow: #ddf30f;
+  --color-orange: #d85618;
   --color-blue: #0838f8;
+
+  --color-green-light: #9fbbbb;
 
   --linear-gradient: linear-gradient(75deg, #55dc72, #fbbb6d);
 
@@ -39,6 +41,10 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.link {
+  text-decoration: underline;
 }
 
 ul,

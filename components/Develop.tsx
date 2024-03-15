@@ -1,7 +1,8 @@
-import styles from '../styles/components/Text.module.css';
 import { fetchRepoLanguages, fetchUserRepos } from '../utils/github';
 import { RepoData, Repo } from '../types/types';
 import { LanguageChart } from './LanguageChart';
+import SectionHeader from './Section';
+import Container from '@/containers/Container';
 
 async function getAllReposData(): Promise<RepoData[]> {
   const repos = await fetchUserRepos(1);
@@ -51,13 +52,18 @@ export default async function Develop() {
   );
 
   return (
-    <div className={styles.container}>
+    <Container>
+      <SectionHeader
+        header="Lorem ipsum"
+        title="Lorem ipsum dolor, sit amet consectetur"
+        text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente officia nesciunt vel. Distinctio, nobis libero! Nostrum, neque."
+      />
       <LanguageChart
         data={sortedLanguagePercentages.map(
           ([language, percentage]) => ({ language, percentage })
         )}
         maxPercentage={maxPercentage}
       />
-    </div>
+    </Container>
   );
 }

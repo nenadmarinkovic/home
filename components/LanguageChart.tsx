@@ -58,9 +58,7 @@ export const LanguageChart: React.FC<LanguageChartProps> = ({
           <rect
             width={inView ? (percentage / maxPercentage) * 400 : 0}
             height="20"
-            fill={`hsl(84, 77%, ${
-              50 - (i / (groupedData.length - 1)) * 50
-            }%)`}
+            fill={`#338ad7`}
             style={{
               opacity: 1 - i / groupedData.length / 2,
               transition: 'width 1s',

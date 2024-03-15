@@ -1,0 +1,37 @@
+.section {
+  padding-top: 80px;
+  text-align: center;
+
+  & .section_header {
+    background: var(--color-green);
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    line-height: 2;
+    background-clip: border-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  & .section_title {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 600;
+    margin: 0 auto;
+    max-width: 70%;
+    margin: 0 auto;
+    color: var(--color-white);
+  }
+
+  & .section_text {
+    text-align: center;
+    font-size: 19px;
+    color: var(--color-green-light);
+    max-width: 70%;
+    line-height: 1.75;
+    margin: 0 auto;
+    padding: 20px 0 45px 0;
+  }
+}

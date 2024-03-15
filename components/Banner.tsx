@@ -1,5 +1,6 @@
 import styles from '../styles/components/Banner.module.css';
 import Container from '@/containers/Container';
+import SectionHeader from './Section'; // Import SectionHeader
 
 export default function Banner() {
   return (
@@ -12,7 +13,8 @@ export default function Banner() {
             , web interfaces, and apps.
           </h1>
           <p className={styles.banner_paragraph}>
-            Front-end developer at nexxar in Vienna, Austria.
+            Front-end developer at{' '}
+            <span className="link">nexxar</span> in Vienna, Austria.
             Experienced in designing and developing websites, web
             interfaces, and APIs, with a versatile skill set in
             various web technologies.
@@ -24,15 +26,11 @@ export default function Banner() {
         </div>
 
         <div className={styles.panel}>
-          <span className={styles.header_text}>Lorem ipsum</span>
-          <h2 className={styles.panel_title}>
-            Lorem ipsum dolor, sit amet consectetur
-          </h2>
-          <p className={styles.panel_text}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Sapiente officia nesciunt vel. Distinctio, nobis libero!
-            Nostrum, neque.
-          </p>
+          <SectionHeader
+            header="Lorem ipsum"
+            title="Lorem ipsum dolor, sit amet consectetur"
+            text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente officia nesciunt vel. Distinctio, nobis libero! Nostrum, neque."
+          />
           <div className={styles.panel_items}>
             <div className={styles.panel_item_container}>
               <div className={styles.panel_item}>
