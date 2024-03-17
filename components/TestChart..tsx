@@ -32,7 +32,7 @@ function Test() {
           }
           return prevNumber;
         });
-      }, 25); // Adjust this value to change the speed of the count
+      }, 25);
     }
 
     return () => {
@@ -52,7 +52,7 @@ function Test() {
   return (
     <svg height="150" width="150" ref={circleRef}>
       <circle
-        stroke="#E0F9EB"
+        stroke="#18271E"
         fill="transparent"
         strokeWidth={strokeWidth}
         r={normalizedRadius}
@@ -61,7 +61,7 @@ function Test() {
       />
       <circle
         stroke="#149b2c"
-        fill="#E0F9EB"
+        fill="#18271E"
         strokeWidth={strokeWidth}
         strokeDasharray={circumference + ' ' + circumference}
         style={{
@@ -79,7 +79,8 @@ function Test() {
         textAnchor="middle"
         fill="#149b2c"
         dy=".3em"
-        fontSize="27"
+        fontSize="30"
+        fontFamily="monospace"
         fontWeight={700}
       >
         {displayedNumber}

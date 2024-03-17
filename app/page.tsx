@@ -3,6 +3,7 @@ import Banner from '@/components/Banner';
 import Develop from '@/components/Develop';
 import styles from './page.module.css';
 import Test from '@/components/Test';
+import Deploy from '@/components/Deploy';
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <Banner />
         <Develop />
         <Test />
+        <Deploy />
       </main>
     </>
   );

@@ -1,6 +1,6 @@
 import { fetchRepoLanguages, fetchUserRepos } from '../utils/github';
 import { RepoData, Repo } from '../types/types';
-import { LanguageChart } from './LanguageChart';
+import { DevelopChart } from './DevelopChart';
 import SectionHeader from './Section';
 import Container from '@/containers/Container';
 
@@ -59,7 +59,7 @@ export default async function Develop() {
         text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente officia nesciunt vel. Distinctio, nobis libero! Nostrum, neque."
       />
 
-      <LanguageChart
+      <DevelopChart
         data={sortedLanguagePercentages.map(
           ([language, percentage]) => ({ language, percentage })
         )}

@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { LanguageChartProps } from '../types/types';
+import { DevelopChartProps } from '../types/types';
 
-export const LanguageChart: React.FC<LanguageChartProps> = ({
+export const DevelopChart: React.FC<DevelopChartProps> = ({
   data,
 }) => {
   const chartRef = useRef<SVGSVGElement | null>(null);
