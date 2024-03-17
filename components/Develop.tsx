@@ -58,6 +58,7 @@ export default async function Develop() {
         title="Lorem ipsum dolor, sit amet consectetur"
         text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente officia nesciunt vel. Distinctio, nobis libero! Nostrum, neque."
       />
+
       <LanguageChart
         data={sortedLanguagePercentages.map(
           ([language, percentage]) => ({ language, percentage })

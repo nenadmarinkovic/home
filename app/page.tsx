@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Banner from '@/components/Banner';
 import Develop from '@/components/Develop';
 import styles from './page.module.css';
+import Test from '@/components/Test';
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <main className={styles.main}>
         <Banner />
         <Develop />
+        <Test />
       </main>
     </>
   );

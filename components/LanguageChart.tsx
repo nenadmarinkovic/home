@@ -52,7 +52,7 @@ export const LanguageChart: React.FC<LanguageChartProps> = ({
   groupedData.push({ language: 'Rest', percentage: restPercentage });
 
   return (
-    <svg width="600" height={groupedData.length * 80} ref={chartRef}>
+    <svg width="600" height={groupedData.length * 40} ref={chartRef}>
       {groupedData.map(({ language, percentage }, i) => (
         <g key={i} transform={`translate(100, ${i * 35})`}>
           <rect
