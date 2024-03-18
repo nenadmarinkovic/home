@@ -85,7 +85,7 @@
   inset: 0;
   background-image: linear-gradient(
     to top right,
-    var(--tw-gradient-stops)
+    var(--tw-gradient-stops-blue)
   );
   filter: blur(16px);
   z-index: 2;
@@ -167,7 +167,7 @@
 
   & .panel_item {
     border: 1px solid var(--color-dimmed);
-    background-color: var(--color-muted);
+    background-color: #0d1118;
     padding: 15px;
     border-radius: 15px;
     position: relative;
