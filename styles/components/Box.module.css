@@ -5,14 +5,14 @@
   align-items: center;
   justify-content: space-between;
   justify-items: center;
-  gap: 120px;
+  gap: 80px;
   color: var(--color-white);
   z-index: 1;
 
   & .box_item {
     position: relative;
     z-index: 2;
-    max-width: 500px;
+    max-width: 450px;
   }
 
   & .box_item_inside {

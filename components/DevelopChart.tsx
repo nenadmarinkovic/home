@@ -52,11 +52,11 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
   groupedData.push({ language: 'Rest', percentage: restPercentage });
 
   return (
-    <svg width="505" height={groupedData.length * 34} ref={chartRef}>
+    <svg width="525" height={groupedData.length * 34} ref={chartRef}>
       {groupedData.map(({ language, percentage }, i) => (
         <g key={i} transform={`translate(100, ${i * 35})`}>
           <rect
-            width={inView ? (percentage / maxPercentage) * 305 : 0}
+            width={inView ? (percentage / maxPercentage) * 325 : 0}
             height="20"
             fill={`#338ad7`}
             style={{
@@ -73,7 +73,7 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
             {language}
           </text>
           <text
-            x={inView ? (percentage / maxPercentage) * 305 : 0}
+            x={inView ? (percentage / maxPercentage) * 325 : 0}
             y="10"
             fill="#9fbbbb"
             dominantBaseline="middle"
