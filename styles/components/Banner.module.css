@@ -1,7 +1,11 @@
 .banner {
   color: var(--color-white);
   width: 100%;
-  background: linear-gradient(170deg, #043f5b 0%, #000 80%);
+  background: linear-gradient(
+    170deg,
+    #043f5b 0%,
+    var(--color-muted) 80%
+  );
 
   & .banner_inside {
     padding: 160px 0 80px 0;
