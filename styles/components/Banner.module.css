@@ -87,7 +87,7 @@
     to top right,
     var(--tw-gradient-stops-blue)
   );
-  filter: blur(16px);
+  filter: blur(8px);
   z-index: 2;
 }
 
