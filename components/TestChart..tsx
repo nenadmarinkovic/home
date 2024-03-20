@@ -16,7 +16,7 @@ function Test() {
       }
     };
 
-    checkIfInView(); // Initial check
+    checkIfInView();
 
     window.addEventListener('scroll', checkIfInView);
     return () => window.removeEventListener('scroll', checkIfInView);
@@ -60,7 +60,7 @@ function Test() {
         cy="75"
       />
       <circle
-        stroke="#84e119"
+        stroke="#aaf555"
         fill="#18271E"
         strokeWidth={strokeWidth}
         strokeDasharray={circumference + ' ' + circumference}
@@ -77,7 +77,7 @@ function Test() {
         x="50%"
         y="50%"
         textAnchor="middle"
-        fill="#84e119"
+        fill="#aaf555"
         dy=".3em"
         fontSize="30"
         fontFamily="monospace"
