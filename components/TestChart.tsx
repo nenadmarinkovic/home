@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
 
-function Test() {
+function TestChart() {
   const [scrollPercentage, setScrollPercentage] = useState(0);
   const [displayedNumber, setDisplayedNumber] = useState(0);
   const circleRef = useRef<SVGSVGElement | null>(null);
@@ -89,4 +89,4 @@ function Test() {
   );
 }
 
-export default Test;
+export default TestChart;

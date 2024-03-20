@@ -1,3 +1,56 @@
 .deploy_container {
-  min-height: 100vh;
+  max-width: 90%;
+  & .deploy_chart {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  & .deploy_chart_item {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  & .deploy_chart_item_icon {
+    position: relative;
+    z-index: 10;
+    display: flex;
+  }
+
+  & .deploy_chart_item_text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--color-green-light);
+  }
+
+  & .deploy_chart_item_border {
+    position: absolute;
+    z-index: 9;
+    border: 2px solid var(--color-pink);
+    border-radius: 10px;
+    top: 4px;
+    left: -10px;
+    background: black;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.deploy_chart_item_icon_spinner {
+  animation: spin 3s linear infinite;
+}
+
+.deploy_chart_item_icon_check {
+  visibility: hidden;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

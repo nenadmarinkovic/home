@@ -1,5 +1,5 @@
 import React from 'react';
-import TestChart from './TestChart.';
+import TestChart from './TestChart';
 import Container from '@/containers/Container';
 
 import styles from '../styles/components/Box.module.css';
