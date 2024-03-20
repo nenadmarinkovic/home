@@ -60,7 +60,7 @@ function Test() {
         cy="75"
       />
       <circle
-        stroke="#149b2c"
+        stroke="#84e119"
         fill="#18271E"
         strokeWidth={strokeWidth}
         strokeDasharray={circumference + ' ' + circumference}
@@ -77,7 +77,7 @@ function Test() {
         x="50%"
         y="50%"
         textAnchor="middle"
-        fill="#149b2c"
+        fill="#84e119"
         dy=".3em"
         fontSize="30"
         fontFamily="monospace"

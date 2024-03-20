@@ -4,6 +4,7 @@ import Develop from '@/components/Develop';
 import styles from './page.module.css';
 import Test from '@/components/Test';
 import Deploy from '@/components/Deploy';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <Develop />
         <Test />
         <Deploy />
+        <Footer />
       </main>
     </>
   );

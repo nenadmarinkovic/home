@@ -22,7 +22,9 @@ function Test() {
               better P99 latency and more requests per second than
               Apollo Router
             </p>
-            <p className={styles.box_item_main_title}>
+            <p
+              className={`${styles.box_item_main_title} ${styles.green}`}
+            >
               Deliver raw performance with the Cosmo Router
             </p>
             <div className={styles.box_item_main_items}>

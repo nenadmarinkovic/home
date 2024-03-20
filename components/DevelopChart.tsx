@@ -58,7 +58,7 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
           <rect
             width={inView ? (percentage / maxPercentage) * 325 : 0}
             height="20"
-            fill={`#338ad7`}
+            fill={`#36c6ff`}
             style={{
               opacity: 1 - i / groupedData.length / 2,
               transition: 'width 1s',
