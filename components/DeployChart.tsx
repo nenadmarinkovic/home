@@ -1,113 +1,94 @@
 'use client';
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styles from '../styles/components/Deploy.module.css';
 import Image from 'next/image';
 
 function DeployChart() {
-  // const [currentItem, setCurrentItem] = useState(0);
+  const [isInView, setIsInView] = useState(false);
+  const [isCurrent, setIsCurrent] = useState(0);
+  const chartRef = useRef<HTMLDivElement | null>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setCurrentItem((prevItem) => (prevItem + 1) % 2); // Cycle between 0 and 1
-  //   }, 4000); // Change item every 4 seconds
+  useEffect(() => {
+    const checkIfInView = () => {
+      if (chartRef.current) {
+        const rect = chartRef.current.getBoundingClientRect();
+        const isInView =
+          rect.top >= 0 && rect.bottom <= window.innerHeight;
+        setIsInView(isInView);
+      }
+    };
 
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, []);
+    checkIfInView();
+
+    window.addEventListener('scroll', checkIfInView);
+    return () => window.removeEventListener('scroll', checkIfInView);
+  }, []);
+
+  useEffect(() => {
+    if (isInView) {
+      const interval = setInterval(() => {
+        if (isCurrent < 4) {
+          setIsCurrent((prev) => prev + 1);
+        } else {
+          clearInterval(interval);
+        }
+      }, 850);
+      return () => clearInterval(interval);
+    }
+  }, [isInView, isCurrent]);
+
   return (
-    <div className={styles.deploy_container}>
+    <div className={`${styles.deploy_container}`} ref={chartRef}>
       <div className={styles.deploy_chart}>
-        <div className={styles.deploy_chart_item_border}></div>
-        <div className={styles.deploy_chart_item}>
-          <div className={styles.deploy_chart_item_icon}>
-            <Image
-              className={styles.deploy_chart_item_icon_spinner}
-              src="/icons/loading.svg"
-              alt="Loading"
-              width={30}
-              height={30}
-            />
-            <Image
-              className={styles.deploy_chart_item_icon_check}
-              src="/icons/check.svg"
-              alt="Loading"
-              width={30}
-              height={30}
-            />
+        {[...Array(4)].map((_, i) => (
+          <div
+            key={i}
+            className={`${styles.deploy_chart_item}`}
+            ref={(el) => (itemRefs.current[i] = el)}
+          >
+            <div className={styles.deploy_chart_item_icon}>
+              <Image
+                className={`${
+                  styles.deploy_chart_item_icon_spinner
+                } ${
+                  isInView && isCurrent === i ? styles.animate : ''
+                }`}
+                src="/icons/loading.svg"
+                alt="Loading"
+                width={30}
+                height={30}
+              />
+              <Image
+                className={`${styles.deploy_chart_item_icon_check} ${
+                  isInView && isCurrent > i ? styles.animate : ''
+                }`}
+                src="/icons/check.svg"
+                alt="Check"
+                width={30}
+                height={30}
+              />
+            </div>
+            <div
+              className={`${styles.deploy_chart_item_text} ${
+                isInView && isCurrent > i ? styles.textPopup : ''
+              }`}
+            >
+              {i + 1}. Deploy your application to the cloud. Lorem
+              ipsum dolor sit amet.
+            </div>
           </div>
-          <p className={styles.deploy_chart_item_text}>
-            1. Deploy your application to the cloud. Lorem ipsum dolor
-            sit amet.
-          </p>
-        </div>
-        <div className={styles.deploy_chart_item}>
-          <div className={styles.deploy_chart_item_icon}>
-            <Image
-              className={styles.deploy_chart_item_icon_spinner}
-              src="/icons/loading.svg"
-              alt="Loading"
-              width={30}
-              height={30}
-            />
-            <Image
-              className={styles.deploy_chart_item_icon_check}
-              src="/icons/check.svg"
-              alt="Loading"
-              width={30}
-              height={30}
-            />
-          </div>
-          <p className={styles.deploy_chart_item_text}>
-            2. Deploy your application to the cloud. Lorem ipsum dolor
-            sit amet.
-          </p>
-        </div>
-        <div className={styles.deploy_chart_item}>
-          <div className={styles.deploy_chart_item_icon}>
-            <Image
-              className={styles.deploy_chart_item_icon_spinner}
-              src="/icons/loading.svg"
-              alt="Loading"
-              width={30}
-              height={30}
-            />
-            <Image
-              className={styles.deploy_chart_item_icon_check}
-              src="/icons/check.svg"
-              alt="Loading"
-              width={30}
-              height={30}
-            />
-          </div>
-          <p className={styles.deploy_chart_item_text}>
-            3. Deploy your application to the cloud. Lorem ipsum dolor
-            sit amet.
-          </p>
-        </div>
-        <div className={styles.deploy_chart_item}>
-          <div className={styles.deploy_chart_item_icon}>
-            <Image
-              className={styles.deploy_chart_item_icon_spinner}
-              src="/icons/loading.svg"
-              alt="Loading"
-              width={30}
-              height={30}
-            />
-            <Image
-              className={styles.deploy_chart_item_icon_check}
-              src="/icons/check.svg"
-              alt="Loading"
-              width={30}
-              height={30}
-            />
-          </div>
-          <p className={styles.deploy_chart_item_text}>
-            4. Deploy your application to the cloud. Lorem ipsum dolor
-            sit amet.
-          </p>
-        </div>
+        ))}
+        {isCurrent < 4 && (
+          <div
+            className={styles.deploy_chart_item_border}
+            style={{
+              transform: `translateY(${
+                itemRefs.current[isCurrent]?.offsetTop || 0
+              }px)`,
+            }}
+          ></div>
+        )}
       </div>
     </div>
   );

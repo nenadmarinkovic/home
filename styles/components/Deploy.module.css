@@ -10,7 +10,7 @@
   & .deploy_chart_item {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 30px;
   }
 
   & .deploy_chart_item_icon {
@@ -23,6 +23,8 @@
     font-size: 16px;
     line-height: 1.75;
     color: var(--color-green-light);
+    visibility: hidden;
+    opacity: 0;
   }
 
   & .deploy_chart_item_border {
@@ -38,19 +40,64 @@
   }
 }
 
-.deploy_chart_item_icon_spinner {
-  animation: spin 3s linear infinite;
-}
-
 .deploy_chart_item_icon_check {
   visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  transform: rotate(-25deg);
+}
+
+.deploy_chart_item_icon_check.animate {
+  animation: appear 0.15s linear forwards;
+}
+
+@keyframes appear {
+  0% {
+    visibility: hidden;
+    opacity: 1;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+}
+
+.deploy_chart_item_icon_spinner {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.deploy_chart_item_icon_spinner.animate {
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
   0% {
+    visibility: visible;
+    opacity: 1;
     transform: rotate(0deg);
   }
   100% {
+    visibility: visible;
+    opacity: 1;
     transform: rotate(360deg);
   }
+}
+
+@keyframes textPopup {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.textPopup {
+  animation: textPopup 0.25s ease-in-out forwards;
 }
