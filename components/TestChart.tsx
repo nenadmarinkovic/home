@@ -1,9 +1,19 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
+import styles from '../styles/components/Test.module.css';
+interface TestChartProps {
+  maxValue: number;
+  circleValue: number;
+  testChartText: string;
+}
 
-function TestChart() {
-  const [scrollPercentage, setScrollPercentage] = useState(0);
+const TestChart: React.FC<TestChartProps> = ({
+  maxValue,
+  circleValue,
+  testChartText,
+}) => {
   const [displayedNumber, setDisplayedNumber] = useState(0);
+  const [scrollPercentage, setScrollPercentage] = useState(0);
   const circleRef = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
@@ -13,6 +23,9 @@ function TestChart() {
         const isInView =
           rect.top >= 0 && rect.bottom <= window.innerHeight;
         setScrollPercentage(isInView ? 99 : 0);
+        if (!isInView) {
+          setDisplayedNumber(0); // Reset the number when not in view
+        }
       }
     };
 
@@ -25,68 +38,81 @@ function TestChart() {
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (scrollPercentage === 99) {
+      setDisplayedNumber(0); // Reset the number before starting the animation
       interval = setInterval(() => {
         setDisplayedNumber((prevNumber) => {
-          if (prevNumber < 99) {
+          if (prevNumber < maxValue) {
             return prevNumber + 1;
           }
+          clearInterval(interval);
           return prevNumber;
         });
-      }, 25);
+      }, 20);
     }
-
     return () => {
       if (interval) {
         clearInterval(interval);
       }
     };
-  }, [scrollPercentage]);
+  }, [scrollPercentage, maxValue]);
 
-  const radius = 70;
-  const strokeWidth = 10;
+  const radius = 60;
+  const strokeWidth = 7;
   const normalizedRadius = radius - strokeWidth * 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const strokeDashoffset =
-    circumference - (scrollPercentage / 100) * circumference * 0.97;
+    circumference -
+    (displayedNumber / 100) * circumference * circleValue;
 
   return (
-    <svg height="150" width="150" ref={circleRef}>
-      <circle
-        stroke="#18271E"
-        fill="transparent"
-        strokeWidth={strokeWidth}
-        r={normalizedRadius}
-        cx="75"
-        cy="75"
-      />
-      <circle
-        stroke="#aaf555"
-        fill="#18271E"
-        strokeWidth={strokeWidth}
-        strokeDasharray={circumference + ' ' + circumference}
-        style={{
-          strokeDashoffset,
-          transition: 'stroke-dashoffset 3s ease-in-out',
-        }}
-        r={normalizedRadius}
-        strokeLinecap="round"
-        cx="75"
-        cy="75"
-      />
-      <text
-        x="50%"
-        y="50%"
-        textAnchor="middle"
-        fill="#aaf555"
-        dy=".3em"
-        fontSize="30"
-        fontFamily="monospace"
-        fontWeight={700}
+    <div className={styles.chart_container}>
+      <svg height="150" width="150" ref={circleRef}>
+        <circle
+          stroke="#18271E"
+          fill="#18271E"
+          strokeWidth={strokeWidth}
+          r={normalizedRadius}
+          cx="75"
+          cy="75"
+        />
+        <circle
+          stroke="#aaf555"
+          fill="transparent"
+          strokeWidth={strokeWidth}
+          strokeDasharray={circumference + ' ' + circumference}
+          style={{
+            strokeDashoffset,
+            transition: `stroke-dashoffset ${
+              1 * (maxValue - displayedNumber)
+            }ms linear`,
+          }}
+          strokeLinecap="round"
+          r={normalizedRadius}
+          cx="75"
+          cy="75"
+        />
+        <text
+          x="50%"
+          y="50%"
+          textAnchor="middle"
+          fill="#aaf555"
+          dy=".3em"
+          fontSize="30"
+          fontFamily="monospace"
+          fontWeight={700}
+        >
+          {displayedNumber}
+        </text>
+      </svg>
+      <span
+        className={`${styles.text} ${
+          displayedNumber === maxValue ? styles.textPopup : ''
+        }`}
       >
-        {displayedNumber}
-      </text>
-    </svg>
+        {testChartText}
+      </span>
+    </div>
   );
-}
+};
 
 export default TestChart;

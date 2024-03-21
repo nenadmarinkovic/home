@@ -26,7 +26,9 @@ function DeployChart() {
   }, []);
 
   useEffect(() => {
-    if (isInView) {
+    if (!isInView) {
+      setIsCurrent(0);
+    } else {
       const interval = setInterval(() => {
         if (isCurrent < 4) {
           setIsCurrent((prev) => prev + 1);
@@ -79,7 +81,7 @@ function DeployChart() {
             </div>
           </div>
         ))}
-        {isCurrent < 4 && (
+        {isInView && isCurrent < 4 && (
           <div
             className={styles.deploy_chart_item_border}
             style={{

@@ -39,6 +39,19 @@
     color: var(--color-pink) !important;
   }
 
+  .box_charts {
+    display: flex;
+    margin-left: 120px;
+    gap: 20px;
+  }
+
+  .box_chart_items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
   & .box_item_header_text {
     font-size: 16px;
     margin-top: 10px;

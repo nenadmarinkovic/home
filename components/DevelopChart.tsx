@@ -77,6 +77,7 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
             y="10"
             fill="#9fbbbb"
             dominantBaseline="middle"
+            fontSize={14}
             textAnchor="start"
             dx="5"
             style={{
