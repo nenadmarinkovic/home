@@ -107,7 +107,7 @@
     background-image: radial-gradient(#424242 1px, transparent 0);
     background-size: 30.2px 30.2px;
     background-position: center;
-    background-color: #0c0e12;
+    background-color: var(--color-muted);
     z-index: -1;
   }
 
