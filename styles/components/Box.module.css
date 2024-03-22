@@ -41,9 +41,8 @@
 
   .box_charts {
     display: flex;
-    margin-left: 120px;
+    margin-left: 105px;
     gap: 40px;
-    width: 70%;
   }
 
   .box_chart_items {

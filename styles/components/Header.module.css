@@ -41,7 +41,7 @@
 }
 
 .fixed {
-  backdrop-filter: blur(6px) saturate(180%);
+  backdrop-filter: blur(6px) saturate(120%);
   position: fixed;
   border-bottom: 0.5px solid hsla(0, 0%, 100%, 0.1);
   opacity: 1;
