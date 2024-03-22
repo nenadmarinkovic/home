@@ -40,11 +40,11 @@ function Test() {
         </div>
         <div className={boxStyles.box_item}>
           <div className={boxStyles.box_item_inside}>
-            <h4
+            <h3
               className={`${boxStyles.box_item_header_title} ${boxStyles.green}`}
             >
               Test
-            </h4>
+            </h3>
             <p className={boxStyles.box_item_header_text}>
               better P99 latency and more requests per second than
               Apollo Router

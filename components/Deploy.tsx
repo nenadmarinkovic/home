@@ -9,11 +9,11 @@ function Deploy() {
       <div className={styles.box_container}>
         <div className={styles.box_item}>
           <div className={styles.box_item_inside}>
-            <h4
+            <h3
               className={`${styles.box_item_header_title} ${styles.pink}`}
             >
               Deploy
-            </h4>
+            </h3>
             <p className={styles.box_item_header_text}>
               Better P99 latency and more requests per second than
               Apollo Router
