@@ -22,7 +22,7 @@
     line-height: 1.75;
     padding-top: 30px;
     color: var(--color-green-light);
-    width: 70%;
+    width: 60%;
   }
 
   & .highlighted_text {
@@ -81,7 +81,7 @@
 
 .blur {
   position: absolute;
-  inset: 0;
+  inset: -2.5px;
   background-image: linear-gradient(
     to top right,
     var(--tw-gradient-stops-blue)
@@ -154,7 +154,7 @@
   & .panel_items {
     display: flex;
     flex-wrap: wrap;
-    padding-top: 20px;
+    padding-top: 40px;
     gap: 45px;
     justify-content: space-between;
   }
