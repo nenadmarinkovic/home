@@ -11,11 +11,23 @@ function DeployChart() {
 
   useEffect(() => {
     const checkIfInView = () => {
-      if (chartRef.current) {
-        const rect = chartRef.current.getBoundingClientRect();
-        const isInView =
-          rect.top >= 0 && rect.bottom <= window.innerHeight;
-        setIsInView(isInView);
+      const chart = chartRef.current;
+      if (!chart) return;
+
+      const chartRect = chart.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      const threshold = 0.1;
+
+      const topVisible =
+        chartRect.top < viewportHeight * (1 - threshold);
+      const bottomVisible =
+        chartRect.bottom > viewportHeight * threshold;
+
+      if (topVisible && bottomVisible) {
+        setIsInView(true);
+      } else {
+        setIsInView(false);
       }
     };
 
