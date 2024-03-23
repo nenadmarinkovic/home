@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: space-between;
   justify-items: center;
-  gap: 70px;
+  gap: 95px;
   color: var(--color-white);
   z-index: 1;
 
@@ -41,7 +41,7 @@
 
   .box_charts {
     display: flex;
-    margin-left: 105px;
+    margin-left: 135px;
     gap: 40px;
   }
 

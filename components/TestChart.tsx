@@ -21,7 +21,7 @@ const TestChart: React.FC<TestChartProps> = ({
       if (circleRef.current) {
         const rect = circleRef.current.getBoundingClientRect();
         const isInView =
-          rect.top >= 0 && rect.bottom <= window.innerHeight;
+          rect.bottom >= 0 && rect.bottom <= window.innerHeight;
         setScrollPercentage(isInView ? 99 : 0);
         if (!isInView) {
           setDisplayedNumber(0); // Reset the number when not in view

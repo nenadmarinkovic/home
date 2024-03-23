@@ -1,5 +1,6 @@
 .deploy_container {
-  max-width: 90%;
+  max-width: 80%;
+
   & .deploy_chart {
     position: relative;
     display: flex;
