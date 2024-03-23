@@ -35,7 +35,7 @@ function DeployChart() {
         } else {
           clearInterval(interval);
         }
-      }, 850);
+      }, 600);
       return () => clearInterval(interval);
     }
   }, [isInView, isCurrent]);
