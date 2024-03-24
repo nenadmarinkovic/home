@@ -3,7 +3,11 @@
   width: 100%;
 
   & .banner_container {
-    background: linear-gradient(to bottom, #0c4966 -50%, #000 100%);
+    background: linear-gradient(
+      to bottom,
+      #0c4966 -50%,
+      var(--color-muted) 100%
+    );
   }
 
   & .banner_inside {
