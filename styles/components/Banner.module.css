@@ -136,25 +136,6 @@
   flex-direction: column;
   padding-bottom: 80px;
 
-  & .panel_title {
-    text-align: center;
-    font-size: 40px;
-    font-weight: 600;
-    margin: 0 auto;
-    max-width: 70%;
-    margin: 0 auto;
-  }
-
-  & .panel_text {
-    text-align: center;
-    font-size: 19px;
-    color: var(--color-green-light);
-    max-width: 70%;
-    line-height: 1.75;
-    margin: 0 auto;
-    padding: 20px 0 45px 0;
-  }
-
   & .panel_items {
     display: flex;
     flex-wrap: wrap;
@@ -200,28 +181,8 @@
   }
 }
 
-@media screen and (max-width: 1024px) {
-  .panel {
-    & .panel_title {
-      font-size: 32px;
-    }
-
-    & .panel_text {
-      font-size: 18px;
-    }
-  }
-}
-
 @media screen and (max-width: 768px) {
   .panel {
-    & .panel_title {
-      max-width: 80%;
-    }
-
-    & .panel_text {
-      max-width: 80%;
-    }
-
     & .panel_items {
       justify-content: space-evenly;
     }
@@ -234,14 +195,6 @@
 
 @media screen and (max-width: 560px) {
   .panel {
-    & .panel_title {
-      max-width: 100%;
-    }
-
-    & .panel_text {
-      max-width: 100%;
-    }
-
     & .panel_items {
       gap: 20px;
     }

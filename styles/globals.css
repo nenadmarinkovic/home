@@ -82,6 +82,6 @@ li {
   animation-name: fadeIn;
   animation-duration: 1s;
   animation-fill-mode: both;
-  animation-delay: 1s; /* Delay the animation until the bar animation has finished */
-  animation-play-state: paused; /* Pause the animation initially */
+  animation-delay: 1s;
+  animation-play-state: paused;
 }

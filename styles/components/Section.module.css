@@ -35,3 +35,39 @@
     padding: 20px 0 45px 0;
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .section {
+    & .section_title {
+      font-size: 32px;
+    }
+
+    & .section_text {
+      font-size: 18px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .section {
+    & .section_title {
+      max-width: 80%;
+    }
+
+    & .section_text {
+      max-width: 80%;
+    }
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .section {
+    & .section_title {
+      max-width: 100%;
+    }
+
+    & .section_text {
+      max-width: 100%;
+    }
+  }
+}
