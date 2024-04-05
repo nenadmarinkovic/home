@@ -156,6 +156,7 @@
     border-radius: 15px;
     position: relative;
     z-index: 3;
+    min-height: 120px;
   }
 
   & .panel_item_title {

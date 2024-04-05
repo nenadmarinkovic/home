@@ -74,7 +74,8 @@
   }
 
   & .box_item_main_icon {
-    width: 32px;
+    width: 28px;
+    height: 28px;
   }
 
   & .box_item_main_item {
