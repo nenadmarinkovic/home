@@ -5,10 +5,10 @@ import SectionHeader from './Section'; // Import SectionHeader
 export default function Banner() {
   return (
     <section className={styles.banner}>
-      <div className={styles.banner_container}>
+      <div className={styles.bannerContainer}>
         <Container>
-          <div className={styles.banner_inside}>
-            <h1 className={styles.banner_text}>
+          <div className={styles.bannerInside}>
+            <h1 className={styles.bannerText}>
               I make
               <span className={styles.highlighted_text}>
                 {' '}
@@ -16,7 +16,7 @@ export default function Banner() {
               </span>
               , web interfaces, and apps.
             </h1>
-            <p className={styles.banner_paragraph}>
+            <p className={styles.bannerParagraph}>
               Hi. I&apos;m Nenad, a frontend developer at{' '}
               <span className="link">nexxar</span> in Vienna, Austria.
               With a versatile skill set in various web technologies,
@@ -35,13 +35,13 @@ export default function Banner() {
           <div className={styles.panel}>
             <SectionHeader
               header="Products"
-              title="Various web products I enjoy working on"
-              text="My main goal is to ensure that every product I create is polished to perfection. I firmly believe that it's the attention to detail that sets apart a professional and high-quality web experience."
+              title="Types of web products I worked on"
+              text="My goal is to ensure that every web product I'm working on is polished to perfection. I firmly believe that it's the attention to detail that sets apart a professional and high-quality web experience."
             />
-            <div className={styles.panel_items}>
-              <div className={styles.panel_item_container}>
-                <div className={styles.panel_item}>
-                  <span className={styles.panel_item_title}>
+            <div className={styles.panelItems}>
+              <div className={styles.panelItemContainer}>
+                <div className={styles.panelItem}>
+                  <span className={styles.panelItemTitle}>
                     <svg
                       height="16"
                       strokeLinejoin="round"
@@ -57,16 +57,16 @@ export default function Banner() {
                     </svg>
                     E-commerce websites
                   </span>
-                  <span className={styles.panel_item_text}>
+                  <span className={styles.panelItemText}>
                     With platforms like Shopify and WooCommerce to
                     custom solutions.
                   </span>
                 </div>
                 <div className={styles.blur}></div>
               </div>
-              <div className={styles.panel_item_container}>
-                <div className={styles.panel_item}>
-                  <span className={styles.panel_item_title}>
+              <div className={styles.panelItemContainer}>
+                <div className={styles.panelItem}>
+                  <span className={styles.panelItemTitle}>
                     <svg
                       height="16"
                       strokeLinejoin="round"
@@ -82,16 +82,16 @@ export default function Banner() {
                     </svg>
                     Data visualization
                   </span>
-                  <span className={styles.panel_item_text}>
+                  <span className={styles.panelItemText}>
                     Interactive charts, graphs, and maps that bring
                     data to life and help tell a story.
                   </span>
                 </div>
                 <div className={styles.blur}></div>
               </div>
-              <div className={styles.panel_item_container}>
-                <div className={styles.panel_item}>
-                  <span className={styles.panel_item_title}>
+              <div className={styles.panelItemContainer}>
+                <div className={styles.panelItem}>
+                  <span className={styles.panelItemTitle}>
                     <svg
                       height="16"
                       strokeLinejoin="round"
@@ -107,16 +107,16 @@ export default function Banner() {
                     </svg>
                     Content-management systems
                   </span>
-                  <span className={styles.panel_item_text}>
+                  <span className={styles.panelItemText}>
                     From headless CMS like Sanity or Strapi, to
                     various other API powered services.
                   </span>
                 </div>
                 <div className={styles.blur}></div>
               </div>
-              <div className={styles.panel_item_container}>
-                <div className={styles.panel_item}>
-                  <span className={styles.panel_item_title}>
+              <div className={styles.panelItemContainer}>
+                <div className={styles.panelItem}>
+                  <span className={styles.panelItemTitle}>
                     <svg
                       height="16"
                       strokeLinejoin="round"
@@ -132,16 +132,16 @@ export default function Banner() {
                     </svg>
                     Marketing websites
                   </span>
-                  <span className={styles.panel_item_text}>
+                  <span className={styles.panelItemText}>
                     From small portfolio websites to large corporate
                     multi-page websites.
                   </span>
                 </div>
                 <div className={styles.blur}></div>
               </div>
-              <div className={styles.panel_item_container}>
-                <div className={styles.panel_item}>
-                  <span className={styles.panel_item_title}>
+              <div className={styles.panelItemContainer}>
+                <div className={styles.panelItem}>
+                  <span className={styles.panelItemTitle}>
                     <svg
                       height="16"
                       strokeLinejoin="round"
@@ -157,16 +157,16 @@ export default function Banner() {
                     </svg>
                     Data-intense applications
                   </span>
-                  <span className={styles.panel_item_text}>
+                  <span className={styles.panelItemText}>
                     Using various web tools, I created data-intensive
                     applications of all sizes.
                   </span>
                 </div>
                 <div className={styles.blur}></div>
               </div>
-              <div className={styles.panel_item_container}>
-                <div className={styles.panel_item}>
-                  <span className={styles.panel_item_title}>
+              <div className={styles.panelItemContainer}>
+                <div className={styles.panelItem}>
+                  <span className={styles.panelItemTitle}>
                     <svg
                       height="16"
                       strokeLinejoin="round"
@@ -182,7 +182,7 @@ export default function Banner() {
                     </svg>
                     Intuitive user interfaces
                   </span>
-                  <span className={styles.panel_item_text}>
+                  <span className={styles.panelItemText}>
                     Intuitive user interfaces that provide a seamless
                     experience for the end user.
                   </span>

@@ -65,53 +65,55 @@ const TestChart: React.FC<TestChartProps> = ({
     (displayedNumber / 100) * circumference * circleValue;
 
   return (
-    <div className={styles.chart_container}>
-      <svg height="150" width="150" ref={circleRef}>
-        <circle
-          stroke="#18271E"
-          fill="#18271E"
-          strokeWidth={strokeWidth}
-          r={normalizedRadius}
-          cx="75"
-          cy="75"
-        />
-        <circle
-          stroke="#aaf555"
-          fill="transparent"
-          strokeWidth={strokeWidth}
-          strokeDasharray={circumference + ' ' + circumference}
-          style={{
-            strokeDashoffset,
-            transition: `stroke-dashoffset ${
-              1 * (maxValue - displayedNumber)
-            }ms linear`,
-          }}
-          strokeLinecap="round"
-          r={normalizedRadius}
-          cx="75"
-          cy="75"
-        />
-        <text
-          x="50%"
-          y="50%"
-          textAnchor="middle"
-          fill="#aaf555"
-          dy=".3em"
-          fontSize="30"
-          fontFamily="monospace"
-          fontWeight={700}
+    <>
+      <div className={styles.chartContainer}>
+        <svg height="150" width="150" ref={circleRef}>
+          <circle
+            stroke="#18271E"
+            fill="#18271E"
+            strokeWidth={strokeWidth}
+            r={normalizedRadius}
+            cx="75"
+            cy="75"
+          />
+          <circle
+            stroke="#aaf555"
+            fill="transparent"
+            strokeWidth={strokeWidth}
+            strokeDasharray={circumference + ' ' + circumference}
+            style={{
+              strokeDashoffset,
+              transition: `stroke-dashoffset ${
+                1 * (maxValue - displayedNumber)
+              }ms linear`,
+            }}
+            strokeLinecap="round"
+            r={normalizedRadius}
+            cx="75"
+            cy="75"
+          />
+          <text
+            x="50%"
+            y="50%"
+            textAnchor="middle"
+            fill="#aaf555"
+            dy=".3em"
+            fontSize="30"
+            fontFamily="monospace"
+            fontWeight={700}
+          >
+            {displayedNumber}
+          </text>
+        </svg>
+        <span
+          className={`${styles.text} ${
+            displayedNumber === maxValue ? styles.textPopup : ''
+          }`}
         >
-          {displayedNumber}
-        </text>
-      </svg>
-      <span
-        className={`${styles.text} ${
-          displayedNumber === maxValue ? styles.textPopup : ''
-        }`}
-      >
-        {testChartText}
-      </span>
-    </div>
+          {testChartText}
+        </span>
+      </div>
+    </>
   );
 };
 

@@ -34,20 +34,20 @@ export default function Header() {
       } `}
     >
       <Container>
-        <div className={styles.header_inside}>
+        <div className={styles.headerInside}>
           <div className={styles.homelink}>Nenad Marinković</div>
           <nav>
-            <ul className={styles.header_ul}>
-              <li className={styles.header_li}>
+            <ul className={styles.headerUnorderedList}>
+              <li className={styles.headerList}>
                 <Link href="/">Projects</Link>
               </li>
-              <li className={styles.header_li}>
+              <li className={styles.headerList}>
                 <Link href="/">Directory</Link>
               </li>
-              <li className={styles.header_li}>
+              <li className={styles.headerList}>
                 <Link href="/">About</Link>
               </li>
-              <li className={styles.header_li}>
+              <li className={styles.headerList}>
                 <Link href="/">Contact</Link>
               </li>
             </ul>

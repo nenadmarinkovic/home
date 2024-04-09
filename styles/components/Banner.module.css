@@ -2,7 +2,7 @@
   color: var(--color-white);
   width: 100%;
 
-  & .banner_container {
+  & .bannerContainer {
     background: linear-gradient(
       to bottom,
       #044e72 -50%,
@@ -10,18 +10,18 @@
     );
   }
 
-  & .banner_inside {
+  & .bannerInside {
     padding: 160px 0 80px 0;
   }
 
-  & .banner_text {
+  & .bannerText {
     font-size: 80px;
     font-weight: 600;
     line-height: 1;
     letter-spacing: 0.35px;
   }
 
-  & .banner_paragraph {
+  & .bannerParagraph {
     font-size: 21px;
     line-height: 1.75;
     padding-top: 30px;
@@ -36,7 +36,7 @@
 
 @media screen and (max-width: 1024px) {
   .banner {
-    & .banner_text {
+    & .bannerText {
       font-size: 70px;
     }
   }
@@ -44,16 +44,16 @@
 
 @media screen and (max-width: 768px) {
   .banner {
-    & .banner_inside {
+    & .bannerInside {
       padding: 100px 0 55px 0;
     }
 
-    & .banner_text {
+    & .bannerText {
       font-size: 40px;
       line-height: 1.2;
     }
 
-    & .banner_paragraph {
+    & .bannerParagraph {
       font-size: 18px;
       line-height: 150%;
       padding-top: 20px;
@@ -118,7 +118,7 @@
   transform: scale(1.05);
 }
 
-.header_text {
+.headerText {
   background: var(--color-green);
   text-align: center;
   font-size: 13px;
@@ -136,7 +136,7 @@
   flex-direction: column;
   padding-bottom: 80px;
 
-  & .panel_items {
+  & .panelItems {
     display: flex;
     flex-wrap: wrap;
     padding-top: 40px;
@@ -144,12 +144,12 @@
     justify-content: space-between;
   }
 
-  & .panel_item_container {
+  & .panelItemContainer {
     position: relative;
     flex-basis: calc(33.333% - 30px);
   }
 
-  & .panel_item {
+  & .panelItem {
     border: 1px solid #2e2e2e;
     background-color: var(--color-muted);
     padding: 15px;
@@ -159,7 +159,7 @@
     min-height: 120px;
   }
 
-  & .panel_item_title {
+  & .panelItemTitle {
     display: flex;
     font-weight: 600;
     gap: 10px;
@@ -168,12 +168,12 @@
     align-items: center;
   }
 
-  & .panel_item_icon {
+  & .panelItemIcon {
     height: 23px;
     width: 20px;
   }
 
-  & .panel_item_text {
+  & .panelItemText {
     color: var(--color-green-light);
     margin-top: 5px;
     display: block;
@@ -184,11 +184,11 @@
 
 @media screen and (max-width: 768px) {
   .panel {
-    & .panel_items {
+    & .panelItems {
       justify-content: space-evenly;
     }
 
-    & .panel_item_container {
+    & .panelItemContainer {
       flex-basis: calc(47% - 25px);
     }
   }
@@ -196,11 +196,11 @@
 
 @media screen and (max-width: 560px) {
   .panel {
-    & .panel_items {
+    & .panelItems {
       gap: 20px;
     }
 
-    & .panel_item_container {
+    & .panelItemContainer {
       flex-basis: calc(100% - 25px);
     }
   }

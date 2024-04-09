@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { DevelopChartProps } from '../types/types';
+import styles from '../styles/components/Box.module.css';
 
 export const DevelopChart: React.FC<DevelopChartProps> = ({
   data,
@@ -52,44 +53,54 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
   groupedData.push({ language: 'Rest', percentage: restPercentage });
 
   return (
-    <svg width="525" height={groupedData.length * 34} ref={chartRef}>
-      {groupedData.map(({ language, percentage }, i) => (
-        <g key={i} transform={`translate(100, ${i * 35})`}>
-          <rect
-            width={inView ? (percentage / maxPercentage) * 325 : 0}
-            height="20"
-            fill={`#36c6ff`}
-            style={{
-              opacity: 1 - i / groupedData.length / 2,
-              transition: 'width 1s',
-            }}
-          />
-          <text
-            x={-100}
-            y="10"
-            fill="#9fbbbb"
-            dominantBaseline="middle"
-          >
-            {language}
-          </text>
-          <text
-            x={inView ? (percentage / maxPercentage) * 325 : 0}
-            y="10"
-            fill="#9fbbbb"
-            dominantBaseline="middle"
-            fontSize={14}
-            textAnchor="start"
-            dx="5"
-            style={{
-              opacity: inView ? 1 : 0,
-              transition: 'opacity 1s ease-in-out 1s',
-              visibility: inView ? 'visible' : 'hidden',
-            }}
-          >
-            {percentage.toFixed(2)}%
-          </text>
-        </g>
-      ))}
-    </svg>
+    <div className={styles.developSVG}>
+      <svg
+        width="525"
+        height={groupedData.length * 34}
+        ref={chartRef}
+      >
+        {groupedData.map(({ language, percentage }, i) => (
+          <g key={i} transform={`translate(100, ${i * 35})`}>
+            <rect
+              width={inView ? (percentage / maxPercentage) * 325 : 0}
+              height="20"
+              fill={`#36c6ff`}
+              style={{
+                opacity: 1 - i / groupedData.length / 2,
+                transition: 'width 1s',
+              }}
+            />
+            <text
+              x={-100}
+              y="10"
+              fill="#9fbbbb"
+              dominantBaseline="middle"
+            >
+              {language}
+            </text>
+            <text
+              x={inView ? (percentage / maxPercentage) * 325 : 0}
+              y="10"
+              fill="#9fbbbb"
+              dominantBaseline="middle"
+              fontSize={14}
+              textAnchor="start"
+              dx="5"
+              style={{
+                opacity: inView ? 1 : 0,
+                transition: 'opacity 1s ease-in-out 1s',
+                visibility: inView ? 'visible' : 'hidden',
+              }}
+            >
+              {percentage.toFixed(2)}%
+            </text>
+          </g>
+        ))}
+      </svg>
+      <span className={styles.boxInfo}>
+        Data is being fetched from a personal GitHub profile, based on
+        all programming languages used in repositories.
+      </span>
+    </div>
   );
 };

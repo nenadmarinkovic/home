@@ -39,52 +39,69 @@
     color: var(--color-pink) !important;
   }
 
-  .box_charts {
+  .boxCharts {
     display: flex;
     margin-left: 135px;
     gap: 40px;
   }
 
-  .box_chart_items {
+  .boxChartItems {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  & .box_item_header_text {
+  & .boxInfo {
+    display: block;
+    margin-top: 25px;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--color-dimmed);
+    line-height: 1.5;
+    width: 80%;
+  }
+
+  & .boxInfoTest {
+    margin: 20px auto;
+    margin-left: auto;
+    width: 70%;
+    margin-left: 160px;
+  }
+
+  & .boxItemHeaderText {
     font-size: 16px;
     margin-top: 10px;
     color: var(--color-white);
     line-height: 1.75;
   }
 
-  & .box_item_main_title {
+  & .boxItemMainTitle {
     font-size: 21px;
     font-weight: 600;
     margin-top: 40px;
-    line-height: 1.25;
+    line-height: 1.5;
     color: var(--color-blue);
   }
 
-  & .box_item_main_items {
+  & .boxItemMainItems {
     display: flex;
     flex-direction: column;
     margin-top: 30px;
     gap: 20px;
   }
 
-  & .box_item_main_icon {
+  & .boxItemMainIcon {
     width: 28px;
     height: 28px;
   }
 
-  & .box_item_main_item {
+  & .boxItemMainItem {
     display: flex;
     align-items: center;
     gap: 20px;
   }
 
-  & .box_item_main_item_text {
+  & .boxItemMainItemText {
     display: flex;
     align-items: center;
     line-height: 1.75;
@@ -93,15 +110,16 @@
     gap: 20px;
   }
 
-  & .box_detail {
+  & .boxDetail {
     display: flex;
+    flex-direction: column;
     position: relative;
     z-index: 1;
   }
 
-  & .box_dots {
+  & .boxDots {
     position: absolute;
-    height: 370px;
+    height: 450px;
     width: 100%;
     display: grid;
     background-image: radial-gradient(#424242 1px, transparent 0);
@@ -111,7 +129,7 @@
     z-index: -1;
   }
 
-  & .box_number {
+  & .boxNumber {
     position: absolute;
     font-size: 200px;
     color: black;
@@ -123,7 +141,7 @@
     z-index: -2;
   }
 
-  & .box_left {
+  & .boxLeft {
     left: -50px;
     text-shadow: -1px -1px 0 #35ae3f, 1px -1px 0 #35ae3f,
       -1px 1px 0 #35ae3f, 1px 1px 0 #35ae3f;
@@ -140,14 +158,14 @@
     z-index: 2;
   }
 
-  .blur_green {
+  .blurGreen {
     background-image: linear-gradient(
       to top right,
       var(--tw-gradient-stops-green)
     );
   }
 
-  .blur_pink {
+  .blurPink {
     background-image: linear-gradient(
       to top right,
       var(--tw-gradient-stops-pink)
@@ -155,6 +173,6 @@
   }
 }
 
-.box_second {
+.boxSecond {
   margin-top: 40px;
 }

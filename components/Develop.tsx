@@ -65,19 +65,19 @@ export default async function Develop() {
         <div className={styles.box_item}>
           <div className={styles.box_item_inside}>
             <h3 className={styles.box_item_header_title}>Develop</h3>
-            <p className={styles.box_item_header_text}>
-              Development usualy starts when design is approved. I
-              work to ensure the design is implemented without a
-              single error and with the best performance possible.
+            <p className={styles.boxItemHeaderText}>
+              Using modern tools, I work to ensure the design is
+              implemented without a single error and with the best
+              performance possible.
             </p>
-            <p className={styles.box_item_main_title}>
+            <p className={styles.boxItemMainTitle}>
               Best practices, top performance, and
               cross-browser-compatibility
             </p>
-            <div className={styles.box_item_main_items}>
-              <div className={styles.box_item_main_item}>
+            <div className={styles.boxItemMainItems}>
+              <div className={styles.boxItemMainItem}>
                 <svg
-                  className={styles.box_item_main_icon}
+                  className={styles.boxItemMainIcon}
                   height="16"
                   strokeLinejoin="round"
                   viewBox="0 0 16 16"
@@ -90,16 +90,16 @@ export default async function Develop() {
                     fill="currentColor"
                   ></path>
                 </svg>
-                <span className={styles.box_item_main_item_text}>
+                <span className={styles.boxItemMainItemText}>
                   It is {currentYear} and websites need to be fast,
-                  reliable and secure by default.
+                  reliable and secure without compromise.
                 </span>
               </div>
-              <div className={styles.box_item_main_item}>
+              <div className={styles.boxItemMainItem}>
                 <svg
                   height="16"
                   strokeLinejoin="round"
-                  className={styles.box_item_main_icon}
+                  className={styles.boxItemMainIcon}
                   viewBox="0 0 16 16"
                   width="16"
                 >
@@ -110,14 +110,14 @@ export default async function Develop() {
                     fill="currentColor"
                   ></path>
                 </svg>
-                <span className={styles.box_item_main_item_text}>
+                <span className={styles.boxItemMainItemText}>
                   Websites should be built with lag free interaction
                   as a top priority.
                 </span>
               </div>
-              <div className={styles.box_item_main_item}>
+              <div className={styles.boxItemMainItem}>
                 <svg
-                  className={styles.box_item_main_icon}
+                  className={styles.boxItemMainIcon}
                   height="16"
                   strokeLinejoin="round"
                   viewBox="0 0 16 16"
@@ -130,16 +130,16 @@ export default async function Develop() {
                     fill="currentColor"
                   ></path>
                 </svg>
-                <span className={styles.box_item_main_item_text}>
-                  Website or application should be fully responsive,
-                  functional and user-friendly.
+                <span className={styles.boxItemMainItemText}>
+                  Website should be responsive, fully functional and
+                  user-friendly.
                 </span>
               </div>
             </div>
           </div>
           <div className={styles.blur}></div>
         </div>
-        <div className={styles.box_detail}>
+        <div className={styles.boxDetail}>
           <DevelopChart
             data={sortedLanguagePercentages.map(
               ([language, percentage]) => ({ language, percentage })
@@ -147,7 +147,7 @@ export default async function Develop() {
             maxPercentage={maxPercentage}
           />
         </div>
-        <div className={styles.box_dots}></div>
+        <div className={styles.boxDots}></div>
       </div>
     </Container>
   );

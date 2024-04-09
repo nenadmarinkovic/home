@@ -7,13 +7,13 @@
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
   z-index: 5;
 
-  & .header_inside {
+  & .headerInside {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  & .header_ul {
+  & .headerUnorderedList {
     display: flex;
     align-items: center;
     gap: 55px;
@@ -24,13 +24,13 @@
     font-weight: 600;
   }
 
-  & .header_li {
+  & .headerList {
     font-size: 14px;
     font-weight: 500;
     color: var(--color-green-light);
   }
 
-  & .header_li:hover {
+  & .headerList:hover {
     color: var(--color-white);
   }
 }
@@ -50,7 +50,7 @@
 
 @media screen and (max-width: 560px) {
   .header {
-    & .header_ul {
+    & .headerUnorderedList {
       display: none;
     }
   }

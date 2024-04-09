@@ -5,6 +5,7 @@ import styles from './page.module.css';
 import Test from '@/components/Test';
 import Deploy from '@/components/Deploy';
 import Footer from '@/components/Footer';
+import Projects from '@/components/Projects';
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
         <Develop />
         <Test />
         <Deploy />
+        <Projects />
         <Footer />
       </main>
     </>

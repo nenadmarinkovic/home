@@ -52,20 +52,25 @@ function DeployChart() {
     }
   }, [isInView, isCurrent]);
 
+  const steps = [
+    'Double-check all code for errors to prevent any potential issues before launch.',
+    'Conduct thorough testing to ensure all features function seamlessly.',
+    'Test the website under various conditions to guarantee the best performance.',
+    `Once confident in your website's readiness, deploy it and share your vision with the world.`,
+  ];
+
   return (
-    <div className={`${styles.deploy_container}`} ref={chartRef}>
-      <div className={styles.deploy_chart}>
+    <div className={`${styles.deployContainer}`} ref={chartRef}>
+      <div className={styles.deployChart}>
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className={`${styles.deploy_chart_item}`}
+            className={`${styles.deployChartItem}`}
             ref={(el) => (itemRefs.current[i] = el)}
           >
-            <div className={styles.deploy_chart_item_icon}>
+            <div className={styles.deployChartItemIcon}>
               <Image
-                className={`${
-                  styles.deploy_chart_item_icon_spinner
-                } ${
+                className={`${styles.deployChartItemIconSpinner} ${
                   isInView && isCurrent === i ? styles.animate : ''
                 }`}
                 src="/icons/loading.svg"
@@ -74,7 +79,7 @@ function DeployChart() {
                 height={30}
               />
               <Image
-                className={`${styles.deploy_chart_item_icon_check} ${
+                className={`${styles.deployChartItemIconCheck} ${
                   isInView && isCurrent > i ? styles.animate : ''
                 }`}
                 src="/icons/check.svg"
@@ -84,18 +89,17 @@ function DeployChart() {
               />
             </div>
             <div
-              className={`${styles.deploy_chart_item_text} ${
+              className={`${styles.deployChartItemText} ${
                 isInView && isCurrent > i ? styles.textPopup : ''
               }`}
             >
-              {i + 1}. Deploy your application to the cloud. Lorem
-              ipsum dolor sit amet.
+              {i + 1}. {steps[i]}
             </div>
           </div>
         ))}
         {isInView && isCurrent < 4 && (
           <div
-            className={styles.deploy_chart_item_border}
+            className={styles.deployChartItemBorder}
             style={{
               transform: `translateY(${
                 itemRefs.current[isCurrent]?.offsetTop || 0

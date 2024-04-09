@@ -15,9 +15,9 @@ const Section: React.FC<SectionHeaderProps> = ({
 }) => {
   return (
     <div className={styles.section}>
-      <span className={styles.section_header}>{header}</span>
-      <h2 className={styles.section_title}>{title}</h2>
-      <p className={styles.section_text}>{text}</p>
+      <span className={styles.sectionHeader}>{header}</span>
+      <h2 className={styles.sectionTitle}>{title}</h2>
+      <p className={styles.sectionText}>{text}</p>
     </div>
   );
 };
