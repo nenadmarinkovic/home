@@ -18,21 +18,26 @@ function Projects() {
   const projects = [
     {
       name: 'Tab Directory',
-      tags: ['Task management', 'Planner', 'SaaS'],
+      tags: [
+        'Task management',
+        'File management',
+        'Event organizer',
+        'SaaS',
+      ],
       link: 'https://tab.directory',
       description:
         'Dash Directory is a platform for task and event management, as well as bookmark organization. With its intuitive UI, it simplifies self-management and enhances productivity. Dash Directory empowers users to stay organized and focused on their goals. In development mode.',
     },
     {
       name: 'Snippetbase',
-      tags: ['Code snippet', "Developer's tool"],
+      tags: ['Code snippet', "Developer's tool", 'Codebase'],
       link: 'https://snippetbase.net',
       description:
         'Snippetbase is a platform for code snippets. Discover, share, and leverage ready-to-use code across multiple programming languages and frameworks. Boost your productivity with centralized repository of efficient solutions.',
     },
     {
       name: 'Reactify',
-      tags: ['React', 'Design', 'Resources'],
+      tags: ['React ecosystem', 'Resources'],
       link: 'https://reactify.org',
       description:
         'Reactify is the ultimate destination for React developers and designers, providing a comprehensive suite of services. Access a wide range of design resources, leverage the power of tested headless CMSs, and foster seamless collaboration through efficient APIs.',
@@ -47,7 +52,12 @@ function Projects() {
     },
     {
       name: 'Sprachenwald',
-      tags: ['Language learning', 'German', 'SaaS'],
+      tags: [
+        'Language learning',
+        'German language',
+        'Educational platform',
+        'SaaS',
+      ],
       link: 'https://sprachenwald.com',
 
       description:
@@ -104,13 +114,13 @@ function Projects() {
                 Visit the page{' '}
                 <svg
                   height="16"
-                  stroke-linejoin="round"
+                  strokeLinejoin="round"
                   viewBox="0 0 16 16"
                   width="16"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M5.75001 2H5.00001V3.5H5.75001H11.4393L2.21968 12.7197L1.68935 13.25L2.75001 14.3107L3.28034 13.7803L12.4988 4.56182V10.25V11H13.9988V10.25V3C13.9988 2.44772 13.5511 2 12.9988 2H5.75001Z"
                     fill="currentColor"
                   ></path>
