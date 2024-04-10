@@ -18,7 +18,7 @@
 .buttons {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 }
 
 .button {
@@ -27,7 +27,7 @@
   font-size: 30px;
   font-weight: 800;
   background: none;
-  opacity: 0.3;
+  opacity: 0.5;
   color: var(--color-green-light);
   cursor: pointer;
 }

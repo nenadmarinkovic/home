@@ -98,8 +98,15 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
         ))}
       </svg>
       <span className={styles.boxInfo}>
-        Data is being fetched from a personal GitHub profile, based on
-        all programming languages used in repositories.
+        Data is coming from a personal{' '}
+        <a
+          target="_blank"
+          className="link"
+          href="https://github.com/nenadmarinkovic"
+        >
+          GitHub profile
+        </a>
+        , based on all programming languages used in repositories.
       </span>
     </div>
   );

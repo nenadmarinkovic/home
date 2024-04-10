@@ -36,8 +36,15 @@ function Test() {
             </div>
           </div>
           <span className={`${styles.boxInfo} ${styles.boxInfoTest}`}>
-            Data estimation based on average results of Lighthouse
-            tests on this website.
+            Data estimation based on average results of{' '}
+            <a
+              target="_blank"
+              className="link"
+              href="https://pagespeed.web.dev/analysis/https-nenadmarinkovic-com/6p5ow0t0zq?form_factor=mobile"
+            >
+              Lighthouse tests
+            </a>{' '}
+            on this website.
           </span>
         </div>
         <div className={styles.boxItem}>

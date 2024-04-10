@@ -19,11 +19,17 @@ export default function Banner() {
             </h1>
             <p className={styles.bannerParagraph}>
               Hi. I&apos;m Nenad, a frontend developer at{' '}
-              <span className="link">nexxar</span> in Vienna, Austria.
-              With a versatile skill set in various web technologies,
-              I work on developing the best digital reports for
-              clients across the globe. I build personal software,
-              too.
+              <a
+                target="_blank"
+                className="link"
+                href="https://nexxar.com"
+              >
+                nexxar
+              </a>{' '}
+              in Vienna, Austria. With a versatile skill set in
+              various web technologies, I work on developing the best
+              digital reports for clients across the globe. I build
+              personal software, too.
             </p>
             <div className={styles.info}>
               <button className={stylesButton.button}>Contact</button>
