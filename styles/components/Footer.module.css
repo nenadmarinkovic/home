@@ -1,7 +1,7 @@
 .footerContainer {
   position: relative;
   background-color: var(--color-muted);
-  height: 200px;
+  height: 150px;
   color: var(--color-white);
 }
 
@@ -10,7 +10,7 @@
   top: -100%;
   left: 0;
   width: 150vw;
-  height: 700px;
+  height: 550px;
   background: var(--color-muted);
   clip-path: ellipse(50% 100% at 50% 0%);
   transform: rotate(180deg);
@@ -18,12 +18,12 @@
 
 .text {
   position: relative;
-  top: -700px;
   font-size: 14px;
   text-align: center;
   width: 100%;
   display: block;
   color: var(--color-green-light);
+  bottom: 20px;
 }
 
 .footerItem {
@@ -44,5 +44,5 @@
   display: flex;
   color: var(--color-green-light);
   justify-content: space-between;
-  top: -800px;
+  bottom: 120px;
 }

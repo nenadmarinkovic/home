@@ -5,8 +5,10 @@ import Container from '@/containers/Container';
 function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <div className={styles.footerContainer}>
-      <div className={styles.footerBackground}></div>
+    <>
+      <div className={styles.footerContainer}>
+        <div className={styles.footerBackground}></div>
+      </div>
       <Container>
         <div className={styles.footerFlex}>
           <div className={styles.footerItem}>
@@ -20,11 +22,11 @@ function Footer() {
               <svg
                 data-testid="geist-icon"
                 height="16"
-                stroke-linejoin="round"
+                strokeLinejoin="round"
                 viewBox="0 0 16 16"
                 width="16"
               >
-                <g clip-path="url(#clip0_872_3147)">
+                <g clipPath="url(#clip0_872_3147)">
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
@@ -41,7 +43,7 @@ function Footer() {
               <svg
                 data-testid="geist-icon"
                 height="16"
-                stroke-linejoin="round"
+                strokeLinejoin="round"
                 viewBox="0 0 16 16"
                 width="16"
               >
@@ -56,7 +58,7 @@ function Footer() {
               <svg
                 data-testid="geist-icon"
                 height="16"
-                stroke-linejoin="round"
+                strokeLinejoin="round"
                 viewBox="0 0 16 16"
                 width="16"
               >
@@ -80,7 +82,7 @@ function Footer() {
           {currentYear} © Nenad Marinković
         </span>
       </Container>
-    </div>
+    </>
   );
 }
 
