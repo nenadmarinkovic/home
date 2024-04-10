@@ -1,11 +1,27 @@
 .footerContainer {
-  min-height: 100vh;
   position: relative;
+  background-color: var(--color-muted);
+  height: 200px;
   color: var(--color-white);
+}
+
+.footerBackground {
+  position: relative;
+  top: -100%;
+  left: 0;
   width: 150vw;
-  border-top-left-radius: 50%;
-  border-top-right-radius: 50%;
-  background: black;
-  top: -250px;
-  aspect-ratio: 3;
+  height: 700px;
+  background: var(--color-muted);
+  clip-path: ellipse(50% 100% at 50% 0%);
+  transform: rotate(180deg);
+}
+
+.text {
+  position: relative;
+  top: -550px;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+  display: block;
+  color: var(--color-green-light);
 }

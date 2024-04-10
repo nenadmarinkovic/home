@@ -6,11 +6,11 @@ import styles from '../styles/components/Box.module.css';
 function Deploy() {
   return (
     <Container>
-      <div className={styles.box_container}>
-        <div className={styles.box_item}>
-          <div className={styles.box_item_inside}>
+      <div className={styles.boxContainer}>
+        <div className={styles.boxItem}>
+          <div className={styles.boxItemInside}>
             <h3
-              className={`${styles.box_item_header_title} ${styles.pink}`}
+              className={`${styles.boxItem_header_title} ${styles.pink}`}
             >
               Deploy
             </h3>

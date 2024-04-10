@@ -1,4 +1,4 @@
-.box_container {
+.boxContainer {
   position: relative;
   padding: 40px 0 80px 0;
   display: flex;
@@ -9,14 +9,14 @@
   color: var(--color-white);
   z-index: 1;
 
-  & .box_item {
+  & .boxItem {
     position: relative;
     z-index: 2;
     width: 100%;
     max-width: 450px;
   }
 
-  & .box_item_inside {
+  & .boxItemInside {
     position: relative;
     border: 1px solid #2e2e2e;
     z-index: 3;
@@ -25,7 +25,7 @@
     padding: 35px;
   }
 
-  & .box_item_header_title {
+  & .boxItem_header_title {
     font-size: 30px;
     color: #36c6ff;
     font-weight: 800;

@@ -7,7 +7,7 @@ import styles from '../styles/components/Box.module.css';
 function Test() {
   return (
     <Container>
-      <div className={`${styles.box_container} ${styles.boxSecond}`}>
+      <div className={`${styles.boxContainer} ${styles.boxSecond}`}>
         <div className={styles.boxDetail}>
           <div className={styles.boxCharts}>
             <div className={styles.boxChartItems}>
@@ -40,10 +40,10 @@ function Test() {
             tests on this website.
           </span>
         </div>
-        <div className={styles.box_item}>
-          <div className={styles.box_item_inside}>
+        <div className={styles.boxItem}>
+          <div className={styles.boxItemInside}>
             <h3
-              className={`${styles.box_item_header_title} ${styles.green}`}
+              className={`${styles.boxItem_header_title} ${styles.green}`}
             >
               Test
             </h3>

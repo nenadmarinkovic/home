@@ -1,5 +1,3 @@
-// GitHub API types
-
 export interface Language {
   language: string;
   count: number;

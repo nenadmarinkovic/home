@@ -61,10 +61,10 @@ export default async function Develop() {
         title="The journey from development to delivery"
         text="From initial phases to finilizing the product and delivering it to the client, I follow a strict process to ensure the best quality and performance."
       />
-      <div className={styles.box_container}>
-        <div className={styles.box_item}>
-          <div className={styles.box_item_inside}>
-            <h3 className={styles.box_item_header_title}>Develop</h3>
+      <div className={styles.boxContainer}>
+        <div className={styles.boxItem}>
+          <div className={styles.boxItemInside}>
+            <h3 className={styles.boxItem_header_title}>Develop</h3>
             <p className={styles.boxItemHeaderText}>
               Using modern tools, I work to ensure the design is
               implemented without a single error and with the best

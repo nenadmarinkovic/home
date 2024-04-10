@@ -1,6 +1,7 @@
 import styles from '../styles/components/Banner.module.css';
+import stylesButton from '../styles/components/Button.module.css';
 import Container from '@/containers/Container';
-import SectionHeader from './Section'; // Import SectionHeader
+import SectionHeader from './Section';
 
 export default function Banner() {
   return (
@@ -21,10 +22,11 @@ export default function Banner() {
               <span className="link">nexxar</span> in Vienna, Austria.
               With a versatile skill set in various web technologies,
               I work on developing the best digital reports for
-              clients across the globe.
+              clients across the globe. I build personal software,
+              too.
             </p>
             <div className={styles.info}>
-              <button className={styles.button}>Contact</button>
+              <button className={stylesButton.button}>Contact</button>
               <span className={styles.more}>More about me</span>
             </div>
           </div>
@@ -84,7 +86,7 @@ export default function Banner() {
                   </span>
                   <span className={styles.panelItemText}>
                     Interactive charts, graphs, and maps that bring
-                    data to life and help tell a story.
+                    data to life and tell a story.
                   </span>
                 </div>
                 <div className={styles.blur}></div>
@@ -158,8 +160,8 @@ export default function Banner() {
                     Data-intense applications
                   </span>
                   <span className={styles.panelItemText}>
-                    Using various web tools, I created data-intensive
-                    applications of all sizes.
+                    Data-intensive applications of all sizes and
+                    complexities using React and Vue.js.
                   </span>
                 </div>
                 <div className={styles.blur}></div>
@@ -180,7 +182,7 @@ export default function Banner() {
                         fill="currentColor"
                       ></path>
                     </svg>
-                    Intuitive user interfaces
+                    User interfaces
                   </span>
                   <span className={styles.panelItemText}>
                     Intuitive user interfaces that provide a seamless

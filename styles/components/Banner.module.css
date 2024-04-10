@@ -16,7 +16,7 @@
 
   & .bannerText {
     font-size: 80px;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1;
     letter-spacing: 0.35px;
   }
@@ -26,7 +26,7 @@
     line-height: 1.75;
     padding-top: 30px;
     color: var(--color-green-light);
-    width: 60%;
+    width: 65%;
   }
 
   & .highlighted_text {
@@ -69,20 +69,6 @@
   margin-top: 28px;
 }
 
-.button {
-  position: relative;
-  border: 1px solid var(--color-white);
-  padding: 10px 25px;
-  background-color: var(--color-white);
-  color: var(--color-black);
-  border-radius: 20px;
-  transition: 0.25s;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  z-index: 3;
-}
-
 .blur {
   position: absolute;
   inset: -2.5px;
@@ -112,10 +98,6 @@
 
 .more:hover::after {
   transform: translateX(20px);
-}
-
-.button:hover {
-  transform: scale(1.05);
 }
 
 .headerText {
@@ -161,7 +143,7 @@
 
   & .panelItemTitle {
     display: flex;
-    font-weight: 600;
+    font-weight: 700;
     gap: 10px;
     font-size: 16px;
     font-weight: 600;
