@@ -42,12 +42,6 @@ export default function Header() {
                 <Link href="/">Directory</Link>
               </li>
               <li className={styles.headerList}>
-                <Link href="/">Now</Link>
-              </li>
-              <li className={styles.headerList}>
-                <Link href="/">Uses</Link>
-              </li>
-              <li className={styles.headerList}>
                 <Link href="/">About</Link>
               </li>
               <li className={styles.headerList}>

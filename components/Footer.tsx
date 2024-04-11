@@ -75,8 +75,7 @@ function Footer() {
           </div>
           <div className={styles.footerItemLinks}>
             <span className={styles.footerText}>Directory</span>
-            <span className={styles.footerText}>Now</span>
-            <span className={styles.footerText}>Uses</span>
+            <span className={styles.footerText}>About</span>
             <span className={styles.footerText}>Contact</span>
           </div>
         </div>
