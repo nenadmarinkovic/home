@@ -18,19 +18,38 @@
 
 .text {
   position: relative;
-  font-size: 14px;
+  font-size: 15px;
   text-align: center;
   width: 100%;
   display: block;
   color: var(--color-green-light);
-  bottom: 20px;
+  bottom: 30px;
 }
 
-.footerItem {
+.footerTextMain {
+  color: var(--color-white);
+  font-weight: 700;
+  display: inline;
+}
+
+.footerItemText {
   max-width: 40%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+}
+
+.footerIcons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.socialIcon {
+  color: var(--color-white);
+  height: 17px;
+  width: 17px;
+  cursor: pointer;
 }
 
 .footerText {
@@ -39,10 +58,16 @@
   line-height: 1.5;
 }
 
+.footerItemLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .footerFlex {
   position: relative;
   display: flex;
   color: var(--color-green-light);
   justify-content: space-between;
-  bottom: 120px;
+  bottom: 150px;
 }

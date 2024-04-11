@@ -11,16 +11,18 @@ function Footer() {
       </div>
       <Container>
         <div className={styles.footerFlex}>
-          <div className={styles.footerItem}>
-            <span className={styles.footerText}>
-              This website is open source and you can find the code in
-              my GitHub repository. It belongs to a club of 250kb or
-              less websites. It has a ranking of A+ on Carbon
-              Calculator.
+          <div className={styles.footerItemText}>
+            <span className={styles.footerTextMain}>
+              This website is open source.
             </span>
             <span className={styles.footerText}>
+              You can find the code in my GitHub repository. It
+              belongs to a club of 250kb or less websites. It has a
+              ranking of A+ on Carbon Calculator.
+            </span>
+            <span className={styles.footerIcons}>
               <svg
-                data-testid="geist-icon"
+                className={styles.socialIcon}
                 height="16"
                 strokeLinejoin="round"
                 viewBox="0 0 16 16"
@@ -41,7 +43,7 @@ function Footer() {
                 </defs>
               </svg>
               <svg
-                data-testid="geist-icon"
+                className={styles.socialIcon}
                 height="16"
                 strokeLinejoin="round"
                 viewBox="0 0 16 16"
@@ -56,7 +58,7 @@ function Footer() {
                 ></path>
               </svg>
               <svg
-                data-testid="geist-icon"
+                className={styles.socialIcon}
                 height="16"
                 strokeLinejoin="round"
                 viewBox="0 0 16 16"
@@ -71,7 +73,7 @@ function Footer() {
               </svg>
             </span>
           </div>
-          <div className={styles.footerItem}>
+          <div className={styles.footerItemLinks}>
             <span className={styles.footerText}>Directory</span>
             <span className={styles.footerText}>Now</span>
             <span className={styles.footerText}>Uses</span>

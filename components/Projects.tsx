@@ -113,6 +113,7 @@ function Projects() {
               >
                 Visit the page{' '}
                 <svg
+                  className={styles.pageIcon}
                   height="16"
                   strokeLinejoin="round"
                   viewBox="0 0 16 16"
