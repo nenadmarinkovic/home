@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SectionHeader from './Section';
 
 import styles from '../styles/components/Contact.module.css';
