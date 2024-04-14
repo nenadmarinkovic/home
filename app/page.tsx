@@ -19,8 +19,8 @@ export default function Home() {
         <Deploy />
         <Projects />
         <Contact />
-        <Footer />
       </main>
+      <Footer />
     </>
   );
 }

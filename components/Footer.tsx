@@ -6,10 +6,7 @@ import Link from 'next/link';
 function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <>
-      <div className={styles.footerContainer}>
-        <div className={styles.footerBackground}></div>
-      </div>
+    <footer className={styles.footer}>
       <Container>
         <div className={styles.footerFlex}>
           <div className={styles.footerItemText}>
@@ -113,11 +110,11 @@ function Footer() {
             </li>
           </ul>
         </div>
-        <span className={styles.text}>
+        <span className={styles.footerBottom}>
           {currentYear} © Nenad Marinković
         </span>
       </Container>
-    </>
+    </footer>
   );
 }
 

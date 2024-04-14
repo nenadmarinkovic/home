@@ -1,29 +1,28 @@
-.footerContainer {
+.footer {
   position: relative;
-  background-color: var(--color-muted);
-  height: 150px;
-  color: var(--color-white);
+  background: var(--color-muted);
 }
 
-.footerBackground {
-  position: relative;
-  top: -100%;
+.footer::before {
+  content: '';
+  position: absolute;
+  top: -50%;
   left: 0;
-  width: 150vw;
-  height: 550px;
+  width: 100%;
+  height: 100%;
   background: var(--color-muted);
-  clip-path: ellipse(50% 100% at 50% 0%);
+  clip-path: ellipse(60% 100% at 50% 0%);
   transform: rotate(180deg);
 }
 
-.text {
+.footerBottom {
   position: relative;
   font-size: 15px;
   text-align: center;
   width: 100%;
   display: block;
   color: var(--color-green-light);
-  bottom: 30px;
+  padding: 40px 0 30px 0;
 }
 
 .footerTextMain {
@@ -69,7 +68,7 @@
   display: flex;
   color: var(--color-green-light);
   justify-content: space-between;
-  bottom: 150px;
+  padding-bottom: 40px;
 }
 
 .footerLink {
