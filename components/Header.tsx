@@ -39,13 +39,13 @@ export default function Header() {
           <nav>
             <ul className={styles.headerUnorderedList}>
               <li className={styles.headerList}>
-                <Link href="/">Directory</Link>
+                <Link href="/dir">Directory</Link>
               </li>
               <li className={styles.headerList}>
-                <Link href="/">About</Link>
+                <Link href="/about">About</Link>
               </li>
               <li className={styles.headerList}>
-                <Link href="/">Contact</Link>
+                <Link href="/contact">Contact</Link>
               </li>
             </ul>
           </nav>
