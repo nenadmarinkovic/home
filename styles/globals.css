@@ -48,12 +48,12 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  color: var(--color-white);
-}
-
 .link {
   text-decoration: underline;
+}
+
+.link:hover {
+  color: var(--color-white);
 }
 
 ul,

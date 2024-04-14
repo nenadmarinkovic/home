@@ -71,3 +71,11 @@
   justify-content: space-between;
   bottom: 150px;
 }
+
+.footerLink {
+  color: var(--color-green-light);
+}
+
+.footerLink:hover {
+  color: var(--color-white);
+}
