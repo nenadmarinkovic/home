@@ -148,6 +148,7 @@
     font-size: 16px;
     font-weight: 600;
     align-items: center;
+    line-height: 1.4;
   }
 
   & .panelItemIcon {
@@ -164,8 +165,19 @@
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .panel {
+    & .panelItemContainer {
+      flex-basis: calc(50% - 25px);
+    }
+  }
+}
+
 @media screen and (max-width: 768px) {
   .panel {
+    & .panelItem {
+      min-height: 160px;
+    }
     & .panelItems {
       justify-content: space-evenly;
     }
@@ -176,7 +188,7 @@
   }
 }
 
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 580px) {
   .panel {
     & .panelItems {
       gap: 20px;
