@@ -60,34 +60,3 @@ ul,
 li {
   list-style: none;
 }
-
-#doodle {
-  stroke-dasharray: 540;
-  animation: reveal 10s linear;
-}
-
-@keyframes reveal {
-  0% {
-    stroke-dashoffset: 540;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.fadeIn {
-  animation-name: fadeIn;
-  animation-duration: 1s;
-  animation-fill-mode: both;
-  animation-delay: 1s;
-  animation-play-state: paused;
-}

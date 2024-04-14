@@ -13,6 +13,10 @@
   opacity: 0;
 }
 
+.textPopup {
+  animation: textPopup 0.25s ease-in-out forwards;
+}
+
 @keyframes textPopup {
   0% {
     opacity: 0;
@@ -24,8 +28,4 @@
     visibility: visible;
     opacity: 1;
   }
-}
-
-.textPopup {
-  animation: textPopup 0.25s ease-in-out forwards;
 }
