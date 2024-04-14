@@ -25,6 +25,7 @@ function Footer() {
               <a
                 target="_blank"
                 href="https://github.com/nenadmarinkovic"
+                aria-label="GitHub"
               >
                 <svg
                   className={styles.socialIcon}
@@ -55,6 +56,7 @@ function Footer() {
               <a
                 target="_blank"
                 href="https://linkedin.com/in/nenad-marinkovic/"
+                aria-label="LinkedIn"
               >
                 <svg
                   className={styles.socialIcon}
@@ -72,7 +74,10 @@ function Footer() {
                   ></path>
                 </svg>
               </a>
-              <a href="mailto:nenadmarinkovic@protonmail.com">
+              <a
+                href="mailto:nenadmarinkovic@protonmail.com"
+                aria-label="Email"
+              >
                 <svg
                   className={styles.socialIcon}
                   height="16"
