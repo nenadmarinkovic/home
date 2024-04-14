@@ -1,8 +1,9 @@
+import SectionHeader from './Section';
+import Container from '@/containers/Container';
 import { fetchRepoLanguages, fetchUserRepos } from '../utils/github';
 import { RepoData, Repo } from '../types/types';
 import { DevelopChart } from './DevelopChart';
-import SectionHeader from './Section';
-import Container from '@/containers/Container';
+
 import styles from '../styles/components/Box.module.css';
 
 async function getAllReposData(): Promise<RepoData[]> {

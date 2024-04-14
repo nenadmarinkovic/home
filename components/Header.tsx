@@ -1,9 +1,9 @@
 'use client';
-
-import { useState, useEffect } from 'react';
-import styles from '../styles/components/Header.module.css';
+import React, { useState, useEffect } from 'react';
 import Container from '@/containers/Container';
 import Link from 'next/link';
+
+import styles from '../styles/components/Header.module.css';
 
 export default function Header() {
   const [isFixed, setIsFixed] = useState(false);

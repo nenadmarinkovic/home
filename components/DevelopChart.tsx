@@ -1,7 +1,7 @@
 'use client';
-
 import React, { useEffect, useRef, useState } from 'react';
 import { DevelopChartProps } from '../types/types';
+
 import styles from '../styles/components/Box.module.css';
 
 export const DevelopChart: React.FC<DevelopChartProps> = ({

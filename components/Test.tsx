@@ -1,4 +1,3 @@
-import React from 'react';
 import TestChart from './TestChart';
 import Container from '@/containers/Container';
 

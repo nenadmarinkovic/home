@@ -1,6 +1,6 @@
-import React from 'react';
 import DeployChart from './DeployChart';
 import Container from '@/containers/Container';
+
 import styles from '../styles/components/Box.module.css';
 
 function Deploy() {

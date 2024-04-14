@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styles from '../styles/components/Section.module.css';
 
 interface SectionHeaderProps {

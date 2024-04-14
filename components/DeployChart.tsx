@@ -1,7 +1,8 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
-import styles from '../styles/components/Deploy.module.css';
 import Image from 'next/image';
+
+import styles from '../styles/components/Deploy.module.css';
 
 function DeployChart() {
   const [isInView, setIsInView] = useState(false);

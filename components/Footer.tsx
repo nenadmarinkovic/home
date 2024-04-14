@@ -1,7 +1,7 @@
-import React from 'react';
-import styles from '../styles/components/Footer.module.css';
 import Container from '@/containers/Container';
 import Link from 'next/link';
+
+import styles from '../styles/components/Footer.module.css';
 
 function Footer() {
   const currentYear = new Date().getFullYear();

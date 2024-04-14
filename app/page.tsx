@@ -1,12 +1,13 @@
 import Header from '@/components/Header';
 import Banner from '@/components/Banner';
 import Develop from '@/components/Develop';
-import styles from './page.module.css';
 import Test from '@/components/Test';
 import Deploy from '@/components/Deploy';
-import Footer from '@/components/Footer';
 import Projects from '@/components/Projects';
 import Contact from '@/components/Contact';
+import Footer from '@/components/Footer';
+
+import styles from './page.module.css';
 
 export default function Home() {
   return (

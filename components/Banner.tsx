@@ -1,8 +1,9 @@
-import styles from '../styles/components/Banner.module.css';
-import stylesButton from '../styles/components/Button.module.css';
 import Container from '@/containers/Container';
 import SectionHeader from './Section';
 import Link from 'next/link';
+
+import styles from '../styles/components/Banner.module.css';
+import stylesButton from '../styles/components/Button.module.css';
 
 export default function Banner() {
   return (
@@ -33,9 +34,11 @@ export default function Banner() {
               personal software, too.
             </p>
             <div className={styles.info}>
-              <button className={stylesButton.button}>
-                <Link href="/contact">Contact</Link>
-              </button>
+              <Link href="/contact">
+                <button className={stylesButton.button}>
+                  Contact
+                </button>
+              </Link>
               <span className={styles.more}>
                 <Link href="/about"> More about me</Link>
               </span>
