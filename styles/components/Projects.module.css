@@ -97,3 +97,23 @@
     opacity: 1;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .projectDescription {
+    width: 100%;
+  }
+
+  .link {
+    margin: 30px 0;
+  }
+
+  .flexItems {
+    flex-direction: column;
+  }
+
+  .buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

@@ -1,73 +1,67 @@
 .section {
   padding-top: 80px;
   text-align: center;
+}
 
-  & .sectionHeader {
-    background: var(--color-green);
-    text-align: center;
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 1.35px;
-    text-transform: uppercase;
-    line-height: 2;
-    background-clip: border-box;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+.sectionHeader {
+  background: var(--color-green);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.35px;
+  text-transform: uppercase;
+  line-height: 2;
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-  & .sectionTitle {
-    text-align: center;
-    font-size: 42px;
-    font-weight: 700;
-    margin: 0 auto;
-    max-width: 50%;
-    margin: 0 auto;
-    color: var(--color-white);
-  }
+.sectionTitle {
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0 auto;
+  max-width: 50%;
+  margin: 0 auto;
+  color: var(--color-white);
+}
 
-  & .sectionText {
-    text-align: center;
-    font-size: 19px;
-    color: var(--color-green-light);
-    max-width: 60%;
-    line-height: 1.75;
-    margin: 0 auto;
-    padding: 20px 0 45px 0;
-  }
+.sectionText {
+  text-align: center;
+  font-size: 19px;
+  color: var(--color-green-light);
+  max-width: 60%;
+  line-height: 1.75;
+  margin: 0 auto;
+  padding: 20px 0 45px 0;
 }
 
 @media screen and (max-width: 1024px) {
-  .section {
-    & .sectionTitle {
-      font-size: 32px;
-    }
+  .sectionTitle {
+    font-size: 32px;
+  }
 
-    & .sectionText {
-      font-size: 18px;
-    }
+  .sectionText {
+    font-size: 18px;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .section {
-    & .sectionTitle {
-      max-width: 80%;
-    }
+  .sectionTitle {
+    max-width: 80%;
+  }
 
-    & .sectionText {
-      max-width: 80%;
-    }
+  .sectionText {
+    max-width: 80%;
   }
 }
 
 @media screen and (max-width: 560px) {
-  .section {
-    & .sectionTitle {
-      max-width: 100%;
-    }
+  .sectionTitle {
+    max-width: 90%;
+  }
 
-    & .sectionText {
-      max-width: 100%;
-    }
+  .sectionText {
+    max-width: 90%;
   }
 }

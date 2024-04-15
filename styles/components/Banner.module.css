@@ -155,8 +155,8 @@
     justify-content: space-evenly;
   }
 
-  .panel .panelItemContainer {
-    flex-basis: calc(47% - 25px);
+  .panelItemContainer {
+    flex-basis: calc(48.5% - 20px);
   }
   .bannerInside {
     padding: 100px 0 55px 0;
@@ -178,6 +178,10 @@
 @media screen and (max-width: 580px) {
   .panelItems {
     gap: 20px;
+  }
+
+  .panelItem {
+    min-height: unset;
   }
 
   .panelItemContainer {
