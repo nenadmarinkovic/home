@@ -185,6 +185,6 @@
   }
 
   .panelItemContainer {
-    flex-basis: calc(100% - 25px);
+    flex-basis: calc(100%);
   }
 }

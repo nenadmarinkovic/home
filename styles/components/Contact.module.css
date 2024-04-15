@@ -1,6 +1,6 @@
 .contactContainer {
   width: 100%;
-  min-height: 700px;
+
   background: linear-gradient(
     to top,
     #044e72 -50%,
@@ -9,4 +9,5 @@
   overflow: hidden;
   color: var(--color-white);
   text-align: center;
+  padding-bottom: 280px;
 }

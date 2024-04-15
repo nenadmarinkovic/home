@@ -173,8 +173,6 @@
   );
 }
 
-/* 1024px and bellow */
-
 @media screen and (max-width: 1024px) {
   .boxContainer {
     padding: 40px 0 40px 0;
@@ -221,5 +219,11 @@
 
   .boxItemMainItems {
     flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .boxContainer {
+    padding: 20px 0 40px 0;
   }
 }
