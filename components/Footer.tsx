@@ -14,9 +14,9 @@ function Footer() {
               This website is open source.
             </span>
             <span className={styles.footerText}>
-              You can find the code in my GitHub repository. It
-              belongs to a club of 250kb or less websites. It has a
-              ranking of A+ on Carbon Calculator.
+              You can find the code in the GitHub repository. It
+              doesn&apos;t track you in any way, it doesn&apos;t use
+              cookies, and it doesn&apos;t store any data.
             </span>
             <span className={styles.footerIcons}>
               <a
@@ -110,6 +110,7 @@ function Footer() {
             </li>
           </ul>
         </div>
+
         <span className={styles.footerBottom}>
           {currentYear} © Nenad Marinković
         </span>

@@ -2,6 +2,7 @@ import DeployChart from './DeployChart';
 import Container from '@/containers/Container';
 
 import styles from '../styles/components/Box.module.css';
+import SpotifyPlay from './Spotify';
 
 function Deploy() {
   return (
@@ -14,6 +15,7 @@ function Deploy() {
             >
               Deploy
             </h3>
+
             <p className={styles.boxItemHeaderText}>
               With automated deployments, your customers can trust
               that your product is always up-to-date and secure,

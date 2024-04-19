@@ -44,3 +44,27 @@ export interface DevelopChartProps {
   data: { language: string; percentage: number }[];
   maxPercentage: number;
 }
+
+export type SpotifyDataType = {
+  is_playing: boolean;
+  item: {
+    name: string;
+    artists: { name: string }[];
+    external_urls: {
+      spotify: string;
+    };
+  } | null;
+};
+
+export type SpotifySongType = {
+  album: any;
+  albumImageUrl: any;
+  isPlaying: boolean;
+  songUrl: string;
+  artist: string;
+  title: string;
+};
+
+export type ErrorResponse = {
+  error: string;
+};
