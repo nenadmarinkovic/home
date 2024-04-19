@@ -66,9 +66,6 @@
   .productsItemContainer {
     flex-basis: calc(50% - 25px);
   }
-  .bannerText {
-    font-size: 70px;
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -82,21 +79,6 @@
 
   .productsItemContainer {
     flex-basis: calc(48.5% - 20px);
-  }
-  .bannerInside {
-    padding: 100px 0 55px 0;
-  }
-
-  .bannerText {
-    font-size: 40px;
-    line-height: 1.2;
-  }
-
-  .bannerParagraph {
-    font-size: 18px;
-    line-height: 150%;
-    padding-top: 20px;
-    width: 100%;
   }
 }
 

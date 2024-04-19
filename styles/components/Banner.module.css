@@ -20,6 +20,7 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.35px;
+  max-width: 70%;
 }
 
 .bannerParagraph {
@@ -83,4 +84,33 @@
   background-clip: border-box;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+@media screen and (max-width: 1200px) {
+  .productsItemContainer {
+    flex-basis: calc(50% - 25px);
+  }
+  .bannerText {
+    font-size: 70px;
+    max-width: 80%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .bannerInside {
+    padding: 100px 0 55px 0;
+  }
+
+  .bannerText {
+    font-size: 40px;
+    line-height: 1.2;
+    max-width: 100%;
+  }
+
+  .bannerParagraph {
+    font-size: 18px;
+    line-height: 150%;
+    padding-top: 20px;
+    width: 100%;
+  }
 }
