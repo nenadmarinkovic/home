@@ -30,35 +30,39 @@ export default function Spotify() {
   }, []);
 
   return (
-    <div className={styles.spotifyContainer}>
+    <>
       {data?.isPlaying && (
-        <>
-          <div className={styles.spotifyInside}>
-            <Image
-              width={100}
-              height={100}
-              className={styles.albumImage}
-              src={data.albumImageUrl}
-              alt="Album cover"
-            />
+        <div className={styles.spotifyContainer}>
+          <>
             <a
+              className={styles.spotifyInside}
               href={`${data.songUrl}`}
               target="_blank"
               rel="noreferrer"
-              className={styles.songInfo}
+              title="Currently playing on Spotify"
             >
-              <span className={styles.title}>{data.title}</span>
-              <span className={styles.artist}>{data.artist}</span>
+              <Image
+                width={100}
+                height={100}
+                className={styles.albumImage}
+                src={data.albumImageUrl}
+                alt="Spotify album cover"
+              />
+              <div className={styles.songInfo}>
+                <span className={styles.title}>{data.title}</span>
+                <span className={styles.artist}>{data.artist}</span>
+              </div>
+
+              <span className="box">
+                <span className="music one"></span>
+                <span className="music two"></span>
+                <span className="music three"></span>
+                <span className="music four"></span>
+              </span>
             </a>
-            <span className="box">
-              <span className="music one"></span>
-              <span className="music two"></span>
-              <span className="music three"></span>
-              <span className="music four"></span>
-            </span>
-          </div>
-        </>
+          </>
+        </div>
       )}
-    </div>
+    </>
   );
 }
