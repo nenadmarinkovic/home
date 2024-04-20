@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface Language {
   language: string;
   count: number;
@@ -67,4 +69,17 @@ export type SpotifySongType = {
 
 export type ErrorResponse = {
   error: string;
+};
+
+type BoxItemTypes = {
+  icon: ReactNode;
+  text: string;
+};
+
+export type BoxPropsTypes = {
+  title: string;
+  boxColor: 'blue' | 'green' | 'orange';
+  headerText: string;
+  mainTitle: string;
+  boxItems: BoxItemTypes[];
 };

@@ -9,7 +9,7 @@
 
   --color-blue: #36c6ff;
   --color-green: #a1e158;
-  --color-pink: #eca05e;
+  --color-orange: #eca05e;
 
   --color-green-light: #9fbbbb;
 
@@ -18,10 +18,11 @@
   --tw-gradient-stops-blue: var(--tw-gradient-from-blue), #000000 100%;
   --tw-gradient-stops-green: var(--tw-gradient-from-green),
     #000000 100%;
-  --tw-gradient-stops-pink: var(--tw-gradient-from-pink), #000000 100%;
+  --tw-gradient-stops-orange: var(--tw-gradient-from-orange),
+    #000000 100%;
   --tw-gradient-from-blue: #0d3451 100%;
   --tw-gradient-from-green: #074134 100%;
-  --tw-gradient-from-pink: #52240b 100%;
+  --tw-gradient-from-orange: #52240b 100%;
   --tw-gradient-to: #acf22e 100%;
 }
 
@@ -59,52 +60,4 @@ a {
 ul,
 li {
   list-style: none;
-}
-
-.box {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  transform: rotate(180deg);
-  display: flex;
-  bottom: 15.5px;
-  padding-right: 30px;
-  right: 10px;
-}
-
-.music {
-  position: absolute;
-  width: 2.5px;
-  height: 20px;
-  background-color: var(--color-green);
-}
-
-.one {
-  left: 0;
-  animation: music 0.3s ease infinite alternate;
-}
-
-.two {
-  left: 5px;
-  animation: music 1s ease infinite alternate;
-}
-
-.three {
-  left: 10px;
-  animation: music 0.5s ease infinite alternate;
-}
-
-.four {
-  left: 15px;
-  animation: music 0.25s ease infinite alternate;
-}
-
-@keyframes music {
-  0% {
-    height: 10%;
-  }
-  100% {
-    height: 40%;
-  }
 }

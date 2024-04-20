@@ -1,0 +1,50 @@
+.processContainer {
+  position: relative;
+  padding: 40px 0 100px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  justify-items: center;
+  gap: 95px;
+  color: var(--color-white);
+  z-index: 1;
+}
+
+.chartContainer {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.processDots {
+  position: absolute;
+  height: 450px;
+  width: 100%;
+  display: grid;
+  background-image: radial-gradient(#424242 1px, transparent 0);
+  background-size: 30.2px 30.2px;
+  background-position: center;
+  background-color: var(--color-muted);
+  z-index: -1;
+}
+
+@media screen and (max-width: 1024px) {
+  .processContainer {
+    padding: 40px 0 40px 0;
+  }
+
+  .chartContainer {
+    display: none;
+  }
+
+  .processDots {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .processContainer {
+    padding: 20px 0 40px 0;
+  }
+}

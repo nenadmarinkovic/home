@@ -19,7 +19,6 @@ export default function Spotify() {
         }
 
         const data = await response.json();
-        console.log(data);
         setData(data);
       } catch (error) {
         console.error(error);
@@ -53,11 +52,19 @@ export default function Spotify() {
                 <span className={styles.artist}>{data.artist}</span>
               </div>
 
-              <span className="box">
-                <span className="music one"></span>
-                <span className="music two"></span>
-                <span className="music three"></span>
-                <span className="music four"></span>
+              <span className={styles.box}>
+                <span
+                  className={`${styles.music} ${styles.one}`}
+                ></span>
+                <span
+                  className={`${styles.music} ${styles.two}`}
+                ></span>
+                <span
+                  className={`${styles.music} ${styles.three}`}
+                ></span>
+                <span
+                  className={`${styles.music} ${styles.four}`}
+                ></span>
               </span>
             </a>
           </>
