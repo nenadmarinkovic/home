@@ -60,16 +60,18 @@ export default async function Develop() {
       <SectionHeader
         header="Process"
         title="The journey from development to delivery"
-        text="From initial phases to finilizing the product and delivering it to the client, I follow a strict process to ensure the best quality and performance."
+        text="My work usually starts when design is ready and approved. From there, I follow the best development practices to ensure the design is implemented without a single error and with the best performance possible.
+       "
       />
       <div className={styles.boxContainer}>
         <div className={styles.boxItem}>
           <div className={styles.boxItemInside}>
             <h3 className={styles.boxItem_header_title}>Develop</h3>
             <p className={styles.boxItemHeaderText}>
-              Using modern tools, I work to ensure the design is
-              implemented without a single error and with the best
-              performance possible.
+              In today&apos;s digital world, you can spot the
+              difference between a well-built product and a mediocre
+              one in seconds. I make sure yours falls in the first
+              group.
             </p>
             <p className={styles.boxItemMainTitle}>
               Best practices, top performance, and
@@ -78,31 +80,9 @@ export default async function Develop() {
             <div className={styles.boxItemMainItems}>
               <div className={styles.boxItemMainItem}>
                 <svg
-                  className={styles.boxItemMainIcon}
-                  height="16"
-                  strokeLinejoin="round"
-                  viewBox="0 0 16 16"
-                  width="16"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M5.5 2V0.75V0H7V0.75V2H9V0.75V0H10.5V0.75V2H13C13.5523 2 14 2.44772 14 3V5.5H15.25H16V7H15.25H14V9H15.25H16V10.5H15.25H14V13C14 13.5523 13.5523 14 13 14H10.5V15.25V16H9V15.25V14H7V15.25V16H5.5V15.25V14H3C2.44772 14 2 13.5523 2 13V10.5H0.75H0V9H0.75H2V7H0.75H0V5.5H0.75H2V3C2 2.44772 2.44772 2 3 2H5.5ZM12.75 10.5V9V7V5.5V3.25H10.5H9H7H5.5H3.25V5.5V7V9V10.5V12.75H5.5H7H9H10.5H12.75V10.5Z"
-                    fill="currentColor"
-                  ></path>
-                </svg>
-                <span className={styles.boxItemMainItemText}>
-                  It is {currentYear} and websites need to be fast,
-                  reliable and secure without compromise.
-                </span>
-              </div>
-              <div className={styles.boxItemMainItem}>
-                <svg
-                  height="16"
                   strokeLinejoin="round"
                   className={styles.boxItemMainIcon}
                   viewBox="0 0 16 16"
-                  width="16"
                 >
                   <path
                     fillRule="evenodd"
@@ -112,17 +92,34 @@ export default async function Develop() {
                   ></path>
                 </svg>
                 <span className={styles.boxItemMainItemText}>
-                  Websites should be built with lag free interaction
-                  as a top priority.
+                  It is {currentYear} and websites need to be fast,
+                  reliable and with lag free interaction as a top
+                  priority.
                 </span>
               </div>
               <div className={styles.boxItemMainItem}>
                 <svg
                   className={styles.boxItemMainIcon}
-                  height="16"
                   strokeLinejoin="round"
                   viewBox="0 0 16 16"
-                  width="16"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M0.75 0H0V0.75V10.5C0 11.8807 1.11929 13 2.5 13H5.25V11.5H2.5C1.94772 11.5 1.5 11.0523 1.5 10.5V1.5H14.5V6H16V0.75V0H15.25H0.75ZM3.75 4.5C4.16421 4.5 4.5 4.16421 4.5 3.75C4.5 3.33579 4.16421 3 3.75 3C3.33579 3 3 3.33579 3 3.75C3 4.16421 3.33579 4.5 3.75 4.5ZM7 3.75C7 4.16421 6.66421 4.5 6.25 4.5C5.83579 4.5 5.5 4.16421 5.5 3.75C5.5 3.33579 5.83579 3 6.25 3C6.66421 3 7 3.33579 7 3.75ZM8.75 4.5C9.16421 4.5 9.5 4.16421 9.5 3.75C9.5 3.33579 9.16421 3 8.75 3C8.33579 3 8 3.33579 8 3.75C8 4.16421 8.33579 4.5 8.75 4.5ZM13.2307 12C13.2 12.815 13.0938 13.6278 12.9124 14.4279C13.8564 13.9717 14.5462 13.0724 14.7118 12H13.2307ZM11.8047 14.7359C11.7044 14.7452 11.6028 14.75 11.5 14.75C11.3972 14.75 11.2956 14.7452 11.1953 14.7359C10.9494 13.839 10.8077 12.9211 10.77 12H12.23C12.1923 12.9211 12.0506 13.839 11.8047 14.7359ZM13.2307 11C13.2 10.185 13.0938 9.37224 12.9124 8.57213C13.8564 9.02834 14.5462 9.92764 14.7118 11H13.2307ZM12.23 11C12.1923 10.0789 12.0506 9.16097 11.8047 8.2641C11.7044 8.25477 11.6028 8.25 11.5 8.25C11.3972 8.25 11.2956 8.25477 11.1953 8.2641C10.9494 9.16097 10.8077 10.0789 10.77 11H12.23ZM9.76925 11C9.80005 10.185 9.90616 9.37224 10.0876 8.57213C9.1436 9.02834 8.45381 9.92764 8.28822 11H9.76925ZM10.0876 14.4279C9.90616 13.6278 9.80005 12.815 9.76925 12H8.28822C8.45381 13.0724 9.1436 13.9717 10.0876 14.4279ZM11.5 16C13.9853 16 16 13.9853 16 11.5C16 9.01472 13.9853 7 11.5 7C9.01472 7 7 9.01472 7 11.5C7 13.9853 9.01472 16 11.5 16Z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+                <span className={styles.boxItemMainItemText}>
+                  Well-developed websites and applications rank higher
+                  in search results (SEO).
+                </span>
+              </div>
+              <div className={styles.boxItemMainItem}>
+                <svg
+                  className={styles.boxItemMainIcon}
+                  strokeLinejoin="round"
+                  viewBox="0 0 16 16"
                 >
                   <path
                     d="M8 3C8.82843 3 9.5 2.32843 9.5 1.5C9.5 0.671573 8.82843 0 8 0C7.17157 0 6.5 0.671573 6.5 1.5C6.5 2.32843 7.17157 3 8 3Z"
@@ -134,7 +131,7 @@ export default async function Develop() {
                   ></path>
                 </svg>
                 <span className={styles.boxItemMainItemText}>
-                  Website should be accessibility, responsive, fully
+                  Websites should be accessibility, responsive, fully
                   functional and user-friendly.
                 </span>
               </div>

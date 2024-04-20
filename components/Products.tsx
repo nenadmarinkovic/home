@@ -29,8 +29,8 @@ function Products() {
       <div className={styles.products}>
         <SectionHeader
           header="Products"
-          title="Types of web products I worked on"
-          text="My goal is to ensure that every web product I'm working on is polished to perfection. I firmly believe that it's the attention to detail that sets apart a professional and high-quality web experience."
+          title="Web products that bring value to your business"
+          text="During my career, I've worked on a wide range of web products, making sure that they are perfected to the smallest detail. Here are some of the digital products I can help you with."
         />
         <div className={styles.productsItems}>
           <ProductItem

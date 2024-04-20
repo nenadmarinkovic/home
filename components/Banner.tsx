@@ -15,7 +15,7 @@ export default function Banner() {
                 {' '}
                 websites
               </span>{' '}
-              for the modern web.
+              and other web products.
             </h1>
             <p className={styles.bannerParagraph}>
               Hi. I&apos;m Nenad, a frontend developer at{' '}
