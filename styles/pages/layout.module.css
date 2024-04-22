@@ -5,7 +5,6 @@
   align-items: center;
   background-color: var(--color-muted);
 }
-<<<<<<< HEAD
 
 .content {
   background: linear-gradient(
@@ -16,5 +15,3 @@
   min-height: 100vh;
   color: var(--color-white);
 }
-=======
->>>>>>> 5dde058b2d476e232491e4786c127f4df43884de
