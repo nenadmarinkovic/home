@@ -9,7 +9,7 @@ import Footer from '@/components/Footer';
 import Products from '@/components/Products';
 import Spotify from '@/components/Spotify';
 
-import styles from './page.module.css';
+import styles from '../styles/pages/layout.module.css';
 
 export default function Home() {
   return (

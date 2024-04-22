@@ -1,14 +1,11 @@
-import { getNowPlaying } from '../../utils/spotify';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
+import { getNowPlaying } from '../../../utils/spotify';
 
-export default async function Spotify(
-  _: NextApiRequest,
-  res: NextApiResponse
-) {
+export async function GET(request: NextRequest) {
   const response = await getNowPlaying();
 
   if (response.status === 204 || response.status > 400) {
-    return res.status(200).json({ isPlaying: false });
+    return NextResponse.json({ isPlaying: false });
   }
 
   const song = await response.json();
@@ -21,7 +18,7 @@ export default async function Spotify(
   const albumImageUrl: string = song.item.album.images[0].url;
   const songUrl: string = song.item.external_urls.spotify;
 
-  return res.status(200).json({
+  return NextResponse.json({
     album,
     albumImageUrl,
     artist,
