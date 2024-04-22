@@ -3,11 +3,14 @@ import path from 'path';
 import matter from 'gray-matter';
 
 import { MDXRemote } from 'remote-mdx/rsc';
+<<<<<<< HEAD
 import Banner from '@/components/Banner';
 import Header from '@/components/Header';
 import Container from '@/containers/Container';
 
 import styles from '../../../styles/pages/layout.module.css';
+=======
+>>>>>>> 5dde058b2d476e232491e4786c127f4df43884de
 
 export async function generateStaticParams() {
   const files = fs.readdirSync(path.join('directory'));
@@ -38,6 +41,7 @@ export default function Page({ params }: any) {
   const props = getPost(params);
 
   return (
+<<<<<<< HEAD
     <>
       <Header />
       <Banner
@@ -50,5 +54,11 @@ export default function Page({ params }: any) {
         </Container>
       </div>
     </>
+=======
+    <article>
+      <h1>{props.fontMatter.title}</h1>
+      <MDXRemote source={props.content}></MDXRemote>
+    </article>
+>>>>>>> 5dde058b2d476e232491e4786c127f4df43884de
   );
 }

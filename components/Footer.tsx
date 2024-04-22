@@ -21,6 +21,10 @@ function Footer() {
             <span className={styles.footerIcons}>
               <a
                 target="_blank"
+<<<<<<< HEAD
+=======
+                rel="noopener"
+>>>>>>> 5dde058b2d476e232491e4786c127f4df43884de
                 href="https://github.com/nenadmarinkovic"
                 aria-label="GitHub"
               >
@@ -52,6 +56,10 @@ function Footer() {
               </a>
               <a
                 target="_blank"
+<<<<<<< HEAD
+=======
+                rel="noopener"
+>>>>>>> 5dde058b2d476e232491e4786c127f4df43884de
                 href="https://linkedin.com/in/nenad-marinkovic/"
                 aria-label="LinkedIn"
               >
