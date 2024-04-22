@@ -10,6 +10,7 @@ const basic = btoa(`${client_id}:${client_secret}`);
 const getAccessToken = async () => {
   const response = await fetch(TOKEN_ENDPOINT, {
     method: 'POST',
+    cache: 'no-store',
     headers: {
       Authorization: `Basic ${basic}`,
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -18,6 +19,7 @@ const getAccessToken = async () => {
       grant_type: 'refresh_token',
       refresh_token: refresh_token ?? '',
     }),
+   
   });
 
   return response.json();

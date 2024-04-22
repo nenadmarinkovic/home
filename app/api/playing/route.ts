@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getNowPlaying } from '../../../utils/spotify';
+import { NextResponse } from "next/server";
+import { getNowPlaying } from "../../../utils/spotify";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const response = await getNowPlaying();
 
   if (response.status === 204 || response.status > 400) {
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   const title: string = song.item.name;
   const artist: string = song.item.artists
     .map((_artist: any) => _artist.name)
-    .join(', ');
+    .join(", ");
   const album: string = song.item.album.name;
   const albumImageUrl: string = song.item.album.images[0].url;
   const songUrl: string = song.item.external_urls.spotify;
@@ -25,5 +25,5 @@ export async function GET(request: NextRequest) {
     isPlaying,
     songUrl,
     title,
-  });
+  })
 }

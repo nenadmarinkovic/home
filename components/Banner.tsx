@@ -21,6 +21,7 @@ export default function Banner() {
               Hi. I&apos;m Nenad, a frontend developer at{' '}
               <a
                 target="_blank"
+                rel="noopener"
                 className="link"
                 href="https://nexxar.com"
               >

@@ -101,6 +101,7 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
         Data is coming from a personal{' '}
         <a
           target="_blank"
+          rel="noopener"
           className="link"
           href="https://github.com/nenadmarinkovic"
         >
