@@ -83,3 +83,11 @@ export type BoxPropsTypes = {
   mainTitle: string;
   boxItems: BoxItemTypes[];
 };
+
+export type BannerProps = {
+  title: string;
+  highlightedText?: string;
+  paragraphText: JSX.Element | string;
+  additionalText?: string;
+  children?: React.ReactNode;
+};

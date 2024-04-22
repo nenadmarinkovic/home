@@ -12,7 +12,7 @@
 }
 
 .bannerInside {
-  padding: 160px 0 80px 0;
+  padding: 160px 0 38px 0;
 }
 
 .bannerText {
@@ -35,13 +35,6 @@
   color: var(--color-green);
 }
 
-.info {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  margin-top: 28px;
-}
-
 .blur {
   position: absolute;
   inset: -2.5px;
@@ -51,26 +44,6 @@
   );
   filter: blur(8px);
   z-index: 2;
-}
-
-.more {
-  cursor: pointer;
-  position: relative;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.more::after {
-  content: url(../../public/icons/arrow-right.svg);
-  position: absolute;
-  top: 2px;
-  display: inline;
-  transform: translateX(10px);
-  transition: 0.35s;
-}
-
-.more:hover::after {
-  transform: translateX(20px);
 }
 
 .headerText {

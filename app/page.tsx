@@ -1,5 +1,5 @@
 import Header from '@/components/Header';
-import Banner from '@/components/Banner';
+import HomeBanner from '@/components/HomeBanner';
 import Develop from '@/components/Develop';
 import Test from '@/components/Test';
 import Deploy from '@/components/Deploy';
@@ -16,7 +16,7 @@ export default function Home() {
     <>
       <Header />
       <main className={styles.main}>
-        <Banner />
+        <HomeBanner />
         <Products />
         <Develop />
         <Test />
