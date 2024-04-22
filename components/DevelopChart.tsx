@@ -101,10 +101,6 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
         Data is coming from a personal{' '}
         <a
           target="_blank"
-<<<<<<< HEAD
-=======
-          rel="noopener"
->>>>>>> 5dde058b2d476e232491e4786c127f4df43884de
           className="link"
           href="https://github.com/nenadmarinkovic"
         >

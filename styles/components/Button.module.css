@@ -15,7 +15,6 @@
 .button:hover {
   transform: scale(1.05);
 }
-<<<<<<< HEAD
 
 .info {
   display: flex;
@@ -44,5 +43,3 @@
 .more:hover::after {
   transform: translateX(20px);
 }
-=======
->>>>>>> 5dde058b2d476e232491e4786c127f4df43884de

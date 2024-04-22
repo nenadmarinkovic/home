@@ -35,13 +35,9 @@ export default function Header() {
     >
       <Container>
         <div className={styles.headerInside}>
-<<<<<<< HEAD
           <div className={styles.homelink}>
             <Link href="/">Nenad Marinković</Link>
           </div>
-=======
-          <div className={styles.homelink}>Nenad Marinković</div>
->>>>>>> 5dde058b2d476e232491e4786c127f4df43884de
           <nav>
             <ul className={styles.headerUnorderedList}>
               <li className={styles.headerList}>

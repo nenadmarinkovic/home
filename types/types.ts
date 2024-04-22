@@ -47,7 +47,6 @@ export interface DevelopChartProps {
   maxPercentage: number;
 }
 
-<<<<<<< HEAD
 export type SpotifyDataType = {
   is_playing: boolean;
   item: {
@@ -59,8 +58,6 @@ export type SpotifyDataType = {
   } | null;
 };
 
-=======
->>>>>>> 5dde058b2d476e232491e4786c127f4df43884de
 export type SpotifySongType = {
   album: any;
   albumImageUrl: any;
@@ -86,7 +83,6 @@ export type BoxPropsTypes = {
   mainTitle: string;
   boxItems: BoxItemTypes[];
 };
-<<<<<<< HEAD
 
 export type BannerProps = {
   title: string;
@@ -95,5 +91,3 @@ export type BannerProps = {
   additionalText?: string;
   children?: React.ReactNode;
 };
-=======
->>>>>>> 5dde058b2d476e232491e4786c127f4df43884de
