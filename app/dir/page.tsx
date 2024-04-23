@@ -4,10 +4,11 @@ import matter from 'gray-matter';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Banner from '@/components/Banner';
-
-import styles from '../../styles/pages/layout.module.css';
 import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
+import Spotify from '@/components/Spotify';
+
+import styles from '../../styles/pages/layout.module.css';
 
 export default function Home() {
   const blogDir = 'directory';
@@ -52,21 +53,8 @@ export default function Home() {
           </div>
         </Container>
       </section>
+      <Spotify />
       <Footer />
-
-      <h1>My Next.Js Blog Site</h1>
-      <section>
-        <div>
-          {posts.map((blog) => (
-            <Link href={'/dir/' + blog.slug} passHref key={blog.slug}>
-              <h3>{blog.meta.title}</h3>
-              <div>
-                <p>{blog.meta.description}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
     </>
   );
 }

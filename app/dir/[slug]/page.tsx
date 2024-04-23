@@ -6,6 +6,8 @@ import { MDXRemote } from 'remote-mdx/rsc';
 import Banner from '@/components/Banner';
 import Header from '@/components/Header';
 import Container from '@/containers/Container';
+import Footer from '@/components/Footer';
+import Spotify from '@/components/Spotify';
 
 import styles from '../../../styles/pages/layout.module.css';
 
@@ -49,11 +51,8 @@ export default function Page({ params }: any) {
           <MDXRemote source={props.content}></MDXRemote>
         </Container>
       </div>
-
-      <article>
-        <h1>{props.fontMatter.title}</h1>
-        <MDXRemote source={props.content}></MDXRemote>
-      </article>
+      <Spotify />
+      <Footer />
     </>
   );
 }
