@@ -11,12 +11,4 @@
   min-height: 100vh;
   color: var(--color-white);
   padding-bottom: 50%;
-
-  h2 {
-    padding: 20px 0;
-  }
-
-  p {
-    line-height: 1.7;
-  }
 }
