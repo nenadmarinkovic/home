@@ -1,21 +1,20 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import Banner from "@/components/Banner";
+import Header from "@/components/Header";
+import Container from "@/containers/Container";
+import Footer from "@/components/Footer";
+import Spotify from "@/components/Spotify";
+import CustomMDX from "@/components/Markdown";
 
-import { MDXRemote } from 'remote-mdx/rsc';
-import Banner from '@/components/Banner';
-import Header from '@/components/Header';
-import Container from '@/containers/Container';
-import Footer from '@/components/Footer';
-import Spotify from '@/components/Spotify';
-
-import styles from '../../../styles/pages/layout.module.css';
+import styles from "../../../styles/pages/layout.module.css";
 
 export async function generateStaticParams() {
-  const files = fs.readdirSync(path.join('directory'));
+  const files = fs.readdirSync(path.join("directory"));
 
   const paths = files.map((filename) => ({
-    slug: filename.replace('.mdx', ''),
+    slug: filename.replace(".mdx", ""),
   }));
 
   return paths;
@@ -23,8 +22,8 @@ export async function generateStaticParams() {
 
 function getPost({ slug }: { slug: string }) {
   const markdownFile = fs.readFileSync(
-    path.join('directory', slug + '.mdx'),
-    'utf-8'
+    path.join("directory", slug + ".mdx"),
+    "utf-8"
   );
 
   const { data: fontMatter, content } = matter(markdownFile);
@@ -48,7 +47,7 @@ export default function Page({ params }: any) {
       />
       <div className={styles.content}>
         <Container>
-          <MDXRemote source={props.content}></MDXRemote>
+          <CustomMDX source={props.content} />
         </Container>
       </div>
       <Spotify />
