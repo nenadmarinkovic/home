@@ -9,6 +9,7 @@ import Spotify from '@/components/Spotify';
 import CustomMDX from '@/components/Markdown';
 
 import styles from '../../../styles/pages/layout.module.css';
+import dirStyles from '../../../styles/pages/dir.module.css';
 
 export async function generateStaticParams() {
   const files = fs.readdirSync(path.join('directory'));
@@ -45,10 +46,12 @@ export default function Page({ params }: any) {
         title={props.fontMatter.title}
         paragraphText={props.fontMatter.description}
       />
-      <div className={styles.content}>
-        <Container>
-          <CustomMDX source={props.content} />
-        </Container>
+      <div className={dirStyles.dirContainer}>
+        <div className={styles.content}>
+          <Container>
+            <CustomMDX source={props.content} />
+          </Container>
+        </div>
       </div>
       <Spotify />
       <Footer />

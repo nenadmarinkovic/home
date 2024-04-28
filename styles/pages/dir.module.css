@@ -1,3 +1,14 @@
+.dirContainer {
+  background: linear-gradient(
+    to top,
+    #044e72 -100%,
+    var(--color-muted) 100%
+  );
+  min-height: 100vh;
+  color: var(--color-white);
+  padding-bottom: 50%;
+}
+
 .post {
   display: flex;
   flex-direction: column;

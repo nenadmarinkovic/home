@@ -38,7 +38,7 @@ export default function Dir() {
         title="Directory"
         paragraphText="Web directory for notes, bookmarks, resources, and the things I’m interested in. All the content is open-source."
       />
-      <section className={styles.content}>
+      <section className={dirStyles.dirContainer}>
         <Container>
           <div>
             {posts.map((post) => (
