@@ -11,13 +11,13 @@ import Spotify from '@/components/Spotify';
 import styles from '../../styles/pages/layout.module.css';
 
 export default function Home() {
-  const blogDir = 'directory';
+  const postDir = 'directory';
 
-  const files = fs.readdirSync(path.join(blogDir));
+  const files = fs.readdirSync(path.join(postDir));
 
-  const blogs = files.map((filename) => {
+  const posts = files.map((filename) => {
     const fileContent = fs.readFileSync(
-      path.join(blogDir, filename),
+      path.join(postDir, filename),
       'utf-8'
     );
 
@@ -38,17 +38,19 @@ export default function Home() {
       <section className={styles.contentContainer}>
         <Container>
           <div>
-            {blogs.map((blog) => (
+            {posts.map((post) => (
               <Link
-                href={'/dir/' + blog.slug}
+                href={'/dir/' + post.slug}
                 passHref
-                key={blog.slug}
+                key={post.slug}
                 className={styles.post}
               >
                 <h2 className={styles.postTitle}>
-                  {blog.meta.title}
+                  {post.meta.title}
                 </h2>
-                <p>{blog.meta.description}</p>
+                <p className={styles.postDescription}>
+                  {post.meta.description}
+                </p>
               </Link>
             ))}
           </div>
