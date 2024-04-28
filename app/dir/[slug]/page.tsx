@@ -40,7 +40,6 @@ export default function DirPage({ params }: any) {
   return (
     <>
       <Header />
-      <span></span>
       <Banner
         title={props.fontMatter.title}
         paragraphText={props.fontMatter.description}
