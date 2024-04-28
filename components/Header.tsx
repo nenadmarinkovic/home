@@ -31,49 +31,53 @@ export default function Header() {
   }, []);
 
   return (
-    <header
-      className={`${styles.header} ${isFixed && styles.fixed} ${
-        isHidden && styles.hidden
-      } `}
-    >
-      <Container>
-        <div className={styles.headerInside}>
-          <div
-            className={`${styles.homelink} ${
-              pathname === '/' ? `${styles.activePage}` : ''
-            }`}
-          >
-            <Link href="/">Nenad Marinković</Link>
+    <div>
+      <header
+        className={`${styles.header} ${isFixed && styles.fixed} ${
+          isHidden && styles.hidden
+        } `}
+      >
+        <Container>
+          <div className={styles.headerInside}>
+            <div
+              className={`${styles.homelink} ${
+                pathname === '/' ? `${styles.activePage}` : ''
+              }`}
+            >
+              <Link href="/">Nenad Marinković</Link>
+            </div>
+            <nav>
+              <ul className={styles.headerUnorderedList}>
+                <li
+                  className={`${styles.headerList} ${
+                    pathname === '/dir' ? `${styles.activePage}` : ''
+                  }`}
+                >
+                  <Link href="/dir">Directory</Link>
+                </li>
+                <li
+                  className={`${styles.headerList} ${
+                    pathname === '/about'
+                      ? `${styles.activePage}`
+                      : ''
+                  }`}
+                >
+                  <Link href="/about">About</Link>
+                </li>
+                <li
+                  className={`${styles.headerList} ${
+                    pathname === '/contact'
+                      ? `${styles.activePage}`
+                      : ''
+                  }`}
+                >
+                  <Link href="/contact">Contact</Link>
+                </li>
+              </ul>
+            </nav>
           </div>
-          <nav>
-            <ul className={styles.headerUnorderedList}>
-              <li
-                className={`${styles.headerList} ${
-                  pathname === '/dir' ? `${styles.activePage}` : ''
-                }`}
-              >
-                <Link href="/dir">Directory</Link>
-              </li>
-              <li
-                className={`${styles.headerList} ${
-                  pathname === '/about' ? `${styles.activePage}` : ''
-                }`}
-              >
-                <Link href="/about">About</Link>
-              </li>
-              <li
-                className={`${styles.headerList} ${
-                  pathname === '/contact'
-                    ? `${styles.activePage}`
-                    : ''
-                }`}
-              >
-                <Link href="/contact">Contact</Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </Container>
-    </header>
+        </Container>
+      </header>
+    </div>
   );
 }

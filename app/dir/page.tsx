@@ -8,7 +8,7 @@ import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
 import Spotify from '@/components/Spotify';
 
-import dirStyles from '../../styles/pages/dir.module.css';
+import styles from '../../styles/pages/layout.module.css';
 
 export default function Home() {
   const blogDir = 'directory';
@@ -35,7 +35,7 @@ export default function Home() {
         title="Directory"
         paragraphText="Web directory for notes, bookmarks, resources, and the things I’m interested in. All the content is open-source."
       />
-      <section className={dirStyles.dirContainer}>
+      <section className={styles.contentContainer}>
         <Container>
           <div>
             {blogs.map((blog) => (
@@ -43,9 +43,9 @@ export default function Home() {
                 href={'/dir/' + blog.slug}
                 passHref
                 key={blog.slug}
-                className={dirStyles.post}
+                className={styles.post}
               >
-                <h2 className={dirStyles.postTitle}>
+                <h2 className={styles.postTitle}>
                   {blog.meta.title}
                 </h2>
                 <p>{blog.meta.description}</p>

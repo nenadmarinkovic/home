@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-import { MDXRemote } from 'remote-mdx/rsc';
+import CustomMDX from '@/components/Markdown';
 import Banner from '@/components/Banner';
 import Header from '@/components/Header';
 import Container from '@/containers/Container';
@@ -46,11 +46,13 @@ export default function Page({ params }: any) {
         title={props.fontMatter.title}
         paragraphText={props.fontMatter.description}
       />
-      <div className={styles.content}>
-        <Container>
-          <MDXRemote source={props.content}></MDXRemote>
-        </Container>
-      </div>
+      <section className={styles.contentContainer}>
+        <div className={styles.content}>
+          <Container>
+            <CustomMDX source={props.content}></CustomMDX>
+          </Container>
+        </div>
+      </section>
       <Spotify />
       <Footer />
     </>

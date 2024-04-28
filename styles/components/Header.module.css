@@ -2,6 +2,7 @@
   padding: 15px 0;
   width: 100%;
   position: fixed;
+  top: 0;
   background: transparent;
   color: var(--color-white);
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
