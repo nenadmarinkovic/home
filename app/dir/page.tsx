@@ -10,14 +10,12 @@ import Spotify from '@/components/Spotify';
 
 import dirStyles from '../../styles/pages/dir.module.css';
 
-export default function Page() {
+export default function Home() {
   const blogDir = 'directory';
 
-  const files = fs
-    .readdirSync(path.join(blogDir))
-    .filter((fn) => fn.endsWith('.mdx'));
+  const files = fs.readdirSync(path.join(blogDir));
 
-  const posts = files.map((filename) => {
+  const blogs = files.map((filename) => {
     const fileContent = fs.readFileSync(
       path.join(blogDir, filename),
       'utf-8'
@@ -40,17 +38,17 @@ export default function Page() {
       <section className={dirStyles.dirContainer}>
         <Container>
           <div>
-            {posts.map((post) => (
+            {blogs.map((blog) => (
               <Link
-                href={'/dir/' + post.slug}
+                href={'/dir/' + blog.slug}
                 passHref
-                key={post.slug}
+                key={blog.slug}
                 className={dirStyles.post}
               >
                 <h2 className={dirStyles.postTitle}>
-                  {post.meta.title}
+                  {blog.meta.title}
                 </h2>
-                <p>{post.meta.description}</p>
+                <p>{blog.meta.description}</p>
               </Link>
             ))}
           </div>

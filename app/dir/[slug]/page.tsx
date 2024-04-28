@@ -1,26 +1,21 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+
+import { MDXRemote } from 'remote-mdx/rsc';
 import Banner from '@/components/Banner';
 import Header from '@/components/Header';
 import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
 import Spotify from '@/components/Spotify';
-import CustomMDX from '@/components/Markdown';
 
 import styles from '../../../styles/pages/layout.module.css';
 
-import dirStyles from '../../../styles/pages/dir.module.css';
-
-const POSTS_PATH = path.join(process.cwd(), 'directory');
-
-const postFilePaths = fs
-  .readdirSync(POSTS_PATH)
-  .filter((path) => /\.mdx?$/.test(path));
-
 export async function generateStaticParams() {
-  const paths = postFilePaths.map((filePath) => ({
-    slug: filePath.replace('.mdx', ''),
+  const files = fs.readdirSync(path.join('directory'));
+
+  const paths = files.map((filename) => ({
+    slug: filename.replace('.mdx', ''),
   }));
 
   return paths;
@@ -28,7 +23,7 @@ export async function generateStaticParams() {
 
 function getPost({ slug }: { slug: string }) {
   const markdownFile = fs.readFileSync(
-    path.join(POSTS_PATH, slug + '.mdx'),
+    path.join('directory', slug + '.mdx'),
     'utf-8'
   );
 
@@ -42,7 +37,7 @@ function getPost({ slug }: { slug: string }) {
 }
 
 export default function Page({ params }: any) {
-  const props = getPost({ slug: params.slug });
+  const props = getPost(params);
 
   return (
     <>
@@ -51,12 +46,10 @@ export default function Page({ params }: any) {
         title={props.fontMatter.title}
         paragraphText={props.fontMatter.description}
       />
-      <div className={dirStyles.dirContainer}>
-        <div className={styles.content}>
-          <Container>
-            <CustomMDX source={props.content} />
-          </Container>
-        </div>
+      <div className={styles.content}>
+        <Container>
+          <MDXRemote source={props.content}></MDXRemote>
+        </Container>
       </div>
       <Spotify />
       <Footer />

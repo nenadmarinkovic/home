@@ -2,7 +2,6 @@
   padding: 15px 0;
   width: 100%;
   background: transparent;
-  position: fixed;
   color: var(--color-white);
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
   z-index: 5;
