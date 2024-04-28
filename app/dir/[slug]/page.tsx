@@ -9,13 +9,18 @@ import Spotify from '@/components/Spotify';
 import CustomMDX from '@/components/Markdown';
 
 import styles from '../../../styles/pages/layout.module.css';
+
 import dirStyles from '../../../styles/pages/dir.module.css';
 
-export async function generateStaticParams() {
-  const files = fs.readdirSync(path.join('directory'));
+const POSTS_PATH = path.join(process.cwd(), 'directory');
 
-  const paths = files.map((filename) => ({
-    slug: filename.replace('.mdx', ''),
+const postFilePaths = fs
+  .readdirSync(POSTS_PATH)
+  .filter((path) => /\.mdx?$/.test(path));
+
+export async function generateStaticParams() {
+  const paths = postFilePaths.map((filePath) => ({
+    slug: filePath.replace('.mdx', ''),
   }));
 
   return paths;
@@ -23,7 +28,7 @@ export async function generateStaticParams() {
 
 function getPost({ slug }: { slug: string }) {
   const markdownFile = fs.readFileSync(
-    path.join('directory', slug + '.mdx'),
+    path.join(POSTS_PATH, slug + '.mdx'),
     'utf-8'
   );
 
@@ -37,7 +42,7 @@ function getPost({ slug }: { slug: string }) {
 }
 
 export default function Page({ params }: any) {
-  const props = getPost(params);
+  const props = getPost({ slug: params.slug });
 
   return (
     <>

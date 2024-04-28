@@ -8,7 +8,6 @@ import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
 import Spotify from '@/components/Spotify';
 
-import styles from '../../styles/pages/layout.module.css';
 import dirStyles from '../../styles/pages/dir.module.css';
 
 export default function Page() {
@@ -48,15 +47,10 @@ export default function Page() {
                 key={post.slug}
                 className={dirStyles.post}
               >
-                <h3 className={dirStyles.postTitle}>
+                <h2 className={dirStyles.postTitle}>
                   {post.meta.title}
-                </h3>
-                <span>Updated: {post.meta.date}</span>
-                <div>
-                  <p className={dirStyles.postDescription}>
-                    {post.meta.description}
-                  </p>
-                </div>
+                </h2>
+                <p>{post.meta.description}</p>
               </Link>
             ))}
           </div>
