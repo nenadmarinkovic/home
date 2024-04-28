@@ -11,7 +11,7 @@ import Spotify from '@/components/Spotify';
 import styles from '../../styles/pages/layout.module.css';
 import dirStyles from '../../styles/pages/dir.module.css';
 
-export default function Dir() {
+export default function Page() {
   const blogDir = 'directory';
 
   const files = fs
