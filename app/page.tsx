@@ -7,7 +7,6 @@ import Projects from '@/components/Projects';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import Products from '@/components/Products';
-import Spotify from '@/components/Spotify';
 
 import styles from '../styles/pages/layout.module.css';
 
@@ -23,7 +22,6 @@ export default function Home() {
         <Deploy />
         <Projects />
         <Contact />
-        <Spotify />
       </main>
       <Footer />
     </>

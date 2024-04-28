@@ -2,7 +2,6 @@ import Header from '@/components/Header';
 import Banner from '@/components/Banner';
 import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
-import Spotify from '@/components/Spotify';
 
 import styles from '../../styles/pages/layout.module.css';
 
@@ -17,7 +16,6 @@ export default function Home() {
       <section className={styles.contentContainer}>
         <Container>About</Container>
       </section>
-      <Spotify />
       <Footer />
     </>
   );
