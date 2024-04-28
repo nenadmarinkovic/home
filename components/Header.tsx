@@ -1,13 +1,16 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import Container from '@/containers/Container';
 import Link from 'next/link';
-
+import { usePathname } from 'next/navigation';
 import styles from '../styles/components/Header.module.css';
 
 export default function Header() {
   const [isFixed, setIsFixed] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,18 +38,36 @@ export default function Header() {
     >
       <Container>
         <div className={styles.headerInside}>
-          <div className={styles.homelink}>
+          <div
+            className={`${styles.homelink} ${
+              pathname === '/' ? `${styles.activePage}` : ''
+            }`}
+          >
             <Link href="/">Nenad Marinković</Link>
           </div>
           <nav>
             <ul className={styles.headerUnorderedList}>
-              <li className={styles.headerList}>
+              <li
+                className={`${styles.headerList} ${
+                  pathname === '/dir' ? `${styles.activePage}` : ''
+                }`}
+              >
                 <Link href="/dir">Directory</Link>
               </li>
-              <li className={styles.headerList}>
+              <li
+                className={`${styles.headerList} ${
+                  pathname === '/about' ? `${styles.activePage}` : ''
+                }`}
+              >
                 <Link href="/about">About</Link>
               </li>
-              <li className={styles.headerList}>
+              <li
+                className={`${styles.headerList} ${
+                  pathname === '/contact'
+                    ? `${styles.activePage}`
+                    : ''
+                }`}
+              >
                 <Link href="/contact">Contact</Link>
               </li>
             </ul>

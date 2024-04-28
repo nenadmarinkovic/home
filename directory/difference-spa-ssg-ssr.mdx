@@ -1,7 +1,7 @@
 ---
 title: Difference Between SPAs, SSGs, and SSR
 description: Difference between Single Page Applications, Static Site Generators, and Server-side Rendered Applications.
-date: 10.03.2023
+date: 10.03.2024
 category: React
 ---
 
@@ -9,7 +9,7 @@ category: React
 
 Single-page applications (SPAs) are web applications that dynamically update the current web page without reloading the entire page. This is achieved by loading the application's code into the browser and then making requests to the server for data. The server responds with JSON data, which is then used to update the DOM dynamically. Here's an example of an SPA using the React framework:
 
-```js
+```jsx
 import React, { useState } from 'react';
 
 function App() {
@@ -32,7 +32,7 @@ In this example, the useState hook from React is used to manage the state of the
 
 Static Site Generators (SSGs) are tools that generate static HTML, CSS, and JavaScript files that can be served by a web server. These tools typically use templates and data files to generate the HTML pages, which can then be optimized for performance by preloading assets and caching. Here's an example of an SSG using the Gatsby framework:
 
-```js
+```jsx
 import React from 'react';
 import { graphql } from 'gatsby';
 
@@ -65,7 +65,7 @@ In this example, Gatsby is used to generate a blog post page from Markdown files
 
 Server-Side Rendering (SSR) is a technique that generates HTML on the server and sends it to the client as a complete HTML document. This approach can improve the initial load time of the application, as the client only needs to download the HTML, CSS, and JavaScript once. Here's an example of an SSR using the Next.js framework:
 
-```js
+```jsx
 import React from 'react';
 
 export default function Home({ data }) {

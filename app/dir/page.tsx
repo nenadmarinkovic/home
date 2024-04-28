@@ -9,8 +9,9 @@ import Footer from '@/components/Footer';
 import Spotify from '@/components/Spotify';
 
 import styles from '../../styles/pages/layout.module.css';
+import dirStyles from '../../styles/pages/dir.module.css';
 
-export default function Home() {
+export default function Dir() {
   const blogDir = 'directory';
 
   const files = fs.readdirSync(path.join(blogDir));
@@ -43,10 +44,16 @@ export default function Home() {
                 href={'/dir/' + post.slug}
                 passHref
                 key={post.slug}
+                className={dirStyles.post}
               >
-                <h3>{post.meta.title}</h3>
+                <h3 className={dirStyles.postTitle}>
+                  {post.meta.title}
+                </h3>
+                <span>Updated: {post.meta.date}</span>
                 <div>
-                  <p>{post.meta.description}</p>
+                  <p className={dirStyles.postDescription}>
+                    {post.meta.description}
+                  </p>
                 </div>
               </Link>
             ))}

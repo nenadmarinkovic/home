@@ -23,6 +23,7 @@
 .homelink {
   font-size: 15px;
   font-weight: 600;
+  color: var(--color-green-light);
 }
 
 .headerList {
@@ -46,6 +47,10 @@
   border-bottom: 0.5px solid hsla(0, 0%, 100%, 0.1);
   opacity: 1;
   top: 0;
+}
+
+.activePage {
+  color: var(--color-white);
 }
 
 @media screen and (max-width: 560px) {
