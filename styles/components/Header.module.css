@@ -21,10 +21,14 @@
   gap: 55px;
 }
 
-.homelink {
+.homeLink {
   font-size: 15px;
   font-weight: 600;
   color: var(--color-green-light);
+}
+
+.homeLink:hover {
+  color: var(--color-white);
 }
 
 .headerList {

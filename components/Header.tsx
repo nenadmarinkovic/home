@@ -40,7 +40,7 @@ export default function Header() {
         <Container>
           <div className={styles.headerInside}>
             <div
-              className={`${styles.homelink} ${
+              className={`${styles.homeLink} ${
                 pathname === '/' ? `${styles.activePage}` : ''
               }`}
             >
