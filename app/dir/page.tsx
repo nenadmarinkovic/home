@@ -14,7 +14,9 @@ import dirStyles from '../../styles/pages/dir.module.css';
 export default function Dir() {
   const blogDir = 'directory';
 
-  const files = fs.readdirSync(path.join(blogDir));
+  const files = fs
+    .readdirSync(path.join(blogDir))
+    .filter((fn) => fn.endsWith('.mdx'));
 
   const posts = files.map((filename) => {
     const fileContent = fs.readFileSync(
