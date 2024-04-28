@@ -7,9 +7,10 @@ import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
 import Spotify from '@/components/Spotify';
 import CustomMDX from '@/components/Markdown';
+
 import styles from '../../../styles/pages/layout.module.css';
 
-export function useGenerateStaticParams() {
+export async function generateStaticParams() {
   const files = fs.readdirSync(path.join('directory'));
 
   const paths = files.map((filename) => ({
@@ -34,7 +35,7 @@ function getPost({ slug }: { slug: string }) {
   };
 }
 
-export default function DirPage({ params }: any) {
+export default function Page({ params }: any) {
   const props = getPost(params);
 
   return (
