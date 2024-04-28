@@ -59,6 +59,22 @@
   -webkit-text-fill-color: transparent;
 }
 
+.back {
+  color: var(--color-white);
+  display: flex;
+  font-weight: 600;
+  font-size: 14px;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+  max-width: fit-content;
+}
+
+.back:hover .backIcon {
+  transform: translate(-10px, 0);
+}
+
 @media screen and (max-width: 1200px) {
   .productsItemContainer {
     flex-basis: calc(50% - 25px);

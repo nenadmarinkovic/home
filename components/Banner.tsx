@@ -22,8 +22,9 @@ export default function Banner({
         <Container>
           <div className={styles.bannerInside}>
             {pathname.startsWith('/dir/') && (
-              <Link href="/dir">
+              <Link href="/dir" className={styles.back}>
                 <svg
+                  className={styles.backIcon}
                   height="16"
                   strokeLinejoin="round"
                   viewBox="0 0 16 16"
