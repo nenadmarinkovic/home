@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-
 import CustomMDX from '@/components/Markdown';
 import Banner from '@/components/Banner';
 import Header from '@/components/Header';

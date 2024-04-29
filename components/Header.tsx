@@ -41,7 +41,7 @@ export default function Header() {
           <div className={styles.headerInside}>
             <div
               className={`${styles.homeLink} ${
-                pathname === '/' ? `${styles.activePage}` : ''
+                pathname === '/' && `${styles.activePage}`
               }`}
             >
               <Link href="/">Nenad Marinković</Link>
@@ -50,25 +50,22 @@ export default function Header() {
               <ul className={styles.headerUnorderedList}>
                 <li
                   className={`${styles.headerList} ${
-                    pathname === '/dir' ? `${styles.activePage}` : ''
+                    pathname.startsWith('/dir') &&
+                    `${styles.activePage}`
                   }`}
                 >
                   <Link href="/dir">Directory</Link>
                 </li>
                 <li
                   className={`${styles.headerList} ${
-                    pathname === '/about'
-                      ? `${styles.activePage}`
-                      : ''
+                    pathname === '/about' && `${styles.activePage}`
                   }`}
                 >
                   <Link href="/about">About</Link>
                 </li>
                 <li
                   className={`${styles.headerList} ${
-                    pathname === '/contact'
-                      ? `${styles.activePage}`
-                      : ''
+                    pathname === '/contact' && `${styles.activePage}`
                   }`}
                 >
                   <Link href="/contact">Contact</Link>

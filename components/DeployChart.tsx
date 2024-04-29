@@ -1,8 +1,9 @@
-"use client";
-import React, { useEffect, useState, useRef } from "react";
-import Image from "next/image";
+'use client';
 
-import styles from "../styles/components/Deploy.module.css";
+import React, { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
+
+import styles from '../styles/components/Deploy.module.css';
 
 function DeployChart() {
   const [isInView, setIsInView] = useState(false);
@@ -20,8 +21,10 @@ function DeployChart() {
 
       const threshold = 0.1;
 
-      const topVisible = chartRect.top < viewportHeight * (1 - threshold);
-      const bottomVisible = chartRect.bottom > viewportHeight * threshold;
+      const topVisible =
+        chartRect.top < viewportHeight * (1 - threshold);
+      const bottomVisible =
+        chartRect.bottom > viewportHeight * threshold;
 
       if (topVisible && bottomVisible) {
         setIsInView(true);
@@ -32,8 +35,8 @@ function DeployChart() {
 
     checkIfInView();
 
-    window.addEventListener("scroll", checkIfInView);
-    return () => window.removeEventListener("scroll", checkIfInView);
+    window.addEventListener('scroll', checkIfInView);
+    return () => window.removeEventListener('scroll', checkIfInView);
   }, []);
 
   useEffect(() => {
@@ -52,9 +55,9 @@ function DeployChart() {
   }, [isInView, isCurrent]);
 
   const steps = [
-    "Double-check all code for errors to prevent any potential issues before launch.",
-    "Conduct thorough testing to ensure all features function seamlessly.",
-    "Test the website under various conditions to guarantee the best performance.",
+    'Double-check all code for errors to prevent any potential issues before launch.',
+    'Conduct thorough testing to ensure all features function seamlessly.',
+    'Test the website under various conditions to guarantee the best performance.',
     `Once confident in your website's readiness, deploy it and share your vision with the world.`,
   ];
 
@@ -72,7 +75,7 @@ function DeployChart() {
             <div className={styles.deployChartItemIcon}>
               <Image
                 className={`${styles.deployChartItemIconSpinner} ${
-                  isInView && isCurrent === i ? styles.animate : ""
+                  isInView && isCurrent === i ? styles.animate : ''
                 }`}
                 src="/icons/loading.svg"
                 alt="Loading"
@@ -81,7 +84,7 @@ function DeployChart() {
               />
               <Image
                 className={`${styles.deployChartItemIconCheck} ${
-                  isInView && isCurrent > i ? styles.animate : ""
+                  isInView && isCurrent > i ? styles.animate : ''
                 }`}
                 src="/icons/check.svg"
                 alt="Check"
@@ -91,7 +94,7 @@ function DeployChart() {
             </div>
             <div
               className={`${styles.deployChartItemText} ${
-                isInView && isCurrent > i ? styles.textPopup : ""
+                isInView && isCurrent > i ? styles.textPopup : ''
               }`}
             >
               {i + 1}. {steps[i]}

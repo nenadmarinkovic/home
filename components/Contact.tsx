@@ -1,9 +1,9 @@
 import SectionHeader from './Section';
 import Container from '@/containers/Container';
 import Link from 'next/link';
+import stylesButton from '../styles/components/Button.module.css';
 
 import styles from '../styles/components/Contact.module.css';
-import stylesButton from '../styles/components/Button.module.css';
 
 function Contact() {
   return (
