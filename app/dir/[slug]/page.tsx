@@ -6,9 +6,11 @@ import Banner from '@/components/Banner';
 import Header from '@/components/Header';
 import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
-import Spotify from '@/components/Spotify';
+import dynamic from 'next/dynamic';
 
 import styles from '../../../styles/pages/layout.module.css';
+
+const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
 
 export async function generateStaticParams() {
   const files = fs.readdirSync(path.join('directory'));
@@ -52,7 +54,7 @@ export default function Page({ params }: any) {
           </Container>
         </div>
       </section>
-      <Spotify />
+      <DynamicSpotify />
       <Footer />
     </>
   );

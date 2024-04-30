@@ -7,9 +7,11 @@ import Projects from '@/components/Projects';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import Products from '@/components/Products';
-import Spotify from '@/components/Spotify';
+import dynamic from 'next/dynamic';
 
 import styles from '../styles/pages/layout.module.css';
+
+const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
 
 export default function Home() {
   return (
@@ -23,7 +25,7 @@ export default function Home() {
         <Deploy />
         <Projects />
         <Contact />
-        <Spotify />
+        <DynamicSpotify />
       </main>
       <Footer />
     </>
