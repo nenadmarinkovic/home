@@ -52,20 +52,24 @@ export default function Page({ params }: any) {
       <section className={styles.contentContainer}>
         <div className={styles.content}>
           <Container>
-            <ul>
-              {headings &&
-                headings.map((heading: string, index: number) => {
-                  const id = heading
-                    .toLowerCase()
-                    .replace(/\s+/g, '-');
-                  return (
-                    <li key={index}>
-                      <a href={`#${id}`}>{heading}</a>
-                    </li>
-                  );
-                })}
-            </ul>
-            <CustomMDX source={props.content}></CustomMDX>
+            <div className={styles.contentFlex}>
+              <ul className={styles.contentList}>
+                {headings &&
+                  headings.map((heading: string, index: number) => {
+                    const id = heading
+                      .toLowerCase()
+                      .replace(/\s+/g, '-');
+                    return (
+                      <li key={index}>
+                        <a href={`#${id}`}>{heading}</a>
+                      </li>
+                    );
+                  })}
+              </ul>
+              <div className={styles.contentSection}>
+                <CustomMDX source={props.content}></CustomMDX>
+              </div>
+            </div>
           </Container>
         </div>
       </section>

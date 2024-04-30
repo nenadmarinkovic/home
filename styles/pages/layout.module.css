@@ -50,3 +50,42 @@
   line-height: 1.55;
   color: var(--color-green-light);
 }
+
+.contentFlex {
+  display: flex;
+  justify-content: space-between;
+  display: flex;
+}
+
+.contentList {
+  position: sticky;
+  align-self: flex-start;
+  top: 0;
+  overflow-y: auto;
+  top: 50px;
+  color: var(--color-green-light);
+  line-height: 2.5;
+}
+
+.contentSection {
+  max-width: 70%;
+  margin-left: auto;
+}
+
+.contentSection h1:not(:first-child),
+.contentSection h2:not(:first-child),
+.contentSection h3:not(:first-child),
+.contentSection h4:not(:first-child),
+.contentSection h5:not(:first-child),
+.contentSection h6:not(:first-child) {
+  padding-top: 52px;
+}
+
+.contentSection h1,
+.contentSection h2,
+.contentSection h3,
+.contentSection h4,
+.contentSection h5,
+.contentSection h6 {
+  padding-bottom: 12px;
+}
