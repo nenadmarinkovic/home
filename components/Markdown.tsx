@@ -1,5 +1,7 @@
 import { MDXRemote, MDXRemoteProps } from 'remote-mdx/rsc';
 import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 export default function CustomMDX(
   props: React.JSX.IntrinsicAttributes & MDXRemoteProps
@@ -10,8 +12,9 @@ export default function CustomMDX(
       components={{ ...(props.components || {}) }}
       options={{
         mdxOptions: {
-          remarkPlugins: [],
           rehypePlugins: [
+            rehypeSlug,
+            [rehypeAutolinkHeadings, { behavior: 'wrap' }],
             [rehypePrettyCode, { theme: 'dark-plus' }] as any,
           ],
         },

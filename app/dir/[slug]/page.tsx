@@ -40,6 +40,8 @@ function getPost({ slug }: { slug: string }) {
 export default function Page({ params }: any) {
   const props = getPost(params);
 
+  const headings = props.fontMatter.headings;
+
   return (
     <>
       <Header />
@@ -50,6 +52,19 @@ export default function Page({ params }: any) {
       <section className={styles.contentContainer}>
         <div className={styles.content}>
           <Container>
+            <ul>
+              {headings &&
+                headings.map((heading: string, index: number) => {
+                  const id = heading
+                    .toLowerCase()
+                    .replace(/\s+/g, '-');
+                  return (
+                    <li key={index}>
+                      <a href={`#${id}`}>{heading}</a>
+                    </li>
+                  );
+                })}
+            </ul>
             <CustomMDX source={props.content}></CustomMDX>
           </Container>
         </div>
