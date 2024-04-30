@@ -68,8 +68,12 @@
 }
 
 .contentSection {
-  max-width: 70%;
+  max-width: 65%;
   margin-left: auto;
+}
+
+.contentSection p {
+  font-size: 17px;
 }
 
 .contentSection h1:not(:first-child),
