@@ -13,6 +13,7 @@ export default function Banner({
   paragraphText,
   additionalText,
   children,
+  fullWidth,
 }: BannerProps) {
   const pathname = usePathname();
 
@@ -41,7 +42,11 @@ export default function Banner({
                   Go back to Directory
                 </Link>
               )}
-              <h1 className={styles.bannerText}>
+              <h1
+                className={`${styles.bannerText} ${
+                  fullWidth && styles.fullBannerTextWidth
+                }`}
+              >
                 {title}
                 <span className={styles.highlighted_text}>
                   {' '}

@@ -1,12 +1,12 @@
 import fs from 'fs';
-import path from 'path';
 import matter from 'gray-matter';
-import Link from 'next/link';
+import path from 'path';
+import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
 import Banner from '@/components/Banner';
 import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
-import dynamic from 'next/dynamic';
+import Category from '@/components/Category';
 
 import styles from '../../styles/pages/layout.module.css';
 
@@ -30,6 +30,10 @@ export default function Home() {
     };
   });
 
+  const categories = Array.from(
+    new Set(posts.map((post) => post.meta.category))
+  );
+
   return (
     <>
       <Header />
@@ -39,23 +43,17 @@ export default function Home() {
       />
       <section className={styles.contentContainer}>
         <Container>
-          <div>
-            {posts.map((post) => (
-              <Link
-                href={'/dir/' + post.slug}
-                passHref
-                key={post.slug}
-                className={styles.post}
-              >
-                <h2 className={styles.postTitle}>
-                  {post.meta.title}
-                </h2>
-                <p className={styles.postDescription}>
-                  {post.meta.description}
-                </p>
-              </Link>
-            ))}
-          </div>
+          <Category
+            categories={categories}
+            posts={posts.map((post) => ({
+              meta: {
+                category: post.meta.category,
+                title: post.meta.title,
+                description: post.meta.description,
+              },
+              slug: post.slug,
+            }))}
+          />
         </Container>
       </section>
       <DynamicSpotify />

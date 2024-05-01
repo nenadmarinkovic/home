@@ -48,6 +48,7 @@ export default function Page({ params }: any) {
       <Banner
         title={props.fontMatter.title}
         paragraphText={props.fontMatter.description}
+        fullWidth={true}
       />
       <section className={styles.contentContainer}>
         <div className={styles.content}>

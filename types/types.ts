@@ -90,4 +90,17 @@ export type BannerProps = {
   paragraphText: JSX.Element | string;
   additionalText?: string;
   children?: React.ReactNode;
+  fullWidth?: boolean;
+};
+
+export type TagType = {
+  color: string;
+  text: string;
+};
+
+export type TagButtonType = {
+  color: string;
+  text: string;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  active?: string | boolean;
 };

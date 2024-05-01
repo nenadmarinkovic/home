@@ -50,6 +50,10 @@
   z-index: 2;
 }
 
+.fullBannerTextWidth {
+  max-width: 100%;
+}
+
 .headerText {
   background: var(--color-green);
   text-align: center;
