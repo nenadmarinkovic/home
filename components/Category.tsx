@@ -25,7 +25,13 @@ const Category: React.FC<CategoryProps> = ({ categories, posts }) => {
         );
 
   const handleCategorySelect = (category: string) => {
-    router.push(`?category=${category}`);
+    if (category === '') {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('category');
+      router.push(url.toString());
+    } else {
+      router.push(`?category=${category}`);
+    }
   };
 
   return (
@@ -35,7 +41,7 @@ const Category: React.FC<CategoryProps> = ({ categories, posts }) => {
           className={`${styles.tag} ${
             'All' === selectedCategory ? `${styles.selectedTag}` : ''
           }`}
-          onClick={() => handleCategorySelect('All')}
+          onClick={() => handleCategorySelect('')}
         >
           All
         </button>
@@ -61,8 +67,10 @@ const Category: React.FC<CategoryProps> = ({ categories, posts }) => {
             key={post.slug}
             className={styles.post}
           >
-            <h2>{post.meta.title}</h2>
-            <p>{post.meta.description}</p>
+            <h2 className={styles.postTitle}>{post.meta.title}</h2>
+            <p className={styles.postDescription}>
+              {post.meta.description}
+            </p>
           </Link>
         ))}
       </div>
