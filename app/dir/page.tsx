@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { Suspense } from 'react';
 import matter from 'gray-matter';
 import path from 'path';
 import dynamic from 'next/dynamic';
@@ -43,17 +44,19 @@ export default function Home() {
       />
       <section className={styles.contentContainer}>
         <Container>
-          <Category
-            categories={categories}
-            posts={posts.map((post) => ({
-              meta: {
-                category: post.meta.category,
-                title: post.meta.title,
-                description: post.meta.description,
-              },
-              slug: post.slug,
-            }))}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Category
+              categories={categories}
+              posts={posts.map((post) => ({
+                meta: {
+                  category: post.meta.category,
+                  title: post.meta.title,
+                  description: post.meta.description,
+                },
+                slug: post.slug,
+              }))}
+            />
+          </Suspense>
         </Container>
       </section>
       <DynamicSpotify />
