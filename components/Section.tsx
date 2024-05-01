@@ -1,10 +1,6 @@
-import styles from '../styles/components/Section.module.css';
+import { SectionHeaderProps } from '../types/types';
 
-interface SectionHeaderProps {
-  header: string;
-  title: string;
-  text: string;
-}
+import styles from '../styles/components/Section.module.css';
 
 const Section: React.FC<SectionHeaderProps> = ({
   header,

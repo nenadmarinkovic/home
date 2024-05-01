@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+
 import styles from '../styles/pages/layout.module.css';
 
 type CategoryProps = {

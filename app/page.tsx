@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
 import HomeBanner from '@/components/HomeBanner';
 import Develop from '@/components/Develop';
@@ -7,7 +8,6 @@ import Projects from '@/components/Projects';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import Products from '@/components/Products';
-import dynamic from 'next/dynamic';
 
 import styles from '../styles/pages/layout.module.css';
 

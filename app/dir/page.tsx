@@ -1,7 +1,7 @@
 import fs from 'fs';
-import { Suspense } from 'react';
 import matter from 'gray-matter';
 import path from 'path';
+import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
 import Banner from '@/components/Banner';

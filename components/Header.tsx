@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Container from '@/containers/Container';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import styles from '../styles/components/Header.module.css';
 
 export default function Header() {

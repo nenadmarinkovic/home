@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { SpotifySongType } from '../types/types';
 
 import styles from '../styles/components/Spotify.module.css';
-import Image from 'next/image';
 
 export default function Spotify() {
   const [data, setData] = useState<SpotifySongType | null>(null);

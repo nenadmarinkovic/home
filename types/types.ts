@@ -1,51 +1,63 @@
 import { ReactNode } from 'react';
 
-export interface Language {
+export type Language = {
   language: string;
   count: number;
-}
+};
 
-interface RepositoryLanguage {
+type RepositoryLanguage = {
   name: string;
-}
+};
 
-export interface Repository {
+export type Repository = {
   name: string;
   languages: {
     nodes: RepositoryLanguage[];
   };
-}
+};
 
-interface RepositoriesPageInfo {
+type RepositoriesPageInfo = {
   endCursor: string | null;
   hasNextPage: boolean;
-}
+};
 
-export interface UserRepositories {
+export type UserRepositories = {
   nodes: Repository[];
   pageInfo: RepositoriesPageInfo;
-}
+};
 
-export interface UserData {
+export type UserData = {
   user: {
     repositories: UserRepositories;
   };
-}
+};
 
-export interface Repo {
+export type ProductItemProps = {
+  title: string;
+  text: string;
+  icon: React.ReactNode;
+};
+
+export type SectionHeaderProps = {
+  header: string;
+  title: string;
+  text: string;
+};
+
+export type Repo = {
   name: string;
   languages_url: string;
-}
+};
 
-export interface RepoData {
+export type RepoData = {
   name: string;
   languages: Record<string, number>;
-}
+};
 
-export interface DevelopChartProps {
+export type DevelopChartProps = {
   data: { language: string; percentage: number }[];
   maxPercentage: number;
-}
+};
 
 export type SpotifyDataType = {
   is_playing: boolean;

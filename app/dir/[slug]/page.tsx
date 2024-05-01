@@ -1,12 +1,12 @@
 import fs from 'fs';
 import path from 'path';
+import dynamic from 'next/dynamic';
 import matter from 'gray-matter';
 import CustomMDX from '@/components/Markdown';
 import Banner from '@/components/Banner';
 import Header from '@/components/Header';
 import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
-import dynamic from 'next/dynamic';
 
 import styles from '../../../styles/pages/layout.module.css';
 

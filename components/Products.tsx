@@ -1,12 +1,8 @@
 import Container from '@/containers/Container';
 import SectionHeader from './Section';
-import styles from '../styles/components/Products.module.css';
+import { ProductItemProps } from '@/types/types';
 
-interface ProductItemProps {
-  title: string;
-  text: string;
-  icon: React.ReactNode;
-}
+import styles from '../styles/components/Products.module.css';
 
 function ProductItem({ title, text, icon }: ProductItemProps) {
   return (

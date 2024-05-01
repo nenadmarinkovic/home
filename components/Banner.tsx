@@ -1,9 +1,9 @@
 'use client';
 
 import Container from '@/containers/Container';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { BannerProps } from '@/types/types';
-import Link from 'next/link';
 
 import styles from '../styles/components/Banner.module.css';
 
