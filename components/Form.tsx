@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 
+import styles from '../styles/components/Form.module.css';
 interface FormInput {
   name: string;
   email: string;
@@ -14,7 +15,7 @@ const Form = () => {
 
   const onSubmit = async (formData: FormInput) => {
     try {
-      const response = await fetch('/api/send', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,9 +46,9 @@ const Form = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Name:
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <label className={styles.label}>
+        <span className={styles.labelName}>Name:</span>
         <input
           type="text"
           value={name}
@@ -55,8 +56,8 @@ const Form = () => {
           required
         />
       </label>
-      <label>
-        Email:
+      <label className={styles.label}>
+        <span className={styles.labelName}>Email:</span>
         <input
           type="email"
           value={email}
@@ -64,15 +65,17 @@ const Form = () => {
           required
         />
       </label>
-      <label>
-        Message:
+      <label className={styles.label}>
+        <span className={styles.labelName}>Message:</span>
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           required
         />
       </label>
-      <button type="submit">Send</button>
+      <button className={styles.submit} type="submit">
+        Send
+      </button>
     </form>
   );
 };

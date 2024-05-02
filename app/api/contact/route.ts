@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
-import EmailTemplate from '@/components/EmailTemplate';
+import Email from '@/components/Email';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -12,8 +12,10 @@ export async function POST(req: NextRequest) {
       from: 'Hello <hello@nenadmarinkovic.com>',
       to: `nenadmarinkovic@protonmail.com`,
       subject: `${name} has a message!`,
-      react: EmailTemplate({ name, email, message }),
-      text: 'This is the text version of the email.',
+      react: Email({ name, email, message }),
+      text: `Hi Nenad, ${name} has sent you a message.
+      You can reply to them at ${email}.
+      Here is the message: ${message}`,
     });
 
     return NextResponse.json(data);

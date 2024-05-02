@@ -19,7 +19,15 @@ export default function Home() {
       />
       <section className={styles.contentContainer}>
         <Container>
-          <Form />
+          <div className={styles.contentFlex}>
+            <ul className={styles.contentList}>
+              <li>nenadmarinkovic@protonmail.com</li>
+              <li>Some text more here</li>
+            </ul>
+            <div className={styles.contentSection}>
+              <Form />
+            </div>
+          </div>
         </Container>
       </section>
       <DynamicSpotify />

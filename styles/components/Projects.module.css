@@ -47,11 +47,12 @@
 }
 
 .tag {
+  background-color: transparent;
   border: 2px solid var(--color-dimmed);
   font-size: 15px;
   border-radius: 20px;
   font-weight: 600;
-  padding: 0 10px;
+  padding: 2.5px 15px;
   color: var(--color-white);
 }
 

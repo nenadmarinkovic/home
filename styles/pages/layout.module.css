@@ -62,27 +62,15 @@
   align-self: flex-start;
   top: 0;
   overflow-y: auto;
-  top: 50px;
+  top: 52px;
   color: var(--color-green-light);
   line-height: 2.5;
+  margin-top: 52px;
 }
 
 .contentSection {
   max-width: 65%;
   margin-left: auto;
-}
-
-.contentSection p {
-  font-size: 17px;
-}
-
-.contentSection h1:not(:first-child),
-.contentSection h2:not(:first-child),
-.contentSection h3:not(:first-child),
-.contentSection h4:not(:first-child),
-.contentSection h5:not(:first-child),
-.contentSection h6:not(:first-child) {
-  padding-top: 52px;
 }
 
 .contentSection h1,
@@ -91,7 +79,23 @@
 .contentSection h4,
 .contentSection h5,
 .contentSection h6 {
-  padding-bottom: 12px;
+  padding-top: 52px;
+}
+
+.contentSection p {
+  font-size: 17px;
+  color: var(--color-green-light);
+  padding-bottom: 16px;
+  line-height: 1.55;
+}
+
+.contentSection h1,
+.contentSection h2,
+.contentSection h3,
+.contentSection h4,
+.contentSection h5,
+.contentSection h6 {
+  padding-bottom: 16px;
 }
 
 .tags {
@@ -100,14 +104,14 @@
 }
 
 .tag {
+  background-color: transparent;
   border: 2px solid var(--color-dimmed);
-  font-size: 14px;
+  font-size: 15px;
   border-radius: 20px;
   font-weight: 600;
-  padding: 5px 15px;
+  padding: 2.5px 15px;
   color: var(--color-white);
   cursor: pointer;
-  background-color: transparent;
 }
 
 .selectedTag {
@@ -118,4 +122,10 @@
 
 .tag:hover {
   transform: scale(1.05);
+}
+
+.photo {
+  object-fit: cover;
+  border-radius: 5px;
+  border-radius: 50%;
 }

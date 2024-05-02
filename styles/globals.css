@@ -75,3 +75,15 @@ pre {
   font-size: 14px;
   line-height: 1.5;
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid var(--color-dimmed);
+  padding: 5px;
+  text-align: left;
+}
