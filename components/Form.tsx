@@ -1,12 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { FormInput } from '@/types/types';
 
 import styles from '../styles/components/Form.module.css';
-interface FormInput {
-  name: string;
-  email: string;
-  message: string;
-}
 
 const Form = () => {
   const [name, setName] = useState('');
@@ -48,7 +44,7 @@ const Form = () => {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <label className={styles.label}>
-        <span className={styles.labelName}>Name:</span>
+        <span className={styles.labelName}>Your name:</span>
         <input
           type="text"
           value={name}
@@ -57,7 +53,7 @@ const Form = () => {
         />
       </label>
       <label className={styles.label}>
-        <span className={styles.labelName}>Email:</span>
+        <span className={styles.labelName}>Your email:</span>
         <input
           type="email"
           value={email}
@@ -66,7 +62,7 @@ const Form = () => {
         />
       </label>
       <label className={styles.label}>
-        <span className={styles.labelName}>Message:</span>
+        <span className={styles.labelName}>Your message:</span>
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}

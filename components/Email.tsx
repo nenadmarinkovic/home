@@ -1,10 +1,6 @@
-import styles from '../styles/components/Email.module.css';
+import { EmailProps } from '@/types/types';
 
-interface EmailProps {
-  name: string;
-  email: string;
-  message: string;
-}
+import styles from '../styles/components/Email.module.css';
 
 export const Email: React.FC<Readonly<EmailProps>> = ({
   name,

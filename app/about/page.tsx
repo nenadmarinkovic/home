@@ -71,6 +71,7 @@ export default function Home() {
                 understanding of societal dynamics and their
                 connection to technology.
               </p>
+              <h3>Some text here</h3>
               <p>
                 Outside of work, I’m also dedicated to learning German
                 and Go programming language. I also find pleasure in
@@ -80,8 +81,15 @@ export default function Home() {
                 my journeys through .
               </p>
               <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing
+                elit. Velit dolores natus molestias quae laudantium
+                temporibus eum illo odit excepturi a fugit distinctio,
+                impedit, consequatur corporis error dignissimos ut?
+                Omnis, voluptatum!
+              </p>
+              <p>
                 If you’re in the area and up for hanging out, or want
-                to discuss a project, feel free to .
+                to discuss a project, feel free to reach out to me.
               </p>
             </div>
           </div>

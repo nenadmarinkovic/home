@@ -40,7 +40,8 @@ export default function Home() {
       <Header />
       <Banner
         title="Directory"
-        paragraphText="Web directory for notes, bookmarks, resources, and the things I’m interested in. All the content is open-source."
+        paragraphText="Web directory for notes, bookmarks, resources, and the things I’m interested in. All the content is open-source. All the content is open-source.
+        For my travel photos, check out the Photography page."
       />
       <section className={styles.contentContainer}>
         <Container>

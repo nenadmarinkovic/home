@@ -116,3 +116,15 @@ export type TagButtonType = {
   onClick?: React.MouseEventHandler<HTMLElement>;
   active?: string | boolean;
 };
+
+export type FormInput = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+export type EmailProps = {
+  name: string;
+  email: string;
+  message: string;
+};

@@ -1,7 +1,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   width: 580px;
   max-width: 100%;
   margin-top: 52px;
@@ -15,7 +15,9 @@
 
 .labelName {
   color: var(--color-green-light);
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .label input {
@@ -41,12 +43,16 @@
   background: var(--color-white);
   border: 0;
   color: var(--color-black);
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 10px 25px;
+  border-radius: 50px;
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
   width: 250px;
   font-weight: 600;
+  font-size: 14px;
   margin-left: auto;
+}
+
+.submit:hover {
+  transform: scale(1.05);
 }
