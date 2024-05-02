@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
 
 import styles from '../../styles/pages/layout.module.css';
+import Form from '@/components/Form';
 
 export default function Home() {
   return (
@@ -17,7 +18,9 @@ export default function Home() {
         paragraphText="Feel free to get in touch with me through the form below or by sending an email. I would love to hear from you and discuss any inquiries, collaborations, or opportunities you may have."
       />
       <section className={styles.contentContainer}>
-        <Container>nenadmarinkovic@protonmail.com</Container>
+        <Container>
+          <Form />
+        </Container>
       </section>
       <DynamicSpotify />
       <Footer />
