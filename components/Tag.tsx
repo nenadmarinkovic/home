@@ -2,36 +2,33 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-
 import styles from '../styles/pages/layout.module.css';
 
-type CategoryProps = {
-  categories: string[];
+type TagProps = {
+  tags: string[];
   posts: {
-    meta: { category: string; title: string; description: string };
+    meta: { tag: string; title: string; description: string };
     slug: string;
   }[];
 };
 
-const Category: React.FC<CategoryProps> = ({ categories, posts }) => {
+const Tag: React.FC<TagProps> = ({ tags, posts }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const selectedCategory = searchParams.get('category') || 'All';
+  const selectedTag = searchParams.get('tag') || 'All';
 
   const filteredPosts =
-    selectedCategory === 'All'
+    selectedTag === 'All'
       ? posts
-      : posts.filter(
-          (post) => post.meta.category === selectedCategory
-        );
+      : posts.filter((post) => post.meta.tag === selectedTag);
 
-  const handleCategorySelect = (category: string) => {
-    if (category === '') {
+  const handleTagSelect = (tag: string) => {
+    if (tag === '') {
       const url = new URL(window.location.href);
-      url.searchParams.delete('category');
+      url.searchParams.delete('tag');
       router.push(url.toString());
     } else {
-      router.push(`?category=${category}`);
+      router.push(`?tag=${tag}`);
     }
   };
 
@@ -40,23 +37,21 @@ const Category: React.FC<CategoryProps> = ({ categories, posts }) => {
       <div className={styles.tags}>
         <button
           className={`${styles.tag} ${
-            'All' === selectedCategory ? `${styles.selectedTag}` : ''
+            'All' === selectedTag ? `${styles.selectedTag}` : ''
           }`}
-          onClick={() => handleCategorySelect('')}
+          onClick={() => handleTagSelect('')}
         >
           All
         </button>
-        {categories.map((category) => (
+        {tags.map((tag) => (
           <button
-            key={category}
+            key={tag}
             className={`${styles.tag} ${
-              category === selectedCategory
-                ? `${styles.selectedTag}`
-                : ''
+              tag === selectedTag ? `${styles.selectedTag}` : ''
             }`}
-            onClick={() => handleCategorySelect(category)}
+            onClick={() => handleTagSelect(tag)}
           >
-            {category}
+            {tag}
           </button>
         ))}
       </div>
@@ -79,4 +74,4 @@ const Category: React.FC<CategoryProps> = ({ categories, posts }) => {
   );
 };
 
-export default Category;
+export default Tag;

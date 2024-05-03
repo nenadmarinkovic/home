@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import Banner from '@/components/Banner';
 import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
-import Category from '@/components/Category';
+import Tag from '@/components/Tag';
 
 import styles from '../../styles/pages/layout.module.css';
 
@@ -31,8 +31,8 @@ export default function Home() {
     };
   });
 
-  const categories = Array.from(
-    new Set(posts.map((post) => post.meta.category))
+  const tags = Array.from(
+    new Set(posts.map((post) => post.meta.tag))
   );
 
   return (
@@ -41,16 +41,16 @@ export default function Home() {
       <Banner
         title="Directory"
         paragraphText="Web directory for notes, bookmarks, resources, and the things I’m interested in. All the content is open-source. All the content is open-source.
-        For my travel photos, check out the Photography page."
+For my travel photos, check out the Photography page."
       />
       <section className={styles.contentContainer}>
         <Container>
           <Suspense fallback={<div>Loading...</div>}>
-            <Category
-              categories={categories}
+            <Tag
+              tags={tags}
               posts={posts.map((post) => ({
                 meta: {
-                  category: post.meta.category,
+                  tag: post.meta.tag,
                   title: post.meta.title,
                   description: post.meta.description,
                 },
