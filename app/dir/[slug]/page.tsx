@@ -55,6 +55,9 @@ export default function Page({ params }: any) {
           <Container>
             <div className={styles.contentFlex}>
               <ul className={styles.contentList}>
+                <span className={styles.contentListTitle}>
+                  # Contents
+                </span>
                 {headings &&
                   headings.map((heading: string, index: number) => {
                     const id = heading

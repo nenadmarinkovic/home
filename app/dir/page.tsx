@@ -51,6 +51,7 @@ For my travel photos, check out the Photography page."
               posts={posts.map((post) => ({
                 meta: {
                   tag: post.meta.tag,
+                  date: post.meta.date,
                   title: post.meta.title,
                   description: post.meta.description,
                 },

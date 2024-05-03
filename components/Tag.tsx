@@ -7,7 +7,12 @@ import styles from '../styles/pages/layout.module.css';
 type TagProps = {
   tags: string[];
   posts: {
-    meta: { tag: string; title: string; description: string };
+    meta: {
+      tag: string;
+      date: string;
+      title: string;
+      description: string;
+    };
     slug: string;
   }[];
 };
@@ -64,6 +69,10 @@ const Tag: React.FC<TagProps> = ({ tags, posts }) => {
             className={styles.post}
           >
             <h2 className={styles.postTitle}>{post.meta.title}</h2>
+            <span className={styles.postDate}>
+              {' '}
+              {post.meta.date} #{post.meta.tag.toLocaleLowerCase()}
+            </span>
             <p className={styles.postDescription}>
               {post.meta.description}
             </p>

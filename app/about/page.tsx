@@ -21,13 +21,17 @@ export default function Home() {
         <Container>
           <div className={styles.contentFlex}>
             <ul className={styles.contentList}>
-              <Image
-                src="/images/photo.webp"
-                alt="Nenad Marinković"
-                width={210}
-                height={210}
-                className={styles.photo}
-              />
+              <div className={styles.photoContainer}>
+                <Image
+                  src="/images/photo.webp"
+                  alt="Nenad Marinković"
+                  width={210}
+                  height={210}
+                  className={styles.photo}
+                />
+                <div className={styles.photoBlur}></div>
+              </div>
+
               <li>Some text here</li>
               <li>Some text here</li>
               <li>Some text here</li>
