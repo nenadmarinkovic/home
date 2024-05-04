@@ -24,7 +24,7 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.35px;
-  max-width: 70%;
+  max-width: 80%;
 }
 
 .bannerParagraph {
@@ -32,7 +32,7 @@
   line-height: 1.75;
   padding-top: 30px;
   color: var(--color-green-light);
-  width: 65%;
+  width: 70%;
 }
 
 .highlighted_text {
