@@ -76,6 +76,7 @@ const Tag: React.FC<TagProps> = ({ tags, posts }) => {
             <p className={styles.postDescription}>
               {post.meta.description}
             </p>
+            <span className={styles.readMore}>Read more</span>
           </Link>
         ))}
       </div>

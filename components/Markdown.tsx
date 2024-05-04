@@ -15,7 +15,7 @@ export default function CustomMDX(
           rehypePlugins: [
             rehypeSlug,
             [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-            [rehypePrettyCode, { theme: 'dark-plus' }] as any,
+            [rehypePrettyCode, { theme: 'material-theme' }] as any,
           ],
         },
       }}

@@ -43,6 +43,7 @@
   font-size: 30px;
   font-weight: 800;
   max-width: 70%;
+  position: relative;
 }
 
 .postDate {
@@ -79,9 +80,13 @@
   margin-top: 10px;
 }
 
+.contentList li:hover {
+  color: var(--color-white);
+}
+
 .contentListTitle {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 600;
   color: var(--color-green);
   text-transform: uppercase;
 }
@@ -124,11 +129,12 @@
 .tag {
   background-color: transparent;
   border: 2px solid var(--color-dimmed);
-  font-size: 15px;
+  font-size: 14px;
   border-radius: 20px;
   font-weight: 600;
   padding: 2.5px 15px;
   color: var(--color-white);
+  transition: 0.25s;
   cursor: pointer;
 }
 
@@ -139,7 +145,7 @@
 }
 
 .tag:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .photoContainer {
@@ -152,19 +158,29 @@
   border-radius: 50%;
   position: relative;
   z-index: 5;
-  border: 3px solid var(--color-green);
 }
 
-.photoBlur {
+.quoteIcon {
+  color: var(--color-green);
+}
+
+.readMore {
+  cursor: pointer;
+  position: relative;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-white);
+}
+
+.readMore::after {
+  content: url(../../public/icons/arrow-right.svg);
   position: absolute;
-  inset: -2.5px;
-  background-image: linear-gradient(
-    to top right,
-    var(--tw-gradient-stops-blue)
-  );
-  filter: blur(8px);
-  z-index: 2;
-  border-radius: 50%;
-  width: 100%;
-  height: 100%;
+  top: 2px;
+  display: inline;
+  transform: translateX(10px);
+  transition: 0.35s;
+}
+
+.post:hover .readMore::after {
+  transform: translateX(20px);
 }
