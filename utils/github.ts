@@ -1,6 +1,6 @@
 import { Repo } from '../types/types';
 
-const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 async function fetchFromGithub(url: string): Promise<any> {
   const res = await fetch(url, {

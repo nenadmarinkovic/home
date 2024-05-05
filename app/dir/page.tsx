@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import Tag from '@/components/Tag';
 
 import styles from '../../styles/pages/layout.module.css';
+import Pocket from '@/components/Pocket';
 
 const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
 
@@ -59,6 +60,7 @@ For my travel photos, check out the Photography page."
               }))}
             />
           </Suspense>
+          <Pocket />
         </Container>
       </section>
       <DynamicSpotify />
