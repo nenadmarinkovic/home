@@ -12,7 +12,7 @@ export default function Spotify() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api/playing');
+        const response = await fetch('/api/play');
 
         if (!response.ok) {
           throw new Error('Failed to fetch data');

@@ -184,3 +184,22 @@
 .post:hover .readMore::after {
   transform: translateX(20px);
 }
+
+.newTab {
+  color: var(--color-white);
+  display: flex;
+  font-weight: 600;
+  font-size: 14px;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.newTab::after {
+  content: url(../../public/icons/arrow-up.svg);
+  transition: 0.35s;
+}
+
+.post:hover .newTab::after {
+  transform: translate(5px, -5px);
+}

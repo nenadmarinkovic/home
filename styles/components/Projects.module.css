@@ -56,6 +56,10 @@
   color: var(--color-white);
 }
 
+.pageIcon {
+  transition: 0.35s;
+}
+
 .link {
   margin-left: auto;
   color: var(--color-white);
