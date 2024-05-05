@@ -18,7 +18,9 @@ export default function Home() {
         paragraphText="Feel free to get in touch with me through the form below or by sending an email. I would love to hear from you and discuss any inquiries, collaborations, or opportunities you may have."
       />
       <section className={styles.contentContainer}>
-        <Container>Blogroll</Container>
+        <Container>
+          <Pocket />
+        </Container>
       </section>
       <DynamicSpotify />
       <Footer />
