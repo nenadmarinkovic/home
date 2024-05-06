@@ -6,10 +6,9 @@ export async function getArticles(): Promise<ArticleType[]> {
 
   const response = await fetch('https://getpocket.com/v3/get', {
     method: 'POST',
-    cache: 'no-store',
+    // cache: 'no-store',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
       consumer_key: consumerKey,
