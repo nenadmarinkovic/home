@@ -1,21 +1,10 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import styles from '../styles/pages/layout.module.css';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { TagProps } from '../types/types';
 
-type TagProps = {
-  tags: string[];
-  posts: {
-    meta: {
-      tag: string;
-      date: string;
-      title: string;
-      description: string;
-    };
-    slug: string;
-  }[];
-};
+import styles from '../styles/pages/layout.module.css';
 
 const Tag: React.FC<TagProps> = ({ tags, posts }) => {
   const router = useRouter();

@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import styles from '../styles/pages/layout.module.css'; // Adjust the import path to match your file structure
+import { ArticleType } from '@/types/types';
+import styles from '../styles/pages/layout.module.css';
 
 function Pocket() {
-  const [articles, setArticles] = useState<any[]>([]);
+  const [articles, setArticles] = useState<ArticleType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +16,13 @@ function Pocket() {
         const data = await response.json();
 
         if (data && Array.isArray(data.articles)) {
-          setArticles(data.articles);
+          const sortedArticles = data.articles.sort(
+            (a: ArticleType, b: ArticleType) =>
+              new Date(Number(b.date) * 1000).getTime() -
+              new Date(Number(a.date) * 1000).getTime()
+          );
+
+          setArticles(sortedArticles);
         }
         setIsLoading(false);
       } catch (error) {
@@ -33,7 +40,7 @@ function Pocket() {
         <span>Loading...</span>
       ) : (
         <ul className={styles.posts}>
-          {articles.map((article: any, index) => {
+          {articles.map((article: ArticleType) => {
             const date = new Date(article.date * 1000);
             const formattedDate = date.toLocaleDateString('de-DE', {
               day: '2-digit',
@@ -57,9 +64,7 @@ function Pocket() {
                   <p className={styles.postDescription}>
                     {article.excerpt}
                   </p>
-                  <span className={`${styles.newTab}`}>
-                    Read more
-                  </span>
+                  <span className={`${styles.newTab}`}>See more</span>
                 </a>
               </li>
             );

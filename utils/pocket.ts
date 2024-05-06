@@ -1,4 +1,6 @@
-export async function getArticles() {
+import { ArticleType } from '@/types/types';
+
+export async function getArticles(): Promise<ArticleType[]> {
   const consumerKey = process.env.POCKET_CONSUMER_KEY;
   const accessToken = process.env.POCKET_ACCESS_TOKEN;
 
@@ -22,13 +24,15 @@ export async function getArticles() {
 
   const data = await response.json();
 
-  const articles = Object.values(data.list).map((article: any) => ({
-    id: article.item_id,
-    date: article.time_added,
-    url: article.given_url,
-    title: article.given_title,
-    excerpt: article.excerpt,
-  }));
+  const articles: ArticleType[] = Object.values(data.list).map(
+    (article: any) => ({
+      id: article.item_id,
+      date: article.time_added,
+      url: article.resolved_url,
+      title: article.resolved_title,
+      excerpt: article.excerpt,
+    })
+  );
 
   return articles;
 }

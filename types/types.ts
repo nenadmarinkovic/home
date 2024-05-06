@@ -128,3 +128,24 @@ export type EmailProps = {
   email: string;
   message: string;
 };
+
+export type TagProps = {
+  tags: string[];
+  posts: {
+    meta: {
+      tag: string;
+      date: string;
+      title: string;
+      description: string;
+    };
+    slug: string;
+  }[];
+};
+
+export type ArticleType = {
+  id: string;
+  date: number;
+  url: string;
+  title: string;
+  excerpt: string;
+};
