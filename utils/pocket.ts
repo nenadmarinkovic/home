@@ -4,9 +4,10 @@ export async function getArticles() {
 
   const response = await fetch('https://getpocket.com/v3/get', {
     method: 'POST',
+    cache: 'no-store',
     headers: {
       'Content-Type': 'application/json',
-      'X-Accept': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
       consumer_key: consumerKey,
