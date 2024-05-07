@@ -136,6 +136,12 @@ export type TagButtonType = {
   active?: string | boolean;
 };
 
+export type EmailProps = {
+  name: string;
+  email: string;
+  message: string;
+};
+
 export type PostMeta = {
   tag: string;
   date: string;

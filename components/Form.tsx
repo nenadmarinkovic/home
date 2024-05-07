@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { FormInput } from '@/types/types';
+import { EmailProps } from '@/types/types';
 
 import styles from '../styles/components/Form.module.css';
 
@@ -9,7 +9,7 @@ const Form = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
-  const onSubmit = async (formData: FormInput) => {
+  const onSubmit = async (formData: EmailProps) => {
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
