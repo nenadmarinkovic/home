@@ -79,6 +79,25 @@ export type SpotifySongType = {
   title: string;
 };
 
+export type ArtistType = {
+  name: string;
+};
+
+type AlbumType = {
+  name: string;
+  images: { url: string }[];
+};
+
+export type SongType = {
+  is_playing: boolean;
+  item: {
+    name: string;
+    artists: ArtistType[];
+    album: AlbumType;
+    external_urls: { spotify: string };
+  };
+};
+
 export type ErrorResponse = {
   error: string;
 };
@@ -117,34 +136,34 @@ export type TagButtonType = {
   active?: string | boolean;
 };
 
-export type FormInput = {
-  name: string;
-  email: string;
-  message: string;
+export type PostMeta = {
+  tag: string;
+  date: string;
+  title: string;
+  description: string;
 };
 
-export type EmailProps = {
-  name: string;
-  email: string;
-  message: string;
+export type Post = {
+  meta: PostMeta;
+  slug: string;
 };
 
 export type TagProps = {
   tags: string[];
-  posts: {
-    meta: {
-      tag: string;
-      date: string;
-      title: string;
-      description: string;
-    };
-    slug: string;
-  }[];
+  posts: Post[];
+};
+
+export type RawArticleType = {
+  item_id: string;
+  time_added: string;
+  resolved_url: string;
+  resolved_title: string;
+  excerpt: string;
 };
 
 export type ArticleType = {
   id: string;
-  date: number;
+  date: string;
   url: string;
   title: string;
   excerpt: string;

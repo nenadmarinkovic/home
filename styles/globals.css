@@ -1,20 +1,12 @@
 :root {
-  --max-width: 1140px;
-  --border-radius: 12px;
-
   --color-white: #fff;
   --color-black: #000;
   --color-muted: #01050b;
   --color-dimmed: #4f4f4f;
-
   --color-blue: #36c6ff;
   --color-green: #a1e158;
   --color-orange: #eca05e;
-
   --color-green-light: #9fbbbb;
-
-  --linear-gradient: linear-gradient(75deg, #55dc72, #fbbb6d);
-
   --tw-gradient-stops-blue: var(--tw-gradient-from-blue), #000000 100%;
   --tw-gradient-stops-green: var(--tw-gradient-from-green),
     #000000 100%;
@@ -24,13 +16,16 @@
   --tw-gradient-from-green: #074134 100%;
   --tw-gradient-from-orange: #52240b 100%;
   --tw-gradient-to: #acf22e 100%;
+
+  --font-stack: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  transition: 0.15s;
 }
 
 html,
@@ -39,9 +34,7 @@ body {
   font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Helvetica, Arial, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: var(--font-stack);
   scroll-behavior: smooth;
 }
 
@@ -52,6 +45,7 @@ a {
 
 .link {
   text-decoration: underline;
+  transition: 0.15s;
 }
 
 .link:hover {

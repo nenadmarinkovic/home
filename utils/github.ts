@@ -1,21 +1,26 @@
 import { Repo } from '../types/types';
 
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const { GITHUB_TOKEN } = process.env;
 
 async function fetchFromGithub(url: string): Promise<any> {
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-    },
-  });
+  try {
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
+      },
+    });
 
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch data: ${res.status} ${res.statusText}`
-    );
+    if (!res.ok) {
+      throw new Error(
+        `Failed to fetch data: ${res.status} ${res.statusText}`
+      );
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
   }
-
-  return res.json();
 }
 
 export async function fetchRepoLanguages(

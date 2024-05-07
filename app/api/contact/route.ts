@@ -2,10 +2,16 @@ import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
 import Email from '@/components/Email';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const { RESEND_API_KEY } = process.env;
+
+const resend = new Resend(RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   const { name, email, message } = await req.json();
+
+  if (!name || !email || !message) {
+    return NextResponse.json({ error: 'Invalid input' });
+  }
 
   try {
     const data = await resend.emails.send({
@@ -20,6 +26,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ error });
+    console.error('Error:', error);
+    return NextResponse.json({ error: 'Failed to send email' });
   }
 }

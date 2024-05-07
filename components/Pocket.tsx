@@ -42,7 +42,7 @@ function Pocket() {
       ) : (
         <ul className={styles.posts}>
           {articles.map((article: ArticleType) => {
-            const date = new Date(article.date * 1000);
+            const date = new Date(Number(article.date) * 1000);
             const formattedDate = date.toLocaleDateString('de-DE', {
               day: '2-digit',
               month: '2-digit',
