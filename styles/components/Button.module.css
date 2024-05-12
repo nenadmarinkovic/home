@@ -34,12 +34,12 @@
 .more::after {
   content: url(../../public/icons/arrow-right.svg);
   position: absolute;
-  top: 2px;
   display: inline;
-  transform: translateX(10px);
   transition: 0.35s;
+  top: 50%;
+  transform: translate(10px, -50%);
 }
 
 .more:hover::after {
-  transform: translateX(20px);
+  transform: translate(20px, -50%);
 }
