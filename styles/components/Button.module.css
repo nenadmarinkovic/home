@@ -37,7 +37,7 @@
   position: absolute;
   display: inline;
   transition: 0.35s;
-  top: 50%;
+  top: calc(50% + 1px);
   transform: translate(10px, -50%);
 }
 
