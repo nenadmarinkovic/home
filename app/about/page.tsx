@@ -3,9 +3,9 @@ import Banner from '@/components/Banner';
 import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 
 import styles from '../../styles/pages/layout.module.css';
-import Image from 'next/image';
 
 const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
 
@@ -29,7 +29,6 @@ export default function Home() {
                   height={210}
                   className={styles.photo}
                 />
-                <div className={styles.photoBlur}></div>
               </div>
               <svg
                 width="30px"

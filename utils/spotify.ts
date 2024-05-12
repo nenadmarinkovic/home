@@ -1,6 +1,8 @@
-const client_id = process.env.SPOTIFY_CLIENT_ID;
-const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
+const {
+  SPOTIFY_CLIENT_ID: client_id,
+  SPOTIFY_CLIENT_SECRET: client_secret,
+  SPOTIFY_REFRESH_TOKEN: refresh_token,
+} = process.env;
 
 const NOW_PLAYING_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing`;
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
