@@ -38,7 +38,7 @@
 
 .artist {
   color: var(--color-green-light);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .title {
@@ -49,7 +49,7 @@
 
 .spotifyInfo {
   padding-left: 10px;
-  font-size: 14px;
+  font-size: 15px;
   font-style: italic;
   color: var(--color-dimmed);
   max-width: 60%;

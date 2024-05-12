@@ -47,7 +47,7 @@
 }
 
 .postDate {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--color-green);
 }
@@ -85,7 +85,7 @@
 }
 
 .contentListTitle {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--color-green);
   text-transform: uppercase;
@@ -129,7 +129,7 @@
 .tag {
   background-color: transparent;
   border: 2px solid var(--color-dimmed);
-  font-size: 14px;
+  font-size: 15px;
   border-radius: 20px;
   font-weight: 600;
   padding: 2.5px 15px;
@@ -168,7 +168,7 @@
   cursor: pointer;
   position: relative;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--color-white);
 }
 
@@ -189,7 +189,7 @@
   color: var(--color-white);
   display: flex;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   gap: 10px;
   align-items: center;
   cursor: pointer;

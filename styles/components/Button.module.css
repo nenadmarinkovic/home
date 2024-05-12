@@ -7,7 +7,7 @@
   border-radius: 20px;
   transition: 0.25s;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
   z-index: 3;
 }
@@ -27,7 +27,7 @@
   cursor: pointer;
   position: relative;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--color-white);
 }
 
