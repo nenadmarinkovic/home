@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getArticles } from '../../../utils/pocket'; // Adjust the import path to match your file structure
+import { getArticles } from '../../../utils/pocket';
 
 export async function GET() {
   try {
