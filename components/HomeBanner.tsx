@@ -23,9 +23,9 @@ function HomeBanner() {
         <Link href="/contact">
           <button className={stylesButton.button}>Contact</button>
         </Link>
-        <span className={stylesButton.more}>
-          <Link href="/about"> More about me</Link>
-        </span>
+        <Link className={stylesButton.more} href="/about">
+          More about me
+        </Link>
       </div>
     </Banner>
   );
