@@ -58,11 +58,11 @@ export default function Header() {
                 </li>
                 <li
                   className={`${styles.headerList} ${
-                    pathname.startsWith('/blogroll') &&
+                    pathname.startsWith('/feed') &&
                     `${styles.activePage}`
                   }`}
                 >
-                  <Link href="/blogroll">Blogroll</Link>
+                  <Link href="/feed">Feed</Link>
                 </li>
                 <li
                   className={`${styles.headerList} ${

@@ -9,13 +9,13 @@ const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
 
 import styles from '../../styles/pages/layout.module.css';
 
-export default function Home() {
+export default function Feed() {
   return (
     <>
       <Header />
       <Banner
-        title="Blogroll"
-        paragraphText="Feel free to get in touch with me through the form below or by sending an email. I would love to hear from you and discuss any inquiries, collaborations, or opportunities you may have."
+        title="Feed"
+        paragraphText="A collection of articles sourced from my Pocket profile, mainly about programming languages, web development, AI, design and other tech-related topics that I find interesting for saving and sharing."
       />
       <section className={styles.contentContainer}>
         <Container>

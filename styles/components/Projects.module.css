@@ -19,6 +19,7 @@
 
 .button {
   display: flex;
+  transition: 0.35s;
   border: 0;
   font-size: 30px;
   font-weight: 800;
@@ -62,6 +63,7 @@
 
 .link {
   margin-left: auto;
+  transition: 0.25s;
   color: var(--color-white);
   display: flex;
   font-weight: 600;
