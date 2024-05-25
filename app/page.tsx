@@ -4,7 +4,6 @@ import HomeBanner from '@/components/HomeBanner';
 import Develop from '@/components/Develop';
 import Test from '@/components/Test';
 import Deploy from '@/components/Deploy';
-import Projects from '@/components/Projects';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import Products from '@/components/Products';
@@ -23,7 +22,6 @@ export default function Home() {
         <Develop />
         <Test />
         <Deploy />
-        <Projects />
         <Contact />
         <DynamicSpotify />
       </main>
