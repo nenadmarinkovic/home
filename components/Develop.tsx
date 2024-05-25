@@ -125,7 +125,7 @@ export default async function Develop() {
           title="Develop"
           boxColor="blue"
           headerText="In today's digital world, you can spot the difference between a well-built product and a mediocre one in seconds. I make sure yours falls in the first group."
-          mainTitle="Best practices, top performance, and cross-browser-compatibility."
+          mainTitle="Best practices, top performance, and cross-browser-compatibility"
           boxItems={boxItems}
         />
         <div className={processStyles.chartContainer}>
