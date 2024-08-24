@@ -117,7 +117,7 @@ function Products() {
       ),
     },
     {
-      title: 'SaaS applications',
+      title: 'SaaS (Software as a Service)',
       text: 'Robust architecture and scalable solutions for your software as a service.',
       icon: (
         <svg
