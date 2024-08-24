@@ -41,7 +41,7 @@ function Products() {
       ),
     },
     {
-      title: 'Data visualization',
+      title: 'Data visualizations',
       text: 'Interactive charts, graphs, and maps that bring data to life and tell a story.',
       icon: (
         <svg
@@ -98,7 +98,7 @@ function Products() {
       ),
     },
     {
-      title: 'Data-intense applications',
+      title: 'User interfaces & dashboards',
       text: 'Data-intensive applications of all sizes and complexities using React and Vue.js.',
       icon: (
         <svg
@@ -117,8 +117,8 @@ function Products() {
       ),
     },
     {
-      title: 'Data-intense applications',
-      text: 'Data-intensive applications of all sizes and complexities using React and Vue.js.',
+      title: 'SaaS applications',
+      text: 'Robust architecture and scalable solutions for your software as a service.',
       icon: (
         <svg
           height="16"
