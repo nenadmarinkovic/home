@@ -15,7 +15,7 @@
   clip-path: ellipse(60% 100% at 50% 0%);
   transform: rotate(180deg);
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1380px) {
     clip-path: ellipse(80% 100% at 50% 0%);
   }
 
@@ -86,6 +86,7 @@
 }
 
 .footerFlex {
+  position: relative;
   display: flex;
   justify-content: space-between;
   color: var(--color-green-light);

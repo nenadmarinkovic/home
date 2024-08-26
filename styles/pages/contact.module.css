@@ -1,0 +1,26 @@
+.value {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--color-blue);
+}
+
+.text {
+  font-size: 18px;
+  max-width: 300px;
+  font-weight: 400;
+  color: var(--color-green-light);
+}
+
+.info {
+  position: sticky;
+  align-self: flex-start;
+  top: 0;
+  overflow-y: auto;
+  top: 52px;
+  color: var(--color-green-light);
+  line-height: 1.75;
+  margin-top: 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

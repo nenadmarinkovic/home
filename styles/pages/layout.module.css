@@ -63,6 +63,10 @@
   display: flex;
   justify-content: space-between;
   display: flex;
+
+  @media screen and (max-width: 1024) {
+    flex-direction: column;
+  }
 }
 
 .contentList {

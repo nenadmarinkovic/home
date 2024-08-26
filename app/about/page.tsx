@@ -9,7 +9,7 @@ import styles from '../../styles/pages/layout.module.css';
 
 const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
 
-export default function Home() {
+export default function About() {
   return (
     <>
       <Header />
