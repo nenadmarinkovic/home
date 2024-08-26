@@ -1,6 +1,10 @@
 .section {
   padding-top: 80px;
   text-align: center;
+
+  @media screen and (max-width: 560px) {
+    padding-top: 40px;
+  }
 }
 
 .sectionHeader {
@@ -22,8 +26,19 @@
   font-weight: 700;
   margin: 0 auto;
   max-width: 50%;
-  margin: 0 auto;
   color: var(--color-white);
+
+  @media screen and (max-width: 1024px) {
+    font-size: 32px;
+  }
+
+  @media screen and (max-width: 768px) {
+    max-width: 80%;
+  }
+
+  @media screen and (max-width: 560px) {
+    max-width: 100%;
+  }
 }
 
 .sectionText {
@@ -34,38 +49,16 @@
   line-height: 1.75;
   margin: 0 auto;
   padding: 20px 0 45px 0;
-}
 
-@media screen and (max-width: 1024px) {
-  .sectionTitle {
-    font-size: 32px;
-  }
-
-  .sectionText {
+  @media screen and (max-width: 1024px) {
     font-size: 18px;
   }
-}
 
-@media screen and (max-width: 768px) {
-  .sectionTitle {
+  @media screen and (max-width: 768px) {
     max-width: 80%;
   }
 
-  .sectionText {
-    max-width: 80%;
-  }
-}
-
-@media screen and (max-width: 560px) {
-  .section {
-    padding-top: 40px;
-  }
-
-  .sectionTitle {
-    max-width: 100%;
-  }
-
-  .sectionText {
+  @media screen and (max-width: 560px) {
     max-width: 100%;
   }
 }

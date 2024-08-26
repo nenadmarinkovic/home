@@ -8,6 +8,14 @@
   gap: 95px;
   color: var(--color-white);
   z-index: 1;
+
+  @media screen and (max-width: 1024px) {
+    padding: 40px 0 40px 0;
+  }
+
+  @media screen and (max-width: 560px) {
+    padding: 20px 0 40px 0;
+  }
 }
 
 .chartContainer {
@@ -15,6 +23,10 @@
   flex-direction: column;
   position: relative;
   z-index: 1;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 }
 
 .processDots {
@@ -27,24 +39,8 @@
   background-position: center;
   background-color: var(--color-muted);
   z-index: -1;
-}
 
-@media screen and (max-width: 1024px) {
-  .processContainer {
-    padding: 40px 0 40px 0;
-  }
-
-  .chartContainer {
+  @media screen and (max-width: 1024px) {
     display: none;
-  }
-
-  .processDots {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 560px) {
-  .processContainer {
-    padding: 20px 0 40px 0;
   }
 }

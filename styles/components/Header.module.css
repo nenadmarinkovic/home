@@ -7,6 +7,12 @@
   color: var(--color-white);
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
   z-index: 5;
+
+  @media screen and (max-width: 560px) {
+    .headerUnorderedList {
+      display: none;
+    }
+  }
 }
 
 .headerInside {
@@ -56,12 +62,4 @@
 
 .activePage {
   color: var(--color-white);
-}
-
-@media screen and (max-width: 560px) {
-  .header {
-    & .headerUnorderedList {
-      display: none;
-    }
-  }
 }
