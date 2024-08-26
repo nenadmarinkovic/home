@@ -64,7 +64,7 @@
   justify-content: space-between;
   display: flex;
 
-  @media screen and (max-width: 1024) {
+  @media screen and (max-width: 1024px) {
     flex-direction: column;
   }
 }
@@ -78,6 +78,12 @@
   color: var(--color-green-light);
   line-height: 1.75;
   margin-top: 52px;
+
+  @media screen and (max-width: 1024px) {
+    position: relative;
+    margin-top: 0;
+    padding-bottom: 60px;
+  }
 }
 
 .contentList li {
@@ -98,6 +104,11 @@
 .contentSection {
   max-width: 65%;
   margin-left: auto;
+
+  @media screen and (max-width: 1200px) {
+    max-width: 100%;
+    margin: 0;
+  }
 }
 
 .contentSection h1,

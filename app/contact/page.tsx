@@ -18,7 +18,9 @@ export default function Contact() {
         title="Contact"
         paragraphText="Feel free to get in touch with me. I would love to hear from you and discuss any inquiries, collaborations, or opportunities you may have. I'll give my best to get back to you in less than 48 hours."
       />
-      <section className={styles.contentContainer}>
+      <section
+        className={`${styles.contentContainer} ${contactStyles.contactPage}`}
+      >
         <Container>
           <div className={styles.contentFlex}>
             <ul className={contactStyles.info}>
