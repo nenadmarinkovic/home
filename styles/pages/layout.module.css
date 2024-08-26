@@ -44,6 +44,10 @@
   font-weight: 800;
   max-width: 70%;
   position: relative;
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
 .postDate {
