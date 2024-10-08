@@ -165,6 +165,7 @@ export type RawArticleType = {
   resolved_url: string;
   resolved_title: string;
   excerpt: string;
+  status: string;
 };
 
 export type ArticleType = {

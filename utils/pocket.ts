@@ -23,14 +23,15 @@ export async function getArticles(): Promise<ArticleType[]> {
 
   const data = await response.json();
 
-  const articles: ArticleType[] = Object.values(
-    data.list as Record<string, RawArticleType>
-  ).map((article: RawArticleType) => ({
+  const articles = Object.values(data.list as Record<string, RawArticleType>)
+  .filter(article => article.status !== '2')
+  .map((article: RawArticleType) => ({
     id: article.item_id,
-    date: article.time_added,
-    url: article.resolved_url,
-    title: article.resolved_title,
-    excerpt: article.excerpt,
+    date: article.time_added || 'Unknown date',
+    url: article.resolved_url || '#',
+    title: article.resolved_title || 'No title available',
+    excerpt: article.excerpt || 'No description available',
+    status: article.status,
   }));
 
   return articles;
