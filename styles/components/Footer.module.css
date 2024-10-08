@@ -1,7 +1,7 @@
 .footer {
   position: relative;
   background: var(--color-muted);
-  padding-bottom: 70px;
+  padding-bottom: 20px;
 }
 
 .footer::before {
@@ -28,7 +28,9 @@
   font-size: 15px;
   text-align: center;
   color: var(--color-green-light);
-  padding: 40px 0 30px;
+  padding: 40px 0 0;
+  display: block;
+  text-align: center;
 }
 
 .footerTextMain {

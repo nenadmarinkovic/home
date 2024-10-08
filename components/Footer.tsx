@@ -115,11 +115,10 @@ function Footer() {
             </li>
           </ul>
         </div>
-
-        <span className={styles.footerBottom}>
-          {currentYear} © Nenad Marinković
-        </span>
       </Container>
+      <span className={styles.footerBottom}>
+        {currentYear} © Nenad Marinković
+      </span>
     </footer>
   );
 }
