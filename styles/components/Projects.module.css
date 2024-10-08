@@ -57,7 +57,7 @@
 
 .tag {
   background-color: transparent;
-  border: 2px solid var(--color-dimmed);
+  border: 1var (--color-dimmed);
   font-size: 15px;
   border-radius: 20px;
   font-weight: 600;

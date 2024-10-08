@@ -2,7 +2,7 @@
   --color-white: #fff;
   --color-black: #000;
   --color-muted: #01050b;
-  --color-dimmed: #4f4f4f;
+  --color-dimmed: #3c3c3c;
   --color-blue: #36c6ff;
   --color-green: #a1e158;
   --color-orange: #eca05e;
@@ -63,7 +63,7 @@ pre {
   overflow-x: auto;
   background-color: transparent !important;
   padding: 15px;
-  border: 1px solid var(--color-dimmed);
+  border: 0.5px solid var(--color-dimmed);
   border-radius: 10px;
   margin: 30px 0;
   font-size: 15px;

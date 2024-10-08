@@ -29,7 +29,7 @@
 
 .label input {
   background: transparent;
-  border: 1px solid var(--color-green-light);
+  border: 0.5px solid var(--color-green-light);
   padding: 7.5px 15px;
   border-radius: 8px;
   color: var(--color-white);
@@ -38,7 +38,7 @@
 
 .label textarea {
   background: transparent;
-  border: 1px solid var(--color-green-light);
+  border: 0.5px solid var(--color-green-light);
   padding: 7.5px 15px;
   border-radius: 8px;
   color: var(--color-white);

@@ -4,6 +4,16 @@
   padding-bottom: 80px;
 }
 
+.productsTop {
+  display: flex;
+  flex-direction: column;
+}
+
+.productsIcon {
+  color: white;
+  margin-bottom: 5px;
+}
+
 .productsItems {
   display: flex;
   flex-wrap: wrap;
@@ -38,7 +48,7 @@
 }
 
 .productsItem {
-  border: 1px solid #2e2e2e;
+  border: 0.5px solid #3c3c3c;
   background-color: var(--color-muted);
   padding: 15px;
   border-radius: 15px;
@@ -88,4 +98,5 @@
   );
   filter: blur(8px);
   z-index: 2;
+  transition: 0.3s;
 }
