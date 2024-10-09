@@ -3,9 +3,17 @@
   padding-bottom: 20%;
 }
 
-.value {
+.contactWrap {
+  display: flex;
   font-size: 21px;
-  font-weight: 800;
+  line-height: 1.75;
+  color: var(--color-green-light);
+  flex-direction: column;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: 700;
   color: var(--color-green);
 }
 
@@ -14,6 +22,9 @@
   max-width: 300px;
   font-weight: 400;
   color: var(--color-green-light);
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .info {

@@ -17,12 +17,34 @@ export default function Contact() {
       <Header />
       <Banner
         title="Contact"
-        paragraphText="Feel free to get in touch with me. I would love to hear from you and discuss any inquiries, collaborations, or opportunities you may have."
+        paragraphText="Feel free to get in touch with me. I would love to hear from you and discuss any inquiries, collaborations, or opportunities you may have. Contact me directly or through the form below."
       />
       <section
         className={`${styles.contentContainer} ${contactStyles.contactPage}`}
       >
         <Container>
+          <div className={contactStyles.contactWrap}>
+            <span></span>
+            <span className={contactStyles.text}>
+              <span>Email:</span>
+
+              <a
+                className={contactStyles.value}
+                href="mailto:nenadmarinkovic@protonmail.com"
+              >
+                nenadmarinkovic@protonmail.com
+              </a>
+            </span>
+            <span className={contactStyles.text}>
+              <span>Phone:</span>
+              <a
+                className={contactStyles.value}
+                href="tel:+436705583282"
+              >
+                +436705583282
+              </a>
+            </span>
+          </div>
           <div className={styles.contentFlex}>
             <FormProcess
               steps={[
