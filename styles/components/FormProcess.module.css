@@ -1,0 +1,71 @@
+.formProcess {
+  position: sticky;
+  align-self: flex-start;
+  top: 0;
+  overflow-y: auto;
+  top: 52px;
+  color: var(--color-green-light);
+  line-height: 1.75;
+  margin-top: 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-right: 70px;
+
+  @media screen and (max-width: 1024px) {
+    position: relative;
+    margin-top: 0px;
+    padding-bottom: 60px;
+  }
+}
+
+.formProcess li {
+  margin-bottom: 25px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.number {
+  font-size: 18px;
+  border: 1px solid var(--color-dimmed);
+  padding: 10px;
+  border-radius: 7.5px;
+  display: flex;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-white);
+  font-weight: 500;
+  position: relative;
+}
+
+.formProcess li:not(:last-child) .number:after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  display: block;
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--color-dimmed), #000);
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.title {
+  color: var(--color-white);
+  display: flex;
+  font-weight: 700;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  align-items: center;
+  line-height: 1.4;
+}

@@ -122,6 +122,8 @@ export type BannerProps = {
   additionalText?: string;
   children?: React.ReactNode;
   fullWidth?: boolean;
+  email?: string;
+  phone?: string;
 };
 
 export type TagType = {

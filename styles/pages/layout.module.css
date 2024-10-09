@@ -148,7 +148,7 @@
 .tag {
   background-color: transparent;
   border: 1px solid var(--color-dimmed);
-  font-size: 15px;
+  font-size: 14px;
   border-radius: 20px;
   font-weight: 600;
   padding: 2.5px 15px;
@@ -221,4 +221,49 @@
 
 .post:hover .newTab::after {
   transform: translate(5px, -5px);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loaderContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+  display: block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes popUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.popUpAnimation {
+  animation: popUp 0.25s ease-in-out forwards;
+  opacity: 0;
 }

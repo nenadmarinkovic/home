@@ -44,7 +44,7 @@ const Form = () => {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <label className={styles.label}>
-        <span className={styles.labelName}>Your name:</span>
+        <span className={styles.labelName}>Name</span>
         <input
           type="text"
           value={name}
@@ -53,7 +53,7 @@ const Form = () => {
         />
       </label>
       <label className={styles.label}>
-        <span className={styles.labelName}>Your email:</span>
+        <span className={styles.labelName}>Email</span>
         <input
           type="email"
           value={email}
@@ -62,7 +62,7 @@ const Form = () => {
         />
       </label>
       <label className={styles.label}>
-        <span className={styles.labelName}>Your message:</span>
+        <span className={styles.labelName}>Message</span>
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
