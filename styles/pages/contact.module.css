@@ -9,6 +9,7 @@
   line-height: 1.75;
   color: var(--color-green-light);
   flex-direction: column;
+  margin-top: -20px;
 }
 
 .value {
@@ -18,9 +19,9 @@
 }
 
 .text {
-  font-size: 18px;
-  max-width: 300px;
-  font-weight: 400;
+  line-height: 1.75;
+  font-size: 16px;
+  font-weight: 500;
   color: var(--color-green-light);
   display: flex;
   gap: 10px;

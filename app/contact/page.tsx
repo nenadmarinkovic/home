@@ -56,7 +56,7 @@ export default function Contact() {
                 {
                   number: 2,
                   title: 'Proposal',
-                  text: 'Receive a fixed-price offer and launch date within 5 days.',
+                  text: 'Receive a fixed-price offer within 5 days.',
                 },
                 {
                   number: 3,

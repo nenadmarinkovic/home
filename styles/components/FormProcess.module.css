@@ -11,7 +11,10 @@
   flex-direction: column;
   gap: 10px;
   margin-right: 70px;
-
+  @media screen and (max-width: 1200px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
   @media screen and (max-width: 1024px) {
     position: relative;
     margin-top: 0px;
@@ -24,6 +27,7 @@
   display: flex;
   gap: 20px;
   align-items: flex-start;
+  min-width: 49%;
 }
 
 .number {
