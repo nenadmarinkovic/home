@@ -9,7 +9,7 @@
   margin-top: 52px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
   margin-right: 70px;
   @media screen and (max-width: 1200px) {
     flex-direction: row;

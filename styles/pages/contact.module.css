@@ -21,11 +21,12 @@
 .text {
   line-height: 1.75;
   font-size: 16px;
-  font-weight: 500;
-  color: var(--color-green-light);
+  font-weight: 400;
+  color: var(--color-white);
   display: flex;
-  gap: 10px;
   align-items: center;
+  display: flex;
+  gap: 7.5px;
 }
 
 .info {
