@@ -90,14 +90,6 @@
   }
 }
 
-.contentList li {
-  margin-top: 10px;
-}
-
-.contentList li:hover {
-  color: var(--color-white);
-}
-
 .contentListTitle {
   font-size: 15px;
   font-weight: 600;
@@ -177,6 +169,8 @@
   border-radius: 50%;
   position: relative;
   z-index: 5;
+  padding: 5px;
+  border: 1px solid var(--color-white);
 }
 
 .quoteIcon {
@@ -266,4 +260,26 @@
 .popUpAnimation {
   animation: popUp 0.25s ease-in-out forwards;
   opacity: 0;
+}
+
+.profileInfoItems {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+.profileInfoItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.profileInfoValue {
+  color: var(--color-white);
+  font-size: 18px;
+}
+
+.profileInfoKey {
+  font-size: 14px;
 }
