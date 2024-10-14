@@ -21,6 +21,12 @@
 
   @media screen and (max-width: 560px) {
     clip-path: ellipse(100% 100% at 50% 0%);
+    top: -40%;
+  }
+
+  @media screen and (max-width: 420px) {
+    clip-path: ellipse(140% 100% at 50% 0%);
+    top: -30%;
   }
 }
 

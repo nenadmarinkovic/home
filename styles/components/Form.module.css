@@ -57,8 +57,42 @@
   font-weight: 600;
   font-size: 15px;
   margin-left: auto;
+  height: 40px;
+  max-width: 200px;
+
+  @media screen and (max-width: 768px) {
+    max-width: 120px;
+  }
 }
 
 .submit:hover {
   transform: scale(1.05);
+}
+
+.sendWrap {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.sendMassage {
+  width: 80%;
+  margin-right: 40px;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-right: 10px;
+  }
+}
+
+.sendMassage strong {
+  display: flex;
+  width: 80%;
+  color: var(--color-white);
+}
+
+.sendMassage span {
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 }

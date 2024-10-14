@@ -8,6 +8,8 @@ const Form = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
 
   const onSubmit = async (formData: EmailProps) => {
     try {
@@ -24,11 +26,17 @@ const Form = () => {
       });
 
       if (response.ok) {
-        alert('Your email message has been sent successfully');
+        setSuccess(true);
+        setError('');
       } else {
-        alert('Message sending failed');
+        setSuccess(false);
+        setError('Message sending failed! Please try again later.');
       }
     } catch (error) {
+      setSuccess(false);
+      setError(
+        'Message sending failed! Please check your internet connection and try again.'
+      );
       console.error('Error submitting form:', error);
     }
   };
@@ -69,9 +77,20 @@ const Form = () => {
           required
         />
       </label>
-      <button className={styles.submit} type="submit">
-        Send
-      </button>
+      <div className={styles.sendWrap}>
+        {success && (
+          <p className={styles.sendMassage}>
+            <strong>Message successfully sent! </strong>
+            <span>I will get back to you as soon as possible.</span>
+          </p>
+        )}
+        {!success && error && (
+          <p className={styles.sendMassage}>{error}</p>
+        )}
+        <button className={styles.submit} type="submit">
+          Send
+        </button>
+      </div>
     </form>
   );
 };
