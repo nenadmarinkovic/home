@@ -9,22 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "eslint": "^8.57.0",
+    "eslint": "^9.12.0",
     "gray-matter": "^4.0.3",
-    "next": "^14.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "next": "^14.2.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "rehype-autolink-headings": "^7.1.0",
-    "rehype-pretty-code": "^0.13.1",
+    "rehype-pretty-code": "^0.14.0",
     "rehype-slug": "^6.0.0",
-    "remote-mdx": "^0.0.4",
-    "resend": "^3.2.0"
+    "remote-mdx": "^0.0.8",
+    "resend": "^4.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint-config-next": "^14.2.0",
+    "eslint-config-next": "^14.2.15",
     "typescript": "^5"
   }
 }
