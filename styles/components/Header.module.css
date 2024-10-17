@@ -65,3 +65,65 @@
 .activePage {
   color: var(--color-white);
 }
+
+.menuButton {
+  position: fixed;
+  top: 15px;
+  right: 10px;
+  z-index: 1000;
+  background-color: transparent;
+  color: var(--color-white);
+  border: none;
+  padding: 15px;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (min-width: 960px) {
+    display: none !important;
+  }
+
+  @media screen and (max-width: 600px) {
+    top: 2px;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: var(--color-muted);
+  z-index: 999;
+  border-left: 0.5px solid var(--color-dimmed);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation: slideDown 0.15s ease-out;
+
+  @media screen and (max-width: 560px) {
+    width: 80%;
+  }
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+@keyframes slideDown {
+  from {
+    right: -100%;
+    opacity: 0;
+  }
+  to {
+    right: 0;
+    opacity: 1;
+  }
+}
