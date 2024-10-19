@@ -184,47 +184,36 @@ export default function Header() {
                   pathname !== '/' && styles.notHome
                 }`}
               >
-                <a href="/#service">Service</a>
+                <Link href="/">Home</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
                   pathname !== '/' && styles.notHome
                 }`}
               >
-                <a href="/#address">Adresse</a>
+                <Link href="/dir">Directory</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
                   pathname !== '/' && styles.notHome
                 }`}
               >
-                <a href="/#openingHours">Öffnungszeiten</a>
+                <Link href="/feed">Feed</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
                   pathname !== '/' && styles.notHome
                 }`}
               >
-                <a href="/#contact">Kontakt</a>
+                <Link href="/about">About</Link>
               </li>
-              <li
-                className={`${styles.mobileLi} ${
-                  pathname !== '/' && styles.notHome
-                }`}
-              >
-                <Link
-                  href="/impressum"
-                  onClick={() => setOverlayVisible(false)}
-                >
-                  Impressum
-                </Link>
-              </li>
+
               <li
                 className={`${styles.mobileLi} ${
                   pathname === '/' && styles.home
                 }`}
               >
-                <Link href="/">Startseite</Link>
+                <Link href="/contact">Contact</Link>
               </li>
             </ul>
           </nav>
