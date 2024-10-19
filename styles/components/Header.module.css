@@ -106,8 +106,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  animation: slideDown 0.15s ease-out;
+  animation: slide 0.5s ease-out;
 
   @media screen and (max-width: 560px) {
     width: 80%;
@@ -126,7 +125,7 @@
   text-align: center;
 }
 
-@keyframes slideDown {
+@keyframes slide {
   from {
     right: -100%;
     opacity: 0;
