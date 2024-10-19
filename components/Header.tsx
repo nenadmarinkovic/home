@@ -59,20 +59,34 @@ export default function Header() {
   useEffect(() => {
     const originalOverflowY = document.body.style.overflowY;
     const originalPaddingRight = document.body.style.paddingRight;
+    const mainElement = document.querySelector('main');
+    const footer = document.querySelector('footer');
 
     if (isOverlayVisible) {
       const scrollbarWidth =
         window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflowY = 'hidden';
       document.body.style.paddingRight = `${scrollbarWidth}px`;
+      if (mainElement && footer) {
+        mainElement.classList.add('blurred');
+        footer.classList.add('blurred');
+      }
     } else {
       document.body.style.overflowY = originalOverflowY;
       document.body.style.paddingRight = originalPaddingRight;
+      if (mainElement && footer) {
+        mainElement.classList.remove('blurred');
+        footer.classList.remove('blurred');
+      }
     }
 
     return () => {
       document.body.style.overflowY = originalOverflowY;
       document.body.style.paddingRight = originalPaddingRight;
+      if (mainElement && footer) {
+        mainElement.classList.remove('blurred');
+        footer.classList.remove('blurred');
+      }
     };
   }, [isOverlayVisible]);
 
@@ -126,50 +140,48 @@ export default function Header() {
                 </li>
               </ul>
             </nav>
-            <button
-              ref={buttonRef}
-              onClick={(e) => toggleOverlay(e)}
-              className={styles.menuButton}
-              aria-label="Menu"
-            >
-              {isOverlayVisible ? (
-                <svg
-                  className={styles.menuSvg}
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M18 6 6 18" />
-                  <path d="m6 6 12 12" />
-                </svg>
-              ) : (
-                <svg
-                  className={styles.menuSvg}
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="4" x2="20" y1="12" y2="12" />
-                  <line x1="4" x2="20" y1="6" y2="6" />
-                  <line x1="4" x2="20" y1="18" y2="18" />
-                </svg>
-              )}
-            </button>
           </div>
         </Container>
       </header>
+      <button
+        ref={buttonRef}
+        onClick={(e) => toggleOverlay(e)}
+        className={styles.menuButton}
+        aria-label="Menu"
+      >
+        {isOverlayVisible ? (
+          <svg
+            className={styles.menuSvg}
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        ) : (
+          <svg
+            className={styles.menuSvg}
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="4" x2="20" y1="12" y2="12" />
+            <line x1="4" x2="20" y1="6" y2="6" />
+            <line x1="4" x2="20" y1="18" y2="18" />
+          </svg>
+        )}
+      </button>
       {isOverlayVisible && (
         <div
           ref={menuRef}

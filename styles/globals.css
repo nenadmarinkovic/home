@@ -36,6 +36,7 @@ body {
   -webkit-font-smoothing: antialiased;
   font-family: var(--font-stack);
   scroll-behavior: smooth;
+  background: var(--color-muted);
 }
 
 a {
@@ -80,4 +81,9 @@ td {
   border: 1px solid var(--color-dimmed);
   padding: 5px;
   text-align: left;
+}
+
+.blurred {
+  filter: blur(3px);
+  opacity: 0.5;
 }

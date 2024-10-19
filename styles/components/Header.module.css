@@ -74,6 +74,9 @@
 }
 
 .menuButton {
+  position: fixed;
+  top: 5px;
+  right: 10px;
   z-index: 3;
   background-color: transparent;
   color: var(--color-white);
@@ -84,6 +87,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99;
 
   @media screen and (min-width: 768px) {
     display: none;
@@ -97,7 +101,7 @@
   width: 50%;
   height: 100%;
   background: var(--color-muted);
-  z-index: 2;
+  z-index: 9;
   border-left: 0.5px solid var(--color-dimmed);
   display: flex;
   justify-content: center;
