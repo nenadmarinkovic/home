@@ -57,11 +57,23 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
+    const originalOverflowY = document.body.style.overflowY;
+    const originalPaddingRight = document.body.style.paddingRight;
+
     if (isOverlayVisible) {
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflowY = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     } else {
-      document.body.style.overflowY = '';
+      document.body.style.overflowY = originalOverflowY;
+      document.body.style.paddingRight = originalPaddingRight;
     }
+
+    return () => {
+      document.body.style.overflowY = originalOverflowY;
+      document.body.style.paddingRight = originalPaddingRight;
+    };
   }, [isOverlayVisible]);
 
   return (
@@ -80,7 +92,7 @@ export default function Header() {
             >
               <Link href="/">Nenad Marinković</Link>
             </div>
-            <nav>
+            <nav className={styles.navigation}>
               <ul className={styles.headerUnorderedList}>
                 <li
                   className={`${styles.headerList} ${
@@ -114,110 +126,110 @@ export default function Header() {
                 </li>
               </ul>
             </nav>
-          </div>
-          <button
-            ref={buttonRef}
-            onClick={(e) => toggleOverlay(e)}
-            className={styles.menuButton}
-            aria-label="Menu"
-          >
-            {isOverlayVisible ? (
-              <svg
-                className={styles.menuSvg}
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M18 6 6 18" />
-                <path d="m6 6 12 12" />
-              </svg>
-            ) : (
-              <svg
-                className={styles.menuSvg}
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="4" x2="20" y1="12" y2="12" />
-                <line x1="4" x2="20" y1="6" y2="6" />
-                <line x1="4" x2="20" y1="18" y2="18" />
-              </svg>
-            )}
-          </button>
-          {isOverlayVisible && (
-            <div
-              ref={menuRef}
-              className={`${styles.overlay} ${
-                isOverlayVisible ? styles.active : ''
-              }`}
+            <button
+              ref={buttonRef}
+              onClick={(e) => toggleOverlay(e)}
+              className={styles.menuButton}
+              aria-label="Menu"
             >
-              <nav>
-                <ul className={styles.mobileNav}>
-                  <li
-                    className={`${styles.mobileLi} ${
-                      pathname !== '/' && styles.notHome
-                    }`}
-                  >
-                    <a href="/#service">Service</a>
-                  </li>
-                  <li
-                    className={`${styles.mobileLi} ${
-                      pathname !== '/' && styles.notHome
-                    }`}
-                  >
-                    <a href="/#address">Adresse</a>
-                  </li>
-                  <li
-                    className={`${styles.mobileLi} ${
-                      pathname !== '/' && styles.notHome
-                    }`}
-                  >
-                    <a href="/#openingHours">Öffnungszeiten</a>
-                  </li>
-                  <li
-                    className={`${styles.mobileLi} ${
-                      pathname !== '/' && styles.notHome
-                    }`}
-                  >
-                    <a href="/#contact">Kontakt</a>
-                  </li>
-                  <li
-                    className={`${styles.mobileLi} ${
-                      pathname !== '/' && styles.notHome
-                    }`}
-                  >
-                    <Link
-                      href="/impressum"
-                      onClick={() => setOverlayVisible(false)}
-                    >
-                      Impressum
-                    </Link>
-                  </li>
-                  <li
-                    className={`${styles.mobileLi} ${
-                      pathname === '/' && styles.home
-                    }`}
-                  >
-                    <Link href="/">Startseite</Link>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          )}
+              {isOverlayVisible ? (
+                <svg
+                  className={styles.menuSvg}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              ) : (
+                <svg
+                  className={styles.menuSvg}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="4" x2="20" y1="12" y2="12" />
+                  <line x1="4" x2="20" y1="6" y2="6" />
+                  <line x1="4" x2="20" y1="18" y2="18" />
+                </svg>
+              )}
+            </button>
+          </div>
         </Container>
       </header>
+      {isOverlayVisible && (
+        <div
+          ref={menuRef}
+          className={`${styles.overlay} ${
+            isOverlayVisible ? styles.active : ''
+          }`}
+        >
+          <nav>
+            <ul className={styles.mobileNav}>
+              <li
+                className={`${styles.mobileLi} ${
+                  pathname !== '/' && styles.notHome
+                }`}
+              >
+                <a href="/#service">Service</a>
+              </li>
+              <li
+                className={`${styles.mobileLi} ${
+                  pathname !== '/' && styles.notHome
+                }`}
+              >
+                <a href="/#address">Adresse</a>
+              </li>
+              <li
+                className={`${styles.mobileLi} ${
+                  pathname !== '/' && styles.notHome
+                }`}
+              >
+                <a href="/#openingHours">Öffnungszeiten</a>
+              </li>
+              <li
+                className={`${styles.mobileLi} ${
+                  pathname !== '/' && styles.notHome
+                }`}
+              >
+                <a href="/#contact">Kontakt</a>
+              </li>
+              <li
+                className={`${styles.mobileLi} ${
+                  pathname !== '/' && styles.notHome
+                }`}
+              >
+                <Link
+                  href="/impressum"
+                  onClick={() => setOverlayVisible(false)}
+                >
+                  Impressum
+                </Link>
+              </li>
+              <li
+                className={`${styles.mobileLi} ${
+                  pathname === '/' && styles.home
+                }`}
+              >
+                <Link href="/">Startseite</Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      )}
     </div>
   );
 }
