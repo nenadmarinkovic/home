@@ -84,13 +84,11 @@
   padding: 7.5px;
   margin: 0;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
   z-index: 99;
 
-  @media screen and (min-width: 768px) {
-    display: none;
+  @media screen and (max-width: 768px) {
+    display: flex;
   }
 }
 
@@ -106,7 +104,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: slide 0.5s ease-out;
+  animation: slide 0.25s ease-out;
 
   @media screen and (max-width: 560px) {
     width: 80%;

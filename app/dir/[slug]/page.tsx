@@ -45,38 +45,41 @@ export default function Page({ params }: any) {
   return (
     <>
       <Header />
-      <Banner
-        title={props.fontMatter.title}
-        paragraphText={props.fontMatter.description}
-        fullWidth={true}
-      />
-      <section className={styles.contentContainer}>
-        <div className={styles.content}>
-          <Container>
-            <div className={styles.contentFlex}>
-              <ul className={styles.contentList}>
-                <span className={styles.contentListTitle}>
-                  # Contents
-                </span>
-                {headings &&
-                  headings.map((heading: string, index: number) => {
-                    const id = heading
-                      .toLowerCase()
-                      .replace(/\s+/g, '-');
-                    return (
-                      <li key={index}>
-                        <a href={`#${id}`}>{heading}</a>
-                      </li>
-                    );
-                  })}
-              </ul>
-              <div className={styles.contentSection}>
-                <CustomMDX source={props.content}></CustomMDX>
+      <main className={styles.main}>
+        <Banner
+          title={props.fontMatter.title}
+          paragraphText={props.fontMatter.description}
+          fullWidth={true}
+        />
+        <section className={styles.contentContainer}>
+          <div className={styles.content}>
+            <Container>
+              <div className={styles.contentFlex}>
+                <ul className={styles.contentList}>
+                  <span className={styles.contentListTitle}>
+                    # Contents
+                  </span>
+                  {headings &&
+                    headings.map((heading: string, index: number) => {
+                      const id = heading
+                        .toLowerCase()
+                        .replace(/\s+/g, '-');
+                      return (
+                        <li key={index}>
+                          <a href={`#${id}`}>{heading}</a>
+                        </li>
+                      );
+                    })}
+                </ul>
+                <div className={styles.contentSection}>
+                  <CustomMDX source={props.content}></CustomMDX>
+                </div>
               </div>
-            </div>
-          </Container>
-        </div>
-      </section>
+            </Container>
+          </div>
+        </section>
+      </main>
+
       <DynamicSpotify />
       <Footer />
     </>

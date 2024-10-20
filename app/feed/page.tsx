@@ -13,15 +13,17 @@ export default function Feed() {
   return (
     <>
       <Header />
-      <Banner
-        title="Feed"
-        paragraphText="A collection of articles sourced from my Pocket profile, mainly about programming languages, web development, AI, design and other tech-related topics that I find interesting for saving and sharing."
-      />
-      <section className={styles.contentContainer}>
-        <Container>
-          <Pocket />
-        </Container>
-      </section>
+      <main className={styles.main}>
+        <Banner
+          title="Feed"
+          paragraphText="A collection of articles sourced from my Pocket profile, mainly about programming languages, web development, AI, design and other tech-related topics that I find interesting for saving and sharing."
+        />
+        <section className={styles.contentContainer}>
+          <Container>
+            <Pocket />
+          </Container>
+        </section>
+      </main>
       <DynamicSpotify />
       <Footer />
     </>
