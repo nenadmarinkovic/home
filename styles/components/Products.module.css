@@ -48,7 +48,7 @@
 }
 
 .productsItem {
-  border: 0.5px solid #3c3c3c;
+  border: 0.5px solid var(--color-dimmed);
   background-color: var(--color-muted);
   padding: 15px;
   border-radius: 15px;
@@ -58,6 +58,10 @@
 
   @media screen and (max-width: 768px) {
     min-height: 160px;
+  }
+
+  @media screen and (max-width: 620px) {
+    min-height: 200px;
   }
 
   @media screen and (max-width: 580px) {

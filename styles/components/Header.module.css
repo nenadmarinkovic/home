@@ -107,7 +107,7 @@
   animation: slide 0.25s ease-out;
 
   @media screen and (max-width: 560px) {
-    width: 80%;
+    width: 70%;
   }
 }
 

@@ -13,7 +13,7 @@
   padding: 0 10px 0 0;
   margin: 20px;
   z-index: 99;
-  border: 0.5px solid #3c3c3c;
+  border: 0.5px solid var(--color-dimmed);
   border-radius: 10px;
 }
 

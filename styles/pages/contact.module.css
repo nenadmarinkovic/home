@@ -48,3 +48,11 @@
     padding-bottom: 60px;
   }
 }
+
+.valueName {
+  display: none;
+
+  @media screen and (min-width: 560px) {
+    display: block;
+  }
+}
