@@ -34,14 +34,6 @@ export default function About() {
                 <ul className={styles.profileInfoItems}>
                   <li className={styles.profileInfoItem}>
                     <span className={styles.profileInfoValue}>
-                      Not open for work inquiries
-                    </span>
-                    <span className={styles.profileInfoKey}>
-                      Availability
-                    </span>
-                  </li>
-                  <li className={styles.profileInfoItem}>
-                    <span className={styles.profileInfoValue}>
                       {new Date().getFullYear() - 2018} years
                     </span>
                     <span className={styles.profileInfoKey}>

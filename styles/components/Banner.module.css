@@ -18,6 +18,10 @@
   @media screen and (max-width: 768px) {
     padding: 100px 0 55px 0;
   }
+
+  @media screen and (max-width: 768px) {
+    padding: 100px 0 35px 0;
+  }
 }
 
 .bannerWrap {

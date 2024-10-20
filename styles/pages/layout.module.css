@@ -29,6 +29,10 @@
   gap: 7.5px;
   margin-bottom: 60px;
   max-width: 80%;
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
 .post:first-child {
@@ -83,6 +87,14 @@
     position: relative;
     margin-top: 0;
     padding-bottom: 60px;
+    top: 10px;
+    display: flex;
+    gap: 60px;
+  }
+
+  @media screen and (max-width: 560px) {
+    flex-direction: column;
+    gap: 20px;
   }
 }
 
@@ -97,8 +109,9 @@
   max-width: 65%;
   margin-left: auto;
 
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1024px) {
     margin: 0;
+    max-width: 100%;
   }
 }
 
@@ -109,6 +122,10 @@
 .contentSection h5,
 .contentSection h6 {
   padding-top: 52px;
+
+  @media screen and (max-width: 1024px) {
+    padding-top: 0;
+  }
 }
 
 .contentSection p {
@@ -129,6 +146,7 @@
 
 .tags {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -261,6 +279,11 @@
   gap: 10px;
   align-items: start;
   margin-top: 20px;
+
+  @media screen and (max-width: 1024px) {
+    margin-top: 0;
+    gap: 5px;
+  }
 }
 
 .profileInfoItem {
@@ -272,6 +295,10 @@
   color: var(--color-white);
   font-size: 18px;
   font-weight: 500;
+
+  @media screen and (max-width: 1024px) {
+    font-size: 16px;
+  }
 }
 
 .profileInfoKey {
