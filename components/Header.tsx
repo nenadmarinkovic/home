@@ -4,7 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Container from '@/containers/Container';
 import Link from 'next/link';
+
 import styles from '../styles/components/Header.module.css';
+import stylesButton from '../styles/components/Button.module.css';
 
 export default function Header() {
   const [isFixed, setIsFixed] = useState(false);
@@ -14,6 +16,22 @@ export default function Header() {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setOverlayVisible(false);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -189,8 +207,8 @@ export default function Header() {
             isOverlayVisible ? styles.active : ''
           }`}
         >
-          <nav>
-            <ul className={styles.mobileNav}>
+          <nav className={styles.mobileNav}>
+            <ul className={styles.mobileUl}>
               <li
                 className={`${styles.mobileLi} ${
                   pathname !== '/' && styles.notHome
@@ -219,15 +237,14 @@ export default function Header() {
               >
                 <Link href="/about">About</Link>
               </li>
-
-              <li
-                className={`${styles.mobileLi} ${
-                  pathname === '/' && styles.home
-                }`}
-              >
-                <Link href="/contact">Contact</Link>
-              </li>
             </ul>
+            <Link href="/contact">
+              <button
+                className={`${stylesButton.button} ${styles.mobileContact} `}
+              >
+                Contact
+              </button>
+            </Link>
           </nav>
         </div>
       )}
