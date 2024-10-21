@@ -104,10 +104,21 @@
   display: flex;
   justify-content: start;
   padding: 80px 34px 20px 34px;
-  animation: slide 0.25s ease-out;
+  animation: slide 0.25s ease;
 
   @media screen and (max-width: 560px) {
     width: 70%;
+  }
+}
+
+@keyframes slide {
+  from {
+    right: -100%;
+    opacity: 0;
+  }
+  to {
+    right: 0;
+    opacity: 1;
   }
 }
 
@@ -119,7 +130,7 @@
   color: var(--color-white);
   margin-bottom: 20px;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 600;
   position: relative;
 }
 
@@ -146,17 +157,6 @@
   padding: 0;
   margin: 0;
   text-align: center;
-}
-
-@keyframes slide {
-  from {
-    right: -100%;
-    opacity: 0;
-  }
-  to {
-    right: 0;
-    opacity: 1;
-  }
 }
 
 .mobileNav {
