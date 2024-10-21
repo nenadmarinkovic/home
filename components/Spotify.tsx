@@ -58,7 +58,7 @@ export default function Spotify() {
                     />
                   </span>
                   <span className={styles.boxText}>
-                    Currently listen to:
+                    Currently playing:
                   </span>
                 </span>
                 <span className={styles.title}>{data.title}</span>
