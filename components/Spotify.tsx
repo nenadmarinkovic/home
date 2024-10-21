@@ -48,6 +48,19 @@ export default function Spotify() {
                 alt="Spotify album cover"
               />
               <div className={styles.songInfo}>
+                <span className={styles.boxInfo}>
+                  <span className={styles.boxIcon}>
+                    <Image
+                      width={15}
+                      height={15}
+                      src="/icons/spotify.svg"
+                      alt="Spotify logo"
+                    />
+                  </span>
+                  <span className={styles.boxText}>
+                    Currently listen to:
+                  </span>
+                </span>
                 <span className={styles.title}>{data.title}</span>
                 <span className={styles.artist}>{data.artist}</span>
               </div>

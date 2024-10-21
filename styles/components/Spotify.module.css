@@ -19,7 +19,7 @@
 
 .spotifyInside {
   display: flex;
-  gap: 25px;
+  gap: 20px;
   align-items: center;
 }
 
@@ -34,6 +34,7 @@
   flex-direction: column;
   max-width: 350px;
   padding: 10px 0;
+  line-height: 1.5;
 }
 
 .artist {
@@ -101,4 +102,14 @@
   100% {
     height: 40%;
   }
+}
+
+.boxInfo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.boxText {
+  font-size: 12px;
 }
