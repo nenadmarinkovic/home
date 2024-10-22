@@ -211,28 +211,31 @@ export default function Header() {
             <ul className={styles.mobileUl}>
               <li
                 className={`${styles.mobileLi} ${
-                  pathname !== '/' && styles.notHome
+                  pathname === '/' && `${styles.activeLink}`
                 }`}
               >
                 <Link href="/">Home</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
-                  pathname !== '/' && styles.notHome
+                  pathname.startsWith('/dir') &&
+                  `${styles.activeLink}`
                 }`}
               >
                 <Link href="/dir">Directory</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
-                  pathname !== '/' && styles.notHome
+                  pathname.startsWith('/feed') &&
+                  `${styles.activeLink}`
                 }`}
               >
                 <Link href="/feed">Feed</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
-                  pathname !== '/' && styles.notHome
+                  pathname.startsWith('/about') &&
+                  `${styles.activeLink}`
                 }`}
               >
                 <Link href="/about">About</Link>
