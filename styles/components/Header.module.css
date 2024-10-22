@@ -152,10 +152,6 @@
 
 .activeLink {
   color: var(--color-green);
-
-  :after {
-    display: none;
-  }
 }
 
 .mobileContact {
