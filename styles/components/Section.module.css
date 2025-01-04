@@ -8,16 +8,14 @@
 }
 
 .sectionHeader {
-  background: var(--color-green);
+  background: var(--color-green-opacity);
+  color: var(--color-green);
   text-align: center;
   font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 1.35px;
-  text-transform: uppercase;
+  font-weight: 700;
   line-height: 2;
-  background-clip: border-box;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  padding: 5px 15px;
+  border-radius: 20px;
 }
 
 .sectionTitle {
