@@ -42,7 +42,7 @@
 .postTitle {
   font-size: 30px;
   font-weight: 800;
-  max-width: 70%;
+  max-width: 75%;
   position: relative;
 
   @media screen and (max-width: 768px) {
