@@ -11,10 +11,10 @@ function HomeBanner() {
       additionalText=" and other web products."
       paragraphText={
         <>
-          I&apos;m Nenad, a frontend developer at nexxar in Vienna,
-          Austria, where I build the best digital reports for clients
-          worldwide. I&apos;m also the creator of Redirectory, a
-          personal management set of tools designed to redirect your
+          Hi, I&apos;m Nenad — a frontend developer at nexxar in
+          Vienna, where I develop digital reports for clients around
+          the world. As a side project, I&apos;m building Redirectory,
+          a personal management application designed to redirect your
           focus to what matters.
         </>
       }
