@@ -95,7 +95,7 @@ export default function Contact() {
                   },
                   {
                     number: 4,
-                    title: 'Feedback and corrections',
+                    title: 'Feedback',
                     text: 'Adjustments based on your feedback.',
                   },
                   {
