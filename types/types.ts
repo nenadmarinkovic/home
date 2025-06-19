@@ -175,5 +175,5 @@ export type ArticleType = {
   date: string;
   url: string;
   title: string;
-  excerpt: string;
+  description: string;
 };
