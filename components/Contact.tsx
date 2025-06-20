@@ -40,7 +40,7 @@ function Contact() {
       setStars(newStars);
 
       if (window.innerWidth >= 768) {
-        setTimeout(() => setLaunchRocket(true), 2300);
+        setTimeout(() => setLaunchRocket(true), 1500);
       }
     }
   }, [isVisible, stars.length]);
@@ -103,8 +103,8 @@ function Contact() {
           <Image
             src="/rocket.svg"
             alt="Flying Rocket"
-            width={18}
-            height={18}
+            width={23}
+            height={23}
           />
         </motion.div>
       )}
