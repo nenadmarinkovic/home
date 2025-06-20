@@ -16,8 +16,6 @@ function Notion() {
         const response = await fetch('/api/read');
         const data = await response.json();
 
-        console.log(data);
-
         if (data && Array.isArray(data.articles)) {
           const sortedArticles = data.articles.sort(
             (a: ArticleType, b: ArticleType) =>
