@@ -157,8 +157,16 @@ export type Post = {
 };
 
 export type TagProps = {
-  tags: string[];
-  posts: Post[];
+  tags: string[]; // list of all distinct tags
+  posts: {
+    meta: {
+      tag: string[]; // ← was string
+      date: string;
+      title: string;
+      description: string;
+    };
+    slug: string;
+  }[];
 };
 
 export type RawArticleType = {

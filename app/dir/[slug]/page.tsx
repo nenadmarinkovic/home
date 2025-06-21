@@ -1,96 +1,44 @@
-import fs from 'fs/promises';
-import path from 'path';
-import dynamic from 'next/dynamic';
-import matter from 'gray-matter';
-import CustomMDX from '@/components/Markdown';
-import Banner from '@/components/Banner';
 import Header from '@/components/Header';
+import Banner from '@/components/Banner';
 import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
-
+import DynamicSpotify from '@/components/Spotify';
 import styles from '../../../styles/pages/layout.module.css';
 
-const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
+import { getPost, getPosts } from '@/lib/notion';
 
 export async function generateStaticParams() {
-  const files = await fs.readdir(path.join('directory'));
-
-  return files.map((filename) => ({
-    slug: filename.replace('.mdx', ''),
-  }));
-}
-
-async function getPost(slug: string) {
-  const filePath = path.join('directory', `${slug}.mdx`);
-
-  try {
-    const markdownFile = await fs.readFile(filePath, 'utf-8');
-    const { data: fontMatter, content } = matter(markdownFile);
-
-    return {
-      fontMatter,
-      slug,
-      content,
-    };
-  } catch (error) {
-    throw new Error(`Failed to read file: ${filePath}`);
-  }
+  const posts = await getPosts();
+  return posts.map((p) => ({ slug: p.slug }));
 }
 
 export default async function Page({
-  params,
+  params: { slug },
 }: {
   params: { slug: string };
 }) {
-  const awaitedParams = await params;
-  const { slug } = awaitedParams;
-
-  if (!slug) {
-    throw new Error('No slug provided');
-  }
-
-  const props = await getPost(slug);
+  const { frontMatter, html } = await getPost(slug);
 
   return (
     <>
       <Header />
       <main className={styles.main}>
         <Banner
-          title={props.fontMatter.title}
-          paragraphText={props.fontMatter.description}
-          fullWidth={true}
+          title={frontMatter.title}
+          paragraphText={frontMatter.description}
+          fullWidth
         />
         <section className={styles.contentContainer}>
-          <div className={styles.content}>
-            <Container>
-              <div className={styles.contentFlex}>
-                <ul className={styles.contentList}>
-                  <span className={styles.contentListTitle}>
-                    # Contents
-                  </span>
-                  {props.fontMatter.headings &&
-                    props.fontMatter.headings.map(
-                      (heading: string, index: number) => {
-                        const id = heading
-                          .toLowerCase()
-                          .replace(/\s+/g, '-');
-                        return (
-                          <li key={index}>
-                            <a href={`#${id}`}>{heading}</a>
-                          </li>
-                        );
-                      }
-                    )}
-                </ul>
-                <div className={styles.contentSection}>
-                  <CustomMDX source={props.content}></CustomMDX>
-                </div>
-              </div>
-            </Container>
-          </div>
+          <Container>
+            <div className={styles.contentFlex}>
+              <div
+                className={styles.contentSection}
+                dangerouslySetInnerHTML={{ __html: html }}
+              />
+            </div>
+          </Container>
         </section>
       </main>
-
       <DynamicSpotify />
       <Footer />
     </>
