@@ -34,14 +34,6 @@ export default function About() {
                 <ul className={styles.profileInfoItems}>
                   <li className={styles.profileInfoItem}>
                     <span className={styles.profileInfoValue}>
-                      {new Date().getFullYear() - 2018} years
-                    </span>
-                    <span className={styles.profileInfoKey}>
-                      Experience
-                    </span>
-                  </li>
-                  <li className={styles.profileInfoItem}>
-                    <span className={styles.profileInfoValue}>
                       JavaScript, React, Node.js
                     </span>
                     <span className={styles.profileInfoKey}>
@@ -50,18 +42,18 @@ export default function About() {
                   </li>
                   <li className={styles.profileInfoItem}>
                     <span className={styles.profileInfoValue}>
-                      Vienna, Austria
+                      {new Date().getFullYear() - 2018} years
                     </span>
                     <span className={styles.profileInfoKey}>
-                      Location
+                      Experience
                     </span>
                   </li>
                   <li className={styles.profileInfoItem}>
                     <span className={styles.profileInfoValue}>
-                      English, German, Serbian
+                      Vienna, Austria
                     </span>
                     <span className={styles.profileInfoKey}>
-                      Languages
+                      Location
                     </span>
                   </li>
                 </ul>

@@ -16,51 +16,25 @@ function Projects() {
 
   const projects = [
     {
-      name: 'Tab Directory',
-      tags: [
-        'Task management',
-        'File management',
-        'Event organizer',
-        'SaaS',
-      ],
-      link: 'https://tab.directory',
+      name: 'Studio Minsky',
+      tags: ['Web agency', 'UI engineering', 'Chatbots'],
+      link: 'https://studiominsky.com',
       description:
-        'Dash Directory is a platform for task and event management, as well as bookmark organization. With its intuitive UI, it simplifies self-management and enhances productivity. Dash Directory empowers users to stay organized and focused on their goals. In development mode.',
+        'Studio Minsky is the web-development agency I’m building from the ground up, specialising in fast, accessible interfaces and conversational chat-bots. Under the hood it runs on a modern Next.js + TypeScript stack with a reusable component library that powers client projects.',
     },
     {
-      name: 'Snippetbase',
-      tags: ['Code snippet', "Developer's tool", 'Codebase'],
-      link: 'https://snippetbase.net',
+      name: 'Panellio',
+      tags: ['Management', 'SaaS'],
+      link: 'https://panellio.com',
       description:
-        'Snippetbase is a platform for code snippets. Discover, share, and leverage ready-to-use code across multiple programming languages and frameworks. Boost your productivity with centralized repository of efficient solutions.',
+        'Panellio is a minimal edge-deployed redirector that lets teams create branded short links and track real-time click analytics. It’s engineered as a lean SaaS with a Rust edge worker and serverless Postgres, keeping global latency below 50 ms.',
     },
     {
-      name: 'Reactify',
-      tags: ['React ecosystem', 'Resources'],
-      link: 'https://reactify.org',
+      name: 'Fine Interface',
+      tags: ['Design curation', 'Inspiration'],
+      link: 'https://fineinterface.com',
       description:
-        'Reactify is the ultimate destination for React developers and designers, providing a comprehensive suite of services. Access a wide range of design resources, leverage the power of tested headless CMSs, and foster seamless collaboration through efficient APIs.',
-    },
-    {
-      name: 'Verein Pro',
-
-      tags: ['Organization management', 'People management', 'SaaS'],
-      link: 'https://verein.pro',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-    {
-      name: 'Sprachenwald',
-      tags: [
-        'Language learning',
-        'German language',
-        'Educational platform',
-        'SaaS',
-      ],
-      link: 'https://sprachenwald.com',
-
-      description:
-        'Reactify is the ultimate destination for React developers and designers, providing a comprehensive suite of services. Access a wide range of design resources, leverage the power of tested headless CMSs, and foster seamless collaboration through efficient APIs.',
+        'Fine Interface is a curated gallery of beautifully crafted user interfaces where the community can submit and save new finds. The site doubles as a design-system testbed, using Radix UI primitives and Next.js server actions to handle votes without page reloads.',
     },
   ];
   return (
@@ -68,7 +42,7 @@ function Projects() {
       <Container>
         <SectionHeader
           header="Projects"
-          title="Personal web projects including technical details"
+          title="Personal projects with technical details"
           text="I have worked on a variety of projects, ranging from personal websites to full-stack applications. Here are some of the projects I have worked on."
         />
         <div className={styles.flexItems}>
