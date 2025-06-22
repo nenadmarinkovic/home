@@ -5,7 +5,10 @@ import Footer from '@/components/Footer';
 import DynamicSpotify from '@/components/Spotify';
 import styles from '../../../styles/pages/layout.module.css';
 
-import { getPost, getPosts } from '@/lib/notion';
+import { getPost, getPosts } from '@/utils/notion';
+
+export const revalidate = 5;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const posts = await getPosts();

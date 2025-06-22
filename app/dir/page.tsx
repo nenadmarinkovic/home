@@ -1,3 +1,6 @@
+/* This page is also regenerated every 5 min, so list & tag changes appear. */
+export const revalidate = 300;
+
 import Header from '@/components/Header';
 import Banner from '@/components/Banner';
 import Container from '@/containers/Container';
@@ -6,14 +9,11 @@ import Tag from '@/components/Tag';
 import DynamicSpotify from '@/components/Spotify';
 
 import { Suspense } from 'react';
-import { getPosts } from '@/lib/notion';
+import { getPosts } from '@/utils/notion';
 import styles from '../../styles/pages/layout.module.css';
 
 export default async function Home() {
   const posts = await getPosts();
-
-  console.log(posts);
-
   const tags = Array.from(new Set(posts.flatMap((post) => post.tag)));
 
   return (

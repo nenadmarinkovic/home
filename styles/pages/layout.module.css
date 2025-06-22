@@ -115,33 +115,22 @@
   }
 }
 
-.contentSection h1,
-.contentSection h2,
-.contentSection h3,
-.contentSection h4,
-.contentSection h5,
-.contentSection h6 {
-  padding-top: 52px;
-
-  @media screen and (max-width: 1024px) {
-    padding-top: 0;
-  }
-}
-
 .contentSection p {
   font-size: 17px;
   color: var(--color-green-light);
-  padding-bottom: 16px;
   line-height: 1.55;
 }
 
 .contentSection h1,
-.contentSection h2,
+.contentSection h2 {
+  padding: 36px 0 10px 0;
+}
+
 .contentSection h3,
 .contentSection h4,
 .contentSection h5,
 .contentSection h6 {
-  padding-bottom: 16px;
+  padding: 20px 0;
 }
 
 .tags {
@@ -340,4 +329,46 @@
   font-weight: 400;
   color: var(--color-green-light);
   padding-bottom: 10px;
+}
+
+.contentSection p {
+  margin: 10px 0;
+}
+
+.contentSection table {
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--color-green-light);
+}
+
+.contentSection th {
+  padding: 16px;
+}
+
+.contentSection td {
+  padding: 16px;
+}
+
+.contentSection em {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.contentSection pre {
+  margin-top: 20px;
+}
+
+.contentSection li {
+  margin-top: 20px;
+  line-height: 1.5;
+}
+
+.contentSection li {
+  list-style: disc;
+  position: relative;
+  left: 20px;
+}
+
+.contentSection ul {
+  margin: 20px 0;
 }
