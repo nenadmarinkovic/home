@@ -298,14 +298,15 @@
   font-size: 18px;
   font-weight: 400;
   line-height: 1.55;
-  margin: 20px 0;
+  margin: 40px 0 30px 0;
 }
 
 .contentQuote p {
   color: var(--color-white);
   font-style: italic;
   padding-left: 50px;
-  padding-bottom: 10px;
+  padding-bottom: 0;
+  margin: 0;
 }
 
 .quoteIcon {

@@ -51,6 +51,9 @@
 
 .valueName {
   display: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-green-light);
 
   @media screen and (min-width: 560px) {
     display: block;

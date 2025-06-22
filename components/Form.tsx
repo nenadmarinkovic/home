@@ -79,10 +79,10 @@ const Form = () => {
       </label>
       <div className={styles.sendWrap}>
         {success && (
-          <p className={styles.sendMassage}>
+          <div className={styles.sendMessage}>
             <strong>Message successfully sent! </strong>
             <span>I will get back to you as soon as possible.</span>
-          </p>
+          </div>
         )}
         {!success && error && (
           <p className={styles.sendMassage}>{error}</p>

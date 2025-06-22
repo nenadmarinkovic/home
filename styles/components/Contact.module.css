@@ -10,3 +10,7 @@
   text-align: center;
   padding-bottom: 280px;
 }
+
+.contactContainer p {
+  margin: 0 !important;
+}
