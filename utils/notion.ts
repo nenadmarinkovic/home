@@ -15,6 +15,7 @@ import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-tsx';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-typescript'; // ← add this
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN! });
 
@@ -64,7 +65,7 @@ export async function getPosts() {
       });
 
     pages.push(...(results as PageObjectResponse[]));
-    cursor = has_more ? next_cursor ?? undefined : undefined;
+    cursor = has_more ? (next_cursor ?? undefined) : undefined;
   } while (cursor);
 
   return Promise.all(pages.map((p) => pageToMeta(p)));
@@ -116,7 +117,7 @@ export function asPlainText(
       return joinRichText(prop.rich_text);
     case 'formula':
       return prop.formula.type === 'string'
-        ? prop.formula.string ?? ''
+        ? (prop.formula.string ?? '')
         : '';
     case 'url':
       return prop.url ?? '';
