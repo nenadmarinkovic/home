@@ -128,11 +128,11 @@ export default function Header() {
               <ul className={styles.headerUnorderedList}>
                 <li
                   className={`${styles.headerList} ${
-                    pathname.startsWith('/dir') &&
+                    pathname.startsWith('/blog') &&
                     `${styles.activePage}`
                   }`}
                 >
-                  <Link href="/dir">Directory</Link>
+                  <Link href="/blog">Blog</Link>
                 </li>
                 <li
                   className={`${styles.headerList} ${
@@ -218,11 +218,11 @@ export default function Header() {
               </li>
               <li
                 className={`${styles.mobileLi} ${
-                  pathname.startsWith('/dir') &&
+                  pathname.startsWith('/blog') &&
                   `${styles.activeLink}`
                 }`}
               >
-                <Link href="/dir">Directory</Link>
+                <Link href="/blog">Blog</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${

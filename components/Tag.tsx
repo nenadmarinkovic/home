@@ -45,7 +45,7 @@ const Tag: React.FC<TagProps> = ({ tags, posts }) => {
         {filtered.map((post, i) => (
           <Link
             key={post.slug || `${post.slug}-${i}`} // ← index guard
-            href={`/dir/${post.slug}`}
+            href={`/blog/${post.slug}`}
             className={`${styles.post} ${styles.popUpAnimation}`}
             style={{ animationDelay: `${i * 0.15}s` }}
           >

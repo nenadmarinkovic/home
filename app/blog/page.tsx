@@ -21,8 +21,8 @@ export default async function Home() {
       <Header />
       <main className={styles.main}>
         <Banner
-          title="Directory"
-          paragraphText="Web directory for notes, bookmarks, resources, and the things I’m interested in. All the content is open-source. For my travel photos, check out the Photography page."
+          title="Blog"
+          paragraphText="Web directory for notes, bookmarks, resources, and the things I’m interested in."
         />
         <section className={styles.contentContainer}>
           <Container>

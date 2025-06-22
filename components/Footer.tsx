@@ -99,8 +99,8 @@ function Footer() {
               </div>
               <ul className={styles.footerItemLinks}>
                 <li className={styles.footerText}>
-                  <Link className={styles.footerLink} href="/dir">
-                    Directory
+                  <Link className={styles.footerLink} href="/blog">
+                    Blog
                   </Link>
                 </li>
                 <li className={styles.footerText}>

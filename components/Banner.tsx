@@ -23,8 +23,8 @@ export default function Banner({
         <Container>
           <div className={styles.bannerInside}>
             <div className={styles.bannerWrap}>
-              {pathname.startsWith('/dir/') && (
-                <Link href="/dir" className={styles.back}>
+              {pathname.startsWith('/blog/') && (
+                <Link href="/blog" className={styles.back}>
                   <svg
                     className={styles.backIcon}
                     height="16"
@@ -39,7 +39,7 @@ export default function Banner({
                       fill="currentColor"
                     ></path>
                   </svg>
-                  Go back to Directory
+                  Go back to Blog posts
                 </Link>
               )}
               <h1
