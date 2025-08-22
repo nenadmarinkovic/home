@@ -17,7 +17,7 @@ function Projects() {
   const projects = [
     {
       name: 'Studio Minsky',
-      tags: ['Web agency', 'UI engineering', 'Chatbots'],
+      tags: ['Web agency', 'Development', 'Design'],
       link: 'https://studiominsky.com',
       description:
         'Studio Minsky is the web-development agency I’m building from the ground up, specialising in fast, accessible interfaces and conversational chat-bots. Under the hood it runs on a modern Next.js + TypeScript stack with a reusable component library that powers client projects.',
@@ -38,7 +38,7 @@ function Projects() {
     },
     {
       name: 'Word Inventory',
-      tags: ['Design curation', 'Inspiration'],
+      tags: ['Language', 'AI', 'Learning', 'Curation'],
       link: 'https://wordinventory.com',
       description:
         'Word Inventory is a web application for storing words in any language and AI...',
