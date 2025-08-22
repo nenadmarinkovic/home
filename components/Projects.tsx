@@ -36,6 +36,13 @@ function Projects() {
       description:
         'Fine Interface is a curated gallery of beautifully crafted user interfaces where the community can submit and save new finds. The site doubles as a design-system testbed, using Radix UI primitives and Next.js server actions to handle votes without page reloads.',
     },
+    {
+      name: 'Word Inventory',
+      tags: ['Design curation', 'Inspiration'],
+      link: 'https://wordinventory.com',
+      description:
+        'Word Inventory is a web application for storing words in any language and AI...',
+    },
   ];
   return (
     <div className={styles.projectContainer}>
