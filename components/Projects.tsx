@@ -38,7 +38,7 @@ function Projects() {
     },
     {
       name: 'Word Inventory',
-      tags: ['Language', 'AI', 'Learning', 'Curation'],
+      tags: ['Language', 'AI', 'Learning'],
       link: 'https://wordinventory.com',
       description:
         'Word Inventory is a web application for storing words in any language and AI...',
