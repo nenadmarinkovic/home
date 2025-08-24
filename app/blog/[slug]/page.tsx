@@ -6,6 +6,7 @@ import DynamicSpotify from '@/components/Spotify';
 import styles from '../../../styles/pages/layout.module.css';
 
 import { getPost, getPosts } from '@/utils/notion';
+import PostContent from '@/components/PostContent';
 
 export const revalidate = 5;
 export const dynamicParams = true;
@@ -33,12 +34,10 @@ export default async function Page({
         />
         <section className={styles.contentContainer}>
           <Container>
-            <div className={styles.contentFlex}>
-              <div
-                className={styles.contentSection}
-                dangerouslySetInnerHTML={{ __html: html }}
-              />
-            </div>
+            <PostContent
+              html={html}
+              headings={frontMatter.headings}
+            />
           </Container>
         </section>
       </main>

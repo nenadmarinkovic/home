@@ -15,7 +15,7 @@ import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-tsx';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-typescript'; // ← add this
+import 'prismjs/components/prism-typescript';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN! });
 
@@ -24,10 +24,31 @@ const BLOG_DATABASE_ID = process.env.NOTION_DATABASE_ID_BLOG!;
 
 const n2m = new NotionToMarkdown({ notionClient: notion });
 const md = new MarkdownIt({
-  html: false,
+  html: true,
   linkify: true,
   typographer: true,
 }).use(mdPrism, { defaultLanguage: 'plaintext' });
+
+const slugify = (s: string) =>
+  encodeURIComponent(
+    String(s).trim().toLowerCase().replace(/\s+/g, '-')
+  );
+
+md.renderer.rules.heading_open = (
+  tokens,
+  idx,
+  options,
+  env,
+  self
+) => {
+  const token = tokens[idx];
+  if (token.tag === 'h2') {
+    const content = tokens[idx + 1].content;
+    const id = slugify(content);
+    token.attrSet('id', id);
+  }
+  return self.renderToken(tokens, idx, options);
+};
 
 export async function getArticlesFromNotion(): Promise<
   ArticleType[]
@@ -86,10 +107,15 @@ export async function getPost(slug: string) {
   const { parent: markdown } = n2m.toMarkdownString(mdBlocks);
 
   const html = md.render(markdown);
+
   const headings =
-    markdown
-      .match(/^#{1,6}\\s+.+$/gm)
-      ?.map((h) => h.replace(/^#{1,6}\\s+/, '')) ?? [];
+    markdown.match(/^##\s+.+$/gm)?.map((h) => {
+      const text = h.replace(/^##\s+/, '');
+      return {
+        text,
+        id: slugify(text),
+      };
+    }) ?? [];
 
   return {
     frontMatter: { ...pageToMeta(page), headings },

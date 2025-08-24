@@ -123,7 +123,7 @@
 
 .contentSection h1,
 .contentSection h2 {
-  padding: 36px 0 10px 0;
+  padding: 58px 0 10px 0;
 }
 
 .contentSection h3,
@@ -372,4 +372,62 @@
 
 .contentSection ul {
   margin: 20px 0;
+}
+
+.contentFlex {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.stickySidebar {
+  position: sticky;
+  top: 80px;
+  width: 280px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .stickySidebar {
+    display: none;
+  }
+}
+
+.stickySidebar .tocTitle {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-green-light);
+}
+
+.stickySidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 20px;
+}
+
+.stickySidebar nav li a {
+  display: block;
+  color: #6b7280;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  font-size: 0.875rem;
+  border-left: 2px solid transparent;
+  padding-left: 1rem;
+}
+
+.stickySidebar nav li a:hover {
+  color: #fff;
+  border-left-color: #fff;
+  transform: translateX(4px);
+}
+
+.contentSection {
+  flex-grow: 1;
+  min-width: 0;
 }

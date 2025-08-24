@@ -107,13 +107,11 @@ export default function About() {
                 </div>
 
                 <p>
-                  During my career as a frontend developer, I worked
-                  at various web agencies, where I specialized in
-                  crafting e-commerce websites, content management
-                  systems, and marketing websites. These experiences
-                  were invaluable in terms of collaborating closely
-                  with designers and clients, both in my home country
-                  of Serbia and in Austria.
+                  I&apos;m currently seeking my next role and am open
+                  to new opportunities. While I search for the right
+                  team to join, I&apos;m staying busy with several
+                  side projects that allow me to explore new
+                  technologies.
                 </p>
                 <div className={styles.contentQuote}>
                   <svg
@@ -146,34 +144,27 @@ export default function About() {
                   </span>
                 </div>
                 <p>
-                  Today I split my time between writing code and
-                  growing a one-person web-development studio —
-                  combining the agility of a solo engineer with the
-                  polish of a full agency. Away from the screen, I’m
-                  improving my German and navigating new parenthood
-                  with my wife and our newborn daughter.
+                  Outside of work, I’m improving my German and
+                  spending time with my wife and our newborn daughter.
                 </p>
 
                 <h3>About this website</h3>
                 <p>
-                  This site is built with <strong>Next.js</strong>,
-                  giving me a fast, scalable playground for sharing
-                  ideas, projects, and experiments. Under the hood it
-                  talks to several lightweight APIs—
-                  <strong>GitHub</strong> for project data,{' '}
-                  <strong>Spotify</strong> for the “Now Playing”
-                  widget, <strong>Resend</strong> for email handling,
-                  and <strong>Notion</strong> as a headless CMS. The
-                  entire codebase is open-source; you can explore it
-                  on{' '}
+                  This site is built with Next.js as a place for me to
+                  share projects and ideas. It uses a few APIs to pull
+                  in data: GitHub for project information, Spotify for
+                  the &quot;Now Playing&quot; widget, Resend for
+                  email, and Notion as a content management system.
+                  The entire codebase is open-source on{' '}
                   <a
                     href="https://github.com/nenadmarinkovic/home"
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="link"
                   >
                     GitHub
-                  </a>
-                  .
+                  </a>{' '}
+                  if you&quot;d like to see how it works.
                 </p>
               </div>
             </div>
