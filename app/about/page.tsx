@@ -10,6 +10,29 @@ import styles from '../../styles/pages/layout.module.css';
 const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
 
 export default function About() {
+  const birth = new Date(2025, 1, 1);
+  const currentDate = new Date();
+  const ageInMonths =
+    (currentDate.getFullYear() - birth.getFullYear()) * 12 +
+    (currentDate.getMonth() - birth.getMonth());
+
+  const years = Math.floor(ageInMonths / 12);
+  const months = ageInMonths % 12;
+
+  let ageString;
+
+  if (years > 0) {
+    const yearText = years > 1 ? 'years' : 'year';
+    if (months > 0) {
+      const monthText = months > 1 ? 'months' : 'month';
+      ageString = `${years} ${yearText} and ${months} ${monthText} old`;
+    } else {
+      ageString = `${years} ${yearText} old`;
+    }
+  } else {
+    ageString = `${months} months old`;
+  }
+
   return (
     <>
       <Header />
@@ -61,16 +84,16 @@ export default function About() {
               <div className={styles.contentSection}>
                 <h3>About me</h3>
                 <p>
-                  Throughout the past few years, I have worked with
-                  many web agencies and software companies building
-                  well designed, fast, and delightful user websites
-                  and applications. During this time, I continuously
-                  refined my craft by developing adaptable components,
-                  reusable UI elements, and scalable frontend
-                  architectures. I also had the opportunity to work
-                  with a variety of clients, from small startups to
-                  large corporations, which helped me to understand
-                  the importance of clear communication and
+                  Over the past few years, I have collaborated with
+                  numerous web agencies and software companies to
+                  develop well-designed, fast, and user-friendly
+                  websites and applications. During this time, I
+                  refined my skills by developing adaptable
+                  components, reusable UI elements, and scalable
+                  front-end architectures. I also had the opportunity
+                  to work with clients of all sizes, from small
+                  startups to large corporations. This experience
+                  taught me the importance of clear communication and
                   collaboration.
                 </p>
                 <div className={styles.contentQuote}>
@@ -108,7 +131,7 @@ export default function About() {
 
                 <p>
                   I&apos;m currently seeking my next role and am open
-                  to new opportunities. While I search for the right
+                  to new opportunities. While searching for the right
                   team to join, I&apos;m staying busy with several
                   side projects that allow me to explore new
                   technologies.
@@ -144,18 +167,18 @@ export default function About() {
                   </span>
                 </div>
                 <p>
-                  Outside of work, I’m improving my German and
-                  spending time with my wife and our newborn daughter.
+                  Outside of work, I’m learning German, or spending
+                  time with my wife and our {ageString} daughter.
                 </p>
 
                 <h3>About this website</h3>
                 <p>
-                  This site is built with Next.js as a place for me to
-                  share projects and ideas. It uses a few APIs to pull
-                  in data: GitHub for project information, Spotify for
-                  the &quot;Now Playing&quot; widget, Resend for
-                  email, and Notion as a content management system.
-                  The entire codebase is open-source on{' '}
+                  I built this site with Next.js as a place to share
+                  projects and ideas. It uses a few APIs to pull in
+                  data: GitHub provides project information, Spotify
+                  provides the &apos;Now Playing&apos; widget, Resend
+                  provides email services, and Notion provides content
+                  management. The entire codebase is open-source on{' '}
                   <a
                     href="https://github.com/nenadmarinkovic/home"
                     target="_blank"
