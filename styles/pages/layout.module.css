@@ -431,3 +431,22 @@
   flex-grow: 1;
   min-width: 0;
 }
+
+.contactFlex {
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: 1024px) {
+    flex-direction: column-reverse;
+  }
+}
+
+.aboutFlex {
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+    gap: 0;
+  }
+}

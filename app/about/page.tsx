@@ -20,7 +20,7 @@ export default function About() {
         />
         <section className={styles.contentContainer}>
           <Container>
-            <div className={styles.contentFlex}>
+            <div className={styles.aboutFlex}>
               <div className={styles.contentList}>
                 <div className={styles.photoContainer}>
                   <Image

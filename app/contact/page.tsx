@@ -75,7 +75,7 @@ export default function Contact() {
                 </a>
               </span>
             </div>
-            <div className={styles.contentFlex}>
+            <div className={styles.contactFlex}>
               <FormProcess
                 steps={[
                   {

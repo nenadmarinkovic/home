@@ -8,10 +8,7 @@
   flex-direction: column;
   gap: 5px;
   margin-right: 70px;
-  @media screen and (max-width: 1200px) {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
+
   @media screen and (max-width: 1024px) {
     position: relative;
     margin-top: 0px;

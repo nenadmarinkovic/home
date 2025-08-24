@@ -5,7 +5,9 @@
   top: 0;
   background: transparent;
   color: var(--color-white);
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transition:
+    opacity 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
   z-index: 5;
 
   @media screen and (max-width: 560px) {
@@ -106,12 +108,12 @@
   width: 50%;
   height: 100%;
   background: var(--color-muted);
-  z-index: 9;
   border-left: 0.5px solid var(--color-dimmed);
   display: flex;
   justify-content: start;
   padding: 80px 34px 20px 34px;
   animation: slide 0.25s ease;
+  z-index: 99;
 
   @media screen and (max-width: 560px) {
     width: 70%;
