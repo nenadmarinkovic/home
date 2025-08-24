@@ -11,10 +11,11 @@ function HomeBanner() {
       additionalText=" and other web products."
       paragraphText={
         <>
-          Hi, I&apos;m Nenad — a software developer based in Vienna.
-          Currently, I&apos;m building my own web development studio
-          while actively working on several side projects that combine
-          creativity and technology.
+          I&apos;m Nenad, a software developer in Vienna who
+          specializes in building high-performance websites and
+          applications. I&apos;m currently looking for my next role
+          and exploring new technologies through several side
+          projects.
         </>
       }
     >
