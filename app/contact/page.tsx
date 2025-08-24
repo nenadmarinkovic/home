@@ -4,10 +4,10 @@ import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
 import dynamic from 'next/dynamic';
 import Form from '@/components/Form';
-
-import styles from '../../styles/pages/layout.module.css';
 import contactStyles from '../../styles/pages/contact.module.css';
 import FormProcess from '@/components/FormProcess';
+
+import styles from '../../styles/pages/layout.module.css';
 
 const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
 

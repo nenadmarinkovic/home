@@ -7,9 +7,9 @@ import Container from '@/containers/Container';
 import Footer from '@/components/Footer';
 import Tag from '@/components/Tag';
 import DynamicSpotify from '@/components/Spotify';
-
 import { Suspense } from 'react';
 import { getPosts } from '@/utils/notion';
+
 import styles from '../../styles/pages/layout.module.css';
 
 export default async function Home() {
