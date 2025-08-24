@@ -157,10 +157,10 @@ export type Post = {
 };
 
 export type TagProps = {
-  tags: string[]; // list of all distinct tags
+  tags: string[];
   posts: {
     meta: {
-      tag: string[]; // ← was string
+      tag: string[];
       date: string;
       title: string;
       description: string;
