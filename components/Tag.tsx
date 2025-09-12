@@ -50,12 +50,11 @@ const Tag: React.FC<TagProps> = ({ tags, posts }) => {
             style={{ animationDelay: `${i * 0.15}s` }}
           >
             <h2 className={styles.postTitle}>{post.meta.title}</h2>
-            <span className={styles.postDate}>
+            <span className={styles.postCategory}>
               {post.meta.date}{' '}
-              {post.meta.tag
-                .map((t) => `#${t.toLowerCase()}`)
-                .join(' ')}
+              {post.meta.tag.map((t) => `${t}`).join(' ')}
             </span>
+            <span className={styles.postDate}>{post.meta.date}</span>
             <p className={styles.postDescription}>
               {post.meta.description}
             </p>

@@ -9,6 +9,7 @@ import Footer from '@/components/Footer';
 import Products from '@/components/Products';
 
 import styles from '../styles/pages/layout.module.css';
+import Projects from '@/components/Projects';
 
 const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
 
@@ -22,6 +23,7 @@ export default function Home() {
         <Develop />
         <Test />
         <Deploy />
+        <Projects />
         <Contact />
         <DynamicSpotify />
       </main>
