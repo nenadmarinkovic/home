@@ -25,12 +25,12 @@ export default function About() {
     const yearText = years > 1 ? 'years' : 'year';
     if (months > 0) {
       const monthText = months > 1 ? 'months' : 'month';
-      ageString = `${years} ${yearText} and ${months} ${monthText} old`;
+      ageString = `${years} ${yearText} and ${months} ${monthText}`;
     } else {
-      ageString = `${years} ${yearText} old`;
+      ageString = `${years} ${yearText}`;
     }
   } else {
-    ageString = `${months} months old`;
+    ageString = `${months} months`;
   }
 
   return (
@@ -39,7 +39,7 @@ export default function About() {
       <main className={styles.main}>
         <Banner
           title="About"
-          paragraphText="My expertise lies in building websites and web interfaces using modern technologies like React and Vue. I find great joy in the field of web development — it’s a journey filled with challenges, constant learning, and the chance to bring a creative touch to each project."
+          paragraphText="I build modern, high-performance websites and web applications using React and Vue. I'm passionate about web development and enjoy the process of turning complex challenges into clean, creative, and user-friendly digital experiences."
         />
         <section className={styles.contentContainer}>
           <Container>
@@ -84,18 +84,61 @@ export default function About() {
               <div className={styles.contentSection}>
                 <h3>About me</h3>
                 <p>
-                  Over the past few years, I have collaborated with
-                  numerous web agencies and software companies to
-                  develop well-designed, fast, and user-friendly
-                  websites and applications. During this time, I
-                  refined my skills by developing adaptable
-                  components, reusable UI elements, and scalable
-                  front-end architectures. I also had the opportunity
-                  to work with clients of all sizes, from small
-                  startups to large corporations. This experience
-                  taught me the importance of clear communication and
-                  collaboration.
+                  For the past seven years, I&apos;ve had the
+                  opportunity to work with a diverse range of clients,
+                  from creative agencies to tech startups and large
+                  corporations, to develop well-designed, fast, and
+                  user-friendly websites and applications.
                 </p>
+                <p>
+                  My career began at the web agency{' '}
+                  <a
+                    href="https://www.popwebdesign.net/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link"
+                  >
+                    PopArt Studio
+                  </a>{' '}
+                  in Novi Sad, Serbia, where I built custom websites
+                  and gained a strong foundation by collaborating
+                  closely with project managers and the design team.
+                </p>
+                <p>
+                  After moving to Vienna, I worked with different
+                  companies such as{' '}
+                  <a
+                    href="https://www.dccs.at/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link"
+                  >
+                    DCCS{' '}
+                  </a>
+                  , where our team developed the Techem Kundenportal,
+                  a complex web application using Vue.js and Java for
+                  energy consumption billing and management. My most
+                  recent role was as a Frontend Developer at{' '}
+                  <a
+                    href="https://www.nexxar.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link"
+                  >
+                    nexxar
+                  </a>
+                  , creating digital annual reports for major
+                  international clients such as Johnson & Johnson,
+                  Volkswagen, and OMV.
+                </p>
+                <p>
+                  In addition to my full-time roles, I&apos;ve worked
+                  as a freelancer with various startups and clients
+                  worldwide, mostly with a modern tech stack that
+                  includes React and Next.js to deliver high-quality
+                  web solutions.
+                </p>
+
                 <div className={styles.contentQuote}>
                   <svg
                     width="30px"
@@ -124,17 +167,25 @@ export default function About() {
                       — Håkon Kalbakk
                     </span>
                     <span className={styles.contentPersonPosition}>
-                      Founder of Modulize
+                      Founder of{' '}
+                      <a
+                        href="https://www.modulize.io/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link"
+                      >
+                        Modulize
+                      </a>
                     </span>
                   </span>
                 </div>
 
                 <p>
-                  I&apos;m currently seeking my next role and am open
-                  to new opportunities. While searching for the right
-                  team to join, I&apos;m staying busy with several
-                  side projects that allow me to explore new
-                  technologies.
+                  I&apos;m currently looking for my next opportunity
+                  to join a great team and help build outstanding
+                  products. While I search for the right fit, I remain
+                  hands-on with personal projects that allow me to
+                  experiment with the latest web technologies.
                 </p>
                 <div className={styles.contentQuote}>
                   <svg
@@ -162,23 +213,34 @@ export default function About() {
                       — Toni Gemayel
                     </span>
                     <span className={styles.contentPersonPosition}>
-                      Founder of Wager API
+                      Founder of{' '}
+                      <a
+                        href="https://www.wagerapi.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link"
+                      >
+                        Wager API
+                      </a>
                     </span>
                   </span>
                 </div>
                 <p>
-                  Outside of work, I’m learning German, or spending
-                  time with my wife and our {ageString} daughter.
+                  When I&apos;m not coding, I&apos;m usually spending
+                  time with my wife and our {ageString} old daughter.
+                  We live in the 2nd district and love taking long
+                  walks on the Donauinsel, enjoying a bit of nature in
+                  the heart of Vienna.
                 </p>
 
                 <h3>About this website</h3>
                 <p>
-                  I built this site with Next.js as a place to share
-                  projects and ideas. It uses a few APIs to pull in
-                  data: GitHub provides project information, Spotify
-                  provides the &apos;Now Playing&apos; widget, Resend
-                  provides email services, and Notion provides content
-                  management. The entire codebase is open-source on{' '}
+                  This website was built with Next.js and serves as my
+                  personal digital space. It integrates several APIs:
+                  GitHub for project data, Spotify for the &apos;Now
+                  Playing&apos; feature, Resend for email delivery,
+                  and Notion for content management. The entire
+                  codebase is open-source and available on{' '}
                   <a
                     href="https://github.com/nenadmarinkovic/home"
                     target="_blank"
@@ -186,8 +248,8 @@ export default function About() {
                     className="link"
                   >
                     GitHub
-                  </a>{' '}
-                  if you&quot;d like to see how it works.
+                  </a>
+                  .
                 </p>
               </div>
             </div>
