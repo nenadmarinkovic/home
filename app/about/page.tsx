@@ -169,7 +169,7 @@ export default function About() {
                     <span className={styles.contentPersonPosition}>
                       Founder of{' '}
                       <a
-                        href="https://www.modulize.io/"
+                        href="https://www.modulize.com/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="link"
@@ -181,11 +181,12 @@ export default function About() {
                 </div>
 
                 <p>
-                  I&apos;m currently looking for my next opportunity
-                  to join a great team and help build outstanding
-                  products. While I search for the right fit, I remain
-                  hands-on with personal projects that allow me to
-                  experiment with the latest web technologies.
+                  I&apos;m currently looking for an opportunity to
+                  join a great team and help build amazing web
+                  products. While searching for the right fit, I stay
+                  hands-on by constantly experimenting with new
+                  technologies and developing my own personal
+                  projects.
                 </p>
                 <div className={styles.contentQuote}>
                   <svg
@@ -226,11 +227,12 @@ export default function About() {
                   </span>
                 </div>
                 <p>
-                  When I&apos;m not coding, I&apos;m usually spending
-                  time with my wife and our {ageString} old daughter.
-                  We live in the 2nd district and love taking long
-                  walks on the Donauinsel, enjoying a bit of nature in
-                  the heart of Vienna.
+                  When I&apos;m not coding, I love spending time with
+                  my wife and our {ageString} old daughter, playing
+                  together or taking long walks on the Donauinsel.
+                  Otherwise, I split my time between the fitness
+                  studio, reading nonfiction books, and the endless
+                  challenge of memorizing German noun articles.
                 </p>
 
                 <h3>About this website</h3>
