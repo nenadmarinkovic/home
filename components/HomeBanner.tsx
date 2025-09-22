@@ -15,7 +15,7 @@ function HomeBanner() {
           expertise in building high-performance websites and web
           applications. I&apos;m currently developing several personal
           projects using the latest web technologies. Currently open
-          to new roles.
+          to new roles and projects.
         </>
       }
     >
