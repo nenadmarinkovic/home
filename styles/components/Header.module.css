@@ -94,7 +94,7 @@
   margin: 0;
   cursor: pointer;
   display: none;
-  z-index: 99;
+  z-index: 100;
 
   @media screen and (max-width: 768px) {
     display: flex;
