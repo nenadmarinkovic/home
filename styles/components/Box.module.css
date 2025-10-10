@@ -145,8 +145,11 @@
 
 .boxLeft {
   left: -50px;
-  text-shadow: -1px -1px 0 #35ae3f, 1px -1px 0 #35ae3f,
-    -1px 1px 0 #35ae3f, 1px 1px 0 #35ae3f;
+  text-shadow:
+    -1px -1px 0 #35ae3f,
+    1px -1px 0 #35ae3f,
+    -1px 1px 0 #35ae3f,
+    1px 1px 0 #35ae3f;
 }
 
 .blur {

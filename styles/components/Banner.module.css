@@ -4,11 +4,7 @@
 }
 
 .bannerContainer {
-  background: linear-gradient(
-    to bottom,
-    #044e72 -50%,
-    var(--color-muted) 100%
-  );
+  background: linear-gradient(to bottom, #044e72 -50%, var(--color-muted) 100%);
   margin-bottom: -1px;
 }
 

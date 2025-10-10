@@ -1,7 +1,7 @@
-import Banner from './Banner';
-import Link from 'next/link';
+import Banner from "./Banner";
+import Link from "next/link";
 
-import stylesButton from '../styles/components/Button.module.css';
+import stylesButton from "../styles/components/Button.module.css";
 
 function HomeBanner() {
   return (
@@ -11,11 +11,10 @@ function HomeBanner() {
       additionalText=" and other web products."
       paragraphText={
         <>
-          I&apos;m Nenad, a Vienna-based software developer with
-          expertise in building high-performance websites and web
-          applications. I&apos;m currently developing several personal
-          projects using the latest web technologies. Currently open
-          to new roles and projects.
+          I&apos;m Nenad, a Vienna-based software developer with expertise in
+          building high-performance websites and web applications. I&apos;m
+          currently developing several personal projects using the latest web
+          technologies. Currently open to new roles and projects.
         </>
       }
     >

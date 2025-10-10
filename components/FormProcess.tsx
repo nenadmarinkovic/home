@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import styles from '../styles/components/FormProcess.module.css';
+import styles from "../styles/components/FormProcess.module.css";
 
 type ProcessStep = {
   number: number;

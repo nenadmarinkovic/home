@@ -1,9 +1,9 @@
-import DeployChart from './DeployChart';
-import Container from '@/containers/Container';
-import Box from './Box';
+import DeployChart from "./DeployChart";
+import Container from "@/containers/Container";
+import Box from "./Box";
 
-import boxStyles from '../styles/components/Box.module.css';
-import processStyles from '../styles/components/Process.module.css';
+import boxStyles from "../styles/components/Box.module.css";
+import processStyles from "../styles/components/Process.module.css";
 
 function Deploy() {
   const boxItems = [

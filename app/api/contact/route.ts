@@ -1,6 +1,6 @@
-import { Resend } from 'resend';
-import { NextRequest, NextResponse } from 'next/server';
-import Email from '@/components/Email';
+import { Resend } from "resend";
+import { NextRequest, NextResponse } from "next/server";
+import Email from "@/components/Email";
 
 const { RESEND_API_KEY } = process.env;
 
@@ -10,12 +10,12 @@ export async function POST(req: NextRequest) {
   const { name, email, message } = await req.json();
 
   if (!name || !email || !message) {
-    return NextResponse.json({ error: 'Invalid input' });
+    return NextResponse.json({ error: "Invalid input" });
   }
 
   try {
     const data = await resend.emails.send({
-      from: 'Hello <hello@nenadmarinkovic.com>',
+      from: "Hello <hello@nenadmarinkovic.com>",
       to: `nenadmarinkovic@protonmail.com`,
       subject: `${name} has a message!`,
       react: Email({ name, email, message }),
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error:', error);
-    return NextResponse.json({ error: 'Failed to send email' });
+    console.error("Error:", error);
+    return NextResponse.json({ error: "Failed to send email" });
   }
 }

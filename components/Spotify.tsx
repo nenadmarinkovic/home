@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { SpotifySongType } from '../types/types';
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { SpotifySongType } from "../types/types";
 
-import styles from '../styles/components/Spotify.module.css';
+import styles from "../styles/components/Spotify.module.css";
 
 export default function Spotify() {
   const [data, setData] = useState<SpotifySongType | null>(null);
@@ -12,10 +12,10 @@ export default function Spotify() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api/play');
+        const response = await fetch("/api/play");
 
         if (!response.ok) {
-          throw new Error('Failed to fetch data');
+          throw new Error("Failed to fetch data");
         }
 
         const data = await response.json();
@@ -57,27 +57,17 @@ export default function Spotify() {
                       alt="Spotify logo"
                     />
                   </span>
-                  <span className={styles.boxText}>
-                    Currently playing:
-                  </span>
+                  <span className={styles.boxText}>Currently playing:</span>
                 </span>
                 <span className={styles.title}>{data.title}</span>
                 <span className={styles.artist}>{data.artist}</span>
               </div>
 
               <span className={styles.box}>
-                <span
-                  className={`${styles.music} ${styles.one}`}
-                ></span>
-                <span
-                  className={`${styles.music} ${styles.two}`}
-                ></span>
-                <span
-                  className={`${styles.music} ${styles.three}`}
-                ></span>
-                <span
-                  className={`${styles.music} ${styles.four}`}
-                ></span>
+                <span className={`${styles.music} ${styles.one}`}></span>
+                <span className={`${styles.music} ${styles.two}`}></span>
+                <span className={`${styles.music} ${styles.three}`}></span>
+                <span className={`${styles.music} ${styles.four}`}></span>
               </span>
             </a>
           </>

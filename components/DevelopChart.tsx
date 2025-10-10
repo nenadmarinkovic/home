@@ -1,13 +1,11 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import { DevelopChartProps } from '../types/types';
+import React, { useEffect, useRef, useState } from "react";
+import { DevelopChartProps } from "../types/types";
 
-import styles from '../styles/components/Box.module.css';
+import styles from "../styles/components/Box.module.css";
 
-export const DevelopChart: React.FC<DevelopChartProps> = ({
-  data,
-}) => {
+export const DevelopChart: React.FC<DevelopChartProps> = ({ data }) => {
   const chartRef = useRef<SVGSVGElement | null>(null);
   const [inView, setInView] = useState(false);
 
@@ -21,10 +19,8 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
 
       const threshold = 0.1;
 
-      const topVisible =
-        chartRect.top < viewportHeight * (1 - threshold);
-      const bottomVisible =
-        chartRect.bottom > viewportHeight * threshold;
+      const topVisible = chartRect.top < viewportHeight * (1 - threshold);
+      const bottomVisible = chartRect.bottom > viewportHeight * threshold;
 
       if (topVisible && bottomVisible) {
         setInView(true);
@@ -33,14 +29,12 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const maxPercentage = Math.max(
-    ...data.map((item) => item.percentage)
-  );
+  const maxPercentage = Math.max(...data.map((item) => item.percentage));
 
   let restPercentage = 0;
   const groupedData = data.filter(({ language, percentage }) => {
@@ -51,15 +45,11 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
     return true;
   });
 
-  groupedData.push({ language: 'Rest', percentage: restPercentage });
+  groupedData.push({ language: "Rest", percentage: restPercentage });
 
   return (
     <div className={styles.developSVG}>
-      <svg
-        width="525"
-        height={groupedData.length * 34}
-        ref={chartRef}
-      >
+      <svg width="525" height={groupedData.length * 34} ref={chartRef}>
         {groupedData.map(({ language, percentage }, i) => (
           <g key={i} transform={`translate(100, ${i * 35})`}>
             <rect
@@ -68,15 +58,10 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
               fill={`#36c6ff`}
               style={{
                 opacity: 1 - i / groupedData.length / 2,
-                transition: 'width 1s',
+                transition: "width 1s",
               }}
             />
-            <text
-              x={-100}
-              y="10"
-              fill="#9fbbbb"
-              dominantBaseline="middle"
-            >
+            <text x={-100} y="10" fill="#9fbbbb" dominantBaseline="middle">
               {language}
             </text>
             <text
@@ -89,8 +74,8 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
               dx="5"
               style={{
                 opacity: inView ? 1 : 0,
-                transition: 'opacity 1s ease-in-out 1s',
-                visibility: inView ? 'visible' : 'hidden',
+                transition: "opacity 1s ease-in-out 1s",
+                visibility: inView ? "visible" : "hidden",
               }}
             >
               {percentage.toFixed(2)}%
@@ -99,7 +84,7 @@ export const DevelopChart: React.FC<DevelopChartProps> = ({
         ))}
       </svg>
       <span className={styles.boxInfo}>
-        Data is coming from a personal{' '}
+        Data is coming from a personal{" "}
         <a
           target="_blank"
           className="link"

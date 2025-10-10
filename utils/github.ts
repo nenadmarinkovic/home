@@ -1,4 +1,4 @@
-import { Repo } from '../types/types';
+import { Repo } from "../types/types";
 
 const { GITHUB_TOKEN } = process.env;
 
@@ -11,14 +11,12 @@ async function fetchFromGithub(url: string): Promise<any> {
     });
 
     if (!res.ok) {
-      throw new Error(
-        `Failed to fetch data: ${res.status} ${res.statusText}`
-      );
+      throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`);
     }
 
     return res.json();
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     throw error;
   }
 }

@@ -1,8 +1,8 @@
-import Container from '@/containers/Container';
-import SectionHeader from './Section';
-import { ProductItemProps } from '@/types/types';
+import Container from "@/containers/Container";
+import SectionHeader from "./Section";
+import { ProductItemProps } from "@/types/types";
 
-import styles from '../styles/components/Products.module.css';
+import styles from "../styles/components/Products.module.css";
 
 function ProductItem({ item }: { item: ProductItemProps }) {
   return (
@@ -10,9 +10,7 @@ function ProductItem({ item }: { item: ProductItemProps }) {
       <div className={styles.productsItem}>
         <div className={styles.productsTop}>
           <span className={styles.productsIcon}>{item.icon}</span>
-          <span className={styles.productsItemTitle}>
-            {item.title}
-          </span>
+          <span className={styles.productsItemTitle}>{item.title}</span>
         </div>
         <span className={styles.productsItemText}>{item.text}</span>
       </div>
@@ -23,15 +21,10 @@ function ProductItem({ item }: { item: ProductItemProps }) {
 function Products() {
   const items: ProductItemProps[] = [
     {
-      title: 'E-commerce websites',
-      text: 'With platforms like Shopify and WooCommerce to custom solutions.',
+      title: "E-commerce websites",
+      text: "With platforms like Shopify and WooCommerce to custom solutions.",
       icon: (
-        <svg
-          height="21"
-          width="21"
-          strokeLinejoin="round"
-          viewBox="0 0 16 16"
-        >
+        <svg height="21" width="21" strokeLinejoin="round" viewBox="0 0 16 16">
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -42,15 +35,10 @@ function Products() {
       ),
     },
     {
-      title: 'Data visualizations',
-      text: 'Interactive charts, graphs, and maps that bring data to life and tell a story.',
+      title: "Data visualizations",
+      text: "Interactive charts, graphs, and maps that bring data to life and tell a story.",
       icon: (
-        <svg
-          height="21"
-          width="21"
-          strokeLinejoin="round"
-          viewBox="0 0 16 16"
-        >
+        <svg height="21" width="21" strokeLinejoin="round" viewBox="0 0 16 16">
           <path
             fill="currentColor"
             fillRule="evenodd"
@@ -61,15 +49,10 @@ function Products() {
       ),
     },
     {
-      title: 'Content-management systems',
-      text: 'From headless CMS like Sanity or Strapi, to various other API powered services.',
+      title: "Content-management systems",
+      text: "From headless CMS like Sanity or Strapi, to various other API powered services.",
       icon: (
-        <svg
-          height="21"
-          width="21"
-          strokeLinejoin="round"
-          viewBox="0 0 16 16"
-        >
+        <svg height="21" width="21" strokeLinejoin="round" viewBox="0 0 16 16">
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -80,15 +63,10 @@ function Products() {
       ),
     },
     {
-      title: 'Marketing websites',
-      text: 'From small portfolio websites to large corporate multi-page websites.',
+      title: "Marketing websites",
+      text: "From small portfolio websites to large corporate multi-page websites.",
       icon: (
-        <svg
-          height="21"
-          width="21"
-          strokeLinejoin="round"
-          viewBox="0 0 16 16"
-        >
+        <svg height="21" width="21" strokeLinejoin="round" viewBox="0 0 16 16">
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -99,8 +77,8 @@ function Products() {
       ),
     },
     {
-      title: 'User interfaces',
-      text: 'Data-intensive applications of all sizes and complexities using React and Vue.js.',
+      title: "User interfaces",
+      text: "Data-intensive applications of all sizes and complexities using React and Vue.js.",
       icon: (
         <svg
           width="21"
@@ -120,15 +98,10 @@ function Products() {
       ),
     },
     {
-      title: 'Software as a Service',
-      text: 'Robust architecture and scalable solutions for your software as a service.',
+      title: "Software as a Service",
+      text: "Robust architecture and scalable solutions for your software as a service.",
       icon: (
-        <svg
-          height="21"
-          width="21"
-          strokeLinejoin="round"
-          viewBox="0 0 16 16"
-        >
+        <svg height="21" width="21" strokeLinejoin="round" viewBox="0 0 16 16">
           <path
             fillRule="evenodd"
             clipRule="evenodd"

@@ -1,10 +1,6 @@
 .contactContainer {
   width: 100%;
-  background: linear-gradient(
-    to top,
-    #044e72 -50%,
-    var(--color-muted) 100%
-  );
+  background: linear-gradient(to top, #044e72 -50%, var(--color-muted) 100%);
   overflow: hidden;
   color: var(--color-white);
   text-align: center;

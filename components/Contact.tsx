@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import SectionHeader from './Section';
-import Container from '@/containers/Container';
-import Link from 'next/link';
-import Image from 'next/image';
-import stylesButton from '../styles/components/Button.module.css';
-import styles from '../styles/components/Contact.module.css';
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import SectionHeader from "./Section";
+import Container from "@/containers/Container";
+import Link from "next/link";
+import Image from "next/image";
+import stylesButton from "../styles/components/Button.module.css";
+import styles from "../styles/components/Contact.module.css";
 
 function Contact() {
   const ref = useRef<HTMLDivElement>(null);
@@ -49,7 +49,7 @@ function Contact() {
     <div
       className={styles.contactContainer}
       ref={ref}
-      style={{ position: 'relative', overflow: 'hidden' }}
+      style={{ position: "relative", overflow: "hidden" }}
     >
       {stars.map((star, i) => (
         <motion.div
@@ -59,17 +59,17 @@ function Contact() {
           transition={{
             delay: star.delay,
             duration: 0.8,
-            ease: 'easeOut',
+            ease: "easeOut",
           }}
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: star.top,
             left: star.left,
             width: `${star.size}px`,
             height: `${star.size}px`,
-            backgroundColor: '#9fbbbb',
-            borderRadius: '50%',
-            pointerEvents: 'none',
+            backgroundColor: "#9fbbbb",
+            borderRadius: "50%",
+            pointerEvents: "none",
             opacity: 0.8,
           }}
         />
@@ -79,8 +79,8 @@ function Contact() {
         <motion.div
           initial={{ x: 0, y: 0, opacity: 1, rotate: 0, scale: 1 }}
           animate={{
-            x: '70vw',
-            y: '-70vh',
+            x: "70vw",
+            y: "-70vh",
             opacity: 0,
             rotate: 0,
             scale: 1,
@@ -91,21 +91,16 @@ function Contact() {
             opacity: { duration: 1, delay: 4 },
           }}
           style={{
-            position: 'absolute',
+            position: "absolute",
             bottom: 0,
-            left: '40%',
-            transform: 'translateX(-40%)',
-            width: '12px',
-            height: '12px',
+            left: "40%",
+            transform: "translateX(-40%)",
+            width: "12px",
+            height: "12px",
             zIndex: 0,
           }}
         >
-          <Image
-            src="/rocket.svg"
-            alt="Flying Rocket"
-            width={23}
-            height={23}
-          />
+          <Image src="/rocket.svg" alt="Flying Rocket" width={23} height={23} />
         </motion.div>
       )}
 

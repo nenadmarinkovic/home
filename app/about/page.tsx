@@ -1,13 +1,13 @@
-import Header from '@/components/Header';
-import Banner from '@/components/Banner';
-import Container from '@/containers/Container';
-import Footer from '@/components/Footer';
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
+import Header from "@/components/Header";
+import Banner from "@/components/Banner";
+import Container from "@/containers/Container";
+import Footer from "@/components/Footer";
+import dynamic from "next/dynamic";
+import Image from "next/image";
 
-import styles from '../../styles/pages/layout.module.css';
+import styles from "../../styles/pages/layout.module.css";
 
-const DynamicSpotify = dynamic(() => import('@/components/Spotify'));
+const DynamicSpotify = dynamic(() => import("@/components/Spotify"));
 
 export default function About() {
   const birth = new Date(2025, 1, 1);
@@ -22,9 +22,9 @@ export default function About() {
   let ageString;
 
   if (years > 0) {
-    const yearText = years > 1 ? 'years' : 'year';
+    const yearText = years > 1 ? "years" : "year";
     if (months > 0) {
-      const monthText = months > 1 ? 'months' : 'month';
+      const monthText = months > 1 ? "months" : "month";
       ageString = `${years} ${yearText} and ${months} ${monthText}`;
     } else {
       ageString = `${years} ${yearText}`;
@@ -67,31 +67,27 @@ export default function About() {
                     <span className={styles.profileInfoValue}>
                       {new Date().getFullYear() - 2018} years
                     </span>
-                    <span className={styles.profileInfoKey}>
-                      Experience
-                    </span>
+                    <span className={styles.profileInfoKey}>Experience</span>
                   </li>
                   <li className={styles.profileInfoItem}>
                     <span className={styles.profileInfoValue}>
                       Vienna, Austria
                     </span>
-                    <span className={styles.profileInfoKey}>
-                      Location
-                    </span>
+                    <span className={styles.profileInfoKey}>Location</span>
                   </li>
                 </ul>
               </div>
               <div className={styles.contentSection}>
                 <h3>About me</h3>
                 <p>
-                  For the past seven years, I&apos;ve had the
-                  opportunity to work with a diverse range of clients,
-                  from creative agencies to tech startups and large
-                  corporations, to develop well-designed, fast, and
-                  user-friendly websites and applications.
+                  For the past seven years, I&apos;ve had the opportunity to
+                  work with a diverse range of clients, from creative agencies
+                  to tech startups and large corporations, to develop
+                  well-designed, fast, and user-friendly websites and
+                  applications.
                 </p>
                 <p>
-                  My career began at the web agency{' '}
+                  My career began at the web agency{" "}
                   <a
                     href="https://www.popwebdesign.net/"
                     target="_blank"
@@ -99,26 +95,26 @@ export default function About() {
                     className="link"
                   >
                     PopArt Studio
-                  </a>{' '}
-                  in Novi Sad, Serbia, where I built custom websites
-                  and gained a strong foundation by collaborating
-                  closely with project managers and the design team.
+                  </a>{" "}
+                  in Novi Sad, Serbia, where I built custom websites and gained
+                  a strong foundation by collaborating closely with project
+                  managers and the design team.
                 </p>
                 <p>
-                  After moving to Vienna, I worked with different
-                  companies such as{' '}
+                  After moving to Vienna, I worked with different companies such
+                  as{" "}
                   <a
                     href="https://www.dccs.at/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="link"
                   >
-                    DCCS{' '}
+                    DCCS{" "}
                   </a>
-                  , where our team developed the Techem Kundenportal,
-                  a complex web application using Vue.js and Java for
-                  energy consumption billing and management. My most
-                  recent role was as a Frontend Developer at{' '}
+                  , where our team developed the Techem Kundenportal, a complex
+                  web application using Vue.js and Java for energy consumption
+                  billing and management. My most recent role was as a Frontend
+                  Developer at{" "}
                   <a
                     href="https://www.nexxar.com/"
                     target="_blank"
@@ -127,16 +123,14 @@ export default function About() {
                   >
                     nexxar
                   </a>
-                  , creating digital annual reports for major
-                  international clients such as Johnson & Johnson,
-                  Volkswagen, and OMV.
+                  , creating digital annual reports for major international
+                  clients such as Johnson & Johnson, Volkswagen, and OMV.
                 </p>
                 <p>
-                  In addition to my full-time roles, I&apos;ve worked
-                  as a freelancer with various startups and clients
-                  worldwide, mostly with a modern tech stack that
-                  includes React and Next.js to deliver high-quality
-                  web solutions.
+                  In addition to my full-time roles, I&apos;ve worked as a
+                  freelancer with various startups and clients worldwide, mostly
+                  with a modern tech stack that includes React and Next.js to
+                  deliver high-quality web solutions.
                 </p>
 
                 <div className={styles.contentQuote}>
@@ -156,18 +150,17 @@ export default function About() {
                     </g>
                   </svg>
                   <p>
-                    It is a true pleasure working with Nenad. He
-                    successfully implemented our new branding and web
-                    design into our new and lightning-fast website.
-                    Nenad is thorough, highly skilled, communicative
-                    and a pleasure to work with!
+                    It is a true pleasure working with Nenad. He successfully
+                    implemented our new branding and web design into our new and
+                    lightning-fast website. Nenad is thorough, highly skilled,
+                    communicative and a pleasure to work with!
                   </p>
                   <span className={styles.contentPerson}>
                     <span className={styles.contentPersonName}>
                       — Håkon Kalbakk
                     </span>
                     <span className={styles.contentPersonPosition}>
-                      Founder of{' '}
+                      Founder of{" "}
                       <a
                         href="https://www.modulize.com/"
                         target="_blank"
@@ -181,12 +174,10 @@ export default function About() {
                 </div>
 
                 <p>
-                  I&apos;m currently looking for an opportunity to
-                  join a great team and help build amazing web
-                  products. While searching for the right fit, I stay
-                  hands-on by constantly experimenting with new
-                  technologies and developing my own personal
-                  projects.
+                  I&apos;m currently looking for an opportunity to join a great
+                  team and help build amazing web products. While searching for
+                  the right fit, I stay hands-on by constantly experimenting
+                  with new technologies and developing my own personal projects.
                 </p>
                 <div className={styles.contentQuote}>
                   <svg
@@ -205,16 +196,15 @@ export default function About() {
                     </g>
                   </svg>
                   <p>
-                    Nenad is a world class developer. Amazing
-                    communicator, very thorough in his work, and his
-                    code is outstanding.
+                    Nenad is a world class developer. Amazing communicator, very
+                    thorough in his work, and his code is outstanding.
                   </p>
                   <span className={styles.contentPerson}>
                     <span className={styles.contentPersonName}>
                       — Toni Gemayel
                     </span>
                     <span className={styles.contentPersonPosition}>
-                      Founder of{' '}
+                      Founder of{" "}
                       <a
                         href="https://www.wagerapi.com/"
                         target="_blank"
@@ -227,22 +217,20 @@ export default function About() {
                   </span>
                 </div>
                 <p>
-                  When I&apos;m not coding, I love spending time with
-                  my wife and our {ageString} old daughter, playing
-                  together or taking long walks on the Donauinsel.
-                  Otherwise, I split my time between the fitness
-                  studio, reading nonfiction books, and the endless
-                  challenge of memorizing German noun articles.
+                  When I&apos;m not coding, I love spending time with my wife
+                  and our {ageString} old daughter, playing together or taking
+                  long walks on the Donauinsel. Otherwise, I split my time
+                  between the fitness studio, reading nonfiction books, and the
+                  endless challenge of memorizing German noun articles.
                 </p>
 
                 <h3>About this website</h3>
                 <p>
-                  This website was built with Next.js and serves as my
-                  personal digital space. It integrates several APIs:
-                  GitHub for project data, Spotify for the &apos;Now
-                  Playing&apos; feature, Resend for email delivery,
-                  and Notion for content management. The entire
-                  codebase is open-source and available on{' '}
+                  This website was built with Next.js and serves as my personal
+                  digital space. It integrates several APIs: GitHub for project
+                  data, Spotify for the &apos;Now Playing&apos; feature, Resend
+                  for email delivery, and Notion for content management. The
+                  entire codebase is open-source and available on{" "}
                   <a
                     href="https://github.com/nenadmarinkovic/home"
                     target="_blank"

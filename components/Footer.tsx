@@ -1,7 +1,7 @@
-import Container from '@/containers/Container';
-import Link from 'next/link';
+import Container from "@/containers/Container";
+import Link from "next/link";
 
-import styles from '../styles/components/Footer.module.css';
+import styles from "../styles/components/Footer.module.css";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -20,8 +20,8 @@ function Footer() {
                 </span>
                 <span className={styles.footerText}>
                   You can find the code in the GitHub repository. It
-                  doesn&apos;t track you in any way, it doesn&apos;t
-                  use cookies, and it doesn&apos;t store any data.
+                  doesn&apos;t track you in any way, it doesn&apos;t use
+                  cookies, and it doesn&apos;t store any data.
                 </span>
                 <span className={styles.footerIcons}>
                   <a
@@ -46,11 +46,7 @@ function Footer() {
                       </g>
                       <defs>
                         <clipPath id="clip0_872_3147">
-                          <rect
-                            width="16"
-                            height="16"
-                            fill="white"
-                          ></rect>
+                          <rect width="16" height="16" fill="white"></rect>
                         </clipPath>
                       </defs>
                     </svg>

@@ -1,12 +1,12 @@
-import Header from '@/components/Header';
-import Banner from '@/components/Banner';
-import Container from '@/containers/Container';
-import Footer from '@/components/Footer';
-import DynamicSpotify from '@/components/Spotify';
-import { getPost, getPosts } from '@/utils/notion';
-import PostContent from '@/components/PostContent';
+import Header from "@/components/Header";
+import Banner from "@/components/Banner";
+import Container from "@/containers/Container";
+import Footer from "@/components/Footer";
+import DynamicSpotify from "@/components/Spotify";
+import { getPost, getPosts } from "@/utils/notion";
+import PostContent from "@/components/PostContent";
 
-import styles from '../../../styles/pages/layout.module.css';
+import styles from "../../../styles/pages/layout.module.css";
 
 export const revalidate = 5;
 export const dynamicParams = true;
@@ -34,10 +34,7 @@ export default async function Page({
         />
         <section className={styles.contentContainer}>
           <Container>
-            <PostContent
-              html={html}
-              headings={frontMatter.headings}
-            />
+            <PostContent html={html} headings={frontMatter.headings} />
           </Container>
         </section>
       </main>

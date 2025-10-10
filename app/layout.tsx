@@ -1,10 +1,10 @@
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
-import '../styles/globals.css';
+import "../styles/globals.css";
 
 export const metadata: Metadata = {
-  title: 'Nenad Marinković — Frontend Developer',
-  description: 'I build websites, web interfaces, and applications.',
+  title: "Nenad Marinković — Frontend Developer",
+  description: "I build websites, web interfaces, and applications.",
 };
 
 export default function RootLayout({

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from "react";
 
-import styles from '../styles/components/Test.module.css';
+import styles from "../styles/components/Test.module.css";
 interface TestChartProps {
   maxValue: number;
   circleValue: number;
@@ -22,25 +22,24 @@ const TestChart: React.FC<TestChartProps> = ({
     const checkIfInView = () => {
       if (circleRef.current) {
         const rect = circleRef.current.getBoundingClientRect();
-        const isInView =
-          rect.bottom >= 0 && rect.bottom <= window.innerHeight;
+        const isInView = rect.bottom >= 0 && rect.bottom <= window.innerHeight;
         setScrollPercentage(isInView ? 99 : 0);
         if (!isInView) {
-          setDisplayedNumber(0); // Reset the number when not in view
+          setDisplayedNumber(0);
         }
       }
     };
 
     checkIfInView();
 
-    window.addEventListener('scroll', checkIfInView);
-    return () => window.removeEventListener('scroll', checkIfInView);
+    window.addEventListener("scroll", checkIfInView);
+    return () => window.removeEventListener("scroll", checkIfInView);
   }, []);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (scrollPercentage === 99) {
-      setDisplayedNumber(0); // Reset the number before starting the animation
+      setDisplayedNumber(0);
       interval = setInterval(() => {
         setDisplayedNumber((prevNumber) => {
           if (prevNumber < maxValue) {
@@ -63,8 +62,7 @@ const TestChart: React.FC<TestChartProps> = ({
   const normalizedRadius = radius - strokeWidth * 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const strokeDashoffset =
-    circumference -
-    (displayedNumber / 100) * circumference * circleValue;
+    circumference - (displayedNumber / 100) * circumference * circleValue;
 
   return (
     <>
@@ -82,7 +80,7 @@ const TestChart: React.FC<TestChartProps> = ({
             stroke="#aaf555"
             fill="transparent"
             strokeWidth={strokeWidth}
-            strokeDasharray={circumference + ' ' + circumference}
+            strokeDasharray={circumference + " " + circumference}
             style={{
               strokeDashoffset,
               transition: `stroke-dashoffset ${
@@ -109,7 +107,7 @@ const TestChart: React.FC<TestChartProps> = ({
         </svg>
         <span
           className={`${styles.text} ${
-            displayedNumber === maxValue ? styles.textPopup : ''
+            displayedNumber === maxValue ? styles.textPopup : ""
           }`}
         >
           {testChartText}

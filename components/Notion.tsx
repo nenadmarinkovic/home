@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { ArticleType } from '@/types/types';
+import React, { useEffect, useState } from "react";
+import { ArticleType } from "@/types/types";
 
-import styles from '../styles/pages/layout.module.css';
+import styles from "../styles/pages/layout.module.css";
 
 function Notion() {
   const [articles, setArticles] = useState<ArticleType[]>([]);
@@ -13,7 +13,7 @@ function Notion() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('/api/read');
+        const response = await fetch("/api/read");
         const data = await response.json();
 
         if (data && Array.isArray(data.articles)) {
@@ -27,7 +27,7 @@ function Notion() {
         }
         setIsLoading(false);
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
         setIsLoading(false);
       }
     };
@@ -65,10 +65,10 @@ function Notion() {
         <ul className={styles.posts}>
           {articles.map((article: ArticleType, index) => {
             const date = new Date(article.date);
-            const formattedDate = date.toLocaleDateString('de-DE', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
+            const formattedDate = date.toLocaleDateString("de-DE", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
             });
             return (
               <li key={article.id}>
@@ -79,12 +79,8 @@ function Notion() {
                   className={`${styles.post} ${styles.popUpAnimation}`}
                   style={{ animationDelay: `${index * 0.15}s` }}
                 >
-                  <h2 className={styles.postTitle}>
-                    {article.title}
-                  </h2>
-                  <span className={`${styles.postDate}`}>
-                    {formattedDate}
-                  </span>
+                  <h2 className={styles.postTitle}>{article.title}</h2>
+                  <span className={`${styles.postDate}`}>{formattedDate}</span>
                   <p className={styles.postDescription}>
                     {article.description}
                   </p>

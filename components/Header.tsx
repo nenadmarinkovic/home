@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { usePathname } from 'next/navigation';
-import Container from '@/containers/Container';
-import Link from 'next/link';
+import React, { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
+import Container from "@/containers/Container";
+import Link from "next/link";
 
-import styles from '../styles/components/Header.module.css';
-import stylesButton from '../styles/components/Button.module.css';
+import styles from "../styles/components/Header.module.css";
+import stylesButton from "../styles/components/Button.module.css";
 
 export default function Header() {
   const [isFixed, setIsFixed] = useState(false);
@@ -26,28 +26,27 @@ export default function Header() {
 
     handleResize();
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      const shouldHideHeader =
-        scrollPosition >= 115 && scrollPosition <= 1000;
+      const shouldHideHeader = scrollPosition >= 115 && scrollPosition <= 1000;
       const shouldFixHeader = scrollPosition > 1001;
 
       setIsFixed(shouldFixHeader);
       setIsHidden(shouldHideHeader);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -68,33 +67,33 @@ export default function Header() {
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   useEffect(() => {
     const originalOverflowY = document.body.style.overflowY;
     const originalPaddingRight = document.body.style.paddingRight;
-    const mainElement = document.querySelector('main');
-    const footer = document.querySelector('footer');
+    const mainElement = document.querySelector("main");
+    const footer = document.querySelector("footer");
 
     if (isOverlayVisible) {
       const scrollbarWidth =
         window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflowY = 'hidden';
+      document.body.style.overflowY = "hidden";
       document.body.style.paddingRight = `${scrollbarWidth}px`;
       if (mainElement && footer) {
-        mainElement.classList.add('blurred');
-        footer.classList.add('blurred');
+        mainElement.classList.add("blurred");
+        footer.classList.add("blurred");
       }
     } else {
       document.body.style.overflowY = originalOverflowY;
       document.body.style.paddingRight = originalPaddingRight;
       if (mainElement && footer) {
-        mainElement.classList.remove('blurred');
-        footer.classList.remove('blurred');
+        mainElement.classList.remove("blurred");
+        footer.classList.remove("blurred");
       }
     }
 
@@ -102,8 +101,8 @@ export default function Header() {
       document.body.style.overflowY = originalOverflowY;
       document.body.style.paddingRight = originalPaddingRight;
       if (mainElement && footer) {
-        mainElement.classList.remove('blurred');
-        footer.classList.remove('blurred');
+        mainElement.classList.remove("blurred");
+        footer.classList.remove("blurred");
       }
     };
   }, [isOverlayVisible]);
@@ -119,7 +118,7 @@ export default function Header() {
           <div className={styles.headerInside}>
             <div
               className={`${styles.homeLink} ${
-                pathname === '/' && `${styles.activePage}`
+                pathname === "/" && `${styles.activePage}`
               }`}
             >
               <Link href="/">Nenad Marinković</Link>
@@ -128,30 +127,28 @@ export default function Header() {
               <ul className={styles.headerUnorderedList}>
                 <li
                   className={`${styles.headerList} ${
-                    pathname.startsWith('/blog') &&
-                    `${styles.activePage}`
+                    pathname.startsWith("/blog") && `${styles.activePage}`
                   }`}
                 >
                   <Link href="/blog">Blog</Link>
                 </li>
                 <li
                   className={`${styles.headerList} ${
-                    pathname.startsWith('/feed') &&
-                    `${styles.activePage}`
+                    pathname.startsWith("/feed") && `${styles.activePage}`
                   }`}
                 >
                   <Link href="/feed">Feed</Link>
                 </li>
                 <li
                   className={`${styles.headerList} ${
-                    pathname === '/about' && `${styles.activePage}`
+                    pathname === "/about" && `${styles.activePage}`
                   }`}
                 >
                   <Link href="/about">About</Link>
                 </li>
                 <li
                   className={`${styles.headerList} ${
-                    pathname === '/contact' && `${styles.activePage}`
+                    pathname === "/contact" && `${styles.activePage}`
                   }`}
                 >
                   <Link href="/contact">Contact</Link>
@@ -204,38 +201,35 @@ export default function Header() {
         <div
           ref={menuRef}
           className={`${styles.overlay} ${
-            isOverlayVisible ? styles.active : ''
+            isOverlayVisible ? styles.active : ""
           }`}
         >
           <nav className={styles.mobileNav}>
             <ul className={styles.mobileUl}>
               <li
                 className={`${styles.mobileLi} ${
-                  pathname === '/' && `${styles.activeLink}`
+                  pathname === "/" && `${styles.activeLink}`
                 }`}
               >
                 <Link href="/">Home</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
-                  pathname.startsWith('/blog') &&
-                  `${styles.activeLink}`
+                  pathname.startsWith("/blog") && `${styles.activeLink}`
                 }`}
               >
                 <Link href="/blog">Blog</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
-                  pathname.startsWith('/feed') &&
-                  `${styles.activeLink}`
+                  pathname.startsWith("/feed") && `${styles.activeLink}`
                 }`}
               >
                 <Link href="/feed">Feed</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
-                  pathname.startsWith('/about') &&
-                  `${styles.activeLink}`
+                  pathname.startsWith("/about") && `${styles.activeLink}`
                 }`}
               >
                 <Link href="/about">About</Link>

@@ -41,7 +41,7 @@
 }
 
 .formProcess li:not(:last-child) .number:after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -50px;
   left: 50%;

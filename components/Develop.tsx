@@ -1,12 +1,12 @@
-import Container from '@/containers/Container';
-import SectionHeader from './Section';
-import Box from './Box';
-import { fetchRepoLanguages, fetchUserRepos } from '../utils/github';
-import { RepoData, Repo } from '../types/types';
-import { DevelopChart } from './DevelopChart';
+import Container from "@/containers/Container";
+import SectionHeader from "./Section";
+import Box from "./Box";
+import { fetchRepoLanguages, fetchUserRepos } from "../utils/github";
+import { RepoData, Repo } from "../types/types";
+import { DevelopChart } from "./DevelopChart";
 
-import processStyles from '../styles/components/Process.module.css';
-import boxStyles from '../styles/components/Box.module.css';
+import processStyles from "../styles/components/Process.module.css";
+import boxStyles from "../styles/components/Box.module.css";
 
 async function getAllReposData(): Promise<RepoData[]> {
   const repos = await fetchUserRepos(1);
@@ -45,15 +45,11 @@ export default async function Develop() {
     languagePercentages[language] = percentage;
   }
 
-  const sortedLanguagePercentages = Object.entries(
-    languagePercentages
-  ).sort(
+  const sortedLanguagePercentages = Object.entries(languagePercentages).sort(
     ([, aPercentage], [, bPercentage]) => bPercentage - aPercentage
   );
 
-  const maxPercentage = Math.max(
-    ...Object.values(languagePercentages)
-  );
+  const maxPercentage = Math.max(...Object.values(languagePercentages));
   const currentYear = new Date().getFullYear();
 
   const boxItems = [
@@ -130,9 +126,10 @@ export default async function Develop() {
         />
         <div className={processStyles.chartContainer}>
           <DevelopChart
-            data={sortedLanguagePercentages.map(
-              ([language, percentage]) => ({ language, percentage })
-            )}
+            data={sortedLanguagePercentages.map(([language, percentage]) => ({
+              language,
+              percentage,
+            }))}
             maxPercentage={maxPercentage}
           />
         </div>

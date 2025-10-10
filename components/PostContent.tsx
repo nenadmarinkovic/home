@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import styles from '../styles/pages/layout.module.css';
+import styles from "../styles/pages/layout.module.css";
 
 interface Heading {
   text: string;
@@ -12,20 +12,14 @@ interface PostContentProps {
   headings: Heading[];
 }
 
-export default function PostContent({
-  html,
-  headings,
-}: PostContentProps) {
-  const handleScroll = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    id: string
-  ) => {
+export default function PostContent({ html, headings }: PostContentProps) {
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
+        behavior: "smooth",
+        block: "start",
       });
     }
   };

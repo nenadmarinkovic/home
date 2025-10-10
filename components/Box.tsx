@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { BoxPropsTypes } from '../types/types';
-import boxStyles from '../styles/components/Box.module.css';
+import { useEffect, useRef, useState } from "react";
+import { BoxPropsTypes } from "../types/types";
+import boxStyles from "../styles/components/Box.module.css";
 
 function Box({
   title,
@@ -49,18 +49,14 @@ function Box({
           {title}
         </h3>
         <p className={boxStyles.boxItemHeaderText}>{headerText}</p>
-        <p
-          className={`${boxStyles.boxItemMainTitle} ${boxStyles[boxColor]}`}
-        >
+        <p className={`${boxStyles.boxItemMainTitle} ${boxStyles[boxColor]}`}>
           {mainTitle}
         </p>
         <div className={boxStyles.boxItemMainItems}>
           {boxItems.map((item, index) => (
             <div key={index} className={boxStyles.boxItemMainItem}>
               {item.icon}
-              <span className={boxStyles.boxItemMainItemText}>
-                {item.text}
-              </span>
+              <span className={boxStyles.boxItemMainItemText}>{item.text}</span>
             </div>
           ))}
         </div>

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import SectionHeader from './Section';
-import Container from '@/containers/Container';
+import React, { useState } from "react";
+import SectionHeader from "./Section";
+import Container from "@/containers/Container";
 
-import styles from '../styles/components/Projects.module.css';
+import styles from "../styles/components/Projects.module.css";
 
 function Projects() {
   const [selectedProject, setSelectedProject] = useState(0);
@@ -16,25 +16,25 @@ function Projects() {
 
   const projects = [
     {
-      name: 'Studio Minsky',
-      tags: ['Web agency', 'Development', 'AI'],
-      link: 'https://studiominsky.com',
+      name: "Studio Minsky",
+      tags: ["Web agency", "Development", "AI"],
+      link: "https://studiominsky.com",
       description:
         "Studio Minsky is a digital studio focused on building web applications, AI solutions, and data visualizations. The website is built with Next.js and TypeScript, and it showcases the studio's portfolio and services. It features a blog powered by Notion, a contact form using Resend, and an AI chatbot for user interaction. The site also supports multiple languages.",
     },
     {
-      name: 'Panellio',
-      tags: ['Management', 'SaaS', 'AI'],
-      link: 'https://panellio.com',
+      name: "Panellio",
+      tags: ["Management", "SaaS", "AI"],
+      link: "https://panellio.com",
       description:
-        'Panellio is a personal management tool designed to help organize your online life, reduce distractions, and boost productivity. It allows users to create directories, add assets and features like notes, tasks, and habits. Panellio also includes an AI assistant to monitor and analyze data and track stats. It offers both free and paid versions.',
+        "Panellio is a personal management tool designed to help organize your online life, reduce distractions, and boost productivity. It allows users to create directories, add assets and features like notes, tasks, and habits. Panellio also includes an AI assistant to monitor and analyze data and track stats. It offers both free and paid versions.",
     },
     {
-      name: 'Fine Interface',
-      tags: ['Design curation', 'Inspiration', 'UI'],
-      link: 'https://fineinterface.com',
+      name: "Fine Interface",
+      tags: ["Design curation", "Inspiration", "UI"],
+      link: "https://fineinterface.com",
       description:
-        'Fine Interface is a curated collection of beautiful website designs for inspiration. Users can create an account, submit websites, and create folders of their favorite designs. The platform is built with Next.js, TypeScript, and Firebase for authentication and database. It features a clean, modern interface with light and dark modes.',
+        "Fine Interface is a curated collection of beautiful website designs for inspiration. Users can create an account, submit websites, and create folders of their favorite designs. The platform is built with Next.js, TypeScript, and Firebase for authentication and database. It features a clean, modern interface with light and dark modes.",
     },
   ];
   return (
@@ -50,7 +50,7 @@ function Projects() {
             {projects.map((project, index) => (
               <button
                 className={`${styles.button} ${
-                  selectedProject === index ? styles.selected : ''
+                  selectedProject === index ? styles.selected : ""
                 }`}
                 key={index}
                 onClick={() => {
@@ -81,7 +81,7 @@ function Projects() {
               target="_blank"
               href={projects[selectedProject].link}
             >
-              Visit the page{' '}
+              Visit the page{" "}
               <svg
                 className={styles.pageIcon}
                 height="16"

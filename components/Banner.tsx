@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import Container from '@/containers/Container';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { BannerProps } from '@/types/types';
+import Container from "@/containers/Container";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { BannerProps } from "@/types/types";
 
-import styles from '../styles/components/Banner.module.css';
+import styles from "../styles/components/Banner.module.css";
 
 export default function Banner({
   title,
@@ -23,7 +23,7 @@ export default function Banner({
         <Container>
           <div className={styles.bannerInside}>
             <div className={styles.bannerWrap}>
-              {pathname.startsWith('/blog/') && (
+              {pathname.startsWith("/blog/") && (
                 <Link href="/blog" className={styles.back}>
                   <svg
                     className={styles.backIcon}
@@ -49,14 +49,12 @@ export default function Banner({
               >
                 {title}
                 <span className={styles.highlighted_text}>
-                  {' '}
+                  {" "}
                   {highlightedText}
                 </span>
                 {additionalText}
               </h1>
-              <p className={styles.bannerParagraph}>
-                {paragraphText}
-              </p>
+              <p className={styles.bannerParagraph}>{paragraphText}</p>
               {children}
             </div>
           </div>

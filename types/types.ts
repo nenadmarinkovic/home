@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 export type Language = {
   language: string;
@@ -109,7 +109,7 @@ type BoxItemTypes = {
 
 export type BoxPropsTypes = {
   title: string;
-  boxColor: 'blue' | 'green' | 'orange';
+  boxColor: "blue" | "green" | "orange";
   headerText: string;
   mainTitle: string;
   boxItems: BoxItemTypes[];

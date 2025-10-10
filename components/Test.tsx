@@ -1,9 +1,9 @@
-import Container from '@/containers/Container';
-import Box from './Box';
-import TestChart from './TestChart';
+import Container from "@/containers/Container";
+import Box from "./Box";
+import TestChart from "./TestChart";
 
-import boxStyles from '../styles/components/Box.module.css';
-import processStyles from '../styles/components/Process.module.css';
+import boxStyles from "../styles/components/Box.module.css";
+import processStyles from "../styles/components/Process.module.css";
 
 function Test() {
   const boxItems = [
@@ -91,18 +91,12 @@ function Test() {
                 circleValue={1}
                 testChartText="Best Practices"
               />
-              <TestChart
-                maxValue={100}
-                circleValue={1}
-                testChartText="SEO"
-              />
+              <TestChart maxValue={100} circleValue={1} testChartText="SEO" />
             </div>
           </div>
-          <span
-            className={`${boxStyles.boxInfo} ${boxStyles.boxInfoTest}`}
-          >
-            Data estimation based on average results of Lighthouse
-            tests on this website.
+          <span className={`${boxStyles.boxInfo} ${boxStyles.boxInfoTest}`}>
+            Data estimation based on average results of Lighthouse tests on this
+            website.
           </span>
         </div>
         <Box

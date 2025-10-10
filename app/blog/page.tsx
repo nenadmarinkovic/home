@@ -1,16 +1,15 @@
-/* This page is also regenerated every 5 min, so list & tag changes appear. */
 export const revalidate = 300;
 
-import Header from '@/components/Header';
-import Banner from '@/components/Banner';
-import Container from '@/containers/Container';
-import Footer from '@/components/Footer';
-import Tag from '@/components/Tag';
-import DynamicSpotify from '@/components/Spotify';
-import { Suspense } from 'react';
-import { getPosts } from '@/utils/notion';
+import Header from "@/components/Header";
+import Banner from "@/components/Banner";
+import Container from "@/containers/Container";
+import Footer from "@/components/Footer";
+import Tag from "@/components/Tag";
+import DynamicSpotify from "@/components/Spotify";
+import { Suspense } from "react";
+import { getPosts } from "@/utils/notion";
 
-import styles from '../../styles/pages/layout.module.css';
+import styles from "../../styles/pages/layout.module.css";
 
 export default async function Home() {
   const posts = await getPosts();
@@ -28,9 +27,7 @@ export default async function Home() {
           <Container>
             <Suspense
               fallback={
-                <span className={styles.loaderContainer}>
-                  Loading…
-                </span>
+                <span className={styles.loaderContainer}>Loading…</span>
               }
             >
               <Tag
