@@ -10,29 +10,6 @@ import styles from "../../styles/pages/layout.module.css";
 const DynamicSpotify = dynamic(() => import("@/components/Spotify"));
 
 export default function About() {
-  const birth = new Date(2025, 1, 1);
-  const currentDate = new Date();
-  const ageInMonths =
-    (currentDate.getFullYear() - birth.getFullYear()) * 12 +
-    (currentDate.getMonth() - birth.getMonth());
-
-  const years = Math.floor(ageInMonths / 12);
-  const months = ageInMonths % 12;
-
-  let ageString;
-
-  if (years > 0) {
-    const yearText = years > 1 ? "years" : "year";
-    if (months > 0) {
-      const monthText = months > 1 ? "months" : "month";
-      ageString = `${years} ${yearText} and ${months} ${monthText}`;
-    } else {
-      ageString = `${years} ${yearText}`;
-    }
-  } else {
-    ageString = `${months} months`;
-  }
-
   return (
     <>
       <Header />
@@ -218,10 +195,10 @@ export default function About() {
                 </div>
                 <p>
                   When I&apos;m not coding, I love spending time with my wife
-                  and our {ageString} old daughter, playing together or taking
-                  long walks on the Donauinsel. Otherwise, I split my time
-                  between the fitness studio, reading nonfiction books, and the
-                  endless challenge of memorizing German noun articles.
+                  and our daughter, playing together or taking long walks on the
+                  Donauinsel. Otherwise, I split my time between the fitness
+                  studio, reading nonfiction books, and the endless challenge of
+                  memorizing German noun articles.
                 </p>
 
                 <h3>About this website</h3>

@@ -1,5 +1,6 @@
 .section {
   padding-top: 80px;
+  margin-top: 20px;
   text-align: center;
 
   @media screen and (max-width: 560px) {

@@ -17,28 +17,48 @@ function Projects() {
   const projects = [
     {
       name: "Studio Minsky",
-      tags: ["Web agency", "Development", "AI"],
+      tags: [
+        "Agency",
+        "Development",
+        "AI",
+        "TypeScript",
+        "Next.js",
+        "Firebase",
+      ],
       link: "https://studiominsky.com",
       description:
-        "Studio Minsky is a digital studio focused on building web applications, AI solutions, and data visualizations. The website is built with Next.js and TypeScript, and it showcases the studio's portfolio and services. It features a blog powered by Notion, a contact form using Resend, and an AI chatbot for user interaction. The site also supports multiple languages.",
+        "I built Studio Minsky as a playground for designing and developing modern web experiences with AI at the core. For clients, this means I can deliver tested, cutting-edge solutions that blend creativity with the latest tech. The website is built with Next.js and TypeScript, and it showcases the studio's portfolio and services. It features a blog powered by Notion, a contact form using Resend, and an AI chatbot for user interaction. The site also supports multiple languages.",
     },
     {
       name: "Panellio",
-      tags: ["Management", "SaaS", "AI"],
+      tags: ["Management", "SaaS", "AI", "TypeScript", "Next.js", "Firebase"],
       link: "https://panellio.com",
       description:
-        "Panellio is a personal management tool designed to help organize your online life, reduce distractions, and boost productivity. It allows users to create directories, add assets and features like notes, tasks, and habits. Panellio also includes an AI assistant to monitor and analyze data and track stats. It offers both free and paid versions.",
+        "Panellio started from my desire to have an application to organize every aspect of my life in directories. In every directory, users can add lists, tasks, and features like a habit tracker, maps with favorite places, or simple sticky notes, and rearrange them however they want. It's perfect for anyone who wants to reclaim their attention and manage their digital life without the noise. Built with Next.js, Firebase, and serverless AI workflows.",
     },
     {
       name: "Fine Interface",
-      tags: ["Design curation", "Inspiration", "UI"],
+      tags: [
+        "Design curation",
+        "Inspiration",
+        "TypeScript",
+        "Next.js",
+        "Firebase",
+      ],
       link: "https://fineinterface.com",
       description:
-        "Fine Interface is a curated collection of beautiful website designs for inspiration. Users can create an account, submit websites, and create folders of their favorite designs. The platform is built with Next.js, TypeScript, and Firebase for authentication and database. It features a clean, modern interface with light and dark modes.",
+        "I created Fine Interface because I needed a clean way to save and revisit beautifully designed websites. It helps designers and developers stay inspired and curate their own collections. Use it to build your own interface collections or simply discover the latest trends in web design. Powered by Next.js, TypeScript, Firebase, and a lightweight submission system.",
+    },
+    {
+      name: "Word Inventory",
+      tags: ["Language learning", "AI", "TypeScript", "Next.js", "Supabase"],
+      link: "https://wordinventory.com",
+      description:
+        "Word Inventory grew out of my experience learning German and wanting a tool that makes makign inventory with german words easy and fun. Whenever I hear a new German word, I add it and the AI does the rest like adding grammar explanation, examples, and so on. It transforms language learning from rote memorization into an engaging, visual exploration of how words connect. Built with Next.js 15, Supabase, and the Vercel AI SDK.",
     },
   ];
   return (
-    <div className={styles.projectContainer}>
+    <div id="projects" className={styles.projectContainer}>
       <Container>
         <SectionHeader
           header="Projects"

@@ -16,7 +16,7 @@
 .buttons {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 35px;
 
   @media screen and (max-width: 768px) {
     flex-direction: row;
@@ -53,6 +53,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  max-width: 380px;
+
+  @media screen and (max-width: 768px) {
+    max-width: unset;
+  }
 }
 
 .tag {

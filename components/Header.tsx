@@ -125,6 +125,9 @@ export default function Header() {
             </div>
             <nav className={styles.navigation}>
               <ul className={styles.headerUnorderedList}>
+                <li className={styles.headerList}>
+                  <Link href="/#projects">Projects</Link>
+                </li>
                 <li
                   className={`${styles.headerList} ${
                     pathname.startsWith("/blog") && `${styles.activePage}`
@@ -212,6 +215,9 @@ export default function Header() {
                 }`}
               >
                 <Link href="/">Home</Link>
+              </li>
+              <li className={styles.mobileLi}>
+                <Link href="/#projects">Projects</Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
