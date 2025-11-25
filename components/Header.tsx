@@ -107,6 +107,10 @@ export default function Header() {
     };
   }, [isOverlayVisible]);
 
+  const closeMenu = () => {
+    setOverlayVisible(false);
+  };
+
   return (
     <div>
       <header
@@ -214,34 +218,44 @@ export default function Header() {
                   pathname === "/" && `${styles.activeLink}`
                 }`}
               >
-                <Link href="/">Home</Link>
+                <Link href="/" onClick={closeMenu}>
+                  Home
+                </Link>
               </li>
               <li className={styles.mobileLi}>
-                <Link href="/#projects">Projects</Link>
+                <Link href="/#projects" onClick={closeMenu}>
+                  Projects
+                </Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
                   pathname.startsWith("/blog") && `${styles.activeLink}`
                 }`}
               >
-                <Link href="/blog">Blog</Link>
+                <Link href="/blog" onClick={closeMenu}>
+                  Blog
+                </Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
                   pathname.startsWith("/feed") && `${styles.activeLink}`
                 }`}
               >
-                <Link href="/feed">Feed</Link>
+                <Link href="/feed" onClick={closeMenu}>
+                  Feed
+                </Link>
               </li>
               <li
                 className={`${styles.mobileLi} ${
                   pathname.startsWith("/about") && `${styles.activeLink}`
                 }`}
               >
-                <Link href="/about">About</Link>
+                <Link href="/about" onClick={closeMenu}>
+                  About
+                </Link>
               </li>
             </ul>
-            <Link href="/contact">
+            <Link href="/contact" onClick={closeMenu}>
               <button
                 className={`${stylesButton.button} ${styles.mobileContact} `}
               >

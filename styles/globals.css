@@ -130,9 +130,7 @@ pre[class*="language-"] {
   color: #d8dee9;
   background: #2e3440;
 }
-/*********************************************************
-* Tokens
-*/
+
 .namespace {
   opacity: 0.7;
 }
@@ -193,9 +191,7 @@ pre[class*="language-"] {
 .token.entity {
   cursor: help;
 }
-/*********************************************************
-* Line highlighting
-*/
+
 pre[data-line] {
   position: relative;
 }
@@ -215,4 +211,8 @@ pre[class*="language-"] > code[class*="language-"] {
   pointer-events: none;
   line-height: inherit;
   white-space: pre;
+}
+
+#projects {
+  scroll-margin-top: 20px;
 }
