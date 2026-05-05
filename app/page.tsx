@@ -66,62 +66,51 @@ export default function Home() {
 
           <article className="max-w-2xl self-center space-y-8 font-serif text-(length:--unit-lg) leading-[1.5] text-pretty oldstyle-nums">
             <p>
-              I am so tired of hearing about AI. Unfortunately, this is a talk
-              about AI.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
             <p>
-              I’m trying to figure out how to use generative AI as a designer
-              without feeling like shit. I am fascinated with what it can do,
-              impressed and repulsed by what it makes, and distrustful of its
-              owners. I am deeply ambivalent about it all. The believers demand
-              devotion, the critics demand abstinence, and to see AI as just
-              another technology is to be a heretic twice over.
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco
+              laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu
+              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+              proident, sunt in culpa qui officia deserunt mollit anim id est
+              laborum.
             </p>
             <p>
-              Today, I’d like to try to open things up a bit. I want to frame
-              the technology more like an instrument, and get away from GenAI as
-              an intelligence, an ideology, a tool, a crutch, or a weapon. I
-              find the instrument framing more appealing as a person who has
-              spent decades honing a set of skills. I want a way of working that
-              relies on my capabilities and discernment rather than something so
-              amorphous and transient as taste. (If taste exists in technology,
-              it needs to be smuggled in.)
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
+              quae ab illo inventore veritatis et quasi architecto beatae
+              vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia
+              voluptas sit aspernatur aut odit aut fugit, sed quia
+              consequuntur magni dolores eos qui ratione voluptatem sequi
+              nesciunt.
             </p>
             <p>
-              I’m trying to figure out how to use generative AI as a designer
-              without feeling like shit. I am fascinated with what it can do,
-              impressed and repulsed by what it makes, and distrustful of its
-              owners. I am deeply ambivalent about it all. The believers demand
-              devotion, the critics demand abstinence, and to see AI as just
-              another technology is to be a heretic twice over.
+              Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
+              consectetur, adipisci velit, sed quia non numquam eius modi
+              tempora incidunt ut labore et dolore magnam aliquam quaerat
+              voluptatem.
             </p>
             <p>
-              Today, I’d like to try to open things up a bit. I want to frame
-              the technology more like an instrument, and get away from GenAI as
-              an intelligence, an ideology, a tool, a crutch, or a weapon. I
-              find the instrument framing more appealing as a person who has
-              spent decades honing a set of skills. I want a way of working that
-              relies on my capabilities and discernment rather than something so
-              amorphous and transient as taste. (If taste exists in technology,
-              it needs to be smuggled in.)
+              Ut enim ad minima veniam, quis nostrum exercitationem ullam
+              corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
+              consequatur. Quis autem vel eum iure reprehenderit qui in ea
+              voluptate velit esse quam nihil molestiae consequatur, vel illum
+              qui dolorem eum fugiat quo voluptas nulla pariatur.
             </p>
             <p>
-              I’m trying to figure out how to use generative AI as a designer
-              without feeling like shit. I am fascinated with what it can do,
-              impressed and repulsed by what it makes, and distrustful of its
-              owners. I am deeply ambivalent about it all. The believers demand
-              devotion, the critics demand abstinence, and to see AI as just
-              another technology is to be a heretic twice over.
+              At vero eos et accusamus et iusto odio dignissimos ducimus qui
+              blanditiis praesentium voluptatum deleniti atque corrupti quos
+              dolores et quas molestias excepturi sint occaecati cupiditate
+              non provident, similique sunt in culpa qui officia deserunt
+              mollitia animi, id est laborum et dolorum fuga.
             </p>
             <p>
-              Today, I’d like to try to open things up a bit. I want to frame
-              the technology more like an instrument, and get away from GenAI as
-              an intelligence, an ideology, a tool, a crutch, or a weapon. I
-              find the instrument framing more appealing as a person who has
-              spent decades honing a set of skills. I want a way of working that
-              relies on my capabilities and discernment rather than something so
-              amorphous and transient as taste. (If taste exists in technology,
-              it needs to be smuggled in.)
+              Et harum quidem rerum facilis est et expedita distinctio. Nam
+              libero tempore, cum soluta nobis est eligendi optio cumque
+              nihil impedit quo minus id quod maxime placeat facere possimus,
+              omnis voluptas assumenda est, omnis dolor repellendus.
             </p>
           </article>
         </main>

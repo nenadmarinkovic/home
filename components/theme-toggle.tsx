@@ -24,7 +24,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     return (
       <div
         className={cn(
-          "h-7 w-[80px] rounded-full bg-foreground/5 ring-1 ring-foreground/10",
+          "h-7 w-[80px] rounded-full bg-card ring-1 ring-foreground/10",
           className,
         )}
       />
@@ -36,7 +36,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       role="radiogroup"
       aria-label="Theme"
       className={cn(
-        "inline-flex items-center gap-0 rounded-full bg-foreground/5 p-0.5 ring-1 ring-foreground/10",
+        "inline-flex items-center gap-0 rounded-full bg-card p-0.5 ring-1 ring-foreground/10",
         className,
       )}
     >
