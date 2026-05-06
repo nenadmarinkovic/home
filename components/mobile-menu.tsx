@@ -107,7 +107,7 @@ export function MobileMenu() {
                   GitHub
                 </a>
                 <a
-                  href="https://bsky.app/profile/nenadmarinkovic.bsky.social"
+                  href="https://bsky.app/profile/nenadmarinkovic.com"
                   target="_blank"
                   rel="noreferrer"
                   className="py-1.5 transition-colors duration-150 hover:text-foreground"

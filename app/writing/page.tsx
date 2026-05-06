@@ -11,17 +11,7 @@ export const metadata: Metadata = {
 export default function WritingIndexPage() {
   return (
     <main className="flex flex-1 flex-col items-start gap-12 py-20">
-      <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-          Writing
-        </p>
-        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          The full archive.
-        </h1>
-        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          Every essay I’ve published, in reverse chronological order.
-        </p>
-      </hgroup>
+      <h1 className="sr-only">Writing</h1>
       <ul className="w-full divide-y divide-foreground/10">
         {articles.map((a) => (
           <li key={a.slug} className="py-8 first:pt-0 last:pb-0">
