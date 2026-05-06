@@ -50,7 +50,7 @@ export function MobileMenu() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
-        className="relative z-[60] flex cursor-pointer items-center justify-center text-foreground"
+        className="relative z-[60] -m-3 flex cursor-pointer touch-manipulation items-center justify-center p-3 text-foreground"
       >
         <HamburgerIcon open={open} />
       </button>
@@ -65,7 +65,7 @@ export function MobileMenu() {
             <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
               Navigate
             </p>
-            <nav className="mt-4 flex flex-col items-start gap-4 font-serif text-2xl italic text-zinc-600 dark:text-zinc-400">
+            <nav className="mt-4 flex flex-col items-start gap-3 font-serif text-xl italic text-zinc-600 dark:text-zinc-400">
               <Link
                 href="/"
                 aria-current={pathname === "/" ? "page" : undefined}
