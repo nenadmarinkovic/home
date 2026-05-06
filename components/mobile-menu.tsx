@@ -66,6 +66,16 @@ export function MobileMenu() {
               Navigate
             </p>
             <nav className="mt-4 flex flex-col items-start gap-4 font-serif text-2xl italic text-zinc-600 dark:text-zinc-400">
+              <Link
+                href="/"
+                aria-current={pathname === "/" ? "page" : undefined}
+                className={cn(
+                  "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
+                  pathname === "/" && "font-semibold text-foreground",
+                )}
+              >
+                Home
+              </Link>
               {navItems.map((item) => {
                 const active = isNavActive(pathname, item.href);
                 return (
