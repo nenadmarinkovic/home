@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Providers } from "./providers";
 import { SiteFooter } from "@/components/site-footer";
@@ -52,10 +52,6 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = {
-  themeColor: "#f7f3f3",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -67,6 +63,13 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${sourceSerif.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||((t==='system'||!t)&&matchMedia('(prefers-color-scheme: dark)').matches);var c=d?'#0c1115':'#f7f3f3';var m=document.createElement('meta');m.name='theme-color';m.content=c;document.head.appendChild(m);}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <Providers>
           <ThemeColorSync />

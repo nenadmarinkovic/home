@@ -61,7 +61,7 @@ export function MobileMenu() {
           className="w-full max-w-none border-0 bg-background p-0 shadow-none sm:max-w-none"
         >
           <SheetTitle className="sr-only">Menu</SheetTitle>
-          <div className="flex h-full flex-col px-6 pt-24 pb-8">
+          <div className="flex h-full flex-col px-6 pt-14 pb-8">
             <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
               Navigate
             </p>
