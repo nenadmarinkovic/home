@@ -65,7 +65,7 @@ export function MobileMenu() {
             <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
               Navigate
             </p>
-            <nav className="mt-4 flex flex-col items-start gap-4 font-sans text-3xl font-medium tracking-tight text-zinc-600 dark:text-zinc-400">
+            <nav className="mt-4 flex flex-col items-start gap-4 font-serif text-2xl italic text-zinc-600 dark:text-zinc-400">
               {navItems.map((item) => {
                 const active = isNavActive(pathname, item.href);
                 return (
@@ -74,8 +74,8 @@ export function MobileMenu() {
                     href={item.href}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "leading-none transition-colors duration-150 hover:text-foreground",
-                      active && "text-foreground",
+                      "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
+                      active && "font-semibold text-foreground",
                     )}
                   >
                     {item.label}
