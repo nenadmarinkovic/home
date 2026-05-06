@@ -13,7 +13,7 @@ export function HeaderNav() {
   if (isArticle) {
     return (
       <nav className="hidden font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:block dark:text-zinc-400">
-        <Link href="/writing" className="hover:text-foreground">
+        <Link href="/writing" className="block py-0.5 hover:text-foreground">
           ← Writing
         </Link>
       </nav>
@@ -21,7 +21,7 @@ export function HeaderNav() {
   }
 
   return (
-    <nav className="hidden flex-col items-end gap-0.5 font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400">
+    <nav className="hidden flex-col items-end font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400">
       {navItems.map((item) => {
         const active = isNavActive(pathname, item.href);
         return (
@@ -30,7 +30,7 @@ export function HeaderNav() {
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "hover:text-foreground",
+              "py-0.5 hover:text-foreground",
               active && "text-foreground",
             )}
           >

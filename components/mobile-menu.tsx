@@ -92,7 +92,7 @@ export function MobileMenu() {
                   href="https://github.com/nenadmarinkovic"
                   target="_blank"
                   rel="noreferrer"
-                  className="transition-colors duration-150 hover:text-foreground"
+                  className="py-1.5 transition-colors duration-150 hover:text-foreground"
                 >
                   GitHub
                 </a>
@@ -100,17 +100,17 @@ export function MobileMenu() {
                   href="https://bsky.app/profile/nenadmarinkovic.bsky.social"
                   target="_blank"
                   rel="noreferrer"
-                  className="transition-colors duration-150 hover:text-foreground"
+                  className="py-1.5 transition-colors duration-150 hover:text-foreground"
                 >
                   Bluesky
                 </a>
                 <a
                   href="mailto:nenadmarinkovic@protonmail.com"
-                  className="transition-colors duration-150 hover:text-foreground"
+                  className="py-1.5 transition-colors duration-150 hover:text-foreground"
                 >
                   Email
                 </a>
-                <a href="/rss.xml" className="hover:text-foreground">
+                <a href="/rss.xml" className="py-1.5 hover:text-foreground">
                   RSS
                 </a>
               </nav>
