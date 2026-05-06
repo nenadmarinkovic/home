@@ -3,20 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { isNavActive, navItems } from "@/components/nav-items";
 import { cn } from "@/lib/utils";
-
-const items = [
-  { href: "/writing", label: "Writing" },
-  { href: "/projects", label: "Projects" },
-  { href: "/tools", label: "Tools" },
-  { href: "/infrastructure", label: "Infrastructure" },
-  { href: "/login", label: "Login" },
-] as const;
-
-function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/";
-  return pathname === href || pathname.startsWith(`${href}/`);
-}
 
 export function HeaderNav() {
   const pathname = usePathname();
@@ -24,7 +12,7 @@ export function HeaderNav() {
 
   if (isArticle) {
     return (
-      <nav className="font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+      <nav className="hidden font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:block dark:text-zinc-400">
         <Link href="/writing" className="hover:text-foreground">
           ← Writing
         </Link>
@@ -33,9 +21,9 @@ export function HeaderNav() {
   }
 
   return (
-    <nav className="flex flex-col items-end gap-0.5 font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-      {items.map((item) => {
-        const active = isActive(pathname, item.href);
+    <nav className="hidden flex-col items-end gap-0.5 font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400">
+      {navItems.map((item) => {
+        const active = isNavActive(pathname, item.href);
         return (
           <Link
             key={item.href}

@@ -54,7 +54,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Providers>
-          <div className="flex flex-col flex-1 items-center justify-start bg-background">
+          <div className="flex flex-col flex-1 items-center justify-start bg-background px-6">
             <div className="flex w-full max-w-2xl flex-1 flex-col bg-background">
               <SiteHeader />
               {children}

@@ -2,9 +2,9 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 export function SiteFooter() {
   return (
-    <footer className="flex items-end justify-between gap-6 pt-8 pb-4 font-sans text-sm text-zinc-600 dark:text-zinc-400">
+    <footer className="flex flex-col items-start gap-6 pt-8 pb-8 font-sans text-sm text-zinc-600 sm:flex-row sm:items-center sm:justify-between dark:text-zinc-400">
       <p>© {new Date().getFullYear()} Nenad Marinković</p>
-      <nav className="flex items-center gap-4 text-xs uppercase tracking-wider">
+      <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs uppercase tracking-wider">
         <a
           href="https://github.com/nenadmarinkovic"
           target="_blank"
@@ -12,6 +12,14 @@ export function SiteFooter() {
           className="hover:text-foreground"
         >
           GitHub
+        </a>
+        <a
+          href="https://bsky.app/profile/nenadmarinkovic.bsky.social"
+          target="_blank"
+          rel="noreferrer"
+          className="hover:text-foreground"
+        >
+          Bluesky
         </a>
         <a
           href="mailto:nenadmarinkovic@protonmail.com"
