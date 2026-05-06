@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Source_Serif_4 } from "next/font/google";
 import { Providers } from "./providers";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
 const sourceSerif = Source_Serif_4({
@@ -27,7 +29,15 @@ export default function RootLayout({
       className={`${sourceSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="flex flex-col flex-1 items-center justify-start bg-background">
+            <div className="flex w-full max-w-3xl flex-1 flex-col bg-background">
+              <SiteHeader />
+              {children}
+              <SiteFooter />
+            </div>
+          </div>
+        </Providers>
       </body>
     </html>
   );
