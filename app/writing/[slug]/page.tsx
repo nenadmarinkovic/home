@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { site } from "@/lib/site";
 import { articles, getAdjacent, getArticle } from "../articles";
 
 function renderInline(text: string): ReactNode[] {
@@ -58,8 +59,35 @@ export default async function ArticlePage({
 
   const { prev, next } = getAdjacent(slug);
 
+  const articleUrl = `${site.url}/writing/${article.slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    datePublished: article.date,
+    dateModified: article.date,
+    url: articleUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+    author: {
+      "@type": "Person",
+      name: site.author.name,
+      url: site.url,
+    },
+    publisher: {
+      "@type": "Person",
+      name: site.author.name,
+      url: site.url,
+    },
+    image: `${articleUrl}/opengraph-image`,
+  };
+
   return (
     <main className="flex flex-1 flex-col items-start gap-12 py-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <hgroup className="max-w-prose self-center space-y-3 text-center">
         <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
           {article.dateLabel}
@@ -79,9 +107,28 @@ export default async function ArticlePage({
         </div>
       )}
       <article className="space-y-8 font-serif text-(length:--unit-lg) leading-[1.5] text-pretty oldstyle-nums">
-        {article.body.map((p, i) => (
-          <p key={i}>{renderInline(p)}</p>
-        ))}
+        {article.body.map((block, i) => {
+          if (typeof block === "string") {
+            return <p key={i}>{renderInline(block)}</p>;
+          }
+          if (block.type === "quote") {
+            return (
+              <blockquote key={i}>
+                {block.lines.map((line, j) => (
+                  <p key={j}>{renderInline(line)}</p>
+                ))}
+              </blockquote>
+            );
+          }
+          if (block.type === "pull") {
+            return (
+              <p key={i} className="pull-quote">
+                {renderInline(block.text)}
+              </p>
+            );
+          }
+          return null;
+        })}
       </article>
       {(prev || next) && (
         <nav
