@@ -3,42 +3,75 @@ import Link from "next/link";
 import { articles } from "./writing/articles";
 
 export default function Home() {
+  const latest = articles.slice(0, 3);
+
   return (
-    <main className="flex flex-1 flex-col items-start gap-16 py-20">
-      <hgroup className="max-w-prose self-center space-y-3 text-center">
+    <main className="flex flex-1 flex-col items-start gap-12 py-20">
+      <section className="w-full space-y-5">
         <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
-          Writing
+          Notes from the workshop
         </p>
-        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          Notes on the craft.
-        </h1>
-        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          Essays on tools, process, and making things that last.
+        <p className="font-serif text-2xl italic leading-snug text-pretty text-foreground">
+          I’m Nenad — a software developer in Vienna making thoughtful tools and
+          writing about the craft of doing good work on the web.
         </p>
-      </hgroup>
-      <ul className="max-w-2xl self-center divide-y divide-foreground/10">
-        {articles.map((a) => (
-          <li key={a.slug} className="py-8 first:pt-0 last:pb-0">
-            <Link
-              href={`/writing/${a.slug}`}
-              className="group flex flex-col gap-2"
-            >
-              <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
-                {a.dateLabel}
-              </p>
-              <h2 className="font-serif text-2xl font-semibold leading-tight tracking-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
-                {a.title}
-              </h2>
-              <p className="font-serif text-(length:--unit-lg) italic leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
-                {a.subtitle}
-              </p>
-              <p className="font-serif text-base leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
-                {a.description}
-              </p>
-            </Link>
-          </li>
-        ))}
-      </ul>
+        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
+          This is the writing half of my workshop. I publish essays here on
+          software, design, and the long arc of making things that last. No
+          schedule, no theme — just notes I need to think through.
+        </p>
+        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
+          This is the writing half of my workshop. I publish essays here on
+          software, design, and the long arc of making things that last. No
+          schedule, no theme — just notes I need to think through.
+        </p>
+        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
+          This is the writing half of my workshop. I publish essays here on
+          software, design, and the long arc of making things that last. No
+          schedule, no theme — just notes I need to think through.
+        </p>
+        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
+          This is the writing half of my workshop. I publish essays here on
+          software, design, and the long arc of making things that last. No
+          schedule, no theme — just notes I need to think through.
+        </p>
+      </section>
+      <section className="w-full space-y-6">
+        <div className="flex items-baseline justify-between">
+          <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+            Recent
+          </p>
+          <Link
+            href="/writing"
+            className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 transition-opacity hover:opacity-70 dark:text-zinc-500"
+          >
+            All writing →
+          </Link>
+        </div>
+        <ul className="divide-y divide-foreground/10">
+          {latest.map((a) => (
+            <li key={a.slug} className="py-8 first:pt-0 last:pb-0">
+              <Link
+                href={`/writing/${a.slug}`}
+                className="group flex flex-col gap-2"
+              >
+                <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+                  {a.dateLabel}
+                </p>
+                <h2 className="font-serif text-2xl font-semibold leading-tight tracking-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
+                  {a.title}
+                </h2>
+                <p className="font-serif text-(length:--unit-lg) italic leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
+                  {a.subtitle}
+                </p>
+                <p className="font-serif text-base leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
+                  {a.description}
+                </p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
     </main>
   );
 }

@@ -50,7 +50,7 @@ export default async function ArticlePage({
           ))}
         </div>
       )}
-      <article className="max-w-2xl self-center space-y-8 font-serif text-(length:--unit-lg) leading-[1.5] text-pretty oldstyle-nums">
+      <article className="space-y-8 font-serif text-(length:--unit-lg) leading-[1.5] text-pretty oldstyle-nums">
         {article.body.map((p, i) => (
           <p key={i}>{p}</p>
         ))}

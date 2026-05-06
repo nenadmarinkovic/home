@@ -59,7 +59,7 @@ export function ThemeToggle({ className }: { className?: string }) {
                 : "text-foreground/55 hover:text-foreground",
             )}
           >
-            <Icon size={12} weight={active ? "fill" : "regular"} />
+            <Icon size={12} weight="regular" />
           </button>
         );
       })}

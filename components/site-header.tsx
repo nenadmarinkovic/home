@@ -19,17 +19,17 @@ export function SiteHeader() {
         </p>
       </div>
       <nav className="flex flex-col items-end gap-0.5 font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-        <Link href="/platform" className="hover:text-foreground">
-          Platform
+        <Link href="/writing" className="hover:text-foreground">
+          Writing
         </Link>
-        <Link href="/structure" className="hover:text-foreground">
-          Structure
+        <Link href="/projects" className="hover:text-foreground">
+          Projects
         </Link>
-        <Link href="/register" className="hover:text-foreground">
-          Register
+        <Link href="/tools" className="hover:text-foreground">
+          Tools
         </Link>
-        <Link href="/faq" className="hover:text-foreground">
-          FAQ
+        <Link href="/infrastructure" className="hover:text-foreground">
+          Infrastructure
         </Link>
         <Link href="/login" className="hover:text-foreground">
           Login
