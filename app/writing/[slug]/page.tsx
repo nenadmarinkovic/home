@@ -1,34 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { ReactNode } from "react";
+import { marked } from "marked";
 
 import { site } from "@/lib/site";
 import { articles, getAdjacent, getArticle } from "../articles";
-
-function renderInline(text: string): ReactNode[] {
-  const parts: ReactNode[] = [];
-  const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
-  let last = 0;
-  let match: RegExpExecArray | null;
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > last) parts.push(text.slice(last, match.index));
-    const isExternal = /^https?:\/\//.test(match[2]);
-    parts.push(
-      <a
-        key={match.index}
-        href={match[2]}
-        target={isExternal ? "_blank" : undefined}
-        rel={isExternal ? "noreferrer" : undefined}
-      >
-        {match[1]}
-      </a>,
-    );
-    last = regex.lastIndex;
-  }
-  if (last < text.length) parts.push(text.slice(last));
-  return parts;
-}
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
@@ -120,30 +96,12 @@ export default async function ArticlePage({
           ))}
         </div>
       )}
-      <article className="space-y-8 font-serif text-(length:--unit-lg) leading-[1.5] text-pretty oldstyle-nums">
-        {article.body.map((block, i) => {
-          if (typeof block === "string") {
-            return <p key={i}>{renderInline(block)}</p>;
-          }
-          if (block.type === "quote") {
-            return (
-              <blockquote key={i}>
-                {block.lines.map((line, j) => (
-                  <p key={j}>{renderInline(line)}</p>
-                ))}
-              </blockquote>
-            );
-          }
-          if (block.type === "pull") {
-            return (
-              <p key={i} className="pull-quote">
-                {renderInline(block.text)}
-              </p>
-            );
-          }
-          return null;
-        })}
-      </article>
+      <article
+        className="space-y-6 font-serif text-(length:--unit-lg) leading-[1.5] text-pretty oldstyle-nums"
+        dangerouslySetInnerHTML={{
+          __html: marked.parse(article.body, { async: false }) as string,
+        }}
+      />
       {(prev || next) && (
         <nav
           aria-label="More writing"
