@@ -62,7 +62,7 @@ export function MobileMenu() {
         >
           <SheetTitle className="sr-only">Menu</SheetTitle>
           <div className="flex h-full flex-col px-6 pt-24 pb-8">
-            <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+            <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
               Navigate
             </p>
             <nav className="mt-4 flex flex-col items-start gap-4 font-sans text-3xl font-medium tracking-tight text-zinc-600 dark:text-zinc-400">
@@ -84,7 +84,7 @@ export function MobileMenu() {
               })}
             </nav>
             <div className="mt-auto flex flex-col gap-5 border-t border-foreground/10 pt-8">
-              <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+              <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                 Elsewhere
               </p>
               <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
@@ -115,12 +115,12 @@ export function MobileMenu() {
                 </a>
               </nav>
               <div className="flex items-center justify-between gap-4">
-                <span className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+                <span className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                   Theme
                 </span>
                 <ThemeToggle />
               </div>
-              <p className="border-t border-foreground/10 pt-5 font-sans text-xs text-zinc-500 dark:text-zinc-500">
+              <p className="border-t border-foreground/10 pt-5 font-sans text-xs text-zinc-600 dark:text-zinc-400">
                 © {new Date().getFullYear()} Nenad Marinković
               </p>
             </div>

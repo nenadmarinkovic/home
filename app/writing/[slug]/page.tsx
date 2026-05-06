@@ -61,7 +61,7 @@ export default async function ArticlePage({
   return (
     <main className="flex flex-1 flex-col items-start gap-12 py-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
           {article.dateLabel}
         </p>
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
@@ -94,7 +94,7 @@ export default async function ArticlePage({
                 href={`/writing/${prev.slug}`}
                 className="group flex flex-col gap-1"
               >
-                <span className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+                <span className="text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                   ← Older
                 </span>
                 <span className="font-serif text-base font-semibold leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
@@ -109,7 +109,7 @@ export default async function ArticlePage({
                 href={`/writing/${next.slug}`}
                 className="group flex flex-col items-end gap-1"
               >
-                <span className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+                <span className="text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                   Newer →
                 </span>
                 <span className="font-serif text-base font-semibold leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">

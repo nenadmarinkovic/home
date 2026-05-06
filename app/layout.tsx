@@ -1,16 +1,26 @@
 import type { Metadata } from "next";
-import { Source_Serif_4 } from "next/font/google";
+import localFont from "next/font/local";
 import { Providers } from "./providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const sourceSerif = Source_Serif_4({
+const sourceSerif = localFont({
   variable: "--font-source-serif",
-  subsets: ["latin"],
   display: "swap",
-  style: ["normal", "italic"],
+  src: [
+    {
+      path: "./fonts/source-serif-4-latin.woff2",
+      weight: "200 900",
+      style: "normal",
+    },
+    {
+      path: "./fonts/source-serif-4-italic-latin.woff2",
+      weight: "200 900",
+      style: "italic",
+    },
+  ],
 });
 
 export const metadata: Metadata = {

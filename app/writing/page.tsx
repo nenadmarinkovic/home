@@ -12,7 +12,7 @@ export default function WritingIndexPage() {
   return (
     <main className="flex flex-1 flex-col items-start gap-12 py-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
           Writing
         </p>
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
@@ -29,7 +29,7 @@ export default function WritingIndexPage() {
               href={`/writing/${a.slug}`}
               className="group flex flex-col gap-2"
             >
-              <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+              <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                 {a.dateLabel}
               </p>
               <h2 className="font-serif text-2xl font-semibold leading-tight tracking-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
