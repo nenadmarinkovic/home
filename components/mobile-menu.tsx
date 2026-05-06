@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { isNavActive, navItems } from "@/components/nav-items";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+
+const SHEET_EXIT_MS = 220;
 
 function HamburgerIcon({ open }: { open: boolean }) {
   return (
@@ -36,12 +38,32 @@ function HamburgerIcon({ open }: { open: boolean }) {
 
 export function MobileMenu() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpen(false);
   }, [pathname]);
+
+  const closeThenGo =
+    (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+      // Plain left-clicks only — let modifier-clicks (cmd/ctrl, middle, etc.)
+      // and external targets behave normally.
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+      event.preventDefault();
+      setOpen(false);
+      window.setTimeout(() => router.push(href), SHEET_EXIT_MS);
+    };
 
   return (
     <div className="md:hidden">
@@ -68,6 +90,7 @@ export function MobileMenu() {
             <nav className="mt-4 flex flex-col items-start gap-3 font-serif text-xl italic text-zinc-600 dark:text-zinc-400">
               <Link
                 href="/"
+                onClick={closeThenGo("/")}
                 aria-current={pathname === "/" ? "page" : undefined}
                 className={cn(
                   "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
@@ -82,6 +105,7 @@ export function MobileMenu() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={closeThenGo(item.href)}
                     aria-current={active ? "page" : undefined}
                     className={cn(
                       "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
