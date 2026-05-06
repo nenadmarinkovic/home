@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Providers } from "./providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ThemeColorSync } from "@/components/theme-color-sync";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -51,6 +52,13 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f3f3" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c1115" },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -64,6 +72,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Providers>
+          <ThemeColorSync />
           <div className="flex flex-col flex-1 items-center justify-start bg-background px-6">
             <div className="flex w-full max-w-2xl flex-1 flex-col bg-background">
               <SiteHeader />
