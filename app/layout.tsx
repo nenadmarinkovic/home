@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { ViewTransition } from "react";
 import { Providers } from "./providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -77,7 +76,7 @@ export default function RootLayout({
           <div className="flex flex-col flex-1 items-center justify-start bg-background px-6">
             <div className="flex w-full max-w-2xl flex-1 flex-col bg-background">
               <SiteHeader />
-              <ViewTransition>{children}</ViewTransition>
+              {children}
               <SiteFooter />
             </div>
           </div>
