@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { HeaderNav } from "@/components/header-nav";
+
 export function SiteHeader() {
   return (
     <header className="flex items-start justify-between pt-16">
@@ -18,23 +20,7 @@ export function SiteHeader() {
           writing about the craft.
         </p>
       </div>
-      <nav className="flex flex-col items-end gap-0.5 font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-        <Link href="/writing" className="hover:text-foreground">
-          Writing
-        </Link>
-        <Link href="/projects" className="hover:text-foreground">
-          Projects
-        </Link>
-        <Link href="/tools" className="hover:text-foreground">
-          Tools
-        </Link>
-        <Link href="/infrastructure" className="hover:text-foreground">
-          Infrastructure
-        </Link>
-        <Link href="/login" className="hover:text-foreground">
-          Login
-        </Link>
-      </nav>
+      <HeaderNav />
     </header>
   );
 }

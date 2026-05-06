@@ -141,3 +141,18 @@ html {
   overflow-y: scroll;
   scrollbar-gutter: stable;
 }
+
+::selection {
+  background: rgba(253, 100, 1, 0.22);
+  color: var(--foreground);
+}
+
+article a {
+  color: #fd6401;
+  text-decoration: none;
+  transition: opacity 150ms;
+}
+
+article a:hover {
+  opacity: 0.7;
+}

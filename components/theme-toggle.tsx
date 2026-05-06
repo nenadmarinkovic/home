@@ -25,7 +25,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     return (
       <div
         className={cn(
-          "h-7 w-[80px] rounded-full bg-card ring-1 ring-foreground/10",
+          "h-7 w-[80px] rounded-full bg-card border border-foreground/10",
           className,
         )}
       />
@@ -37,7 +37,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       role="radiogroup"
       aria-label="Theme"
       className={cn(
-        "inline-flex items-center gap-0 rounded-full bg-card p-0.5 ring-1 ring-foreground/10",
+        "inline-flex items-center gap-0 rounded-full bg-card p-0.5 border border-foreground/10",
         className,
       )}
     >
@@ -53,9 +53,9 @@ export function ThemeToggle({ className }: { className?: string }) {
             title={label}
             onClick={() => setTheme(value)}
             className={cn(
-              "relative flex size-6 items-center justify-center rounded-full transition-colors duration-150 cursor-pointer",
+              "relative flex size-6 items-center justify-center rounded-full cursor-pointer",
               active
-                ? "bg-background text-foreground shadow-sm ring-1 ring-foreground/10"
+                ? "bg-background text-foreground border border-foreground/20"
                 : "text-foreground/55 hover:text-foreground",
             )}
           >
