@@ -20,6 +20,17 @@ function isActive(pathname: string, href: string) {
 
 export function HeaderNav() {
   const pathname = usePathname();
+  const isArticle = pathname.startsWith("/writing/");
+
+  if (isArticle) {
+    return (
+      <nav className="font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+        <Link href="/writing" className="hover:text-foreground">
+          ← Writing
+        </Link>
+      </nav>
+    );
+  }
 
   return (
     <nav className="flex flex-col items-end gap-0.5 font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">

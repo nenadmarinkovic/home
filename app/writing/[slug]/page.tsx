@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { articles, getArticle } from "../articles";
+import { articles, getAdjacent, getArticle } from "../articles";
 
 function renderInline(text: string): ReactNode[] {
   const parts: ReactNode[] = [];
@@ -55,6 +56,8 @@ export default async function ArticlePage({
   const article = getArticle(slug);
   if (!article) notFound();
 
+  const { prev, next } = getAdjacent(slug);
+
   return (
     <main className="flex flex-1 flex-col items-start gap-12 py-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
@@ -80,6 +83,43 @@ export default async function ArticlePage({
           <p key={i}>{renderInline(p)}</p>
         ))}
       </article>
+      {(prev || next) && (
+        <nav
+          aria-label="More writing"
+          className="grid w-full grid-cols-2 gap-8 border-t border-foreground/10 pt-8 font-sans text-sm"
+        >
+          <div className="flex flex-col gap-1">
+            {prev && (
+              <Link
+                href={`/writing/${prev.slug}`}
+                className="group flex flex-col gap-1"
+              >
+                <span className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+                  ← Older
+                </span>
+                <span className="font-serif text-base font-semibold leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
+                  {prev.title}
+                </span>
+              </Link>
+            )}
+          </div>
+          <div className="flex flex-col items-end gap-1 text-right">
+            {next && (
+              <Link
+                href={`/writing/${next.slug}`}
+                className="group flex flex-col items-end gap-1"
+              >
+                <span className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+                  Newer →
+                </span>
+                <span className="font-serif text-base font-semibold leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
+                  {next.title}
+                </span>
+              </Link>
+            )}
+          </div>
+        </nav>
+      )}
     </main>
   );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { HeaderBio } from "@/components/header-bio";
 import { HeaderNav } from "@/components/header-nav";
 
 export function SiteHeader() {
@@ -15,10 +16,7 @@ export function SiteHeader() {
             Nenad Marinković
           </span>
         </Link>
-        <p className="max-w-xs font-serif text-sm italic leading-snug text-zinc-600 dark:text-zinc-400">
-          Hi, I’m Nenad — a software developer building thoughtful tools and
-          writing about the craft.
-        </p>
+        <HeaderBio />
       </div>
       <HeaderNav />
     </header>

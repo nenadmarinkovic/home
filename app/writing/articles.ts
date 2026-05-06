@@ -94,3 +94,12 @@ export const articles: Article[] = [
 export function getArticle(slug: string): Article | undefined {
   return articles.find((a) => a.slug === slug);
 }
+
+export function getAdjacent(slug: string) {
+  const idx = articles.findIndex((a) => a.slug === slug);
+  if (idx === -1) return { prev: undefined, next: undefined };
+  return {
+    prev: articles[idx + 1],
+    next: articles[idx - 1],
+  };
+}
