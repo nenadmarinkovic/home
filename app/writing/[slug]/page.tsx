@@ -42,9 +42,23 @@ export async function generateMetadata({
   const { slug } = await params;
   const article = getArticle(slug);
   if (!article) return {};
+  const url = `${site.url}/writing/${article.slug}`;
   return {
     title: article.title,
     description: article.description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      title: article.title,
+      description: article.description,
+      url,
+      publishedTime: article.date,
+      authors: [site.author.name],
+    },
+    twitter: {
+      title: article.title,
+      description: article.description,
+    },
   };
 }
 
