@@ -23,21 +23,26 @@ function isLanguage(value: unknown): value is Language {
   );
 }
 
-function isWithinContentDir(relPath: string): boolean {
-  // file.path always begins with "content/" — reject anything else and any
-  // traversal segments before joining with cwd.
-  if (!relPath.startsWith("content/")) return false;
-  const segments = relPath.split("/");
-  return !segments.some((s) => s === ".." || s === "");
+function relativeWithinContent(filePath: string): string | null {
+  // file.path always begins with "content/" — strip the prefix and reject any
+  // traversal segments. Returning the relative-within-content path lets us
+  // statically scope path.join to the content dir, which avoids tripping
+  // Turbopack's NFT trace.
+  if (!filePath.startsWith("content/")) return null;
+  const rel = filePath.slice("content/".length);
+  const segments = rel.split("/");
+  if (segments.some((s) => s === ".." || s === "")) return null;
+  return rel;
 }
 
 async function exportLocal(files: ExportFile[]) {
-  const root = process.cwd();
+  const contentDir = path.join(process.cwd(), "content");
   for (const file of files) {
-    if (!isWithinContentDir(file.path)) {
+    const rel = relativeWithinContent(file.path);
+    if (rel === null) {
       throw new Error(`Refusing to write outside content/: ${file.path}`);
     }
-    const abs = path.join(root, file.path);
+    const abs = path.join(contentDir, rel);
     await fs.mkdir(path.dirname(abs), { recursive: true });
     await fs.writeFile(abs, file.content, "utf8");
   }

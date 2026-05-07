@@ -7,9 +7,9 @@
   },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/migrate.mjs",
+    "prebuild": "node scripts/migrate.mjs && node scripts/seed.mjs",
     "build": "next build",
-    "prestart": "node scripts/migrate.mjs",
+    "prestart": "node scripts/migrate.mjs && node scripts/seed.mjs",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "drizzle-kit generate",

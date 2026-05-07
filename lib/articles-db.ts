@@ -70,7 +70,7 @@ export function upsertArticle(input: WriteArticleInput) {
     })
     .returning()
     .get();
-  revalidateTag(ARTICLES_TAG, "max");
+  revalidateTag(ARTICLES_TAG, { expire: 0 });
   return row;
 }
 
@@ -79,7 +79,7 @@ export function deleteArticleBySlug(slug: string, language: Language) {
     .delete(articles)
     .where(and(eq(articles.slug, slug), eq(articles.language, language)))
     .run();
-  if (result.changes > 0) revalidateTag(ARTICLES_TAG, "max");
+  if (result.changes > 0) revalidateTag(ARTICLES_TAG, { expire: 0 });
   return result.changes > 0;
 }
 
