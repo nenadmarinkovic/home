@@ -159,16 +159,21 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
     <main className="flex flex-1 flex-col gap-10 py-16 font-sans">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-semibold leading-tight tracking-tight text-foreground">
+          <h1 className="font-serif text-2xl font-semibold leading-tight tracking-tight text-foreground">
             Admin
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-500">
-            <span className="tabular-nums">{published.length}</span> published
+          <p className="font-serif text-sm italic text-zinc-500 dark:text-zinc-500">
+            <span className="tabular-nums not-italic">
+              {published.length}
+            </span>{" "}
+            published
             {drafts.length > 0 && (
               <>
                 {" · "}
-                <span className="tabular-nums">{drafts.length}</span> draft
-                {drafts.length === 1 ? "" : "s"}
+                <span className="tabular-nums not-italic">
+                  {drafts.length}
+                </span>{" "}
+                draft{drafts.length === 1 ? "" : "s"}
               </>
             )}
           </p>
@@ -382,16 +387,16 @@ function ArticleList({
             className="-mx-1 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-1 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
           >
             <div className="flex items-center gap-2">
-              <p className="truncate text-sm font-medium text-foreground">
+              <p className="truncate font-serif text-base font-semibold leading-tight text-foreground">
                 {a.title}
               </p>
               {a.draft && <DraftTag />}
             </div>
-            <p className="truncate text-xs text-zinc-500 dark:text-zinc-500">
+            <p className="mt-0.5 truncate font-mono text-xs text-zinc-500 dark:text-zinc-500">
               /writing/{a.slug}
             </p>
           </button>
-          <span className="shrink-0 tabular-nums text-xs text-zinc-500 dark:text-zinc-500">
+          <span className="shrink-0 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
             {a.dateLabel}
           </span>
           <DropdownMenu>
@@ -399,11 +404,11 @@ function ArticleList({
               <Button
                 type="button"
                 variant="ghost"
-                size="icon-sm"
+                size="icon"
                 aria-label={`Actions for ${a.title}`}
-                className="text-zinc-500 dark:text-zinc-500"
+                className="text-zinc-600 dark:text-zinc-400"
               >
-                <DotsThreeVertical weight="bold" className="size-4" />
+                <DotsThreeVertical weight="bold" className="size-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -463,8 +468,10 @@ function EmptyAll({
         <FileText weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
-        <p className="text-sm font-medium text-foreground">{title}</p>
-        <p className="text-sm text-zinc-500 dark:text-zinc-500">
+        <p className="font-serif text-base font-semibold text-foreground">
+          {title}
+        </p>
+        <p className="font-serif text-sm italic text-zinc-500 dark:text-zinc-500">
           {description}
         </p>
       </div>

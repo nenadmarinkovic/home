@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { AdminActions } from "@/components/admin-actions";
+
 import { getArticles } from "./articles";
 
 export const metadata: Metadata = {
@@ -14,10 +16,13 @@ export default function WritingIndexPage() {
       <h1 className="sr-only">Writing</h1>
       <ul className="w-full divide-y divide-foreground/10">
         {getArticles().map((a) => (
-          <li key={a.slug} className="py-8 first:pt-0 last:pb-0">
+          <li
+            key={a.slug}
+            className="flex items-start justify-between gap-3 py-8 first:pt-0 last:pb-0"
+          >
             <Link
               href={`/writing/${a.slug}`}
-              className="group flex flex-col gap-2"
+              className="group flex flex-1 flex-col gap-2"
             >
               <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                 {a.dateLabel}
@@ -32,6 +37,7 @@ export default function WritingIndexPage() {
                 {a.description}
               </p>
             </Link>
+            <AdminActions article={a} className="-mt-1" />
           </li>
         ))}
       </ul>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { marked } from "marked";
 
+import { AdminActions } from "@/components/admin-actions";
 import { site } from "@/lib/site";
 import { getArticles, getAdjacent, getArticle } from "../articles";
 
@@ -78,17 +79,22 @@ export default async function ArticlePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-          {article.dateLabel}
-        </p>
-        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          {article.title}
-        </h1>
-        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          {article.subtitle}
-        </p>
-      </hgroup>
+      <div className="relative w-full max-w-prose self-center">
+        <hgroup className="space-y-3 text-center">
+          <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+            {article.dateLabel}
+          </p>
+          <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
+            {article.title}
+          </h1>
+          <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+            {article.subtitle}
+          </p>
+        </hgroup>
+        <div className="absolute right-0 top-0">
+          <AdminActions article={article} />
+        </div>
+      </div>
       {article.note && (
         <div className="max-w-prose self-center space-y-3 text-center font-serif italic leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
           {article.note.map((p, i) => (

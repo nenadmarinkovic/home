@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { getNavItems, isNavActive } from "@/components/nav-items";
+import {
+  baseNavItems,
+  getAuthNavItem,
+  isNavActive,
+} from "@/components/nav-items";
+import { NavSignOut } from "@/components/nav-sign-out";
 import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
@@ -22,11 +27,12 @@ export function HeaderNav() {
     );
   }
 
-  const navItems = getNavItems(authed);
+  const authItem = getAuthNavItem(authed);
+  const authActive = isNavActive(pathname, authItem.href);
 
   return (
     <nav className="hidden flex-col items-end font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400">
-      {navItems.map((item) => {
+      {baseNavItems.map((item) => {
         const active = isNavActive(pathname, item.href);
         return (
           <Link
@@ -42,6 +48,19 @@ export function HeaderNav() {
           </Link>
         );
       })}
+      <div className="flex items-center gap-2 py-0.5">
+        {authed && <NavSignOut iconOnly />}
+        <Link
+          href={authItem.href}
+          aria-current={authActive ? "page" : undefined}
+          className={cn(
+            "hover:text-foreground",
+            authActive && "text-foreground",
+          )}
+        >
+          {authItem.label}
+        </Link>
+      </div>
     </nav>
   );
 }

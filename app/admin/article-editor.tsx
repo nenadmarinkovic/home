@@ -223,7 +223,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="The Quiet Craft"
-                className="h-10 font-sans text-sm font-semibold placeholder:font-normal"
+                className="h-10 font-sans text-sm"
               />
               {slug && (
                 <p className="font-mono text-xs text-zinc-500 dark:text-zinc-500">

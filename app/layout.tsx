@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeColorSync } from "@/components/theme-color-sync";
+import { getAuthedFromCookie } from "@/lib/auth-server";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -47,11 +48,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const authed = await getAuthedFromCookie();
   return (
     <html
       lang="en"
@@ -66,7 +68,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Providers>
+        <Providers authed={authed}>
           <ThemeColorSync />
           <div className="flex min-h-screen flex-col">
             <div className="flex flex-col flex-1 items-center justify-start bg-background px-6">

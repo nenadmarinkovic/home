@@ -1,13 +1,12 @@
 ---
 title: The Quiet Craft
 subtitle: Notes on slow software.
-description: Why the most lasting tools are the ones that disappear into the work, and how restraint can become a design principle in its own right.
+description: "Why the most lasting tools are the ones that disappear into the work, and how restraint can become a design principle in its own right."
 date: 2025-08-12
 ---
-
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur fermentum, nulla in luctus consectetur, libero ipsum tempor lectus.
 
-<p class="pull-quote">The most lasting tools are the ones that disappear into the work.</p>
+The most lasting tools are the ones that disappear into the work.
 
 Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Phasellus quis pulvinar tellus. Aenean condimentum risus a nisl tristique, ut feugiat ipsum porta.
 

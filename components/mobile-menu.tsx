@@ -4,7 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { getNavItems, isNavActive } from "@/components/nav-items";
+import {
+  baseNavItems,
+  getAuthNavItem,
+  isNavActive,
+} from "@/components/nav-items";
+import { NavSignOut } from "@/components/nav-sign-out";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { useAuthed } from "@/lib/use-authed";
@@ -38,7 +43,8 @@ function HamburgerIcon({ open }: { open: boolean }) {
 export function MobileMenu() {
   const pathname = usePathname();
   const authed = useAuthed();
-  const navItems = getNavItems(authed);
+  const authItem = getAuthNavItem(authed);
+  const authActive = isNavActive(pathname, authItem.href);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -79,7 +85,7 @@ export function MobileMenu() {
               >
                 Home
               </Link>
-              {navItems.map((item) => {
+              {baseNavItems.map((item) => {
                 const active = isNavActive(pathname, item.href);
                 return (
                   <Link
@@ -95,6 +101,24 @@ export function MobileMenu() {
                   </Link>
                 );
               })}
+              <div className="flex items-center gap-3">
+                <Link
+                  href={authItem.href}
+                  aria-current={authActive ? "page" : undefined}
+                  className={cn(
+                    "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
+                    authActive && "font-semibold text-foreground",
+                  )}
+                >
+                  {authItem.label}
+                </Link>
+                {authed && (
+                  <NavSignOut
+                    iconOnly
+                    className="py-1 not-italic"
+                  />
+                )}
+              </div>
             </nav>
             <div className="mt-auto flex flex-col gap-5 border-t border-foreground/10 pt-8">
               <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
