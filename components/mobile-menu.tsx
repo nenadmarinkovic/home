@@ -4,9 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { isNavActive, navItems } from "@/components/nav-items";
+import { getNavItems, isNavActive } from "@/components/nav-items";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
 function HamburgerIcon({ open }: { open: boolean }) {
@@ -36,6 +37,8 @@ function HamburgerIcon({ open }: { open: boolean }) {
 
 export function MobileMenu() {
   const pathname = usePathname();
+  const authed = useAuthed();
+  const navItems = getNavItems(authed);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {

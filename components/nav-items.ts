@@ -3,13 +3,21 @@ export type NavItem = {
   label: string;
 };
 
-export const navItems: NavItem[] = [
+const baseItems: NavItem[] = [
   { href: "/writing", label: "Writing" },
   { href: "/projects", label: "Projects" },
   { href: "/tools", label: "Tools" },
   { href: "/infrastructure", label: "Infrastructure" },
-  { href: "/login", label: "Login" },
 ];
+
+export function getNavItems(authed: boolean): NavItem[] {
+  return [
+    ...baseItems,
+    authed
+      ? { href: "/admin", label: "Admin" }
+      : { href: "/login", label: "Login" },
+  ];
+}
 
 export function isNavActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";

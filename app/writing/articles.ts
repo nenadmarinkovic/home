@@ -11,6 +11,7 @@ export type Article = {
   dateLabel: string;
   note?: string[];
   body: string;
+  draft: boolean;
 };
 
 const DIR = path.join(process.cwd(), "content");
@@ -29,6 +30,7 @@ function dateLabelFor(iso: string): string {
 }
 
 function load(): Article[] {
+  if (!fs.existsSync(DIR)) return [];
   const files = fs.readdirSync(DIR).filter((f) => f.endsWith(".md"));
   const list = files.map((f) => {
     const slug = f.replace(/\.md$/, "");
@@ -44,15 +46,18 @@ function load(): Article[] {
       dateLabel: dateLabelFor(date),
       note: Array.isArray(data.note) ? data.note.map(String) : undefined,
       body: content.trim(),
+      draft: data.draft === true,
     } satisfies Article;
   });
   return list.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export const articles: Article[] = load();
+export const allArticles: Article[] = load();
+export const articles: Article[] = allArticles.filter((a) => !a.draft);
+export const draftArticles: Article[] = allArticles.filter((a) => a.draft);
 
 export function getArticle(slug: string): Article | undefined {
-  return articles.find((a) => a.slug === slug);
+  return allArticles.find((a) => a.slug === slug);
 }
 
 export function getAdjacent(slug: string) {

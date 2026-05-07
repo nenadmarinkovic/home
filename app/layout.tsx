@@ -56,7 +56,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${sourceSerif.variable} h-full antialiased`}
+      className={`${sourceSerif.variable} antialiased`}
     >
       <head>
         <script
@@ -65,14 +65,16 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body>
         <Providers>
           <ThemeColorSync />
-          <div className="flex flex-col flex-1 items-center justify-start bg-background px-6">
-            <div className="flex w-full max-w-2xl flex-1 flex-col bg-background">
-              <SiteHeader />
-              {children}
-              <SiteFooter />
+          <div className="flex min-h-screen flex-col">
+            <div className="flex flex-col flex-1 items-center justify-start bg-background px-6">
+              <div className="flex w-full max-w-2xl flex-1 flex-col bg-background">
+                <SiteHeader />
+                {children}
+                <SiteFooter />
+              </div>
             </div>
           </div>
         </Providers>

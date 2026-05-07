@@ -129,17 +129,20 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    @apply font-sans;
+    overflow-y: scroll;
+  }
   body {
     @apply bg-background text-foreground;
   }
-  html {
-    @apply font-sans;
-  }
 }
 
-html {
-  overflow-y: scroll;
-  scrollbar-gutter: stable;
+html body[data-scroll-locked],
+html body[data-rs-no-scroll-bar],
+html body[data-rs-scroll-lock] {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
 }
 
 ::selection {
@@ -178,4 +181,3 @@ article .pull-quote {
   text-wrap: balance;
   color: var(--foreground);
 }
-

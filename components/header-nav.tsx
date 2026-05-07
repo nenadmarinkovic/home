@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { isNavActive, navItems } from "@/components/nav-items";
+import { getNavItems, isNavActive } from "@/components/nav-items";
+import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
 export function HeaderNav() {
   const pathname = usePathname();
+  const authed = useAuthed();
   const isArticle = pathname.startsWith("/writing/");
 
   if (isArticle) {
@@ -19,6 +21,8 @@ export function HeaderNav() {
       </nav>
     );
   }
+
+  const navItems = getNavItems(authed);
 
   return (
     <nav className="hidden flex-col items-end font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400">
