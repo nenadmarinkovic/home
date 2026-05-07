@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { Providers } from "./providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -60,14 +61,8 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${sourceSerif.variable} antialiased`}
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||((t==='system'||!t)&&matchMedia('(prefers-color-scheme: dark)').matches);var c=d?'#0c1115':'#f7f3f3';var m=document.createElement('meta');m.name='theme-color';m.content=c;document.head.appendChild(m);}catch(e){}})();`,
-          }}
-        />
-      </head>
       <body>
+        <Script src="/theme-color-init.js" strategy="beforeInteractive" />
         <Providers authed={authed}>
           <ThemeColorSync />
           <div className="flex min-h-screen flex-col">
