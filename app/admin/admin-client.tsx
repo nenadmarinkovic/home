@@ -234,12 +234,12 @@ export function AdminClient({
                   </span>
                 ) : (
                   <span
-                    className="not-italic inline-flex items-center gap-1 text-[#fd6401]"
+                    className="not-italic inline-flex items-center gap-1 text-blue-700 dark:text-blue-500"
                     title="Articles edited since the last snapshot. Click Export to git to commit."
                   >
                     <span
                       aria-hidden
-                      className="inline-block size-1.5 rounded-full bg-[#fd6401]"
+                      className="inline-block size-1.5 rounded-full bg-blue-600 dark:bg-blue-500"
                     />
                     <span className="tabular-nums">{pendingExportCount}</span>{" "}
                     pending export
@@ -545,11 +545,11 @@ function UnexportedTag() {
   return (
     <span
       title="Not yet committed to git — click Export to git to snapshot."
-      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#fd6401]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#fd6401]"
+      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-medium text-blue-700 dark:text-blue-500"
     >
       <span
         aria-hidden
-        className="inline-block size-1.5 rounded-full bg-[#fd6401]"
+        className="inline-block size-1.5 rounded-full bg-blue-600 dark:bg-blue-500"
       />
       Pending export
     </span>
