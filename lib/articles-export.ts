@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 
 import { db } from "@/db/client";
 import { articles, LANGUAGES, type Language } from "@/db/schema";
@@ -9,6 +9,8 @@ export type ExportFile = {
   path: string;
   content: string;
 };
+
+export type ExportSelector = { slug: string; language: Language };
 
 function yamlEscape(value: string): string {
   if (/[:#&*!|>'"%@`,?\-{}\[\]]/.test(value) || value !== value.trim()) {
@@ -36,15 +38,18 @@ function buildMarkdown(row: {
   return `${lines.join("\n")}${row.body.trim()}\n`;
 }
 
-export function buildExportFiles(): ExportFile[] {
+export function buildExportFiles(selector?: ExportSelector): ExportFile[] {
   const files: ExportFile[] = [];
-  for (const lang of LANGUAGES) {
+  const targetLangs: readonly Language[] = selector
+    ? [selector.language]
+    : LANGUAGES;
+  for (const lang of targetLangs) {
     const rows = db
       .select()
       .from(articles)
       .where(eq(articles.language, lang))
       .all()
-      .filter((r) => !r.draft);
+      .filter((r) => !r.draft && (!selector || r.slug === selector.slug));
     for (const row of rows) {
       files.push({
         language: lang,
@@ -55,4 +60,20 @@ export function buildExportFiles(): ExportFile[] {
     }
   }
   return files;
+}
+
+export function markExported(targets: ExportSelector[], at: Date = new Date()) {
+  if (targets.length === 0) return;
+  const byLang = new Map<Language, string[]>();
+  for (const t of targets) {
+    const list = byLang.get(t.language) ?? [];
+    list.push(t.slug);
+    byLang.set(t.language, list);
+  }
+  for (const [lang, slugs] of byLang) {
+    db.update(articles)
+      .set({ exportedAt: at })
+      .where(and(eq(articles.language, lang), inArray(articles.slug, slugs)))
+      .run();
+  }
 }

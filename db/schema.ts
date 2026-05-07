@@ -27,6 +27,7 @@ export const articles = sqliteTable(
     updatedAt: integer("updated_at", { mode: "timestamp" })
       .notNull()
       .default(sql`(unixepoch())`),
+    exportedAt: integer("exported_at", { mode: "timestamp" }),
   },
   (table) => [uniqueIndex("articles_slug_lang_unique").on(table.slug, table.language)],
 );

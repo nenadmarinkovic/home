@@ -1,7 +1,6 @@
-import fs from "node:fs";
-import path from "node:path";
 import type { Metadata } from "next";
 
+import { getExportedKeys } from "@/lib/articles-db";
 import { getArticles, getDraftArticles } from "../writing/articles";
 import { AdminClient } from "./admin-client";
 
@@ -12,21 +11,10 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-function buildExportedSet(slugs: { slug: string; language: string }[]): string[] {
-  const root = process.cwd();
-  return slugs
-    .filter((a) =>
-      fs.existsSync(
-        path.join(root, "content", a.language, `${a.slug}.md`),
-      ),
-    )
-    .map((a) => `${a.language}:${a.slug}`);
-}
-
 export default function AdminPage() {
   const published = getArticles();
   const drafts = getDraftArticles();
-  const exported = buildExportedSet(published);
+  const exported = getExportedKeys();
   return (
     <AdminClient
       published={published}
