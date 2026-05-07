@@ -106,7 +106,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
     editorProps: {
       attributes: {
         class:
-          "h-full font-serif text-(length:--unit-lg) leading-[1.55] text-foreground outline-none",
+          "h-full font-sans text-sm leading-[1.55] text-foreground outline-none",
         spellcheck: "false",
       },
     },
@@ -192,7 +192,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
           </DialogDescription>
         </DialogHeader>
 
-        <DialogBody className="grid grid-cols-1 gap-0 p-0 lg:grid-cols-[22rem_1fr]">
+        <DialogBody className="grid grid-cols-1 gap-0 p-0 sm:p-0 lg:grid-cols-[22rem_1fr]">
           <aside className="flex flex-col gap-5 border-foreground/10 px-5 py-4 sm:px-6 sm:py-5 lg:border-r">
             <SectionLabel>Frontmatter</SectionLabel>
 
@@ -277,8 +277,8 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
               <SectionLabel>Body</SectionLabel>
               {editor && <EditorToolbar editor={editor} />}
             </div>
-            <div className="rounded-md border border-foreground/15 bg-field px-4 py-3 transition-colors focus-within:border-foreground/40 sm:px-5 sm:py-4 lg:flex-1 lg:overflow-y-auto">
-              <EditorContent editor={editor} className="lg:h-full" />
+            <div className="flex-1 overflow-y-auto rounded-md border border-foreground/15 bg-field px-4 py-3 font-sans text-sm transition-colors focus-within:border-foreground/40 sm:px-5 sm:py-4">
+              <EditorContent editor={editor} className="h-full" />
             </div>
           </section>
         </DialogBody>
