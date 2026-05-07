@@ -5,11 +5,7 @@ import { marked } from "marked";
 
 import { AdminActions } from "@/components/admin-actions";
 import { site } from "@/lib/site";
-import { getArticles, getAdjacent, getArticle } from "../articles";
-
-export function generateStaticParams() {
-  return getArticles().map((a) => ({ slug: a.slug }));
-}
+import { getAdjacent, getArticle } from "../articles";
 
 export async function generateMetadata({
   params,
