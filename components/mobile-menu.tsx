@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   baseNavItems,
@@ -45,11 +45,16 @@ export function MobileMenu() {
   const authItem = getAuthNavItem(authed);
   const authActive = authItem ? isNavActive(pathname, authItem.href) : false;
   const [open, setOpen] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpen(false);
   }, [pathname]);
+
+  const close = () => setOpen(false);
+  const linkClass =
+    "cursor-pointer touch-manipulation py-1 leading-none transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground focus-visible:rounded-sm";
 
   return (
     <div className="md:hidden" data-mobile-menu>
@@ -64,9 +69,12 @@ export function MobileMenu() {
       </button>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent
+          ref={popupRef}
+          initialFocus={popupRef}
+          tabIndex={-1}
           side="right"
           showCloseButton={false}
-          className="w-full max-w-none border-0 bg-background p-0 shadow-none sm:max-w-none"
+          className="w-full max-w-none border-0 bg-background p-0 shadow-none outline-none sm:max-w-none"
         >
           <SheetTitle className="sr-only">Menu</SheetTitle>
           <div className="flex h-full flex-col px-6 pt-14 pb-8">
@@ -76,9 +84,10 @@ export function MobileMenu() {
             <nav className="mt-4 flex flex-col items-start gap-3 font-serif text-xl italic text-zinc-600 dark:text-zinc-400">
               <Link
                 href="/"
+                onClick={close}
                 aria-current={pathname === "/" ? "page" : undefined}
                 className={cn(
-                  "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
+                  linkClass,
                   pathname === "/" && "font-semibold text-foreground",
                 )}
               >
@@ -90,9 +99,10 @@ export function MobileMenu() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={close}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
+                      linkClass,
                       active && "font-semibold text-foreground",
                     )}
                   >
@@ -103,9 +113,10 @@ export function MobileMenu() {
               {authItem && (
                 <Link
                   href={authItem.href}
+                  onClick={close}
                   aria-current={authActive ? "page" : undefined}
                   className={cn(
-                    "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
+                    linkClass,
                     authActive && "font-semibold text-foreground",
                   )}
                 >
