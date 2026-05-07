@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,6 @@ function safeRedirectTarget(raw: string | null): string {
 
 export function LoginForm() {
   const router = useRouter();
-  const params = useSearchParams();
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -37,7 +36,8 @@ export function LoginForm() {
       return;
     }
     startTransition(() => {
-      const from = safeRedirectTarget(params.get("from"));
+      const fromParam = new URLSearchParams(window.location.search).get("from");
+      const from = safeRedirectTarget(fromParam);
       router.push(from);
       router.refresh();
     });
@@ -46,10 +46,12 @@ export function LoginForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="flex w-full max-w-sm flex-col gap-4 self-center font-sans"
+      className="flex w-full max-w-sm flex-col gap-5 self-center rounded-2xl border border-foreground/10 bg-card/60 p-6 font-sans sm:p-7"
     >
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="password">Password</Label>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="password" className="text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+          Password
+        </Label>
         <Input
           id="password"
           type="password"
@@ -58,10 +60,14 @@ export function LoginForm() {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="h-11 text-base"
         />
       </div>
       {error && (
-        <p role="alert" className="text-sm text-[#fd6401]">
+        <p
+          role="alert"
+          className="rounded-md bg-[#fd6401]/10 px-3 py-2 text-sm text-[#fd6401]"
+        >
           {error}
         </p>
       )}
@@ -69,6 +75,7 @@ export function LoginForm() {
         type="submit"
         size="lg"
         disabled={Boolean(pending) || password.length === 0}
+        className="w-full"
       >
         {pending ? "Signing in…" : "Sign in"}
       </Button>

@@ -10,14 +10,8 @@ export const baseNavItems: NavItem[] = [
   { href: "/infrastructure", label: "Infrastructure" },
 ];
 
-export function getAuthNavItem(authed: boolean): NavItem {
-  return authed
-    ? { href: "/admin", label: "Admin" }
-    : { href: "/login", label: "Login" };
-}
-
-export function getNavItems(authed: boolean): NavItem[] {
-  return [...baseNavItems, getAuthNavItem(authed)];
+export function getAuthNavItem(authed: boolean): NavItem | null {
+  return authed ? { href: "/admin", label: "Admin" } : null;
 }
 
 export function isNavActive(pathname: string, href: string) {

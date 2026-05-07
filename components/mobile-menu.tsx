@@ -43,7 +43,7 @@ export function MobileMenu() {
   const pathname = usePathname();
   const authed = useAuthed();
   const authItem = getAuthNavItem(authed);
-  const authActive = isNavActive(pathname, authItem.href);
+  const authActive = authItem ? isNavActive(pathname, authItem.href) : false;
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -100,16 +100,18 @@ export function MobileMenu() {
                   </Link>
                 );
               })}
-              <Link
-                href={authItem.href}
-                aria-current={authActive ? "page" : undefined}
-                className={cn(
-                  "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
-                  authActive && "font-semibold text-foreground",
-                )}
-              >
-                {authItem.label}
-              </Link>
+              {authItem && (
+                <Link
+                  href={authItem.href}
+                  aria-current={authActive ? "page" : undefined}
+                  className={cn(
+                    "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
+                    authActive && "font-semibold text-foreground",
+                  )}
+                >
+                  {authItem.label}
+                </Link>
+              )}
             </nav>
             <div className="mt-auto flex flex-col gap-5 border-t border-foreground/10 pt-8">
               <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">

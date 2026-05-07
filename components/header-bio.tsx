@@ -9,7 +9,6 @@ const bios: Record<string, string> = {
   "/projects": "An incomplete log of things I’ve built and shipped over the years.",
   "/tools": "Software I use every day, and a few I built myself.",
   "/infrastructure": "How this site is hosted, built, and put together.",
-  "/login": "Sign in to your account to continue.",
   "/admin": "Everything written, drafted, and published.",
 };
 

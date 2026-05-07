@@ -28,4 +28,7 @@ if (!password) {
   console.error("Empty password");
   process.exit(1);
 }
-console.log(hash(password));
+const value = hash(password);
+const envEscaped = value.replace(/\$/g, "\\$");
+console.error("Paste this line into .env.local (note the escaped $):\n");
+console.log(`ADMIN_PASSWORD_HASH=${envEscaped}`);

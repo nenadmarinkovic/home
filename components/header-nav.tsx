@@ -27,7 +27,7 @@ export function HeaderNav() {
   }
 
   const authItem = getAuthNavItem(authed);
-  const authActive = isNavActive(pathname, authItem.href);
+  const authActive = authItem ? isNavActive(pathname, authItem.href) : false;
 
   return (
     <nav className="hidden flex-col items-end font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400">
@@ -47,16 +47,18 @@ export function HeaderNav() {
           </Link>
         );
       })}
-      <Link
-        href={authItem.href}
-        aria-current={authActive ? "page" : undefined}
-        className={cn(
-          "py-0.5 hover:text-foreground",
-          authActive && "text-foreground",
-        )}
-      >
-        {authItem.label}
-      </Link>
+      {authItem && (
+        <Link
+          href={authItem.href}
+          aria-current={authActive ? "page" : undefined}
+          className={cn(
+            "py-0.5 hover:text-foreground",
+            authActive && "text-foreground",
+          )}
+        >
+          {authItem.label}
+        </Link>
+      )}
     </nav>
   );
 }
