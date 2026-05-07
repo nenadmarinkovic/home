@@ -3,7 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import {
+  Article as ArticleIcon,
   DotsThreeVertical,
+  FileText,
   PencilSimple,
   Trash,
 } from "@phosphor-icons/react";
@@ -33,6 +35,7 @@ import {
 } from "@/components/ui/tabs";
 
 import { ArticleEditor, type EditorInitial } from "./article-editor";
+import { LogoutButton } from "./logout-button";
 import type { Article } from "../writing/articles";
 
 type AdminClientProps = {
@@ -85,7 +88,6 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
         const data = (await res.json().catch(() => ({}))) as {
           error?: string;
         };
-        // For now surface as alert; AlertDialog stays open if it fails.
         window.alert(data?.error ?? `Delete failed (${res.status})`);
         return;
       }
@@ -97,22 +99,45 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
   }
 
   return (
-    <>
-      <Button onClick={openNew} size="lg" className="self-start">
-        New article
-      </Button>
+    <main className="flex flex-1 flex-col gap-12 py-16 font-sans">
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-2xl font-semibold leading-tight tracking-tight text-foreground">
+            Admin
+          </h1>
+          <p className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-500">
+            <span className="tabular-nums">
+              {published.length} published
+            </span>
+            <span
+              aria-hidden="true"
+              className="size-1 rounded-full bg-[#fd6401]"
+            />
+            <span className="tabular-nums">
+              {drafts.length} {drafts.length === 1 ? "draft" : "drafts"}
+            </span>
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <LogoutButton />
+          <Button onClick={openNew} size="lg">
+            <ArticleIcon weight="bold" />
+            New article
+          </Button>
+        </div>
+      </header>
 
-      <Tabs defaultValue="published" className="gap-6">
+      <Tabs defaultValue="published" className="gap-8">
         <TabsList>
-          <TabsTrigger value="published">
+          <TabsTrigger value="published" className="group/trigger">
             Published
-            <span className="font-normal text-zinc-500 dark:text-zinc-500">
+            <span className="ml-1 tabular-nums font-normal text-zinc-500 transition-colors group-data-[state=active]/trigger:text-[#fd6401] dark:text-zinc-500">
               {published.length}
             </span>
           </TabsTrigger>
-          <TabsTrigger value="drafts">
+          <TabsTrigger value="drafts" className="group/trigger">
             Drafts
-            <span className="font-normal text-zinc-500 dark:text-zinc-500">
+            <span className="ml-1 tabular-nums font-normal text-zinc-500 transition-colors group-data-[state=active]/trigger:text-[#fd6401] dark:text-zinc-500">
               {drafts.length}
             </span>
           </TabsTrigger>
@@ -121,7 +146,18 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
         <TabsContent value="published">
           <ArticleList
             articles={published}
-            emptyText="No published articles yet."
+            empty={
+              <EmptyState
+                title="No articles yet"
+                description="Drafts you publish will appear here."
+                action={
+                  <Button onClick={openNew}>
+                    <ArticleIcon weight="bold" />
+                    Create one
+                  </Button>
+                }
+              />
+            }
             onEdit={openEdit}
             onDeleteRequest={setPendingDelete}
           />
@@ -130,7 +166,18 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
         <TabsContent value="drafts">
           <ArticleList
             articles={drafts}
-            emptyText="No drafts yet. Click New article and choose Save as draft."
+            empty={
+              <EmptyState
+                title="No drafts"
+                description="Start writing — save as draft to keep it private."
+                action={
+                  <Button onClick={openNew}>
+                    <ArticleIcon weight="bold" />
+                    New draft
+                  </Button>
+                }
+              />
+            }
             onEdit={openEdit}
             onDeleteRequest={setPendingDelete}
           />
@@ -173,56 +220,52 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
                 void confirmDelete();
               }}
               disabled={deleting}
-              className="bg-[#fd6401] text-background hover:bg-[#fd6401]/90"
+              className="bg-destructive text-white hover:bg-destructive/90"
             >
               {deleting ? "Deleting…" : "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </main>
   );
 }
 
 function ArticleList({
   articles,
-  emptyText,
+  empty,
   onEdit,
   onDeleteRequest,
 }: {
   articles: Article[];
-  emptyText: string;
+  empty: React.ReactNode;
   onEdit: (article: Article) => void;
   onDeleteRequest: (article: Article) => void;
 }) {
   if (articles.length === 0) {
-    return (
-      <p className="font-sans text-sm text-zinc-500 dark:text-zinc-500">
-        {emptyText}
-      </p>
-    );
+    return <>{empty}</>;
   }
 
   return (
-    <ul className="divide-y divide-foreground/10">
+    <ul className="-mx-3 flex flex-col">
       {articles.map((a) => (
         <li
           key={a.slug}
-          className="flex items-center justify-between gap-6 py-3"
+          className="group/row flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-foreground/[0.04]"
         >
           <button
             type="button"
             onClick={() => onEdit(a)}
-            className="-mx-2 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-2 py-1 text-left transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+            className="-mx-1 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-1 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
           >
-            <p className="truncate font-sans text-sm font-medium text-foreground">
+            <p className="truncate text-sm font-medium text-foreground">
               {a.title}
             </p>
-            <p className="truncate font-sans text-xs text-zinc-500 dark:text-zinc-500">
+            <p className="truncate text-xs text-zinc-500 dark:text-zinc-500">
               /writing/{a.slug}
             </p>
           </button>
-          <span className="font-sans text-xs uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+          <span className="shrink-0 tabular-nums text-xs uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
             {a.dateLabel}
           </span>
           <DropdownMenu>
@@ -232,7 +275,7 @@ function ArticleList({
                 variant="ghost"
                 size="icon-sm"
                 aria-label={`Actions for ${a.title}`}
-                className="text-zinc-600 dark:text-zinc-400"
+                className="text-zinc-500 dark:text-zinc-500"
               >
                 <DotsThreeVertical weight="bold" className="size-4" />
               </Button>
@@ -254,5 +297,30 @@ function ArticleList({
         </li>
       ))}
     </ul>
+  );
+}
+
+function EmptyState({
+  title,
+  description,
+  action,
+}: {
+  title: string;
+  description: string;
+  action: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#fd6401]/10 text-[#fd6401]">
+        <FileText weight="regular" className="size-5" />
+      </div>
+      <div className="flex flex-col gap-1">
+        <p className="text-sm font-medium text-foreground">{title}</p>
+        <p className="text-sm text-zinc-500 dark:text-zinc-500">
+          {description}
+        </p>
+      </div>
+      <div className="mt-2">{action}</div>
+    </div>
   );
 }

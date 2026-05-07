@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { articles } from "./writing/articles";
+import { getArticles } from "./writing/articles";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
-  const articleRoutes: MetadataRoute.Sitemap = articles.map((a) => ({
+  const articleRoutes: MetadataRoute.Sitemap = getArticles().map((a) => ({
     url: `${site.url}/writing/${a.slug}`,
     lastModified: new Date(a.date),
   }));

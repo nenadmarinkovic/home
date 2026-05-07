@@ -52,19 +52,28 @@ function load(): Article[] {
   return list.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export const allArticles: Article[] = load();
-export const articles: Article[] = allArticles.filter((a) => !a.draft);
-export const draftArticles: Article[] = allArticles.filter((a) => a.draft);
+export function getAllArticles(): Article[] {
+  return load();
+}
+
+export function getArticles(): Article[] {
+  return load().filter((a) => !a.draft);
+}
+
+export function getDraftArticles(): Article[] {
+  return load().filter((a) => a.draft);
+}
 
 export function getArticle(slug: string): Article | undefined {
-  return allArticles.find((a) => a.slug === slug);
+  return load().find((a) => a.slug === slug);
 }
 
 export function getAdjacent(slug: string) {
-  const idx = articles.findIndex((a) => a.slug === slug);
+  const list = getArticles();
+  const idx = list.findIndex((a) => a.slug === slug);
   if (idx === -1) return { prev: undefined, next: undefined };
   return {
-    prev: articles[idx + 1],
-    next: articles[idx - 1],
+    prev: list[idx + 1],
+    next: list[idx - 1],
   };
 }

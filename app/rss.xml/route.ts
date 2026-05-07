@@ -1,4 +1,4 @@
-import { articles } from "../writing/articles";
+import { getArticles } from "../writing/articles";
 import { site } from "@/lib/site";
 
 function escapeXml(unsafe: string) {
@@ -11,7 +11,7 @@ function escapeXml(unsafe: string) {
 }
 
 export function GET() {
-  const items = articles
+  const items = getArticles()
     .map((a) => {
       const url = `${site.url}/writing/${a.slug}`;
       const pubDate = new Date(a.date).toUTCString();

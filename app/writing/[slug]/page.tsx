@@ -4,10 +4,10 @@ import { notFound } from "next/navigation";
 import { marked } from "marked";
 
 import { site } from "@/lib/site";
-import { articles, getAdjacent, getArticle } from "../articles";
+import { getArticles, getAdjacent, getArticle } from "../articles";
 
 export function generateStaticParams() {
-  return articles.map((a) => ({ slug: a.slug }));
+  return getArticles().map((a) => ({ slug: a.slug }));
 }
 
 export async function generateMetadata({

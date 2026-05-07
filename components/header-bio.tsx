@@ -10,6 +10,7 @@ const bios: Record<string, string> = {
   "/tools": "Software I use every day, and a few I built myself.",
   "/infrastructure": "How this site is hosted, built, and put together.",
   "/login": "Sign in to your account to continue.",
+  "/admin": "The workshop, with the lights on.",
 };
 
 function getBio(pathname: string): string | null {

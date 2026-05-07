@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import { articles } from "./writing/articles";
+import { getArticles } from "./writing/articles";
 
 export default function Home() {
-  const latest = articles.slice(0, 3);
+  const latest = getArticles().slice(0, 3);
 
   return (
     <main className="flex flex-1 flex-col items-start gap-12 py-20">

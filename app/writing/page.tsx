@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { articles } from "./articles";
+import { getArticles } from "./articles";
 
 export const metadata: Metadata = {
   title: "Writing",
@@ -13,7 +13,7 @@ export default function WritingIndexPage() {
     <main className="flex flex-1 flex-col items-start gap-12 py-20">
       <h1 className="sr-only">Writing</h1>
       <ul className="w-full divide-y divide-foreground/10">
-        {articles.map((a) => (
+        {getArticles().map((a) => (
           <li key={a.slug} className="py-8 first:pt-0 last:pb-0">
             <Link
               href={`/writing/${a.slug}`}

@@ -104,6 +104,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
       attributes: {
         class:
           "h-full font-serif text-(length:--unit-lg) leading-[1.55] text-foreground outline-none",
+        spellcheck: "false",
       },
     },
   });
@@ -222,7 +223,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="The Quiet Craft"
-                className="h-11 font-sans text-base font-semibold"
+                className="h-10 font-sans text-sm font-semibold placeholder:font-normal"
               />
               {slug && (
                 <p className="font-mono text-xs text-zinc-500 dark:text-zinc-500">
@@ -292,18 +293,15 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
               <SectionLabel>Body</SectionLabel>
               {editor && <EditorToolbar editor={editor} />}
             </div>
-            <div className="flex-1 overflow-y-auto rounded-md border border-foreground/15 px-5 py-4 transition-colors focus-within:border-foreground/40">
+            <div className="flex-1 overflow-y-auto rounded-md border border-foreground/15 bg-field px-5 py-4 transition-colors focus-within:border-foreground/40">
               <EditorContent editor={editor} className="h-full" />
             </div>
           </section>
         </DialogBody>
 
         {error && (
-          <div className="border-t border-foreground/10 bg-[#fd6401]/5 px-6 py-3">
-            <p
-              role="alert"
-              className="font-sans text-sm text-[#fd6401]"
-            >
+          <div className="border-t border-foreground/10 bg-destructive/5 px-6 py-3">
+            <p role="alert" className="font-sans text-sm text-destructive">
               {error}
             </p>
           </div>
@@ -423,13 +421,17 @@ function EditorToolbar({ editor }: { editor: Editor }) {
         <Button
           key={b.label}
           type="button"
-          variant={b.isActive ? "default" : "ghost"}
+          variant="ghost"
           size="icon-sm"
           onClick={b.run}
           aria-label={b.label}
           aria-pressed={b.isActive}
           title={b.label}
-          className={cn(!b.isActive && "text-zinc-600 dark:text-zinc-400")}
+          className={cn(
+            b.isActive
+              ? "bg-[#fd6401]/10 text-[#fd6401] hover:bg-[#fd6401]/15 hover:text-[#fd6401]"
+              : "text-zinc-600 dark:text-zinc-400",
+          )}
         >
           {b.icon}
         </Button>
