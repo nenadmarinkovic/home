@@ -1,9 +1,11 @@
 import path from "node:path";
 import fs from "node:fs";
 import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { drizzle, type BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
 
 import * as schema from "./schema";
+
+type Db = BetterSQLite3Database<typeof schema>;
 
 const DEFAULT_DEV_PATH = path.join(process.cwd(), "data", "articles.db");
 
@@ -13,12 +15,26 @@ function resolveDbPath(): string {
   return DEFAULT_DEV_PATH;
 }
 
-const dbPath = resolveDbPath();
-fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+let _db: Db | null = null;
 
-const sqlite = new Database(dbPath);
-sqlite.pragma("journal_mode = WAL");
-sqlite.pragma("foreign_keys = ON");
+function ensureDb(): Db {
+  if (_db) return _db;
+  const dbPath = resolveDbPath();
+  fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+  const sqlite = new Database(dbPath);
+  sqlite.pragma("journal_mode = WAL");
+  sqlite.pragma("foreign_keys = ON");
+  _db = drizzle(sqlite, { schema });
+  return _db;
+}
 
-export const db = drizzle(sqlite, { schema });
+// Lazy proxy: nothing opens the DB until a method is actually called on it.
+// This keeps `next build`'s page-data collection workers from contending for
+// the SQLite lock at module load.
+export const db = new Proxy({} as Db, {
+  get(_target, prop, receiver) {
+    return Reflect.get(ensureDb() as object, prop, receiver);
+  },
+});
+
 export { schema };

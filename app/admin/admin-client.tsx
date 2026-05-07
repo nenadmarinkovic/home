@@ -42,7 +42,13 @@ import type { Article } from "../writing/articles";
 type AdminClientProps = {
   published: Article[];
   drafts: Article[];
+  /** Keys "<lang>:<slug>" of published articles whose content/<lang>/<slug>.md exists. */
+  exported: string[];
 };
+
+function exportedKey(a: Pick<Article, "slug" | "language">): string {
+  return `${a.language}:${a.slug}`;
+}
 
 type SortKey = "newest" | "oldest" | "title-asc" | "title-desc";
 type FilterKey = "all" | "published" | "drafts";
@@ -87,7 +93,15 @@ function applyControls(
   return sorted;
 }
 
-export function AdminClient({ published, drafts }: AdminClientProps) {
+export function AdminClient({
+  published,
+  drafts,
+  exported,
+}: AdminClientProps) {
+  const exportedSet = useMemo(() => new Set(exported), [exported]);
+  const pendingExportCount = published.filter(
+    (a) => !exportedSet.has(exportedKey(a)),
+  ).length;
   const router = useRouter();
   const [, startTransition] = useTransition();
   const [editor, setEditor] = useState<{
@@ -177,6 +191,19 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
                 draft{drafts.length === 1 ? "" : "s"}
               </>
             )}
+            {published.length > 0 && (
+              <>
+                {" · "}
+                {pendingExportCount === 0 ? (
+                  <span className="not-italic">all in git</span>
+                ) : (
+                  <span className="not-italic text-[#fd6401]">
+                    <span className="tabular-nums">{pendingExportCount}</span>{" "}
+                    pending export
+                  </span>
+                )}
+              </>
+            )}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -205,6 +232,7 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
         ) : (
           <ArticleList
             articles={list}
+            exportedSet={exportedSet}
             onEdit={openEdit}
             onDeleteRequest={setPendingDelete}
           />
@@ -371,16 +399,21 @@ function SortMenu({
 
 function ArticleList({
   articles,
+  exportedSet,
   onEdit,
   onDeleteRequest,
 }: {
   articles: Article[];
+  exportedSet: Set<string>;
   onEdit: (article: Article) => void;
   onDeleteRequest: (article: Article) => void;
 }) {
   return (
     <ul className="-mx-3 flex flex-col">
-      {articles.map((a) => (
+      {articles.map((a) => {
+        const showUnexported =
+          !a.draft && !exportedSet.has(exportedKey(a));
+        return (
         <li
           key={a.slug}
           className="group/row flex items-center gap-4 rounded-lg px-3 py-3 transition-colors hover:bg-foreground/[0.04]"
@@ -395,6 +428,7 @@ function ArticleList({
                 {a.title}
               </p>
               {a.draft && <DraftTag />}
+              {showUnexported && <UnexportedTag />}
             </div>
             <p className="mt-0.5 truncate font-mono text-xs text-zinc-500 dark:text-zinc-500">
               /writing/{a.slug}
@@ -430,7 +464,8 @@ function ArticleList({
             </DropdownMenuContent>
           </DropdownMenu>
         </li>
-      ))}
+        );
+      })}
     </ul>
   );
 }
@@ -439,6 +474,17 @@ function DraftTag() {
   return (
     <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-2.5 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
       Draft
+    </span>
+  );
+}
+
+function UnexportedTag() {
+  return (
+    <span
+      title="Not yet committed to git — click Export to git to snapshot."
+      className="inline-flex shrink-0 items-center rounded-full bg-[#fd6401]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#fd6401]"
+    >
+      Pending export
     </span>
   );
 }
