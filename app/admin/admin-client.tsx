@@ -1,13 +1,18 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import {
   Article as ArticleIcon,
+  ArrowsDownUp,
+  Check,
   DotsThreeVertical,
   FileText,
+  FunnelSimple,
+  MagnifyingGlass,
   PencilSimple,
   Trash,
+  X as XIcon,
 } from "@phosphor-icons/react";
 
 import {
@@ -27,12 +32,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
 
 import { ArticleEditor, type EditorInitial } from "./article-editor";
 import { LogoutButton } from "./logout-button";
@@ -43,6 +43,49 @@ type AdminClientProps = {
   drafts: Article[];
 };
 
+type SortKey = "newest" | "oldest" | "title-asc" | "title-desc";
+type FilterKey = "all" | "published" | "drafts";
+
+const SORT_LABELS: Record<SortKey, string> = {
+  newest: "Newest",
+  oldest: "Oldest",
+  "title-asc": "Title A–Z",
+  "title-desc": "Title Z–A",
+};
+
+const FILTER_LABELS: Record<FilterKey, string> = {
+  all: "All",
+  published: "Published",
+  drafts: "Drafts",
+};
+
+function applyControls(
+  list: Article[],
+  search: string,
+  sort: SortKey,
+): Article[] {
+  const q = search.trim().toLowerCase();
+  const filtered = q
+    ? list.filter((a) => a.title.toLowerCase().includes(q))
+    : list;
+  const sorted = [...filtered];
+  switch (sort) {
+    case "newest":
+      sorted.sort((a, b) => (a.date < b.date ? 1 : -1));
+      break;
+    case "oldest":
+      sorted.sort((a, b) => (a.date < b.date ? -1 : 1));
+      break;
+    case "title-asc":
+      sorted.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case "title-desc":
+      sorted.sort((a, b) => b.title.localeCompare(a.title));
+      break;
+  }
+  return sorted;
+}
+
 export function AdminClient({ published, drafts }: AdminClientProps) {
   const router = useRouter();
   const [, startTransition] = useTransition();
@@ -52,6 +95,20 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
   }>({ open: false, initial: null });
   const [pendingDelete, setPendingDelete] = useState<Article | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState<SortKey>("newest");
+  const [filter, setFilter] = useState<FilterKey>("all");
+
+  const list = useMemo(() => {
+    const base =
+      filter === "published"
+        ? published
+        : filter === "drafts"
+          ? drafts
+          : [...published, ...drafts];
+    return applyControls(base, search, sort);
+  }, [filter, published, drafts, search, sort]);
+  const isFiltering = search.trim().length > 0;
 
   function openNew() {
     setEditor({ open: true, initial: null });
@@ -99,90 +156,51 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-12 py-16 font-sans">
+    <main className="flex flex-1 flex-col gap-10 py-16 font-sans">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
           <h1 className="text-2xl font-semibold leading-tight tracking-tight text-foreground">
             Admin
           </h1>
-          <p className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-500">
-            <span className="tabular-nums">
-              {published.length} published
-            </span>
-            <span
-              aria-hidden="true"
-              className="size-1 rounded-full bg-[#fd6401]"
-            />
-            <span className="tabular-nums">
-              {drafts.length} {drafts.length === 1 ? "draft" : "drafts"}
-            </span>
+          <p className="text-sm text-zinc-500 dark:text-zinc-500">
+            <span className="tabular-nums">{published.length}</span> published
+            {drafts.length > 0 && (
+              <>
+                {" · "}
+                <span className="tabular-nums">{drafts.length}</span> draft
+                {drafts.length === 1 ? "" : "s"}
+              </>
+            )}
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <LogoutButton />
-          <Button onClick={openNew} size="lg">
-            <ArticleIcon weight="bold" />
-            New article
-          </Button>
-        </div>
+        <LogoutButton />
       </header>
 
-      <Tabs defaultValue="published" className="gap-8">
-        <TabsList>
-          <TabsTrigger value="published" className="group/trigger">
-            Published
-            <span className="ml-1 tabular-nums font-normal text-zinc-500 transition-colors group-data-[state=active]/trigger:text-[#fd6401] dark:text-zinc-500">
-              {published.length}
-            </span>
-          </TabsTrigger>
-          <TabsTrigger value="drafts" className="group/trigger">
-            Drafts
-            <span className="ml-1 tabular-nums font-normal text-zinc-500 transition-colors group-data-[state=active]/trigger:text-[#fd6401] dark:text-zinc-500">
-              {drafts.length}
-            </span>
-          </TabsTrigger>
-        </TabsList>
+      <section className="flex flex-col gap-5">
+        <div className="flex items-center gap-2">
+          <SearchField search={search} onSearchChange={setSearch} />
+          <FilterMenu filter={filter} onFilterChange={setFilter} />
+          <SortMenu sort={sort} onSortChange={setSort} />
+          <Button onClick={openNew} className="h-9 shrink-0">
+            <ArticleIcon weight="bold" />
+            <span className="hidden sm:inline">New article</span>
+          </Button>
+        </div>
 
-        <TabsContent value="published">
+        {list.length === 0 ? (
+          isFiltering ? (
+            <NoResults onClear={() => setSearch("")} />
+          ) : (
+            <EmptyAll filter={filter} onNew={openNew} />
+          )
+        ) : (
           <ArticleList
-            articles={published}
-            empty={
-              <EmptyState
-                title="No articles yet"
-                description="Drafts you publish will appear here."
-                action={
-                  <Button onClick={openNew}>
-                    <ArticleIcon weight="bold" />
-                    Create one
-                  </Button>
-                }
-              />
-            }
+            articles={list}
             onEdit={openEdit}
             onDeleteRequest={setPendingDelete}
           />
-        </TabsContent>
-
-        <TabsContent value="drafts">
-          <ArticleList
-            articles={drafts}
-            empty={
-              <EmptyState
-                title="No drafts"
-                description="Start writing — save as draft to keep it private."
-                action={
-                  <Button onClick={openNew}>
-                    <ArticleIcon weight="bold" />
-                    New draft
-                  </Button>
-                }
-              />
-            }
-            onEdit={openEdit}
-            onDeleteRequest={setPendingDelete}
-          />
-        </TabsContent>
-      </Tabs>
+        )}
+      </section>
 
       <ArticleEditor
         open={editor.open}
@@ -231,41 +249,149 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
   );
 }
 
+function SearchField({
+  search,
+  onSearchChange,
+}: {
+  search: string;
+  onSearchChange: (value: string) => void;
+}) {
+  return (
+    <div className="relative flex-1">
+      <MagnifyingGlass
+        weight="regular"
+        className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-500"
+      />
+      <Input
+        type="search"
+        value={search}
+        onChange={(e) => onSearchChange(e.target.value)}
+        placeholder="Search articles…"
+        aria-label="Search articles by title"
+        className="h-9 pl-9 pr-9 text-sm"
+      />
+      {search && (
+        <button
+          type="button"
+          onClick={() => onSearchChange("")}
+          aria-label="Clear search"
+          className="absolute right-2 top-1/2 flex size-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded text-zinc-500 transition-colors hover:bg-foreground/5 hover:text-foreground"
+        >
+          <XIcon weight="bold" className="size-3" />
+        </button>
+      )}
+    </div>
+  );
+}
+
+function FilterMenu({
+  filter,
+  onFilterChange,
+}: {
+  filter: FilterKey;
+  onFilterChange: (filter: FilterKey) => void;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          aria-label={`Show: ${FILTER_LABELS[filter]}`}
+          className="h-9 shrink-0 gap-1.5"
+        >
+          <FunnelSimple weight="bold" />
+          <span className="hidden sm:inline">{FILTER_LABELS[filter]}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[10rem]">
+        {(Object.keys(FILTER_LABELS) as FilterKey[]).map((key) => (
+          <DropdownMenuItem
+            key={key}
+            onClick={() => onFilterChange(key)}
+            className="justify-between"
+          >
+            <span>{FILTER_LABELS[key]}</span>
+            {filter === key && (
+              <Check weight="bold" className="size-3.5 text-[#fd6401]" />
+            )}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function SortMenu({
+  sort,
+  onSortChange,
+}: {
+  sort: SortKey;
+  onSortChange: (sort: SortKey) => void;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          aria-label={`Sort: ${SORT_LABELS[sort]}`}
+          className="h-9 shrink-0 gap-1.5"
+        >
+          <ArrowsDownUp weight="bold" />
+          <span className="hidden sm:inline">{SORT_LABELS[sort]}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[10rem]">
+        {(Object.keys(SORT_LABELS) as SortKey[]).map((key) => (
+          <DropdownMenuItem
+            key={key}
+            onClick={() => onSortChange(key)}
+            className="justify-between"
+          >
+            <span>{SORT_LABELS[key]}</span>
+            {sort === key && (
+              <Check weight="bold" className="size-3.5 text-[#fd6401]" />
+            )}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 function ArticleList({
   articles,
-  empty,
   onEdit,
   onDeleteRequest,
 }: {
   articles: Article[];
-  empty: React.ReactNode;
   onEdit: (article: Article) => void;
   onDeleteRequest: (article: Article) => void;
 }) {
-  if (articles.length === 0) {
-    return <>{empty}</>;
-  }
-
   return (
     <ul className="-mx-3 flex flex-col">
       {articles.map((a) => (
         <li
           key={a.slug}
-          className="group/row flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-foreground/[0.04]"
+          className="group/row flex items-center gap-4 rounded-lg px-3 py-3 transition-colors hover:bg-foreground/[0.04]"
         >
           <button
             type="button"
             onClick={() => onEdit(a)}
             className="-mx-1 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-1 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
           >
-            <p className="truncate text-sm font-medium text-foreground">
-              {a.title}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="truncate text-sm font-medium text-foreground">
+                {a.title}
+              </p>
+              {a.draft && <DraftTag />}
+            </div>
             <p className="truncate text-xs text-zinc-500 dark:text-zinc-500">
               /writing/{a.slug}
             </p>
           </button>
-          <span className="shrink-0 tabular-nums text-xs uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+          <span className="shrink-0 tabular-nums text-xs text-zinc-500 dark:text-zinc-500">
             {a.dateLabel}
           </span>
           <DropdownMenu>
@@ -300,15 +426,37 @@ function ArticleList({
   );
 }
 
-function EmptyState({
-  title,
-  description,
-  action,
+function DraftTag() {
+  return (
+    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-2.5 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
+      Draft
+    </span>
+  );
+}
+
+function EmptyAll({
+  filter,
+  onNew,
 }: {
-  title: string;
-  description: string;
-  action: React.ReactNode;
+  filter: FilterKey;
+  onNew: () => void;
 }) {
+  const copy: Record<FilterKey, { title: string; description: string }> = {
+    all: {
+      title: "Nothing here yet",
+      description: "Start writing — your first article will appear here.",
+    },
+    published: {
+      title: "No published articles",
+      description: "Drafts you publish will show up here.",
+    },
+    drafts: {
+      title: "No drafts",
+      description: "Save an article as draft to keep it private.",
+    },
+  };
+  const { title, description } = copy[filter];
+
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
       <div className="flex size-10 items-center justify-center rounded-full bg-[#fd6401]/10 text-[#fd6401]">
@@ -320,7 +468,29 @@ function EmptyState({
           {description}
         </p>
       </div>
-      <div className="mt-2">{action}</div>
+      <Button onClick={onNew} className="mt-2">
+        <ArticleIcon weight="bold" />
+        New article
+      </Button>
+    </div>
+  );
+}
+
+function NoResults({ onClear }: { onClear: () => void }) {
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
+      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/[0.04] text-zinc-500 dark:text-zinc-500">
+        <MagnifyingGlass weight="regular" className="size-5" />
+      </div>
+      <div className="flex flex-col gap-1">
+        <p className="text-sm font-medium text-foreground">No matches</p>
+        <p className="text-sm text-zinc-500 dark:text-zinc-500">
+          Nothing here fits your search.
+        </p>
+      </div>
+      <Button onClick={onClear} variant="outline" className="mt-2">
+        Clear search
+      </Button>
     </div>
   );
 }
