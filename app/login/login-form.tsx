@@ -1,11 +1,20 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+function safeRedirectTarget(raw: string | null): string {
+  if (!raw) return "/admin";
+  if (raw.length > 512) return "/admin";
+  if (!raw.startsWith("/")) return "/admin";
+  if (raw.startsWith("//") || raw.startsWith("/\\")) return "/admin";
+  if (raw.includes("\\")) return "/admin";
+  return raw;
+}
 
 export function LoginForm() {
   const router = useRouter();
@@ -13,13 +22,6 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,7 +37,7 @@ export function LoginForm() {
       return;
     }
     startTransition(() => {
-      const from = params.get("from") || "/admin";
+      const from = safeRedirectTarget(params.get("from"));
       router.push(from);
       router.refresh();
     });

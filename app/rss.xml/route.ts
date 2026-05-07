@@ -10,8 +10,8 @@ function escapeXml(unsafe: string) {
     .replace(/'/g, "&apos;");
 }
 
-export function GET() {
-  const items = getArticles()
+export async function GET() {
+  const items = (await getArticles())
     .map((a) => {
       const url = `${site.url}/writing/${a.slug}`;
       const pubDate = new Date(a.date).toUTCString();

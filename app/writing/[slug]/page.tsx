@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { marked } from "marked";
 
 import { AdminActions } from "@/components/admin-actions";
+import { renderMarkdown } from "@/lib/markdown";
 import { site } from "@/lib/site";
 import { getAdjacent, getArticle } from "../articles";
 
@@ -13,7 +13,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticle(slug);
+  const article = await getArticle(slug);
   if (!article) return {};
   const url = `${site.url}/writing/${article.slug}`;
   return {
@@ -41,10 +41,10 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = getArticle(slug);
+  const article = await getArticle(slug);
   if (!article) notFound();
 
-  const { prev, next } = getAdjacent(slug);
+  const { prev, next } = await getAdjacent(slug);
 
   const articleUrl = `${site.url}/writing/${article.slug}`;
   const jsonLd = {
@@ -93,9 +93,7 @@ export default async function ArticlePage({
       </div>
       <article
         className="space-y-6 font-serif text-(length:--unit-lg) leading-[1.5] text-pretty oldstyle-nums"
-        dangerouslySetInnerHTML={{
-          __html: marked.parse(article.body, { async: false }) as string,
-        }}
+        dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }}
       />
       {(prev || next) && (
         <nav

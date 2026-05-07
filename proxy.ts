@@ -1,6 +1,23 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isValidSessionCookie, SESSION_COOKIE_NAME } from "@/lib/auth";
 
+const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
+
+function isSameOrigin(request: NextRequest): boolean {
+  const origin = request.headers.get("origin");
+  const referer = request.headers.get("referer");
+  const host = request.headers.get("host");
+  if (!host) return false;
+  const candidate = origin ?? referer;
+  if (!candidate) return false;
+  try {
+    const url = new URL(candidate);
+    return url.host === host;
+  } catch {
+    return false;
+  }
+}
+
 export async function proxy(request: NextRequest) {
   const cookie = request.cookies.get(SESSION_COOKIE_NAME)?.value;
   const authed = await isValidSessionCookie(cookie);
@@ -13,6 +30,11 @@ export async function proxy(request: NextRequest) {
     loginUrl.searchParams.set("from", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   }
+
+  if (!SAFE_METHODS.has(request.method) && !isSameOrigin(request)) {
+    return new NextResponse("Forbidden", { status: 403 });
+  }
+
   return NextResponse.next();
 }
 

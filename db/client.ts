@@ -23,7 +23,9 @@ function ensureDb(): Db {
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
   const sqlite = new Database(dbPath);
   sqlite.pragma("journal_mode = WAL");
+  sqlite.pragma("synchronous = NORMAL");
   sqlite.pragma("foreign_keys = ON");
+  sqlite.pragma("busy_timeout = 5000");
   _db = drizzle(sqlite, { schema });
   return _db;
 }

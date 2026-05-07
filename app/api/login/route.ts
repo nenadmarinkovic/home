@@ -1,7 +1,27 @@
 import { NextResponse } from "next/server";
-import { createSessionCookie, verifyPassword } from "@/lib/auth";
+import { createSessionCookie } from "@/lib/auth";
+import { verifyPassword } from "@/lib/auth-password";
+import { checkLoginRate } from "@/lib/rate-limit";
+
+export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
+
+  const rate = checkLoginRate(ip);
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: "Too many attempts. Try again later." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(Math.ceil(rate.retryAfterMs / 1000)) },
+      },
+    );
+  }
+
   let password = "";
   try {
     const body = await request.json();

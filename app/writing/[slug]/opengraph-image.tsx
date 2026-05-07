@@ -14,7 +14,7 @@ export default async function Image({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = getArticle(slug);
+  const article = await getArticle(slug);
   if (!article) {
     return new ImageResponse(<div>Not found</div>, size);
   }

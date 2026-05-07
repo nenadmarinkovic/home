@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 import { getArticles } from "./writing/articles";
 import { site } from "@/lib/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     "",
     "/writing",
@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
-  const articleRoutes: MetadataRoute.Sitemap = getArticles().map((a) => ({
+  const articleRoutes: MetadataRoute.Sitemap = (await getArticles()).map((a) => ({
     url: `${site.url}/writing/${a.slug}`,
     lastModified: new Date(a.date),
   }));
