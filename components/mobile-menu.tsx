@@ -9,7 +9,6 @@ import {
   getAuthNavItem,
   isNavActive,
 } from "@/components/nav-items";
-import { NavSignOut } from "@/components/nav-sign-out";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { useAuthed } from "@/lib/use-authed";
@@ -101,24 +100,16 @@ export function MobileMenu() {
                   </Link>
                 );
               })}
-              <div className="flex items-center gap-3">
-                <Link
-                  href={authItem.href}
-                  aria-current={authActive ? "page" : undefined}
-                  className={cn(
-                    "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
-                    authActive && "font-semibold text-foreground",
-                  )}
-                >
-                  {authItem.label}
-                </Link>
-                {authed && (
-                  <NavSignOut
-                    iconOnly
-                    className="py-1 not-italic"
-                  />
+              <Link
+                href={authItem.href}
+                aria-current={authActive ? "page" : undefined}
+                className={cn(
+                  "cursor-pointer py-1 leading-none transition-colors duration-150 hover:text-foreground",
+                  authActive && "font-semibold text-foreground",
                 )}
-              </div>
+              >
+                {authItem.label}
+              </Link>
             </nav>
             <div className="mt-auto flex flex-col gap-5 border-t border-foreground/10 pt-8">
               <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">

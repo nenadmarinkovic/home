@@ -14,7 +14,7 @@ export function SiteHeader() {
               aria-label="Logo"
               className="size-3.5 rounded-full bg-[#FD6401]"
             />
-            <span className="font-serif text-base italic leading-none text-foreground">
+            <span className="font-serif text-lg italic leading-none text-foreground">
               Nenad Marinković
             </span>
           </Link>

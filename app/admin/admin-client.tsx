@@ -207,40 +207,40 @@ export function AdminClient({
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-10 py-16 font-sans">
-      <header className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <h1 className="font-serif text-2xl font-semibold leading-tight tracking-tight text-foreground">
+    <main className="flex flex-1 flex-col gap-8 py-16 font-sans">
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="font-serif text-3xl font-semibold leading-none tracking-tight text-foreground">
             Admin
           </h1>
-          <p className="font-serif text-sm italic text-zinc-500 dark:text-zinc-500">
-            <span className="tabular-nums not-italic">
-              {published.length}
-            </span>{" "}
-            published
+          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+            <span>
+              <span className="tabular-nums">{published.length}</span>{" "}
+              published
+            </span>
             {drafts.length > 0 && (
               <>
-                {" · "}
-                <span className="tabular-nums not-italic">
-                  {drafts.length}
-                </span>{" "}
-                draft{drafts.length === 1 ? "" : "s"}
+                <span aria-hidden className="text-foreground/20">·</span>
+                <span>
+                  <span className="tabular-nums">{drafts.length}</span>{" "}
+                  draft{drafts.length === 1 ? "" : "s"}
+                </span>
               </>
             )}
             {published.length > 0 && (
               <>
-                {" · "}
+                <span aria-hidden className="text-foreground/20">·</span>
                 {pendingExportCount === 0 ? (
                   <span
-                    className="not-italic inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-500"
+                    className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-500"
                     title="Every published article is committed to git."
                   >
                     <CheckCircle weight="fill" className="size-3.5" />
-                    all in git
+                    All in git
                   </span>
                 ) : (
                   <span
-                    className="not-italic inline-flex items-center gap-1 text-blue-700 dark:text-blue-500"
+                    className="inline-flex items-center gap-1 text-blue-700 dark:text-blue-500"
                     title="Articles edited since the last snapshot. Click Export to git to commit."
                   >
                     <span
@@ -310,7 +310,7 @@ export function AdminClient({
               {pendingDelete ? (
                 <>
                   This will permanently remove{" "}
-                  <code className="font-mono text-xs">
+                  <code className="font-sans text-xs">
                     content/{pendingDelete.slug}.md
                   </code>
                   . The change is committed to git — recoverable from history,
@@ -465,7 +465,7 @@ function ArticleList({
   onDeleteRequest: (article: Article) => void;
 }) {
   return (
-    <ul className="-mx-3 flex flex-col">
+    <ul className="flex flex-col divide-y divide-foreground/5">
       {articles.map((a) => {
         const key = exportedKey(a);
         const isExported = !a.draft && exportedSet.has(key);
@@ -474,22 +474,22 @@ function ArticleList({
         return (
         <li
           key={a.slug}
-          className="group/row flex items-center gap-4 rounded-lg px-3 py-3 transition-colors hover:bg-foreground/[0.04]"
+          className="group/row flex items-center gap-4 py-3.5 transition-colors"
         >
           <button
             type="button"
             onClick={() => onEdit(a)}
-            className="-mx-1 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-1 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+            className="-mx-2 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-2 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
           >
             <div className="flex items-center gap-2">
-              <p className="truncate font-serif text-base font-semibold leading-tight text-foreground">
+              <p className="truncate font-serif text-base font-semibold leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
                 {a.title}
               </p>
               {a.draft && <DraftTag />}
               {showUnexported && <UnexportedTag />}
               {isExported && <ExportedTag />}
             </div>
-            <p className="mt-0.5 truncate font-mono text-xs text-zinc-500 dark:text-zinc-500">
+            <p className="mt-1 truncate font-sans text-xs text-zinc-500 dark:text-zinc-500">
               /writing/{a.slug}
             </p>
           </button>

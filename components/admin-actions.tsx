@@ -129,7 +129,7 @@ export function AdminActions({ article, className }: Props) {
             <AlertDialogTitle>Delete this article?</AlertDialogTitle>
             <AlertDialogDescription>
               This will permanently remove{" "}
-              <code className="font-mono text-xs">
+              <code className="font-sans text-xs">
                 content/{article.slug}.md
               </code>
               . The change is committed to git — recoverable from history, but

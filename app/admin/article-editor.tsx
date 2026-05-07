@@ -186,8 +186,8 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>
-            Saves a <code className="font-mono text-xs">.md</code> file to{" "}
-            <code className="font-mono text-xs">content/</code>. Drafts are
+            Saves a <code className="font-sans text-xs">.md</code> file to{" "}
+            <code className="font-sans text-xs">content/</code>. Drafts are
             hidden from the public site; publish to make it live.
           </DialogDescription>
         </DialogHeader>
@@ -210,7 +210,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
                 className="h-10 font-sans text-sm"
               />
               {slug && (
-                <p className="font-mono text-xs text-zinc-500 dark:text-zinc-500">
+                <p className="font-sans text-xs text-zinc-500 dark:text-zinc-500">
                   /writing/{slug}
                 </p>
               )}

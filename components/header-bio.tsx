@@ -24,7 +24,7 @@ export function HeaderBio() {
   if (!bio) return null;
 
   return (
-    <p className="max-w-xs font-serif text-sm italic leading-snug text-zinc-600 dark:text-zinc-400">
+    <p className="max-w-xs font-serif text-base italic leading-snug text-zinc-600 dark:text-zinc-400">
       {bio}
     </p>
   );

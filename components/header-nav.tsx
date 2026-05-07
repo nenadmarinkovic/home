@@ -8,7 +8,6 @@ import {
   getAuthNavItem,
   isNavActive,
 } from "@/components/nav-items";
-import { NavSignOut } from "@/components/nav-sign-out";
 import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
@@ -48,19 +47,16 @@ export function HeaderNav() {
           </Link>
         );
       })}
-      <div className="flex items-center gap-2 py-0.5">
-        {authed && <NavSignOut iconOnly />}
-        <Link
-          href={authItem.href}
-          aria-current={authActive ? "page" : undefined}
-          className={cn(
-            "hover:text-foreground",
-            authActive && "text-foreground",
-          )}
-        >
-          {authItem.label}
-        </Link>
-      </div>
+      <Link
+        href={authItem.href}
+        aria-current={authActive ? "page" : undefined}
+        className={cn(
+          "py-0.5 hover:text-foreground",
+          authActive && "text-foreground",
+        )}
+      >
+        {authItem.label}
+      </Link>
     </nav>
   );
 }
