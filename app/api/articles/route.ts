@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import { deleteArticle, publishArticle } from "@/lib/github";
+
+import { deleteArticleBySlug, upsertArticle } from "@/lib/articles-db";
+import { LANGUAGES, type Language } from "@/db/schema";
 
 function slugify(input: string): string {
   return input
@@ -11,6 +13,13 @@ function slugify(input: string): string {
 }
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const SLUG_RE = /^[a-z0-9][a-z0-9-]*$/;
+
+function isLanguage(value: unknown): value is Language {
+  return (
+    typeof value === "string" && (LANGUAGES as readonly string[]).includes(value)
+  );
+}
 
 export async function POST(request: Request) {
   let payload: {
@@ -21,6 +30,7 @@ export async function POST(request: Request) {
     body?: string;
     draft?: boolean;
     slug?: string;
+    language?: string;
   };
   try {
     payload = await request.json();
@@ -33,6 +43,9 @@ export async function POST(request: Request) {
   const description = String(payload.description ?? "").trim();
   const date = String(payload.date ?? "").trim();
   const body = String(payload.body ?? "").trim();
+  const language: Language = isLanguage(payload.language)
+    ? payload.language
+    : "en";
 
   if (!title) {
     return NextResponse.json({ error: "Title required" }, { status: 400 });
@@ -56,8 +69,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await publishArticle({
+    const row = upsertArticle({
       slug,
+      language,
       title,
       subtitle,
       description,
@@ -65,27 +79,29 @@ export async function POST(request: Request) {
       body,
       draft: Boolean(payload.draft),
     });
-    return NextResponse.json({ ok: true, ...result });
+    return NextResponse.json({ ok: true, slug: row.slug, language: row.language });
   } catch (err: unknown) {
     const message =
       typeof err === "object" && err !== null && "message" in err
         ? String((err as { message: string }).message)
-        : "Commit failed";
+        : "Save failed";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-const SLUG_RE = /^[a-z0-9][a-z0-9-]*$/;
-
 export async function DELETE(request: Request) {
   const url = new URL(request.url);
   const slug = url.searchParams.get("slug")?.trim() ?? "";
+  const langParam = url.searchParams.get("language")?.trim() ?? "en";
   if (!slug || !SLUG_RE.test(slug)) {
     return NextResponse.json({ error: "Invalid slug" }, { status: 400 });
   }
+  if (!isLanguage(langParam)) {
+    return NextResponse.json({ error: "Invalid language" }, { status: 400 });
+  }
   try {
-    const result = await deleteArticle(slug);
-    return NextResponse.json({ ok: true, ...result });
+    const deleted = deleteArticleBySlug(slug, langParam);
+    return NextResponse.json({ ok: true, deleted });
   } catch (err: unknown) {
     const message =
       typeof err === "object" && err !== null && "message" in err

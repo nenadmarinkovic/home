@@ -35,6 +35,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { ArticleEditor, type EditorInitial } from "./article-editor";
+import { ExportButton } from "./export-button";
 import { LogoutButton } from "./logout-button";
 import type { Article } from "../writing/articles";
 
@@ -178,7 +179,10 @@ export function AdminClient({ published, drafts }: AdminClientProps) {
             )}
           </p>
         </div>
-        <LogoutButton />
+        <div className="flex items-center gap-2">
+          <ExportButton />
+          <LogoutButton />
+        </div>
       </header>
 
       <section className="flex flex-col gap-5">

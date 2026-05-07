@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# sqlite (DB lives in mounted volume in prod)
+/data
+*.db
+*.db-journal
+*.db-wal
+*.db-shm

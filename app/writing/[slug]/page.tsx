@@ -95,13 +95,6 @@ export default async function ArticlePage({
           <AdminActions article={article} />
         </div>
       </div>
-      {article.note && (
-        <div className="max-w-prose self-center space-y-3 text-center font-serif italic leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
-          {article.note.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </div>
-      )}
       <article
         className="space-y-6 font-serif text-(length:--unit-lg) leading-[1.5] text-pretty oldstyle-nums"
         dangerouslySetInnerHTML={{
