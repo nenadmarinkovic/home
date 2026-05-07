@@ -4,8 +4,8 @@ import { AdminActions } from "@/components/admin-actions";
 
 import { getArticles } from "./writing/articles";
 
-export default function Home() {
-  const latest = getArticles().slice(0, 3);
+export default async function Home() {
+  const latest = (await getArticles()).slice(0, 3);
 
   return (
     <main className="flex flex-1 flex-col items-start gap-12 py-20">

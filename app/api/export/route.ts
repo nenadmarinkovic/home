@@ -23,9 +23,20 @@ function isLanguage(value: unknown): value is Language {
   );
 }
 
+function isWithinContentDir(relPath: string): boolean {
+  // file.path always begins with "content/" — reject anything else and any
+  // traversal segments before joining with cwd.
+  if (!relPath.startsWith("content/")) return false;
+  const segments = relPath.split("/");
+  return !segments.some((s) => s === ".." || s === "");
+}
+
 async function exportLocal(files: ExportFile[]) {
   const root = process.cwd();
   for (const file of files) {
+    if (!isWithinContentDir(file.path)) {
+      throw new Error(`Refusing to write outside content/: ${file.path}`);
+    }
     const abs = path.join(root, file.path);
     await fs.mkdir(path.dirname(abs), { recursive: true });
     await fs.writeFile(abs, file.content, "utf8");

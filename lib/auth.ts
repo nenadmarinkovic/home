@@ -1,5 +1,5 @@
 const COOKIE_NAME = "admin_session";
-const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
+const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
 type CookieOptions = {
   httpOnly: true;
@@ -19,6 +19,14 @@ function getSecret(): string {
   return secret;
 }
 
+function getValidAfterMs(): number {
+  const raw = process.env.AUTH_VALID_AFTER;
+  if (!raw) return 0;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed < 0) return 0;
+  return parsed;
+}
+
 async function hmacSha256Hex(value: string): Promise<string> {
   const enc = new TextEncoder();
   const key = await crypto.subtle.importKey(
@@ -34,19 +42,13 @@ async function hmacSha256Hex(value: string): Promise<string> {
     .join("");
 }
 
-function constantTimeEqual(a: string, b: string): boolean {
+function constantTimeEqualString(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
   let result = 0;
   for (let i = 0; i < a.length; i++) {
     result |= a.charCodeAt(i) ^ b.charCodeAt(i);
   }
   return result === 0;
-}
-
-export function verifyPassword(submitted: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD ?? "";
-  if (!expected) return false;
-  return constantTimeEqual(submitted, expected);
 }
 
 export async function createSessionCookie(): Promise<{
@@ -97,11 +99,25 @@ export async function isValidSessionCookie(
   const signature = value.slice(idx + 1);
   if (!issued || !signature) return false;
   const expectedSig = await hmacSha256Hex(issued);
-  if (!constantTimeEqual(signature, expectedSig)) return false;
+  if (!constantTimeEqualString(signature, expectedSig)) return false;
   const issuedMs = Number(issued);
   if (!Number.isFinite(issuedMs)) return false;
+  if (issuedMs < getValidAfterMs()) return false;
   const ageSec = (Date.now() - issuedMs) / 1000;
   return ageSec >= 0 && ageSec < SESSION_TTL_SECONDS;
+}
+
+/**
+ * Returns true when `target` is a safe local path to redirect to.
+ * Rejects schemes, protocol-relative (//host) paths, and backslashes.
+ */
+export function isSafeRedirectTarget(target: unknown): target is string {
+  if (typeof target !== "string" || target.length === 0) return false;
+  if (target.length > 512) return false;
+  if (!target.startsWith("/")) return false;
+  if (target.startsWith("//") || target.startsWith("/\\")) return false;
+  if (target.includes("\\")) return false;
+  return true;
 }
 
 export const SESSION_COOKIE_NAME = COOKIE_NAME;

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
-import { getExportedKeys } from "@/lib/articles-db";
-import { getArticles, getDraftArticles } from "../writing/articles";
+import { getAdminSnapshot } from "@/lib/articles-db";
 import { AdminClient } from "./admin-client";
 
 export const metadata: Metadata = {
@@ -12,9 +11,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default function AdminPage() {
-  const published = getArticles();
-  const drafts = getDraftArticles();
-  const exported = getExportedKeys();
+  const { published, drafts, exported } = getAdminSnapshot();
   return (
     <AdminClient
       published={published}

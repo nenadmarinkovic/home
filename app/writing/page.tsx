@@ -10,12 +10,13 @@ export const metadata: Metadata = {
   description: "Essays on tools, process, and making things that last.",
 };
 
-export default function WritingIndexPage() {
+export default async function WritingIndexPage() {
+  const list = await getArticles();
   return (
     <main className="flex flex-1 flex-col items-start gap-12 py-20">
       <h1 className="sr-only">Writing</h1>
       <ul className="w-full divide-y divide-foreground/10">
-        {getArticles().map((a) => (
+        {list.map((a) => (
           <li
             key={a.slug}
             className="flex items-start justify-between gap-3 py-8 first:pt-0 last:pb-0"
