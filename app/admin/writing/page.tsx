@@ -4,7 +4,7 @@ import { getAdminSnapshot } from "@/lib/articles-db";
 import { AdminClient } from "./admin-client";
 
 export const metadata: Metadata = {
-  title: "Admin",
+  title: "Writing · Admin",
   robots: { index: false, follow: false },
 };
 

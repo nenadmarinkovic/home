@@ -31,7 +31,7 @@ import { cn } from "@/lib/utils";
 import {
   ArticleEditor,
   type EditorInitial,
-} from "@/app/admin/article-editor";
+} from "@/app/admin/writing/article-editor";
 import type { Article } from "@/app/writing/articles";
 
 type Props = {

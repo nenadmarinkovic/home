@@ -17,6 +17,8 @@ import {
   X as XIcon,
 } from "@phosphor-icons/react";
 
+import Link from "next/link";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,6 +29,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -39,7 +49,7 @@ import { Input } from "@/components/ui/input";
 import { ArticleEditor, type EditorInitial } from "./article-editor";
 import { ExportButton } from "./export-button";
 import { LogoutButton } from "./logout-button";
-import type { Article } from "../writing/articles";
+import type { Article } from "../../writing/articles";
 
 type AdminClientProps = {
   published: Article[];
@@ -208,10 +218,24 @@ export function AdminClient({
 
   return (
     <main className="flex flex-1 flex-col gap-8 py-16 font-sans">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/admin">Admin</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Writing</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-1.5">
           <h1 className="font-serif text-3xl font-semibold leading-none tracking-tight text-foreground">
-            Admin
+            Writing
           </h1>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
             <span>

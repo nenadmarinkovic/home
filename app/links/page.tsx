@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Projects",
+  title: "Links",
   description:
-    "An incomplete log of things I've built and shipped over the years.",
+    "A handful of sites — friends, tools, and quiet corners of the web.",
 };
 
-export default function ProjectsPage() {
+export default function LinksPage() {
   return (
     <main className="flex flex-1 flex-col items-start gap-12 py-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
         <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-          Projects
+          Links
         </p>
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          Things I’ve made.
+          Pages I keep coming back to.
         </h1>
         <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          An incomplete log of things I’ve built and shipped over the years.
+          A handful of sites — friends, tools, and quiet corners of the web.
         </p>
       </hgroup>
     </main>
