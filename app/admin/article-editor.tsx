@@ -198,7 +198,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="w-[min(95vw,72rem)] max-h-[92vh]">
+      <DialogContent className="w-[calc(100vw-1.5rem)] max-h-[calc(100dvh-1.5rem)] sm:w-[min(95vw,72rem)] sm:max-h-[92vh]">
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>
@@ -209,7 +209,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
         </DialogHeader>
 
         <DialogBody className="grid grid-cols-1 gap-0 p-0 lg:grid-cols-[22rem_1fr]">
-          <aside className="flex flex-col gap-5 border-foreground/10 px-6 py-5 lg:border-r">
+          <aside className="flex flex-col gap-5 border-foreground/10 px-5 py-4 sm:px-6 sm:py-5 lg:border-r">
             <SectionLabel>Frontmatter</SectionLabel>
 
             <FieldRow>
@@ -288,19 +288,19 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
             </FieldRow>
           </aside>
 
-          <section className="flex min-h-[60vh] flex-col gap-3 px-6 py-5">
-            <div className="flex items-center justify-between gap-4">
+          <section className="flex min-h-[40dvh] flex-col gap-3 px-5 py-4 sm:px-6 sm:py-5 lg:min-h-[60vh]">
+            <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
               <SectionLabel>Body</SectionLabel>
               {editor && <EditorToolbar editor={editor} />}
             </div>
-            <div className="flex-1 overflow-y-auto rounded-md border border-foreground/15 bg-field px-5 py-4 transition-colors focus-within:border-foreground/40">
-              <EditorContent editor={editor} className="h-full" />
+            <div className="rounded-md border border-foreground/15 bg-field px-4 py-3 transition-colors focus-within:border-foreground/40 sm:px-5 sm:py-4 lg:flex-1 lg:overflow-y-auto">
+              <EditorContent editor={editor} className="lg:h-full" />
             </div>
           </section>
         </DialogBody>
 
         {error && (
-          <div className="border-t border-foreground/10 bg-destructive/5 px-6 py-3">
+          <div className="border-t border-foreground/10 bg-destructive/5 px-5 py-2.5 sm:px-6 sm:py-3">
             <p role="alert" className="font-sans text-sm text-destructive">
               {error}
             </p>

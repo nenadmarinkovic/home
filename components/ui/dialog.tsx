@@ -58,7 +58,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed left-1/2 top-1/2 z-50 flex max-h-[92vh] w-[min(92vw,42rem)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card font-sans text-foreground outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95",
+          "fixed left-1/2 top-1/2 z-50 flex max-h-[calc(100dvh-1.5rem)] w-[calc(100vw-1.5rem)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card font-sans text-foreground outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 sm:max-h-[92vh] sm:w-[min(92vw,42rem)]",
           className,
         )}
         {...props}
@@ -67,7 +67,7 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="absolute right-4 top-4 cursor-pointer rounded-md p-1.5 text-zinc-600 transition-colors hover:bg-foreground/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 dark:text-zinc-400"
+            className="absolute right-2.5 top-2.5 cursor-pointer rounded-md p-1.5 text-zinc-600 transition-colors hover:bg-foreground/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 sm:right-4 sm:top-4 dark:text-zinc-400"
             aria-label="Close"
           >
             <XIcon weight="bold" className="size-4" />
@@ -86,7 +86,7 @@ function DialogHeader({
     <div
       data-slot="dialog-header"
       className={cn(
-        "flex flex-col gap-1.5 border-b border-foreground/10 px-6 py-5",
+        "flex flex-col gap-1.5 border-b border-foreground/10 px-5 py-4 pr-12 sm:px-6 sm:py-5 sm:pr-14",
         className,
       )}
       {...props}
@@ -133,7 +133,10 @@ function DialogBody({
   return (
     <div
       data-slot="dialog-body"
-      className={cn("flex-1 overflow-y-auto px-6 py-5", className)}
+      className={cn(
+        "flex-1 overflow-y-auto overscroll-contain px-5 py-4 sm:px-6 sm:py-5",
+        className,
+      )}
       {...props}
     />
   );
@@ -147,7 +150,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex items-center justify-end gap-2 border-t border-foreground/10 bg-foreground/[0.015] px-6 py-4",
+        "flex flex-wrap items-center justify-end gap-2 border-t border-foreground/10 bg-foreground/[0.015] px-5 py-3 sm:px-6 sm:py-4",
         className,
       )}
       {...props}
