@@ -109,7 +109,8 @@ export function AdminClient({
   const [editor, setEditor] = useState<{
     open: boolean;
     initial: EditorInitial | null;
-  }>({ open: false, initial: null });
+    sessionId: number;
+  }>({ open: false, initial: null, sessionId: 0 });
   const [pendingDelete, setPendingDelete] = useState<Article | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [exportingKey, setExportingKey] = useState<string | null>(null);
@@ -129,11 +130,15 @@ export function AdminClient({
   const isFiltering = search.trim().length > 0;
 
   function openNew() {
-    setEditor({ open: true, initial: null });
+    setEditor((prev) => ({
+      open: true,
+      initial: null,
+      sessionId: prev.sessionId + 1,
+    }));
   }
 
   function openEdit(article: Article) {
-    setEditor({
+    setEditor((prev) => ({
       open: true,
       initial: {
         slug: article.slug,
@@ -144,7 +149,8 @@ export function AdminClient({
         body: article.body,
         draft: article.draft,
       },
-    });
+      sessionId: prev.sessionId + 1,
+    }));
   }
 
   function closeEditor() {
@@ -285,6 +291,7 @@ export function AdminClient({
       </section>
 
       <ArticleEditor
+        key={editor.sessionId}
         open={editor.open}
         initial={editor.initial}
         onClose={closeEditor}

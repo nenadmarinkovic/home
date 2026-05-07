@@ -5,7 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import { Markdown } from "tiptap-markdown";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { format, parseISO } from "date-fns";
 import {
   CalendarBlank,
@@ -72,10 +72,13 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
   const router = useRouter();
   const isEditing = initial !== null;
 
-  const [title, setTitle] = useState("");
-  const [subtitle, setSubtitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState(todayIso());
+  // Form state seeds directly from `initial`. The parent gives this component a
+  // fresh `key` per open, so React mounts a new instance whenever the target
+  // article changes — no effect-driven sync needed.
+  const [title, setTitle] = useState(initial?.title ?? "");
+  const [subtitle, setSubtitle] = useState(initial?.subtitle ?? "");
+  const [description, setDescription] = useState(initial?.description ?? "");
+  const [date, setDate] = useState(initial?.date ?? todayIso());
   const [error, setError] = useState<string | null>(null);
   const [pendingMode, setPendingMode] = useState<"draft" | "publish" | null>(
     null,
@@ -99,7 +102,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
         breaks: false,
       }),
     ],
-    content: "",
+    content: initial?.body ?? "",
     editorProps: {
       attributes: {
         class:
@@ -108,25 +111,6 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
       },
     },
   });
-
-  // Sync form + editor with `initial` whenever the dialog opens.
-  useEffect(() => {
-    if (!open) return;
-    if (initial) {
-      setTitle(initial.title);
-      setSubtitle(initial.subtitle);
-      setDescription(initial.description);
-      setDate(initial.date);
-      editor?.commands.setContent(initial.body);
-    } else {
-      setTitle("");
-      setSubtitle("");
-      setDescription("");
-      setDate(todayIso());
-      editor?.commands.setContent("");
-    }
-    setError(null);
-  }, [open, initial, editor]);
 
   async function save(mode: "draft" | "publish") {
     if (!editor) return;
