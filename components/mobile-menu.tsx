@@ -53,7 +53,7 @@ export function MobileMenu() {
   }, [pathname]);
 
   return (
-    <div className="md:hidden">
+    <div className="md:hidden" data-mobile-menu>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
