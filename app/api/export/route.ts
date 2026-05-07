@@ -3,12 +3,24 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 import { Octokit } from "@octokit/rest";
 
-import { buildExportFiles, type ExportFile } from "@/lib/articles-export";
+import {
+  buildExportFiles,
+  markExported,
+  type ExportFile,
+  type ExportSelector,
+} from "@/lib/articles-export";
+import { LANGUAGES, type Language } from "@/db/schema";
 
 function getEnv(key: string): string {
   const value = process.env[key];
   if (!value) throw new Error(`Missing env var: ${key}`);
   return value;
+}
+
+function isLanguage(value: unknown): value is Language {
+  return (
+    typeof value === "string" && (LANGUAGES as readonly string[]).includes(value)
+  );
 }
 
 async function exportLocal(files: ExportFile[]) {
@@ -21,7 +33,7 @@ async function exportLocal(files: ExportFile[]) {
   return { mode: "local" as const, count: files.length };
 }
 
-async function exportToGitHub(files: ExportFile[]) {
+async function exportToGitHub(files: ExportFile[], selector?: ExportSelector) {
   const token = getEnv("GITHUB_TOKEN");
   const repoFull = getEnv("GITHUB_REPO");
   const branch = process.env.GITHUB_BRANCH ?? "main";
@@ -71,10 +83,14 @@ async function exportToGitHub(files: ExportFile[]) {
     })),
   });
 
+  const message = selector
+    ? `Snapshot: ${selector.language}/${selector.slug}`
+    : `Snapshot: ${files.length} article${files.length === 1 ? "" : "s"}`;
+
   const { data: commit } = await octokit.git.createCommit({
     owner,
     repo,
-    message: `Snapshot: ${files.length} article${files.length === 1 ? "" : "s"}`,
+    message,
     tree: tree.sha,
     parents: [baseSha],
   });
@@ -90,20 +106,55 @@ async function exportToGitHub(files: ExportFile[]) {
     mode: "github" as const,
     count: files.length,
     commitUrl: `https://github.com/${owner}/${repo}/commit/${commit.sha}`,
+    commitSha: commit.sha,
   };
 }
 
-export async function POST() {
+async function parseSelector(request: Request): Promise<ExportSelector | undefined> {
+  const ctype = request.headers.get("content-type") ?? "";
+  if (!ctype.includes("application/json")) return undefined;
   try {
-    const files = buildExportFiles();
+    const body = (await request.json()) as {
+      slug?: unknown;
+      language?: unknown;
+    };
+    if (!body || typeof body !== "object") return undefined;
+    if (body.slug === undefined && body.language === undefined) return undefined;
+    if (typeof body.slug !== "string" || !body.slug) {
+      throw new Error("slug must be a non-empty string");
+    }
+    if (!isLanguage(body.language)) {
+      throw new Error("language must be one of: " + LANGUAGES.join(", "));
+    }
+    return { slug: body.slug, language: body.language };
+  } catch (err) {
+    if (err instanceof SyntaxError) return undefined;
+    throw err;
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    const selector = await parseSelector(request);
+    const files = buildExportFiles(selector);
     if (files.length === 0) {
-      return NextResponse.json({ ok: true, count: 0, mode: "noop" });
+      return NextResponse.json({
+        ok: true,
+        count: 0,
+        mode: "noop",
+        scope: selector ? "single" : "all",
+      });
     }
     const result =
       process.env.NODE_ENV === "development"
         ? await exportLocal(files)
-        : await exportToGitHub(files);
-    return NextResponse.json({ ok: true, ...result });
+        : await exportToGitHub(files, selector);
+    markExported(files.map((f) => ({ slug: f.slug, language: f.language })));
+    return NextResponse.json({
+      ok: true,
+      ...result,
+      scope: selector ? "single" : "all",
+    });
   } catch (err: unknown) {
     const message =
       typeof err === "object" && err !== null && "message" in err

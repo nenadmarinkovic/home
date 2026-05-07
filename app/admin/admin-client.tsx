@@ -6,9 +6,11 @@ import {
   Article as ArticleIcon,
   ArrowsDownUp,
   Check,
+  CheckCircle,
   DotsThreeVertical,
   FileText,
   FunnelSimple,
+  GitCommit,
   MagnifyingGlass,
   PencilSimple,
   Trash,
@@ -110,6 +112,7 @@ export function AdminClient({
   }>({ open: false, initial: null });
   const [pendingDelete, setPendingDelete] = useState<Article | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [exportingKey, setExportingKey] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SortKey>("newest");
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -146,6 +149,33 @@ export function AdminClient({
 
   function closeEditor() {
     setEditor((prev) => ({ ...prev, open: false }));
+  }
+
+  async function exportArticle(article: Article) {
+    if (article.draft) return;
+    const key = exportedKey(article);
+    setExportingKey(key);
+    try {
+      const res = await fetch("/api/export", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          slug: article.slug,
+          language: article.language,
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
+      if (!res.ok || !data.ok) {
+        window.alert(data?.error ?? `Export failed (${res.status})`);
+        return;
+      }
+      startTransition(() => router.refresh());
+    } finally {
+      setExportingKey((curr) => (curr === key ? null : curr));
+    }
   }
 
   async function confirmDelete() {
@@ -195,9 +225,22 @@ export function AdminClient({
               <>
                 {" · "}
                 {pendingExportCount === 0 ? (
-                  <span className="not-italic">all in git</span>
+                  <span
+                    className="not-italic inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-500"
+                    title="Every published article is committed to git."
+                  >
+                    <CheckCircle weight="fill" className="size-3.5" />
+                    all in git
+                  </span>
                 ) : (
-                  <span className="not-italic text-[#fd6401]">
+                  <span
+                    className="not-italic inline-flex items-center gap-1 text-[#fd6401]"
+                    title="Articles edited since the last snapshot. Click Export to git to commit."
+                  >
+                    <span
+                      aria-hidden
+                      className="inline-block size-1.5 rounded-full bg-[#fd6401]"
+                    />
                     <span className="tabular-nums">{pendingExportCount}</span>{" "}
                     pending export
                   </span>
@@ -207,7 +250,7 @@ export function AdminClient({
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <ExportButton />
+          <ExportButton pendingCount={pendingExportCount} />
           <LogoutButton />
         </div>
       </header>
@@ -233,7 +276,9 @@ export function AdminClient({
           <ArticleList
             articles={list}
             exportedSet={exportedSet}
+            exportingKey={exportingKey}
             onEdit={openEdit}
+            onExport={exportArticle}
             onDeleteRequest={setPendingDelete}
           />
         )}
@@ -400,19 +445,25 @@ function SortMenu({
 function ArticleList({
   articles,
   exportedSet,
+  exportingKey,
   onEdit,
+  onExport,
   onDeleteRequest,
 }: {
   articles: Article[];
   exportedSet: Set<string>;
+  exportingKey: string | null;
   onEdit: (article: Article) => void;
+  onExport: (article: Article) => void;
   onDeleteRequest: (article: Article) => void;
 }) {
   return (
     <ul className="-mx-3 flex flex-col">
       {articles.map((a) => {
-        const showUnexported =
-          !a.draft && !exportedSet.has(exportedKey(a));
+        const key = exportedKey(a);
+        const isExported = !a.draft && exportedSet.has(key);
+        const showUnexported = !a.draft && !isExported;
+        const isExporting = exportingKey === key;
         return (
         <li
           key={a.slug}
@@ -429,6 +480,7 @@ function ArticleList({
               </p>
               {a.draft && <DraftTag />}
               {showUnexported && <UnexportedTag />}
+              {isExported && <ExportedTag />}
             </div>
             <p className="mt-0.5 truncate font-mono text-xs text-zinc-500 dark:text-zinc-500">
               /writing/{a.slug}
@@ -453,6 +505,17 @@ function ArticleList({
               <DropdownMenuItem onClick={() => onEdit(a)}>
                 <PencilSimple weight="bold" />
                 Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => onExport(a)}
+                disabled={a.draft || isExporting}
+              >
+                <GitCommit weight="bold" />
+                {isExporting
+                  ? "Exporting…"
+                  : isExported
+                    ? "Re-export to Git"
+                    : "Export to Git"}
               </DropdownMenuItem>
               <DropdownMenuItem
                 variant="destructive"
@@ -482,9 +545,25 @@ function UnexportedTag() {
   return (
     <span
       title="Not yet committed to git — click Export to git to snapshot."
-      className="inline-flex shrink-0 items-center rounded-full bg-[#fd6401]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#fd6401]"
+      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#fd6401]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#fd6401]"
     >
+      <span
+        aria-hidden
+        className="inline-block size-1.5 rounded-full bg-[#fd6401]"
+      />
       Pending export
+    </span>
+  );
+}
+
+function ExportedTag() {
+  return (
+    <span
+      title="Committed to git — content matches the latest snapshot."
+      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-500"
+    >
+      <CheckCircle weight="fill" className="size-3" />
+      In git
     </span>
   );
 }

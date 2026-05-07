@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, isNotNull, sql } from "drizzle-orm";
 
 import { db } from "@/db/client";
 import { articles, type Language } from "@/db/schema";
@@ -29,6 +29,7 @@ export function upsertArticle(input: WriteArticleInput) {
       date: input.date,
       createdAt: now,
       updatedAt: now,
+      exportedAt: null,
     })
     .onConflictDoUpdate({
       target: [articles.slug, articles.language],
@@ -40,6 +41,7 @@ export function upsertArticle(input: WriteArticleInput) {
         draft: input.draft,
         date: input.date,
         updatedAt: now,
+        exportedAt: null,
       },
     })
     .returning()
@@ -63,4 +65,27 @@ export function countByLanguage() {
     .from(articles)
     .groupBy(articles.language)
     .all();
+}
+
+/**
+ * Keys "<lang>:<slug>" of published articles that have been exported AND
+ * haven't been edited since. An article is "clean" only when exportedAt is
+ * set and not older than updatedAt.
+ */
+export function getExportedKeys(): string[] {
+  const rows = db
+    .select({
+      slug: articles.slug,
+      language: articles.language,
+    })
+    .from(articles)
+    .where(
+      and(
+        eq(articles.draft, false),
+        isNotNull(articles.exportedAt),
+        sql`${articles.exportedAt} >= ${articles.updatedAt}`,
+      ),
+    )
+    .all();
+  return rows.map((r) => `${r.language}:${r.slug}`);
 }
