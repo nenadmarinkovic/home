@@ -512,15 +512,16 @@ function sourceIcon(source: DokployServiceSource): MetaIcon {
 
 function MetaItem({ item }: { item: MetaEntry }) {
   const icon = renderMetaIcon(item.icon);
-  const inner = (
-    <span className="inline-flex max-w-full items-center gap-1 truncate align-middle">
+  const baseClass =
+    "inline-flex max-w-full items-center gap-1 truncate align-middle";
+  const title = item.title ? `${item.title}: ${item.text}` : item.text;
+  const children = (
+    <>
       <span aria-hidden className="shrink-0 text-foreground/40">
         {icon}
       </span>
-      <span className="truncate" title={item.title ? `${item.title}: ${item.text}` : item.text}>
-        {item.text}
-      </span>
-    </span>
+      <span className="min-w-0 truncate">{item.text}</span>
+    </>
   );
   if (item.href) {
     return (
@@ -528,13 +529,18 @@ function MetaItem({ item }: { item: MetaEntry }) {
         href={item.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="max-w-full truncate underline-offset-2 hover:text-foreground hover:underline"
+        title={title}
+        className={`${baseClass} -my-0.5 py-0.5 underline-offset-2 hover:text-foreground hover:underline`}
       >
-        {inner}
+        {children}
       </a>
     );
   }
-  return inner;
+  return (
+    <span className={baseClass} title={title}>
+      {children}
+    </span>
+  );
 }
 
 function renderMetaIcon(icon: MetaIcon) {
