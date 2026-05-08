@@ -45,7 +45,7 @@ const tools: Tool[] = [
     href: "/admin/log",
     name: "Log",
     tagline: "Ops dashboard for the personal stack.",
-    status: "soon",
+    status: "active",
     Icon: ChartLineUp,
   },
   {

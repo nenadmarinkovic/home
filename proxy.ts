@@ -42,6 +42,7 @@ export const config = {
   matcher: [
     "/admin/:path*",
     "/api/articles/:path*",
+    "/api/dokploy/:path*",
     "/api/export/:path*",
     "/api/logout/:path*",
   ],
