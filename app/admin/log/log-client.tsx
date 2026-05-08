@@ -194,7 +194,7 @@ export function LogClient({
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-6 py-10 font-sans sm:gap-8 sm:py-16">
+    <main className="flex flex-1 flex-col gap-8 py-16 font-sans">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -209,9 +209,9 @@ export function LogClient({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <header className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+      <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-1.5">
-          <h1 className="font-serif text-2xl font-semibold leading-none tracking-tight text-foreground sm:text-3xl">
+          <h1 className="font-serif text-3xl font-semibold leading-none tracking-tight text-foreground">
             Log
           </h1>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
@@ -269,14 +269,13 @@ export function LogClient({
             )}
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2">
           <Button
             type="button"
             variant="outline"
-            size="sm"
             onClick={refresh}
             disabled={!configured || refreshing}
-            className="text-xs uppercase tracking-wider text-zinc-600 dark:text-zinc-400"
+            className="h-9"
           >
             <ArrowsClockwise
               weight="bold"
@@ -295,7 +294,7 @@ export function LogClient({
       ) : groups.length === 0 ? (
         <EmptyAll />
       ) : (
-        <div className="flex flex-col gap-8 sm:gap-10">
+        <div className="flex flex-col gap-10">
           {groups.map((group) => (
             <ProjectSection
               key={group.id}
@@ -630,7 +629,7 @@ function EnvTag({ name }: { name: string }) {
 
 function EmptyAll() {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-4 py-10 text-center sm:px-6 sm:py-14">
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
       <div className="flex size-10 items-center justify-center rounded-full bg-[#fd6401]/10 text-[#fd6401]">
         <Cloud weight="regular" className="size-5" />
       </div>
@@ -656,7 +655,7 @@ function ErrorPanel({
   retrying: boolean;
 }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-destructive/30 px-4 py-10 text-center sm:px-6 sm:py-14">
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-destructive/30 px-6 py-14 text-center">
       <div className="flex size-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
         <WarningCircle weight="regular" className="size-5" />
       </div>
@@ -681,7 +680,7 @@ function ErrorPanel({
 
 function NotConfigured() {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-4 py-10 text-center sm:px-6 sm:py-14">
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
       <div className="flex size-10 items-center justify-center rounded-full bg-foreground/[0.04] text-zinc-500 dark:text-zinc-500">
         <Cloud weight="regular" className="size-5" />
       </div>

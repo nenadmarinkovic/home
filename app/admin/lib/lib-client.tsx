@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
+
+const CARDS_PER_ENTRY = 2;
+const DUE_TOOLTIP =
+  "Each word becomes two flashcards — German→Serbian and Serbian→German. This counts how many of those are scheduled for review.";
 import {
   ArrowRight,
   BookOpen,
@@ -67,8 +71,8 @@ export function LibClient({ initialEntries, initialStats }: Props) {
   const router = useRouter();
   const [, startTransition] = useTransition();
 
-  const [entries] = useState(initialEntries);
-  const [stats] = useState(initialStats);
+  const entries = initialEntries;
+  const stats = initialStats;
   const [search, setSearch] = useState("");
   const [bulkOpen, setBulkOpen] = useState(false);
 
@@ -222,12 +226,15 @@ export function LibClient({ initialEntries, initialStats }: Props) {
               <span className="tabular-nums">{entries.length}</span> entries
             </span>
             <span aria-hidden className="text-foreground/20">·</span>
-            <span>
+            <span title={DUE_TOOLTIP}>
               <span className="tabular-nums">{stats.total}</span> cards
             </span>
             <span aria-hidden className="text-foreground/20">·</span>
-            <span className={stats.due > 0 ? "text-blue-600 dark:text-blue-500" : ""}>
-              <span className="tabular-nums">{stats.due}</span> due
+            <span
+              title={DUE_TOOLTIP}
+              className={stats.due > 0 ? "text-blue-600 dark:text-blue-500" : ""}
+            >
+              <span className="tabular-nums">{stats.due}</span> to review
             </span>
           </p>
         </div>
@@ -366,13 +373,13 @@ function EntryRow({
           {entry.due > 0 && (
             <span
               className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-500/10 px-2 py-0.5 text-[11px] font-medium text-blue-700 dark:text-blue-500"
-              title={`${entry.due} card${entry.due === 1 ? "" : "s"} due`}
+              title={`${entry.due} of ${CARDS_PER_ENTRY} flashcards to review (German→Serbian and Serbian→German).`}
             >
               <span
                 aria-hidden
                 className="inline-block size-1.5 rounded-full bg-blue-600 dark:bg-blue-500"
               />
-              {entry.due} due
+              {entry.due}/{CARDS_PER_ENTRY} cards
             </span>
           )}
         </div>
