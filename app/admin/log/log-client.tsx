@@ -4,19 +4,19 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
   ArrowsClockwise,
-  ArrowsDownUp,
-  Check,
   CheckCircle,
   CircleNotch,
   Cloud,
   Cube,
   Database,
-  FunnelSimple,
+  GitBranch,
+  GlobeHemisphereWest,
   HardDrives,
-  MagnifyingGlass,
+  Lightning,
+  Plug,
   Pulse,
+  Stack,
   WarningCircle,
-  X as XIcon,
 } from "@phosphor-icons/react";
 
 import {
@@ -28,18 +28,12 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 
 import { LogoutButton } from "../writing/logout-button";
 import type {
   DokployService,
   DokployServiceType,
+  DokployServiceSource,
   DokploySnapshot,
   DokployStatus,
 } from "@/lib/dokploy";
@@ -50,30 +44,20 @@ type LogClientProps = {
   initialError: string | null;
 };
 
-type SortKey = "status" | "name-asc" | "name-desc" | "recent" | "project";
-type FilterKey = "all" | DokployStatus;
-
-const SORT_LABELS: Record<SortKey, string> = {
-  status: "Status",
-  recent: "Recently updated",
-  project: "Project",
-  "name-asc": "Name A–Z",
-  "name-desc": "Name Z–A",
+type ProjectGroup = {
+  id: string;
+  name: string;
+  services: DokployService[];
 };
 
-const FILTER_LABELS: Record<FilterKey, string> = {
-  all: "All",
-  done: "Healthy",
-  running: "Deploying",
-  error: "Error",
-  idle: "Idle",
-};
-
-const STATUS_ORDER: Record<DokployStatus, number> = {
-  error: 0,
-  running: 1,
-  done: 2,
-  idle: 3,
+const TYPE_ORDER: Record<DokployServiceType, number> = {
+  application: 0,
+  compose: 1,
+  postgres: 2,
+  mysql: 3,
+  mariadb: 4,
+  mongo: 5,
+  redis: 6,
 };
 
 const TYPE_LABEL: Record<DokployServiceType, string> = {
@@ -86,53 +70,25 @@ const TYPE_LABEL: Record<DokployServiceType, string> = {
   redis: "Redis",
 };
 
-function applyControls(
-  list: DokployService[],
-  search: string,
-  sort: SortKey,
-  filter: FilterKey,
-): DokployService[] {
-  const q = search.trim().toLowerCase();
-  const filtered = list.filter((s) => {
-    if (filter !== "all" && s.status !== filter) return false;
-    if (!q) return true;
-    return (
-      s.name.toLowerCase().includes(q) ||
-      s.projectName.toLowerCase().includes(q) ||
-      (s.hint?.toLowerCase().includes(q) ?? false)
-    );
-  });
-  const sorted = [...filtered];
-  switch (sort) {
-    case "status":
-      sorted.sort((a, b) => {
-        const byStatus = STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
-        if (byStatus !== 0) return byStatus;
-        return a.name.localeCompare(b.name);
-      });
-      break;
-    case "recent":
-      sorted.sort((a, b) => {
-        const aT = a.updatedAt ? Date.parse(a.updatedAt) : 0;
-        const bT = b.updatedAt ? Date.parse(b.updatedAt) : 0;
-        return bT - aT;
-      });
-      break;
-    case "project":
-      sorted.sort(
-        (a, b) =>
-          a.projectName.localeCompare(b.projectName) ||
-          a.name.localeCompare(b.name),
-      );
-      break;
-    case "name-asc":
-      sorted.sort((a, b) => a.name.localeCompare(b.name));
-      break;
-    case "name-desc":
-      sorted.sort((a, b) => b.name.localeCompare(a.name));
-      break;
+function groupByProject(list: DokployService[]): ProjectGroup[] {
+  const map = new Map<string, ProjectGroup>();
+  for (const s of list) {
+    const key = s.projectId || `__${s.projectName}`;
+    let group = map.get(key);
+    if (!group) {
+      group = { id: key, name: s.projectName, services: [] };
+      map.set(key, group);
+    }
+    group.services.push(s);
   }
-  return sorted;
+  for (const group of map.values()) {
+    group.services.sort((a, b) => {
+      const byType = TYPE_ORDER[a.type] - TYPE_ORDER[b.type];
+      if (byType !== 0) return byType;
+      return a.name.localeCompare(b.name);
+    });
+  }
+  return Array.from(map.values());
 }
 
 function relativeTime(iso: string | null): string {
@@ -164,14 +120,9 @@ export function LogClient({
   );
   const [error, setError] = useState<string | null>(initialError);
   const [refreshing, setRefreshing] = useState(false);
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<SortKey>("status");
-  const [filter, setFilter] = useState<FilterKey>("all");
 
-  const services = useMemo(
-    () => snapshot?.services ?? [],
-    [snapshot],
-  );
+  const services = useMemo(() => snapshot?.services ?? [], [snapshot]);
+  const groups = useMemo(() => groupByProject(services), [services]);
   const totals = useMemo(() => {
     const acc: Record<DokployStatus, number> = {
       done: 0,
@@ -182,12 +133,6 @@ export function LogClient({
     for (const s of services) acc[s.status] += 1;
     return acc;
   }, [services]);
-
-  const list = useMemo(
-    () => applyControls(services, search, sort, filter),
-    [services, search, sort, filter],
-  );
-  const isFiltering = search.trim().length > 0 || filter !== "all";
 
   async function refresh() {
     if (!configured) return;
@@ -240,50 +185,50 @@ export function LogClient({
               {services.length === 1 ? "" : "s"}
             </span>
             <Bullet />
-            <Stat
-              label="healthy"
-              count={totals.done}
-              tone="emerald"
-              icon={<CheckCircle weight="fill" className="size-3.5" />}
-            />
-            {totals.running > 0 && (
-              <>
-                <Bullet />
-                <Stat
-                  label="deploying"
-                  count={totals.running}
-                  tone="blue"
-                  icon={
-                    <CircleNotch
-                      weight="bold"
-                      className="size-3.5 animate-spin"
-                    />
-                  }
-                />
-              </>
-            )}
+            <span>
+              <span className="tabular-nums">{groups.length}</span> project
+              {groups.length === 1 ? "" : "s"}
+            </span>
             {totals.error > 0 && (
               <>
                 <Bullet />
-                <Stat
-                  label="error"
-                  count={totals.error}
-                  tone="red"
-                  icon={<WarningCircle weight="fill" className="size-3.5" />}
-                />
+                <span className="inline-flex items-center gap-1 text-destructive">
+                  <WarningCircle weight="fill" className="size-3.5" />
+                  <span className="tabular-nums">{totals.error}</span> error
+                  {totals.error === 1 ? "" : "s"}
+                </span>
               </>
             )}
-            {totals.idle > 0 && (
+            {totals.running > 0 && (
               <>
                 <Bullet />
-                <Stat label="idle" count={totals.idle} tone="muted" />
+                <span className="inline-flex items-center gap-1 text-blue-700 dark:text-blue-500">
+                  <CircleNotch
+                    weight="bold"
+                    className="size-3.5 animate-spin"
+                  />
+                  <span className="tabular-nums">{totals.running}</span>{" "}
+                  deploying
+                </span>
+              </>
+            )}
+            {totals.done > 0 && totals.error === 0 && totals.running === 0 && (
+              <>
+                <Bullet />
+                <span
+                  className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-500"
+                  title="All services healthy."
+                >
+                  <CheckCircle weight="fill" className="size-3.5" />
+                  All healthy
+                </span>
               </>
             )}
             {snapshot && (
               <>
                 <Bullet />
                 <span title={new Date(snapshot.fetchedAt).toLocaleString()}>
-                  {relativeTime(snapshot.fetchedAt)}
+                  updated {relativeTime(snapshot.fetchedAt)}
                 </span>
               </>
             )}
@@ -312,29 +257,14 @@ export function LogClient({
         <NotConfigured />
       ) : error ? (
         <ErrorPanel error={error} onRetry={refresh} retrying={refreshing} />
+      ) : groups.length === 0 ? (
+        <EmptyAll />
       ) : (
-        <section className="flex flex-col gap-5">
-          <div className="flex items-center gap-2">
-            <SearchField search={search} onSearchChange={setSearch} />
-            <FilterMenu filter={filter} onFilterChange={setFilter} />
-            <SortMenu sort={sort} onSortChange={setSort} />
-          </div>
-
-          {list.length === 0 ? (
-            isFiltering ? (
-              <NoResults
-                onClear={() => {
-                  setSearch("");
-                  setFilter("all");
-                }}
-              />
-            ) : (
-              <EmptyAll />
-            )
-          ) : (
-            <ServiceList services={list} />
-          )}
-        </section>
+        <div className="flex flex-col gap-10">
+          {groups.map((group) => (
+            <ProjectSection key={group.id} group={group} />
+          ))}
+        </div>
       )}
     </main>
   );
@@ -348,84 +278,200 @@ function Bullet() {
   );
 }
 
-function Stat({
-  label,
-  count,
-  tone,
-  icon,
-}: {
-  label: string;
-  count: number;
-  tone: "emerald" | "blue" | "red" | "muted";
-  icon?: React.ReactNode;
-}) {
-  const className =
-    tone === "emerald"
-      ? "inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-500"
-      : tone === "blue"
-        ? "inline-flex items-center gap-1 text-blue-700 dark:text-blue-500"
-        : tone === "red"
-          ? "inline-flex items-center gap-1 text-destructive"
-          : "inline-flex items-center gap-1";
+function ProjectSection({ group }: { group: ProjectGroup }) {
   return (
-    <span className={className}>
-      {icon}
-      <span className="tabular-nums">{count}</span> {label}
-    </span>
+    <section className="flex flex-col gap-3">
+      <div className="flex items-baseline justify-between gap-3">
+        <h2 className="font-serif text-xl font-semibold leading-none tracking-tight text-foreground">
+          {group.name}
+        </h2>
+        <span className="font-sans text-[11px] font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
+          {group.services.length} service
+          {group.services.length === 1 ? "" : "s"}
+        </span>
+      </div>
+      <ul className="flex flex-col divide-y divide-foreground/5">
+        {group.services.map((s) => (
+          <ServiceRow key={`${s.projectId}:${s.id}:${s.type}`} service={s} />
+        ))}
+      </ul>
+    </section>
   );
 }
 
-function ServiceList({ services }: { services: DokployService[] }) {
+function ServiceRow({ service: s }: { service: DokployService }) {
+  const meta = buildMeta(s);
   return (
-    <ul className="flex flex-col divide-y divide-foreground/5">
-      {services.map((s) => (
-        <li
-          key={`${s.projectId}:${s.id}`}
-          className="group/row flex items-center gap-4 py-3.5"
-        >
-          <ServiceIcon type={s.type} />
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <p className="truncate font-serif text-base font-semibold leading-tight text-foreground">
-                {s.name}
-              </p>
-              <StatusTag status={s.status} />
-              <TypeTag type={s.type} />
-            </div>
-            <p className="mt-1 truncate font-sans text-xs text-zinc-500 dark:text-zinc-500">
-              {s.projectName}
-              {s.hint ? <span className="text-foreground/30"> · {s.hint}</span> : null}
-            </p>
+    <li className="group/row flex items-start gap-4 py-3.5">
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="truncate font-serif text-base font-semibold leading-tight text-foreground">
+            {s.name}
+          </p>
+          <StatusTag status={s.status} />
+          <TypeTag type={s.type} />
+          {s.environment ? <EnvTag name={s.environment} /> : null}
+        </div>
+        {meta.length > 0 ? (
+          <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 font-sans text-xs text-zinc-500 dark:text-zinc-500">
+            {meta.map((m, i) => (
+              <MetaItem key={i} item={m} />
+            ))}
           </div>
-          <span
-            className="shrink-0 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500"
-            title={s.updatedAt ? new Date(s.updatedAt).toLocaleString() : undefined}
+        ) : null}
+        {s.lastDeploy?.title ? (
+          <p
+            className="mt-1.5 truncate font-sans text-xs italic text-zinc-500/80 dark:text-zinc-500/80"
+            title={s.lastDeploy.description ?? undefined}
           >
-            {relativeTime(s.updatedAt)}
-          </span>
-        </li>
-      ))}
-    </ul>
+            <span className="not-italic text-foreground/40">↳</span>{" "}
+            {s.lastDeploy.title}
+          </p>
+        ) : null}
+      </div>
+      <span
+        className="shrink-0 self-start pt-0.5 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500"
+        title={s.updatedAt ? new Date(s.updatedAt).toLocaleString() : undefined}
+      >
+        {relativeTime(s.updatedAt)}
+      </span>
+    </li>
   );
 }
 
-function ServiceIcon({ type }: { type: DokployServiceType }) {
-  const Icon =
-    type === "application"
-      ? Cloud
-      : type === "compose"
-        ? HardDrives
-        : type === "redis"
-          ? Cube
-          : Database;
-  return (
-    <span
-      aria-hidden
-      className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground/[0.04] text-zinc-700 dark:text-zinc-300"
-    >
-      <Icon weight="regular" className="size-4" />
+type MetaIcon =
+  | "source"
+  | "domain"
+  | "image"
+  | "build"
+  | "port"
+  | "replicas"
+  | "volume"
+  | "container";
+
+type MetaEntry = {
+  icon: MetaIcon;
+  text: string;
+  href?: string;
+  title?: string;
+};
+
+function buildMeta(s: DokployService): MetaEntry[] {
+  const out: MetaEntry[] = [];
+
+  if (s.source) {
+    out.push({
+      icon: sourceIcon(s.source),
+      text: s.source.label,
+      href: s.source.url ?? undefined,
+      title: s.source.kind ?? undefined,
+    });
+  }
+
+  if (s.image) {
+    out.push({ icon: "image", text: s.image, title: "Image" });
+  }
+
+  if (s.buildType) {
+    out.push({ icon: "build", text: s.buildType, title: "Build" });
+  }
+
+  for (const d of s.domains) {
+    const proto = d.https ? "https" : "http";
+    const url = `${proto}://${d.host}${d.path && d.path !== "/" ? d.path : ""}`;
+    const text = d.port && d.port !== (d.https ? 443 : 80) ? `${d.host}:${d.port}` : d.host;
+    out.push({ icon: "domain", text, href: url, title: "Domain" });
+  }
+
+  if (s.database) {
+    const parts: string[] = [];
+    if (s.database.user) parts.push(s.database.user);
+    if (s.database.name) parts.push(`@${s.database.name}`);
+    if (s.database.externalPort) parts.push(`:${s.database.externalPort}`);
+    if (parts.length > 0) {
+      out.push({ icon: "port", text: parts.join(""), title: "Database" });
+    } else if (s.database.externalPort) {
+      out.push({
+        icon: "port",
+        text: `:${s.database.externalPort}`,
+        title: "Port",
+      });
+    }
+  } else if (s.port) {
+    out.push({ icon: "port", text: `:${s.port}`, title: "Port" });
+  }
+
+  if (s.replicas !== null && s.replicas > 0) {
+    out.push({
+      icon: "replicas",
+      text: `${s.replicas} ${s.replicas === 1 ? "replica" : "replicas"}`,
+      title: "Replicas",
+    });
+  }
+
+  for (const v of s.volumes) {
+    out.push({ icon: "volume", text: v, title: "Volume" });
+  }
+
+  if (s.appName) {
+    out.push({ icon: "container", text: s.appName, title: "Container" });
+  }
+
+  return out;
+}
+
+function sourceIcon(source: DokployServiceSource): MetaIcon {
+  if (source.kind === "docker") return "image";
+  if (source.kind === "raw") return "build";
+  return "source";
+}
+
+function MetaItem({ item }: { item: MetaEntry }) {
+  const icon = renderMetaIcon(item.icon);
+  const inner = (
+    <span className="inline-flex max-w-full items-center gap-1 truncate align-middle">
+      <span aria-hidden className="shrink-0 text-foreground/40">
+        {icon}
+      </span>
+      <span className="truncate" title={item.title ? `${item.title}: ${item.text}` : item.text}>
+        {item.text}
+      </span>
     </span>
   );
+  if (item.href) {
+    return (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="max-w-full truncate underline-offset-2 hover:text-foreground hover:underline"
+      >
+        {inner}
+      </a>
+    );
+  }
+  return inner;
+}
+
+function renderMetaIcon(icon: MetaIcon) {
+  switch (icon) {
+    case "source":
+      return <GitBranch weight="bold" className="size-3.5" />;
+    case "domain":
+      return <GlobeHemisphereWest weight="bold" className="size-3.5" />;
+    case "image":
+      return <Cube weight="bold" className="size-3.5" />;
+    case "build":
+      return <Lightning weight="bold" className="size-3.5" />;
+    case "port":
+      return <Plug weight="bold" className="size-3.5" />;
+    case "replicas":
+      return <Stack weight="bold" className="size-3.5" />;
+    case "volume":
+      return <Database weight="bold" className="size-3.5" />;
+    case "container":
+      return <HardDrives weight="bold" className="size-3.5" />;
+  }
 }
 
 function StatusTag({ status }: { status: DokployStatus }) {
@@ -481,114 +527,14 @@ function TypeTag({ type }: { type: DokployServiceType }) {
   );
 }
 
-function SearchField({
-  search,
-  onSearchChange,
-}: {
-  search: string;
-  onSearchChange: (value: string) => void;
-}) {
+function EnvTag({ name }: { name: string }) {
   return (
-    <div className="relative flex-1">
-      <MagnifyingGlass
-        weight="regular"
-        className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-500"
-      />
-      <Input
-        type="search"
-        value={search}
-        onChange={(e) => onSearchChange(e.target.value)}
-        placeholder="Search services…"
-        aria-label="Search services by name or project"
-        className="h-9 pl-9 pr-9 text-sm"
-      />
-      {search && (
-        <button
-          type="button"
-          onClick={() => onSearchChange("")}
-          aria-label="Clear search"
-          className="absolute right-2 top-1/2 flex size-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded text-zinc-500 transition-colors hover:bg-foreground/5 hover:text-foreground"
-        >
-          <XIcon weight="bold" className="size-3" />
-        </button>
-      )}
-    </div>
-  );
-}
-
-function FilterMenu({
-  filter,
-  onFilterChange,
-}: {
-  filter: FilterKey;
-  onFilterChange: (filter: FilterKey) => void;
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          aria-label={`Show: ${FILTER_LABELS[filter]}`}
-          className="h-9 shrink-0 gap-1.5"
-        >
-          <FunnelSimple weight="bold" />
-          <span className="hidden sm:inline">{FILTER_LABELS[filter]}</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[10rem]">
-        {(Object.keys(FILTER_LABELS) as FilterKey[]).map((key) => (
-          <DropdownMenuItem
-            key={key}
-            onClick={() => onFilterChange(key)}
-            className="justify-between"
-          >
-            <span>{FILTER_LABELS[key]}</span>
-            {filter === key && (
-              <Check weight="bold" className="size-3.5 text-[#fd6401]" />
-            )}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-function SortMenu({
-  sort,
-  onSortChange,
-}: {
-  sort: SortKey;
-  onSortChange: (sort: SortKey) => void;
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          aria-label={`Sort: ${SORT_LABELS[sort]}`}
-          className="h-9 shrink-0 gap-1.5"
-        >
-          <ArrowsDownUp weight="bold" />
-          <span className="hidden sm:inline">{SORT_LABELS[sort]}</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[10rem]">
-        {(Object.keys(SORT_LABELS) as SortKey[]).map((key) => (
-          <DropdownMenuItem
-            key={key}
-            onClick={() => onSortChange(key)}
-            className="justify-between"
-          >
-            <span>{SORT_LABELS[key]}</span>
-            {sort === key && (
-              <Check weight="bold" className="size-3.5 text-[#fd6401]" />
-            )}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <span
+      title={`Environment: ${name}`}
+      className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300"
+    >
+      {name}
+    </span>
   );
 }
 
@@ -606,25 +552,6 @@ function EmptyAll() {
           Dokploy is reachable, but no projects came back.
         </p>
       </div>
-    </div>
-  );
-}
-
-function NoResults({ onClear }: { onClear: () => void }) {
-  return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/[0.04] text-zinc-500 dark:text-zinc-500">
-        <MagnifyingGlass weight="regular" className="size-5" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <p className="text-sm font-medium text-foreground">No matches</p>
-        <p className="text-sm text-zinc-500 dark:text-zinc-500">
-          Nothing here fits your search or filter.
-        </p>
-      </div>
-      <Button onClick={onClear} variant="outline" className="mt-2">
-        Reset filters
-      </Button>
     </div>
   );
 }
@@ -681,4 +608,3 @@ function NotConfigured() {
     </div>
   );
 }
-

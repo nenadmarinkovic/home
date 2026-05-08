@@ -54,7 +54,7 @@
 
 :root {
   --unit-lg: 1.125rem;
-  --background: #f7f3f3;
+  --background: #f5f4f0;
   --foreground: #151515;
   --card: #fbf9f7;
   --card-foreground: oklch(0.145 0 0);
