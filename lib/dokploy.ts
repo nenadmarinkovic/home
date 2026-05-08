@@ -328,7 +328,9 @@ function pickSource(detail: RawDetail, type: DokployServiceType): DokployService
         return {
           kind: "github",
           label: `${owner}/${repo}@${branch}`,
-          url: `https://github.com/${owner}/${repo}/tree/${branch}`,
+          // Repo root is always valid (handles private repos, deleted/renamed
+          // branches, and lets iOS Universal Links hand off to the GitHub app).
+          url: `https://github.com/${owner}/${repo}`,
         };
       }
     }
