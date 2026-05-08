@@ -38,7 +38,7 @@ const tools: Tool[] = [
     href: "/admin/lib",
     name: "Lib",
     tagline: "German, learned with a quiet AI.",
-    status: "soon",
+    status: "active",
     Icon: Translate,
   },
   {
