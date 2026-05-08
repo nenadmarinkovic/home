@@ -1,6 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import Script from "next/script";
 import { Providers } from "./providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -25,6 +24,13 @@ const sourceSerif = localFont({
     },
   ],
 });
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f3f3" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c1115" },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -62,7 +68,6 @@ export default async function RootLayout({
       className={`${sourceSerif.variable} antialiased`}
     >
       <body>
-        <Script src="/theme-color-init.js" strategy="beforeInteractive" />
         <Providers authed={authed}>
           <ThemeColorSync />
           <div className="flex min-h-screen flex-col">
