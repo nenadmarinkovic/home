@@ -65,6 +65,7 @@ export type DokployService = {
   projectName: string;
   /** Default environment hidden; non-default surfaced as "production" etc. */
   environment: string | null;
+  environmentId: string | null;
   /** Internal docker container name, e.g. "home-nextjs-hv2sew". */
   appName: string | null;
   /** railpack / dockerfile / nixpacks / heroku-buildpacks / static (apps only). */
@@ -85,6 +86,8 @@ export type DokployService = {
 export type DokploySnapshot = {
   services: DokployService[];
   fetchedAt: string;
+  /** Dokploy instance base URL, used to build per-service deep links. */
+  dokployUrl: string;
 };
 
 export type DokployResult =
@@ -99,6 +102,7 @@ type SlimService = {
   projectId: string;
   projectName: string;
   environment: string | null;
+  environmentId: string | null;
 };
 
 const STATUS_VALUES: ReadonlySet<DokployStatus> = new Set([
@@ -170,6 +174,7 @@ function flattenProjects(projects: RawProject[]): SlimService[] {
         env.isDefault === false && typeof env.name === "string" && env.name.length > 0
           ? env.name
           : null;
+      const environmentId = env.environmentId ?? null;
 
       for (const app of env.applications ?? []) {
         out.push({
@@ -180,6 +185,7 @@ function flattenProjects(projects: RawProject[]): SlimService[] {
           projectId,
           projectName,
           environment: envName,
+          environmentId,
         });
       }
       for (const compose of env.compose ?? []) {
@@ -191,6 +197,7 @@ function flattenProjects(projects: RawProject[]): SlimService[] {
           projectId,
           projectName,
           environment: envName,
+          environmentId,
         });
       }
       const databases: Array<[
@@ -215,6 +222,7 @@ function flattenProjects(projects: RawProject[]): SlimService[] {
             projectId,
             projectName,
             environment: envName,
+            environmentId,
           });
         }
       }
@@ -420,6 +428,7 @@ function enrich(slim: SlimService, detail: RawDetail | null): DokployService {
     projectId: slim.projectId,
     projectName: slim.projectName,
     environment: slim.environment,
+    environmentId: slim.environmentId,
     appName: null,
     buildType: null,
     replicas: null,
@@ -534,6 +543,10 @@ export async function fetchDokploySnapshot(): Promise<DokployResult> {
 
   return {
     ok: true,
-    snapshot: { services, fetchedAt: new Date().toISOString() },
+    snapshot: {
+      services,
+      fetchedAt: new Date().toISOString(),
+      dokployUrl: config.url,
+    },
   };
 }

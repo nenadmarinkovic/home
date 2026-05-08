@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
   ArrowsClockwise,
+  ArrowSquareOut,
   CheckCircle,
   CircleNotch,
   Cloud,
@@ -48,6 +49,8 @@ type ProjectGroup = {
   id: string;
   name: string;
   services: DokployService[];
+  /** Default environment id, used to build the project-level deep link. */
+  environmentId: string | null;
 };
 
 const TYPE_ORDER: Record<DokployServiceType, number> = {
@@ -76,10 +79,18 @@ function groupByProject(list: DokployService[]): ProjectGroup[] {
     const key = s.projectId || `__${s.projectName}`;
     let group = map.get(key);
     if (!group) {
-      group = { id: key, name: s.projectName, services: [] };
+      group = {
+        id: key,
+        name: s.projectName,
+        services: [],
+        environmentId: s.environmentId,
+      };
       map.set(key, group);
     }
     group.services.push(s);
+    if (!group.environmentId && s.environmentId) {
+      group.environmentId = s.environmentId;
+    }
   }
   for (const group of map.values()) {
     group.services.sort((a, b) => {
@@ -89,6 +100,18 @@ function groupByProject(list: DokployService[]): ProjectGroup[] {
     });
   }
   return Array.from(map.values());
+}
+
+function dokployProjectUrl(
+  base: string | null,
+  projectId: string,
+  environmentId: string | null,
+): string | null {
+  if (!base || !projectId) return null;
+  if (environmentId) {
+    return `${base}/dashboard/project/${projectId}/environment/${environmentId}`;
+  }
+  return `${base}/dashboard/project/${projectId}`;
 }
 
 function relativeTime(iso: string | null): string {
@@ -123,6 +146,7 @@ export function LogClient({
 
   const services = useMemo(() => snapshot?.services ?? [], [snapshot]);
   const groups = useMemo(() => groupByProject(services), [services]);
+  const dokployUrl = snapshot?.dokployUrl ?? null;
   const totals = useMemo(() => {
     const acc: Record<DokployStatus, number> = {
       done: 0,
@@ -143,13 +167,24 @@ export function LogClient({
         ok?: boolean;
         services?: DokployService[];
         fetchedAt?: string;
+        dokployUrl?: string;
         error?: string;
       };
-      if (!res.ok || !data.ok || !data.services || !data.fetchedAt) {
+      if (
+        !res.ok ||
+        !data.ok ||
+        !data.services ||
+        !data.fetchedAt ||
+        !data.dokployUrl
+      ) {
         setError(data.error ?? `Refresh failed (${res.status})`);
         return;
       }
-      setSnapshot({ services: data.services, fetchedAt: data.fetchedAt });
+      setSnapshot({
+        services: data.services,
+        fetchedAt: data.fetchedAt,
+        dokployUrl: data.dokployUrl,
+      });
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Refresh failed");
@@ -262,7 +297,11 @@ export function LogClient({
       ) : (
         <div className="flex flex-col gap-10">
           {groups.map((group) => (
-            <ProjectSection key={group.id} group={group} />
+            <ProjectSection
+              key={group.id}
+              group={group}
+              dokployUrl={dokployUrl}
+            />
           ))}
         </div>
       )}
@@ -278,17 +317,38 @@ function Bullet() {
   );
 }
 
-function ProjectSection({ group }: { group: ProjectGroup }) {
+function ProjectSection({
+  group,
+  dokployUrl,
+}: {
+  group: ProjectGroup;
+  dokployUrl: string | null;
+}) {
+  const projectUrl = dokployProjectUrl(
+    dokployUrl,
+    group.services[0]?.projectId ?? group.id,
+    group.environmentId,
+  );
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="font-serif text-xl font-semibold leading-none tracking-tight text-foreground">
           {group.name}
         </h2>
-        <span className="font-sans text-[11px] font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
-          {group.services.length} service
-          {group.services.length === 1 ? "" : "s"}
-        </span>
+        <div className="flex items-center gap-4">
+          <span className="font-sans text-[11px] font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
+            {group.services.length} service
+            {group.services.length === 1 ? "" : "s"}
+          </span>
+          {projectUrl ? (
+            <OpenInDokployLink
+              href={projectUrl}
+              label={`Open ${group.name} in Dokploy`}
+            >
+              Open in Dokploy
+            </OpenInDokployLink>
+          ) : null}
+        </div>
       </div>
       <ul className="flex flex-col divide-y divide-foreground/5">
         {group.services.map((s) => (
@@ -299,10 +359,33 @@ function ProjectSection({ group }: { group: ProjectGroup }) {
   );
 }
 
+function OpenInDokployLink({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-foreground/10 bg-foreground/[0.02] px-2.5 py-1 font-sans text-[11px] font-medium uppercase tracking-wider text-zinc-600 transition-colors hover:border-foreground/20 hover:bg-foreground/[0.06] hover:text-foreground dark:text-zinc-400"
+    >
+      {children}
+      <ArrowSquareOut weight="bold" className="size-3" />
+    </a>
+  );
+}
+
 function ServiceRow({ service: s }: { service: DokployService }) {
   const meta = buildMeta(s);
   return (
-    <li className="group/row flex items-start gap-4 py-3.5">
+    <li className="flex items-start gap-4 py-3.5">
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <p className="truncate font-serif text-base font-semibold leading-tight text-foreground">
