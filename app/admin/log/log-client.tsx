@@ -194,7 +194,7 @@ export function LogClient({
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-8 py-16 font-sans">
+    <main className="flex flex-1 flex-col gap-6 py-10 font-sans sm:gap-8 sm:py-16">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -209,9 +209,9 @@ export function LogClient({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div className="flex flex-col gap-1.5">
-          <h1 className="font-serif text-3xl font-semibold leading-none tracking-tight text-foreground">
+      <header className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+        <div className="flex min-w-0 flex-col gap-1.5">
+          <h1 className="font-serif text-2xl font-semibold leading-none tracking-tight text-foreground sm:text-3xl">
             Log
           </h1>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
@@ -269,7 +269,7 @@ export function LogClient({
             )}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2 self-start sm:self-auto">
           <Button
             type="button"
             variant="outline"
@@ -295,7 +295,7 @@ export function LogClient({
       ) : groups.length === 0 ? (
         <EmptyAll />
       ) : (
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-8 sm:gap-10">
           {groups.map((group) => (
             <ProjectSection
               key={group.id}
@@ -331,11 +331,11 @@ function ProjectSection({
   );
   return (
     <section className="flex flex-col gap-3">
-      <div className="flex items-baseline justify-between gap-3">
-        <h2 className="font-serif text-xl font-semibold leading-none tracking-tight text-foreground">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+        <h2 className="min-w-0 max-w-full truncate font-serif text-lg font-semibold leading-tight tracking-tight text-foreground sm:text-xl sm:leading-none">
           {group.name}
         </h2>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <span className="font-sans text-[11px] font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
             {group.services.length} service
             {group.services.length === 1 ? "" : "s"}
@@ -345,7 +345,8 @@ function ProjectSection({
               href={projectUrl}
               label={`Open ${group.name} in Dokploy`}
             >
-              Open in Dokploy
+              <span className="hidden sm:inline">Open in Dokploy</span>
+              <span className="sm:hidden">Open</span>
             </OpenInDokployLink>
           ) : null}
         </div>
@@ -385,10 +386,10 @@ function OpenInDokployLink({
 function ServiceRow({ service: s }: { service: DokployService }) {
   const meta = buildMeta(s);
   return (
-    <li className="flex items-start gap-4 py-3.5">
+    <li className="flex items-start gap-3 py-3.5 sm:gap-4">
       <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <p className="truncate font-serif text-base font-semibold leading-tight text-foreground">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+          <p className="min-w-0 max-w-full truncate font-serif text-base font-semibold leading-tight text-foreground">
             {s.name}
           </p>
           <StatusTag status={s.status} />
@@ -413,7 +414,7 @@ function ServiceRow({ service: s }: { service: DokployService }) {
         ) : null}
       </div>
       <span
-        className="shrink-0 self-start pt-0.5 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500"
+        className="shrink-0 self-start pt-0.5 font-sans text-[11px] font-medium uppercase tracking-wider tabular-nums text-zinc-500 sm:text-xs dark:text-zinc-500"
         title={s.updatedAt ? new Date(s.updatedAt).toLocaleString() : undefined}
       >
         {relativeTime(s.updatedAt)}
@@ -623,7 +624,7 @@ function EnvTag({ name }: { name: string }) {
 
 function EmptyAll() {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-4 py-10 text-center sm:px-6 sm:py-14">
       <div className="flex size-10 items-center justify-center rounded-full bg-[#fd6401]/10 text-[#fd6401]">
         <Cloud weight="regular" className="size-5" />
       </div>
@@ -649,7 +650,7 @@ function ErrorPanel({
   retrying: boolean;
 }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-destructive/30 px-6 py-14 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-destructive/30 px-4 py-10 text-center sm:px-6 sm:py-14">
       <div className="flex size-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
         <WarningCircle weight="regular" className="size-5" />
       </div>
@@ -674,7 +675,7 @@ function ErrorPanel({
 
 function NotConfigured() {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-4 py-10 text-center sm:px-6 sm:py-14">
       <div className="flex size-10 items-center justify-center rounded-full bg-foreground/[0.04] text-zinc-500 dark:text-zinc-500">
         <Cloud weight="regular" className="size-5" />
       </div>
