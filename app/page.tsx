@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 import { AdminActions } from "@/components/admin-actions";
 
@@ -45,9 +46,13 @@ export default async function Home() {
           </p>
           <Link
             href="/writing"
-            className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 transition-opacity hover:opacity-70 dark:text-zinc-400"
+            className="group inline-flex items-center gap-1.5 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 transition-opacity hover:opacity-70 dark:text-zinc-400"
           >
-            All writing →
+            All writing
+            <ArrowRight
+              weight="bold"
+              className="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
+            />
           </Link>
         </div>
         <ul className="divide-y divide-foreground/10">
@@ -60,7 +65,7 @@ export default async function Home() {
                 href={`/writing/${a.slug}`}
                 className="group flex flex-1 flex-col gap-2"
               >
-                <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+                <p className="font-sans text-xs font-medium uppercase tracking-wider text-[#fd6401]">
                   {a.dateLabel}
                 </p>
                 <h2 className="font-serif text-2xl font-semibold leading-tight tracking-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">

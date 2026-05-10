@@ -142,8 +142,11 @@ export function ReviewClient({ initialCard, initialStats }: Props) {
           </p>
         </div>
         <Button asChild variant="outline" className="h-9">
-          <Link href="/admin/lib">
-            <ArrowLeft weight="bold" />
+          <Link href="/admin/lib" className="group">
+            <ArrowLeft
+              weight="bold"
+              className="transition-transform duration-200 group-hover:-translate-x-0.5"
+            />
             Back to lib
           </Link>
         </Button>

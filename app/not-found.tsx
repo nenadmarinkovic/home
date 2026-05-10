@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 
 export default function NotFound() {
   return (
@@ -17,9 +18,13 @@ export default function NotFound() {
       <p className="self-center font-sans text-sm font-medium uppercase tracking-wider">
         <Link
           href="/"
-          className="text-zinc-600 transition-opacity hover:opacity-70 dark:text-zinc-400"
+          className="group inline-flex items-center gap-1.5 text-zinc-600 transition-opacity hover:opacity-70 dark:text-zinc-400"
         >
-          ← Home
+          <ArrowLeft
+            weight="bold"
+            className="size-3.5 transition-transform duration-200 group-hover:-translate-x-0.5"
+          />
+          Home
         </Link>
       </p>
     </main>

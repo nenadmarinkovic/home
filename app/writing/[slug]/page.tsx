@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 import { AdminActions } from "@/components/admin-actions";
 import { renderMarkdown } from "@/lib/markdown";
@@ -77,7 +78,7 @@ export default async function ArticlePage({
       />
       <div className="relative w-full max-w-prose self-center">
         <hgroup className="space-y-3 text-center">
-          <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+          <p className="font-sans text-xs font-medium uppercase tracking-wider text-[#fd6401]">
             {article.dateLabel}
           </p>
           <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
@@ -106,8 +107,12 @@ export default async function ArticlePage({
                 href={`/writing/${prev.slug}`}
                 className="group flex flex-col gap-1"
               >
-                <span className="text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-                  ← Older
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+                  <ArrowLeft
+                    weight="bold"
+                    className="size-3 transition-transform duration-200 group-hover:-translate-x-0.5"
+                  />
+                  Older
                 </span>
                 <span className="font-serif text-base font-semibold leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
                   {prev.title}
@@ -121,8 +126,12 @@ export default async function ArticlePage({
                 href={`/writing/${next.slug}`}
                 className="group flex flex-col items-end gap-1"
               >
-                <span className="text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-                  Newer →
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+                  Newer
+                  <ArrowRight
+                    weight="bold"
+                    className="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
+                  />
                 </span>
                 <span className="font-serif text-base font-semibold leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
                   {next.title}

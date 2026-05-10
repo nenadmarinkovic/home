@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 
 import { LoginForm } from "./login-form";
 
@@ -26,9 +27,13 @@ export default function LoginPage() {
       <LoginForm />
       <Link
         href="/"
-        className="self-center font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 transition-colors hover:text-foreground dark:text-zinc-500"
+        className="group inline-flex items-center gap-1.5 self-center font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 transition-colors hover:text-foreground dark:text-zinc-500"
       >
-        ← Back to the site
+        <ArrowLeft
+          weight="bold"
+          className="size-3 transition-transform duration-200 group-hover:-translate-x-0.5"
+        />
+        Back to the site
       </Link>
     </main>
   );

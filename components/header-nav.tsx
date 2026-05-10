@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ArrowLeft } from "@phosphor-icons/react";
 
 import {
   baseNavItems,
@@ -19,8 +20,15 @@ export function HeaderNav() {
   if (isArticle) {
     return (
       <nav className="hidden font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:block dark:text-zinc-400">
-        <Link href="/writing" className="block py-0.5 hover:text-foreground">
-          ← Writing
+        <Link
+          href="/writing"
+          className="group inline-flex items-center gap-1.5 py-0.5 hover:text-foreground"
+        >
+          <ArrowLeft
+            weight="bold"
+            className="size-3 transition-transform duration-200 group-hover:-translate-x-0.5"
+          />
+          Writing
         </Link>
       </nav>
     );

@@ -240,10 +240,13 @@ export function LibClient({ initialEntries, initialStats }: Props) {
         </div>
         <div className="flex items-center gap-2">
           <Button asChild variant="outline" className="h-9">
-            <Link href="/admin/lib/review">
+            <Link href="/admin/lib/review" className="group">
               <BookOpen weight="bold" />
               Review
-              <ArrowRight weight="bold" className="size-3.5" />
+              <ArrowRight
+                weight="bold"
+                className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
+              />
             </Link>
           </Button>
           <LogoutButton />
