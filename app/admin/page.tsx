@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   ArrowUpRight,
   ChartLineUp,
+  LinkSimple,
   PencilSimple,
   Translate,
 } from "@phosphor-icons/react/dist/ssr";
@@ -40,13 +41,23 @@ const tools: Tool[] = [
     tagline: "Ops dashboard for the personal stack.",
     Icon: ChartLineUp,
   },
+  {
+    href: "/admin/links",
+    name: "Links",
+    tagline: "Saved reading and references.",
+    Icon: LinkSimple,
+  },
 ];
 
 export default function AdminPage() {
   return (
-    <main className="flex flex-1 flex-col items-start gap-12 py-20">
+    <main className="flex flex-1 flex-col items-start gap-14 py-20">
+      <div className="flex w-full justify-end">
+        <LogoutButton />
+      </div>
+
       <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+        <p className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-500">
           Admin
         </p>
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
@@ -57,52 +68,46 @@ export default function AdminPage() {
         </p>
       </hgroup>
 
-      <p className="flex flex-wrap items-center gap-x-2 gap-y-1 self-center font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
-        <span>
-          <span className="tabular-nums">{tools.length}</span> tool
-          {tools.length === 1 ? "" : "s"}
-        </span>
-      </p>
-
-      <ul className="flex w-full flex-col divide-y divide-foreground/10">
-        {tools.map((tool) => (
-          <ToolRow key={tool.href} tool={tool} />
+      <ul className="grid w-full grid-cols-2 gap-3">
+        {tools.map((tool, index) => (
+          <ToolCard key={tool.href} tool={tool} index={index} />
         ))}
       </ul>
-
-      <div className="self-center">
-        <LogoutButton />
-      </div>
     </main>
   );
 }
 
-function ToolRow({ tool }: { tool: Tool }) {
+function ToolCard({ tool, index }: { tool: Tool; index: number }) {
   const { Icon } = tool;
   return (
-    <li className="group/row">
+    <li>
       <Link
         href={tool.href}
-        className="flex items-center gap-4 py-5 transition-colors"
+        className="group relative flex min-h-44 flex-col justify-between gap-10 border border-foreground/10 bg-card p-6 transition-colors duration-200 hover:border-foreground/30"
       >
-        <span
-          aria-hidden
-          className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground/[0.04] text-zinc-700 transition-colors group-hover/row:bg-[#fd6401]/10 group-hover/row:text-[#fd6401] dark:text-zinc-300"
-        >
-          <Icon weight="regular" className="size-4" />
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-serif text-base font-semibold leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
-            {tool.name}
-          </p>
-          <p className="mt-1 truncate font-serif text-sm italic leading-snug text-zinc-600 dark:text-zinc-400">
-            {tool.tagline}
-          </p>
+        <div className="flex items-start justify-between">
+          <span className="font-sans text-[10px] font-medium uppercase tracking-[0.2em] tabular-nums text-zinc-500 dark:text-zinc-500">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <Icon
+            weight="light"
+            className="size-8 text-foreground/85 transition-transform duration-300 group-hover:-translate-y-0.5"
+          />
         </div>
-        <ArrowUpRight
-          weight="bold"
-          className="size-4 shrink-0 text-zinc-400 transition-all group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-foreground"
-        />
+        <div className="flex items-end justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="font-serif text-xl font-semibold leading-tight tracking-tight text-foreground">
+              {tool.name}
+            </p>
+            <p className="mt-1 font-serif text-sm italic leading-snug text-zinc-600 text-pretty dark:text-zinc-400">
+              {tool.tagline}
+            </p>
+          </div>
+          <ArrowUpRight
+            weight="bold"
+            className="mb-1 size-4 shrink-0 -translate-x-1 text-zinc-400 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:text-foreground group-hover:opacity-100"
+          />
+        </div>
       </Link>
     </li>
   );

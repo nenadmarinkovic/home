@@ -30,7 +30,7 @@ export function HeaderNav() {
   const authActive = authItem ? isNavActive(pathname, authItem.href) : false;
 
   return (
-    <nav className="hidden flex-col items-end font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400">
+    <nav className="hidden flex-row items-center gap-5 font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400">
       {baseNavItems.map((item) => {
         const active = isNavActive(pathname, item.href);
         return (
