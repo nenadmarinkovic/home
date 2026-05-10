@@ -1,44 +1,80 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ArrowLeft } from "@phosphor-icons/react";
+import { usePathname, useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { ArrowLeftIcon } from "@phosphor-icons/react";
 
 import {
   baseNavItems,
   getAuthNavItem,
   isNavActive,
 } from "@/components/nav-items";
+import { Button } from "@/components/ui/button";
 import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
 export function HeaderNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const authed = useAuthed();
+  const [pending, startTransition] = useTransition();
   const isArticle = pathname.startsWith("/writing/");
+
+  async function logout() {
+    await fetch("/api/logout", { method: "POST" });
+    startTransition(() => {
+      router.push("/login");
+      router.refresh();
+    });
+  }
+
+  const authItem = getAuthNavItem(authed);
+  const authActive = authItem ? isNavActive(pathname, authItem.href) : false;
+  const navClass =
+    "hidden flex-row items-center gap-5 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400";
+  const linkClass = "py-0.5 transition-colors hover:text-foreground";
 
   if (isArticle) {
     return (
-      <nav className="hidden font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:block dark:text-zinc-400">
+      <nav className={navClass}>
         <Link
           href="/writing"
-          className="group inline-flex items-center gap-1.5 py-0.5 hover:text-foreground"
+          className={cn(linkClass, "group inline-flex items-center gap-1.5")}
         >
-          <ArrowLeft
+          <ArrowLeftIcon
             weight="bold"
             className="size-3 transition-transform duration-200 group-hover:-translate-x-0.5"
           />
           Writing
         </Link>
+        {authItem && (
+          <Link
+            href={authItem.href}
+            aria-current={authActive ? "page" : undefined}
+            className={cn(linkClass, authActive && "text-foreground")}
+          >
+            {authItem.label}
+          </Link>
+        )}
+        {authed && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            onClick={logout}
+            disabled={pending}
+            className="h-auto rounded-none border-0 px-0 py-0.5 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 hover:bg-transparent hover:text-foreground dark:text-zinc-400"
+          >
+            {pending ? "Signing out…" : "Sign out"}
+          </Button>
+        )}
       </nav>
     );
   }
 
-  const authItem = getAuthNavItem(authed);
-  const authActive = authItem ? isNavActive(pathname, authItem.href) : false;
-
   return (
-    <nav className="hidden flex-row items-center gap-5 font-sans text-sm font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400">
+    <nav className={navClass}>
       {baseNavItems.map((item) => {
         const active = isNavActive(pathname, item.href);
         return (
@@ -46,10 +82,7 @@ export function HeaderNav() {
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={cn(
-              "py-0.5 hover:text-foreground",
-              active && "text-foreground",
-            )}
+            className={cn(linkClass, active && "text-foreground")}
           >
             {item.label}
           </Link>
@@ -59,13 +92,22 @@ export function HeaderNav() {
         <Link
           href={authItem.href}
           aria-current={authActive ? "page" : undefined}
-          className={cn(
-            "py-0.5 hover:text-foreground",
-            authActive && "text-foreground",
-          )}
+          className={cn(linkClass, authActive && "text-foreground")}
         >
           {authItem.label}
         </Link>
+      )}
+      {authed && (
+        <Button
+          type="button"
+          variant="ghost"
+          size="xs"
+          onClick={logout}
+          disabled={pending}
+          className="h-auto rounded-none border-0 px-0 py-0.5 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 hover:bg-transparent hover:text-foreground dark:text-zinc-400"
+        >
+          {pending ? "Signing out…" : "Sign out"}
+        </Button>
       )}
     </nav>
   );
