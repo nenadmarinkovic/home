@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Save to website",
+  "version": "0.1.0",
+  "description": "Save the current page or link to your personal website with tags.",
+  "permissions": ["contextMenus", "storage", "activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Save to website"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "save-to-website@nenad.local",
+      "strict_min_version": "115.0"
+    }
+  }
+}

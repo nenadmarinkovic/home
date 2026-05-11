@@ -46,3 +46,7 @@ next-env.d.ts
 *.db-journal
 *.db-wal
 *.db-shm
+
+# extension build artifacts
+*.xpi
+*.zip

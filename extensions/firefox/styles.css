@@ -1,0 +1,231 @@
+:root {
+  --bg: #f5f4f0;
+  --card: #fbf9f7;
+  --fg: #151515;
+  --muted: #6b6b6b;
+  --border: rgba(0, 0, 0, 0.12);
+  --accent: #fd6401;
+  --danger: #dc2626;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c1115;
+    --card: #161c21;
+    --fg: #ededed;
+    --muted: #a3a3a3;
+    --border: rgba(255, 255, 255, 0.1);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 16px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 13px;
+  width: 400px;
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.field-head label {
+  margin-bottom: 0;
+}
+
+button.ghost-orange {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button.ghost-orange:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+button.ghost-orange:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: transparent;
+}
+
+.wand {
+  font-size: 12px;
+  line-height: 1;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--fg);
+  font-size: 13px;
+  font-family: inherit;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+  line-height: 1.4;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+button {
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--fg);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+}
+
+button:hover {
+  border-color: var(--fg);
+}
+
+button.primary {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
+
+button.primary:hover {
+  opacity: 0.85;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.row.actions {
+  justify-content: flex-end;
+}
+
+.right {
+  margin-left: auto;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.tag:hover {
+  border-color: var(--fg);
+  color: var(--fg);
+}
+
+.tag.active {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
+
+.url {
+  font-size: 11px;
+  color: var(--muted);
+  word-break: break-all;
+  margin: 0 0 12px;
+  padding: 6px 8px;
+  background: var(--card);
+  border-radius: 4px;
+}
+
+.status {
+  font-size: 12px;
+  margin-top: 8px;
+  min-height: 1.2em;
+}
+
+.status.ok {
+  color: var(--accent);
+}
+
+.status.err {
+  color: var(--danger);
+}
+
+.empty {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}

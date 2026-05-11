@@ -12,8 +12,7 @@ import {
 import { deriveType, normalizeUrl, slugify } from "./url-utils";
 
 export const PUBLIC_TAG_SLUG = "public";
-export const PRIVATE_TAG_SLUG = "private";
-export const ACCESS_TAG_SLUGS = new Set([PUBLIC_TAG_SLUG, PRIVATE_TAG_SLUG]);
+export const ACCESS_TAG_SLUGS = new Set([PUBLIC_TAG_SLUG]);
 
 export type LinkWithTags = LinkRow & { tags: TagRow[] };
 

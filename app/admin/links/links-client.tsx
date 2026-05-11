@@ -12,6 +12,7 @@ import {
   FunnelSimpleIcon,
   KeyIcon,
   LinkSimpleIcon,
+  MagicWandIcon,
   MagnifyingGlassIcon,
   PencilSimpleIcon,
   PlusIcon,
@@ -56,6 +57,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { hostnameOf } from "@/lib/url-utils";
 import { cn } from "@/lib/utils";
 
@@ -76,7 +78,7 @@ type Props = {
   initialToken: string | null;
 };
 
-const ACCESS = new Set(["public", "private"]);
+const ACCESS = new Set(["public"]);
 
 type SortKey = "newest" | "oldest" | "title-asc" | "title-desc";
 type FilterKey = "all" | "public" | "private";
@@ -320,6 +322,7 @@ export function LinksAdminClient({
                 onClick={() => setActiveTags([])}
                 className="font-sans text-[11px] uppercase tracking-wider text-zinc-500"
               >
+                <XIcon weight="bold" />
                 Clear tags
               </Button>
             )}
@@ -696,17 +699,29 @@ function TokenDialog({
             </DialogDescription>
           </DialogHeader>
           <DialogBody>
-            <code className="block w-full break-all rounded bg-foreground/[0.04] px-3 py-2 font-mono text-xs text-foreground">
-              {token ?? "Not generated yet."}
-            </code>
+            <div className="flex items-start gap-2 rounded bg-foreground/[0.04] px-3 py-2">
+              <code className="flex-1 break-all font-mono text-xs leading-relaxed text-foreground">
+                {token ?? "Not generated yet."}
+              </code>
+              {token && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={copy}
+                  aria-label="Copy token"
+                  className="shrink-0 text-zinc-600 hover:bg-foreground/[0.04] dark:text-zinc-400"
+                >
+                  {copied ? (
+                    <CheckIcon weight="bold" className="text-emerald-600" />
+                  ) : (
+                    <CopyIcon weight="bold" />
+                  )}
+                </Button>
+              )}
+            </div>
           </DialogBody>
           <DialogFooter>
-            {token && (
-              <Button variant="outline" className="h-9" onClick={copy}>
-                <CopyIcon weight="bold" />
-                {copied ? "Copied" : "Copy"}
-              </Button>
-            )}
             <Button
               variant="outline"
               className="h-9"
@@ -743,11 +758,6 @@ function TokenDialog({
     </>
   );
 }
-
-const ACCESS_DESCRIPTIONS: Record<string, string> = {
-  public: "Surfaces a link on /links.",
-  private: "Keeps a link hidden from /links.",
-};
 
 function TagsDialog({
   open,
@@ -819,17 +829,12 @@ function TagsDialog({
     }
   }
 
-  const accessTagRows: ({ tag: ClientTag } | { missing: string })[] = [
-    "public",
-    "private",
-  ].map((slug) => {
-    const found = tags.find((t) => t.slug === slug);
-    return found ? { tag: found } : { missing: slug };
+  const sortedTags = [...tags].sort((a, b) => {
+    // public always pinned to top.
+    if (a.slug === "public" && b.slug !== "public") return -1;
+    if (b.slug === "public" && a.slug !== "public") return 1;
+    return b.count - a.count || a.name.localeCompare(b.name);
   });
-
-  const topicTags = tags
-    .filter((t) => !ACCESS.has(t.slug))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
   return (
     <>
@@ -838,12 +843,11 @@ function TagsDialog({
           <DialogHeader>
             <DialogTitle>Tags</DialogTitle>
             <DialogDescription>
-              Manage the library. <strong>public</strong> and{" "}
-              <strong>private</strong> control visibility — everything else is
-              for organizing.
+              Tag a link <strong>public</strong> to surface it on /links —
+              everything else is for organizing.
             </DialogDescription>
           </DialogHeader>
-          <DialogBody className="flex flex-col gap-6">
+          <DialogBody className="flex flex-col gap-4">
             <form onSubmit={onAddSubmit} className="flex items-center gap-2">
               <Input
                 value={newName}
@@ -863,68 +867,32 @@ function TagsDialog({
               </Button>
             </form>
 
-            <section className="flex flex-col gap-2">
-              <SectionLabel>Access</SectionLabel>
+            {sortedTags.length === 0 ? (
+              <p className="font-serif text-sm italic text-zinc-500">
+                No tags yet — add one above.
+              </p>
+            ) : (
               <ul className="flex flex-col divide-y divide-foreground/5">
-                {accessTagRows.map((row) =>
-                  "missing" in row ? (
-                    <MissingAccessRow
-                      key={row.missing}
-                      slug={row.missing}
-                      onCreate={() => createTag(row.missing)}
-                    />
-                  ) : (
-                    <TagRow
-                      key={row.tag.id}
-                      tag={row.tag}
-                      isAccess
-                      isRenaming={false}
-                      renamingValue=""
-                      onRenamingChange={() => {}}
-                      onStartRename={() => {}}
-                      onCommitRename={() => {}}
-                      onCancelRename={() => {}}
-                      onDelete={() => {}}
-                    />
-                  ),
-                )}
+                {sortedTags.map((tag) => (
+                  <TagRow
+                    key={tag.id}
+                    tag={tag}
+                    isAccess={ACCESS.has(tag.slug)}
+                    isRenaming={renaming?.id === tag.id}
+                    renamingValue={renaming?.name ?? ""}
+                    onRenamingChange={(name) =>
+                      setRenaming({ id: tag.id, name })
+                    }
+                    onStartRename={() =>
+                      setRenaming({ id: tag.id, name: tag.name })
+                    }
+                    onCommitRename={commitRename}
+                    onCancelRename={() => setRenaming(null)}
+                    onDelete={() => setPendingDelete(tag)}
+                  />
+                ))}
               </ul>
-            </section>
-
-            <section className="flex flex-col gap-2">
-              <SectionLabel>
-                Topics
-                {topicTags.length > 0 && (
-                  <span className="ml-1.5 tabular-nums text-zinc-500">
-                    {topicTags.length}
-                  </span>
-                )}
-              </SectionLabel>
-              {topicTags.length === 0 ? (
-                <EmptyTopics />
-              ) : (
-                <ul className="flex flex-col divide-y divide-foreground/5">
-                  {topicTags.map((tag) => (
-                    <TagRow
-                      key={tag.id}
-                      tag={tag}
-                      isAccess={false}
-                      isRenaming={renaming?.id === tag.id}
-                      renamingValue={renaming?.name ?? ""}
-                      onRenamingChange={(name) =>
-                        setRenaming({ id: tag.id, name })
-                      }
-                      onStartRename={() =>
-                        setRenaming({ id: tag.id, name: tag.name })
-                      }
-                      onCommitRename={commitRename}
-                      onCancelRename={() => setRenaming(null)}
-                      onDelete={() => setPendingDelete(tag)}
-                    />
-                  ))}
-                </ul>
-              )}
-            </section>
+            )}
           </DialogBody>
         </DialogContent>
       </Dialog>
@@ -975,6 +943,7 @@ function SaveLinkDialog({
   const [description, setDescription] = useState("");
   const [selected, setSelected] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
+  const [summarizing, setSummarizing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   function reset() {
@@ -983,6 +952,33 @@ function SaveLinkDialog({
     setDescription("");
     setSelected([]);
     setError(null);
+    setSummarizing(false);
+  }
+
+  async function runSummarize() {
+    if (!url.trim() || summarizing) return;
+    setSummarizing(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/links/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: url.trim() }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        summary?: string;
+        error?: string;
+      };
+      if (!res.ok || !data.summary) {
+        setError(data.error ?? "Could not summarize this page.");
+      } else {
+        setDescription(data.summary);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Network error");
+    } finally {
+      setSummarizing(false);
+    }
   }
 
   function toggleTag(slug: string) {
@@ -1049,11 +1045,34 @@ function SaveLinkDialog({
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Title (optional)"
             />
-            <Input
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Description (optional)"
-            />
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="save-link-description"
+                  className="font-sans text-[11px] font-medium uppercase tracking-wider text-zinc-500"
+                >
+                  Description
+                </label>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="xs"
+                  onClick={runSummarize}
+                  disabled={!url.trim() || summarizing}
+                  className="font-sans text-[11px] uppercase tracking-wider text-[#fd6401] hover:bg-[#fd6401]/10 hover:text-[#fd6401]"
+                >
+                  <MagicWandIcon weight="bold" />
+                  {summarizing ? "Summarizing…" : "Summarize"}
+                </Button>
+              </div>
+              <Textarea
+                id="save-link-description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="A sentence or two — or let AI write a 3-sentence summary."
+                rows={3}
+              />
+            </div>
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
                 {tags.map((tag) => (
@@ -1112,11 +1131,39 @@ function EditLinkDialog({
     link.tags.map((t) => t.slug),
   );
   const [busy, setBusy] = useState(false);
+  const [summarizing, setSummarizing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function toggleTag(slug: string) {
     setSelected((prev) =>
       prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug],
     );
+  }
+
+  async function runSummarize() {
+    if (summarizing) return;
+    setSummarizing(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/links/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: link.url }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        summary?: string;
+        error?: string;
+      };
+      if (!res.ok || !data.summary) {
+        setError(data.error ?? "Could not summarize this page.");
+      } else {
+        setDescription(data.summary);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Network error");
+    } finally {
+      setSummarizing(false);
+    }
   }
 
   async function save() {
@@ -1147,11 +1194,37 @@ function EditLinkDialog({
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
           />
-          <Input
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description"
-          />
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="edit-link-description"
+                className="font-sans text-[11px] font-medium uppercase tracking-wider text-zinc-500"
+              >
+                Description
+              </label>
+              <Button
+                type="button"
+                variant="ghost"
+                size="xs"
+                onClick={runSummarize}
+                disabled={summarizing}
+                className="font-sans text-[11px] uppercase tracking-wider text-[#fd6401] hover:bg-[#fd6401]/10 hover:text-[#fd6401]"
+              >
+                <MagicWandIcon weight="bold" />
+                {summarizing ? "Summarizing…" : "Summarize"}
+              </Button>
+            </div>
+            <Textarea
+              id="edit-link-description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="A sentence or two — or let AI write a 3-sentence summary."
+              rows={3}
+            />
+          </div>
+          {error && (
+            <p className="font-sans text-xs text-destructive">{error}</p>
+          )}
           <div className="flex flex-wrap gap-1.5">
             {tags.map((tag) => (
               <TagChip
@@ -1187,14 +1260,6 @@ function EditLinkDialog({
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="px-1 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-500">
-      {children}
-    </p>
-  );
-}
-
 function TagRow({
   tag,
   isAccess,
@@ -1216,146 +1281,97 @@ function TagRow({
   onCancelRename: () => void;
   onDelete: () => void;
 }) {
-  return (
-    <li
-      className={cn(
-        "group/row flex items-center gap-3 rounded-md px-1 py-2.5 transition-colors",
-        !isRenaming && "hover:bg-foreground/[0.02]",
-      )}
-    >
-      <div className="min-w-0 flex-1">
-        {isRenaming ? (
-          <Input
-            autoFocus
-            value={renamingValue}
-            onChange={(e) => onRenamingChange(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                onCommitRename();
-              }
-              if (e.key === "Escape") onCancelRename();
-            }}
-            className="h-8 text-sm"
-          />
-        ) : (
-          <>
-            <p
-              className={cn(
-                "truncate font-serif text-base font-semibold leading-tight",
-                isAccess ? "text-[#fd6401]" : "text-foreground",
-              )}
-            >
-              {tag.name}
-            </p>
-            <p className="mt-1 truncate font-sans text-xs text-zinc-500 dark:text-zinc-500">
-              {isAccess
-                ? (ACCESS_DESCRIPTIONS[tag.slug] ?? `#${tag.slug}`)
-                : `#${tag.slug}`}
-            </p>
-          </>
-        )}
-      </div>
-      <span
-        title={`${tag.count} link${tag.count === 1 ? "" : "s"} tagged`}
-        className="shrink-0 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500"
-      >
-        {tag.count}
-      </span>
-      {!isAccess && (
-        <div className="flex shrink-0 items-center gap-0.5">
-          {isRenaming ? (
-            <>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                onClick={onCommitRename}
-                aria-label="Save"
-              >
-                <CheckIcon weight="bold" />
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                onClick={onCancelRename}
-                aria-label="Cancel"
-              >
-                <XIcon weight="bold" />
-              </Button>
-            </>
-          ) : (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  aria-label={`Actions for ${tag.name}`}
-                  className="text-zinc-600 dark:text-zinc-400"
-                >
-                  <DotsThreeVerticalIcon weight="bold" className="size-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={onStartRename}>
-                  <PencilSimpleIcon weight="bold" />
-                  Rename
-                </DropdownMenuItem>
-                <DropdownMenuItem variant="destructive" onSelect={onDelete}>
-                  <TrashIcon weight="bold" />
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-        </div>
-      )}
-    </li>
-  );
-}
+  if (isRenaming) {
+    return (
+      <li className="flex items-center gap-1 px-1 py-2.5">
+        <Input
+          autoFocus
+          value={renamingValue}
+          onChange={(e) => onRenamingChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              onCommitRename();
+            }
+            if (e.key === "Escape") onCancelRename();
+          }}
+          className="h-8 flex-1 text-sm"
+        />
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          onClick={onCommitRename}
+          aria-label="Save"
+        >
+          <CheckIcon weight="bold" />
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          onClick={onCancelRename}
+          aria-label="Cancel"
+        >
+          <XIcon weight="bold" />
+        </Button>
+      </li>
+    );
+  }
 
-function MissingAccessRow({
-  slug,
-  onCreate,
-}: {
-  slug: string;
-  onCreate: () => void;
-}) {
+  const countLabel =
+    tag.count === 0
+      ? "No links"
+      : `${tag.count} link${tag.count === 1 ? "" : "s"}`;
+
   return (
     <li className="flex items-center gap-3 px-1 py-2.5">
       <div className="min-w-0 flex-1">
-        <p className="font-serif text-base italic leading-tight text-zinc-500">
-          {slug}
+        <p
+          className={cn(
+            "truncate font-serif text-base font-semibold leading-tight",
+            isAccess ? "text-[#fd6401]" : "text-foreground",
+          )}
+        >
+          {tag.name}
         </p>
-        <p className="mt-1 truncate font-sans text-xs text-zinc-500">
-          {ACCESS_DESCRIPTIONS[slug] ?? "Not created yet."}
+        <p className="mt-0.5 truncate font-sans text-xs text-zinc-500">
+          #{tag.slug}
         </p>
       </div>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        className="h-8"
-        onClick={onCreate}
+      <span
+        className={cn(
+          "shrink-0 font-sans text-[11px] font-medium uppercase tracking-wider tabular-nums",
+          tag.count === 0 ? "text-zinc-400 italic" : "text-zinc-500",
+        )}
       >
-        <PlusIcon weight="bold" />
-        Create
-      </Button>
+        {countLabel}
+      </span>
+      {!isAccess && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label={`Actions for ${tag.name}`}
+              className="shrink-0 text-zinc-600 dark:text-zinc-400"
+            >
+              <DotsThreeVerticalIcon weight="bold" className="size-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onSelect={onStartRename}>
+              <PencilSimpleIcon weight="bold" />
+              Rename
+            </DropdownMenuItem>
+            <DropdownMenuItem variant="destructive" onSelect={onDelete}>
+              <TrashIcon weight="bold" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </li>
-  );
-}
-
-function EmptyTopics() {
-  return (
-    <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-foreground/15 px-6 py-8 text-center">
-      <div className="flex size-8 items-center justify-center rounded-full bg-foreground/[0.04] text-zinc-500">
-        <TagIcon weight="regular" className="size-4" />
-      </div>
-      <p className="font-serif text-sm italic text-zinc-500">
-        No topic tags yet — add one above.
-      </p>
-    </div>
   );
 }

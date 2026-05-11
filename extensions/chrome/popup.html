@@ -15,13 +15,29 @@
     </div>
 
     <div class="field">
+      <div class="field-head">
+        <label for="description">Description</label>
+        <button id="summarize" class="ghost-orange" type="button">
+          <span class="wand" aria-hidden>✦</span>
+          <span id="summarize-label">Summarize</span>
+        </button>
+      </div>
+      <textarea
+        id="description"
+        rows="3"
+        autocomplete="off"
+        placeholder="Optional — or hit Summarize to let AI draft 3 sentences."
+      ></textarea>
+    </div>
+
+    <div class="field">
       <label>Tags</label>
       <div id="tags" class="tags"></div>
     </div>
 
-    <div class="row">
+    <div class="row actions">
+      <button id="cancel">Cancel</button>
       <button id="save" class="primary">Save</button>
-      <button id="cancel" class="right">Cancel</button>
     </div>
 
     <p id="status" class="status"></p>

@@ -28,7 +28,31 @@ async function fetchTags() {
   }
 }
 
-async function getCachedTags() {
+function tagsEqual(a, b) {
+  if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length)
+    return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i]?.slug !== b[i]?.slug || a[i]?.name !== b[i]?.name) return false;
+  }
+  return true;
+}
+
+async function getLiveTags() {
+  const fresh = await fetchTags();
+  const { tagsCache } = await chrome.storage.local.get(["tagsCache"]);
+  await chrome.storage.local.set({
+    tagsCache: fresh,
+    tagsCacheAt: Date.now(),
+  });
+  // If the list changed since the menu was built, rebuild it so the
+  // context menu stays in sync without requiring an extension restart.
+  if (!tagsEqual(fresh, tagsCache)) {
+    rebuildMenu(fresh).catch(() => {});
+  }
+  return fresh;
+}
+
+async function getCachedTagsForFallback() {
   const { tagsCache, tagsCacheAt } = await chrome.storage.local.get([
     "tagsCache",
     "tagsCacheAt",
@@ -40,14 +64,12 @@ async function getCachedTags() {
   ) {
     return tagsCache;
   }
-  const tags = await fetchTags();
-  await chrome.storage.local.set({ tagsCache: tags, tagsCacheAt: Date.now() });
-  return tags;
+  return null;
 }
 
-async function rebuildMenu() {
+async function rebuildMenu(prefetchedTags) {
   await chrome.contextMenus.removeAll();
-  const tags = await fetchTags();
+  const tags = Array.isArray(prefetchedTags) ? prefetchedTags : await fetchTags();
   await chrome.storage.local.set({ tagsCache: tags, tagsCacheAt: Date.now() });
 
   chrome.contextMenus.create({
@@ -79,7 +101,55 @@ async function rebuildMenu() {
   }
 }
 
-async function saveLink({ url, title, tagSlugs }) {
+async function extractActiveTabText() {
+  try {
+    const tabs = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    const tab = tabs[0];
+    if (!tab?.id) return "";
+    const results = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: () => {
+        const root = document.querySelector("article, main") || document.body;
+        const text = root?.innerText || document.body?.innerText || "";
+        return text.slice(0, 16000);
+      },
+    });
+    const result = Array.isArray(results) ? results[0]?.result : null;
+    return typeof result === "string" ? result : "";
+  } catch {
+    return "";
+  }
+}
+
+async function summarizeUrl({ url }) {
+  const { endpoint, token } = await getConfig();
+  if (!endpoint || !token) {
+    return { ok: false, error: "Missing endpoint or token in options" };
+  }
+  const text = await extractActiveTabText();
+  try {
+    const res = await fetch(`${endpoint}/api/links/summarize`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url, text }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || typeof data.summary !== "string") {
+      return { ok: false, error: data.error ?? `HTTP ${res.status}` };
+    }
+    return { ok: true, summary: data.summary };
+  } catch (err) {
+    return { ok: false, error: String(err) };
+  }
+}
+
+async function saveLink({ url, title, note, tagSlugs }) {
   const { endpoint, token } = await getConfig();
   if (!endpoint || !token) {
     flashBadge("?", "#a3a3a3");
@@ -92,7 +162,7 @@ async function saveLink({ url, title, tagSlugs }) {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ url, title, tags: tagSlugs }),
+      body: JSON.stringify({ url, title, note, tags: tagSlugs }),
     });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
@@ -113,7 +183,18 @@ function flashBadge(text, color) {
   setTimeout(() => chrome.action.setBadgeText({ text: "" }), 2500);
 }
 
-function openCustomPopup() {
+async function openCustomPopup() {
+  // Prefer the toolbar action popup so we stay inside the current macOS Space
+  // (full-screen window). Falls back to a separate browser popup window if the
+  // browser can't open it (older Firefox, no user gesture, etc.).
+  if (chrome.action && typeof chrome.action.openPopup === "function") {
+    try {
+      await chrome.action.openPopup();
+      return;
+    } catch {
+      // fall through
+    }
+  }
   chrome.windows.create({
     url: chrome.runtime.getURL("popup.html?context=window"),
     type: "popup",
@@ -144,7 +225,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     await chrome.storage.local.set({
       pending: { url, title, savedAt: Date.now() },
     });
-    openCustomPopup();
+    await openCustomPopup();
     return;
   }
   if (
@@ -161,6 +242,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     saveLink({
       url: msg.url,
       title: msg.title,
+      note: typeof msg.note === "string" ? msg.note : "",
       tagSlugs: Array.isArray(msg.tags) ? msg.tags : [],
     }).then(sendResponse);
     return true;
@@ -170,7 +252,19 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     return true;
   }
   if (msg?.type === "getTags") {
-    getCachedTags().then((tags) => sendResponse({ tags }));
+    (async () => {
+      try {
+        const tags = await getLiveTags();
+        sendResponse({ tags });
+      } catch {
+        const cached = await getCachedTagsForFallback();
+        sendResponse({ tags: cached ?? [] });
+      }
+    })();
+    return true;
+  }
+  if (msg?.type === "summarize") {
+    summarizeUrl({ url: msg.url }).then(sendResponse);
     return true;
   }
   return false;

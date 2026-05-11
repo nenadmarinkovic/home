@@ -3,7 +3,7 @@
   "name": "Save to website",
   "version": "0.1.0",
   "description": "Save the current page or link to your personal website with tags.",
-  "permissions": ["contextMenus", "storage", "activeTab"],
+  "permissions": ["contextMenus", "storage", "activeTab", "scripting"],
   "host_permissions": ["<all_urls>"],
   "background": { "service_worker": "background.js" },
   "options_page": "options.html",

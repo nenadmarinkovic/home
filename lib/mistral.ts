@@ -18,6 +18,8 @@ const MISTRAL_URL = "https://api.mistral.ai/v1/chat/completions";
 const ENRICH_MODEL = process.env.MISTRAL_MODEL ?? "mistral-large-latest";
 const TRANSLATE_MODEL =
   process.env.MISTRAL_TRANSLATE_MODEL ?? "mistral-small-latest";
+const SUMMARIZE_MODEL =
+  process.env.MISTRAL_SUMMARIZE_MODEL ?? "mistral-small-latest";
 
 function apiKey(): string {
   const key = process.env.MISTRAL_API_KEY?.trim();
@@ -165,4 +167,64 @@ export async function translate(
     throw new Error(`Mistral returned non-JSON content: ${content.slice(0, 200)}`);
   }
   return TranslateResponseSchema.parse(parsed).translation;
+}
+
+const SUMMARIZE_SYSTEM_PROMPT = `You summarize articles the way a thoughtful friend would mention one over coffee — so someone scrolling Bluesky understands why it's worth their time without feeling sold to.
+
+Voice:
+- Plain, human, sincere. Like a person, not a press release.
+- Everyday words over jargon. If a term is essential, use it without showing off.
+- Curious and warm. Never hype-y, never breathless, never "must-read".
+- Match the article's own register; don't impose enthusiasm it doesn't have.
+
+Shape:
+- 2-3 short sentences. Stop when the point is made.
+- Lead with what the article actually says or asks, not what it "explores" or "delves into".
+- Use active verbs. Cut filler like "in this article", "the author argues that", "interestingly".
+- No bullets, no preamble ("Here is", "This piece"), no quotation marks wrapping the output, no hashtags, no emojis.
+
+Author and pronouns:
+- Prefer talking about the ideas, not the person. Most summaries should not mention the author at all.
+- If you do refer to the author, use their actual name as it appears in the article (e.g. "Joanna").
+- Never guess gender. Do not use "he" or "she" unless the article itself uses that pronoun for the person. If unsure, use the name, or rephrase to avoid pronouns, or use singular "they".
+
+Output only the summary itself — nothing else.`;
+
+export async function summarize(
+  text: string,
+  signal?: AbortSignal,
+): Promise<string> {
+  const trimmed = text.trim();
+  if (!trimmed) throw new Error("Empty text");
+  const truncated = trimmed.slice(0, 16000);
+
+  const res = await fetch(MISTRAL_URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${apiKey()}`,
+    },
+    body: JSON.stringify({
+      model: SUMMARIZE_MODEL,
+      messages: [
+        { role: "system", content: SUMMARIZE_SYSTEM_PROMPT },
+        { role: "user", content: truncated },
+      ],
+      temperature: 0.5,
+    }),
+    signal,
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Mistral ${res.status}: ${body.slice(0, 300)}`);
+  }
+  const data = (await res.json()) as {
+    choices?: { message?: { content?: string } }[];
+  };
+  const content = data.choices?.[0]?.message?.content;
+  if (typeof content !== "string" || content.trim().length === 0) {
+    throw new Error("Mistral returned an empty response");
+  }
+  return content.trim();
 }

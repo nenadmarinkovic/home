@@ -1,12 +1,21 @@
 const urlEl = document.getElementById("url");
 const titleEl = document.getElementById("title");
+const descriptionEl = document.getElementById("description");
 const tagsEl = document.getElementById("tags");
 const saveBtn = document.getElementById("save");
 const cancelBtn = document.getElementById("cancel");
+const summarizeBtn = document.getElementById("summarize");
+const summarizeLabel = document.getElementById("summarize-label");
 const statusEl = document.getElementById("status");
 
 const isWindowed =
   new URLSearchParams(location.search).get("context") === "window";
+
+// Treat a context-menu save attempt as "pending" for ~10s. If the toolbar
+// popup opens within that window, prefer the URL/title that was right-clicked
+// over the currently-active tab.
+const PENDING_FRESH_MS = 10_000;
+let usedPending = false;
 
 let selected = new Set();
 
@@ -16,17 +25,20 @@ function showStatus(message, kind) {
 }
 
 async function loadCurrentTab() {
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  const tabs = await browser.tabs.query({ active: true, currentWindow: true });
   const tab = tabs[0];
   return tab ? { url: tab.url || "", title: tab.title || "" } : { url: "", title: "" };
 }
 
 async function loadInitial() {
-  if (isWindowed) {
-    const { pending } = await chrome.storage.local.get("pending");
-    if (pending) {
-      return { url: pending.url || "", title: pending.title || "" };
-    }
+  const { pending } = await browser.storage.local.get("pending");
+  const fresh =
+    pending &&
+    typeof pending.savedAt === "number" &&
+    Date.now() - pending.savedAt < PENDING_FRESH_MS;
+  if (fresh) {
+    usedPending = true;
+    return { url: pending.url || "", title: pending.title || "" };
   }
   return loadCurrentTab();
 }
@@ -64,7 +76,7 @@ async function init() {
   titleEl.value = title;
   saveBtn.disabled = !url;
 
-  const tagsResp = await chrome.runtime.sendMessage({ type: "getTags" });
+  const tagsResp = await browser.runtime.sendMessage({ type: "getTags" });
   renderTags(Array.isArray(tagsResp?.tags) ? tagsResp.tags : []);
 }
 
@@ -73,17 +85,21 @@ saveBtn.addEventListener("click", async () => {
   if (!url) return;
   saveBtn.disabled = true;
   showStatus("Saving…", "");
-  const resp = await chrome.runtime.sendMessage({
+  const resp = await browser.runtime.sendMessage({
     type: "save",
     url,
     title: titleEl.value.trim(),
+    note: descriptionEl.value.trim(),
     tags: Array.from(selected),
   });
   if (resp?.ok) {
     showStatus("Saved.", "ok");
-    setTimeout(() => {
-      if (isWindowed) window.close();
-    }, 800);
+    // Clear the pending marker so a stale right-click doesn't preload it again
+    // the next time the toolbar popup is opened.
+    if (usedPending) {
+      browser.storage.local.remove("pending");
+    }
+    setTimeout(() => window.close(), 800);
   } else {
     showStatus(resp?.error || "Save failed.", "err");
     saveBtn.disabled = false;
@@ -91,5 +107,21 @@ saveBtn.addEventListener("click", async () => {
 });
 
 cancelBtn.addEventListener("click", () => window.close());
+
+summarizeBtn.addEventListener("click", async () => {
+  const url = urlEl.textContent;
+  if (!url) return;
+  summarizeBtn.disabled = true;
+  summarizeLabel.textContent = "Summarizing…";
+  showStatus("", "");
+  const resp = await browser.runtime.sendMessage({ type: "summarize", url });
+  if (resp?.ok && typeof resp.summary === "string") {
+    descriptionEl.value = resp.summary;
+  } else {
+    showStatus(resp?.error || "Summarize failed.", "err");
+  }
+  summarizeBtn.disabled = false;
+  summarizeLabel.textContent = "Summarize";
+});
 
 init();

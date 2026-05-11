@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Save to website — Options</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Settings</h1>
+
+    <div class="field">
+      <label for="endpoint">Site URL</label>
+      <input
+        id="endpoint"
+        type="url"
+        placeholder="http://localhost:3000"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="field">
+      <label for="token">API token</label>
+      <input
+        id="token"
+        type="password"
+        placeholder="Paste the token from /admin/links"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="row">
+      <button id="save" class="primary">Save</button>
+      <button id="test">Test connection</button>
+      <button id="refresh" class="right">Refresh tags</button>
+    </div>
+
+    <p id="status" class="status"></p>
+
+    <script src="options.js"></script>
+  </body>
+</html>
