@@ -55,7 +55,7 @@ export default async function Image({
               width: 14,
               height: 14,
               borderRadius: 999,
-              background: "#FD6401",
+              background: "#F25022",
             }}
           />
           Nenad Marinković

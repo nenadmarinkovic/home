@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { Plus, Sparkle, Trash, X as XIcon } from "@phosphor-icons/react";
 
+import { TagChip } from "@/components/tag-chip";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,17 +18,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-import {
-  AUX_VALUES,
-  CEFR_VALUES,
-  GENDER_VALUES,
-  POS_VALUES,
-} from "@/db/schema";
+import { AUX_VALUES, GENDER_VALUES, POS_VALUES } from "@/db/schema";
 import type { DraftEntry, Example } from "./types";
 
 type Props = {
   open: boolean;
   draft: DraftEntry | null;
+  allTags: string[];
   onChange: (next: DraftEntry) => void;
   onClose: () => void;
   onSave: () => Promise<void> | void;
@@ -36,9 +34,25 @@ type Props = {
   error?: string | null;
 };
 
+function parseTags(raw: string): string[] {
+  return Array.from(
+    new Set(
+      raw
+        .split(",")
+        .map((t) => t.trim().toLowerCase())
+        .filter(Boolean),
+    ),
+  );
+}
+
+function joinTags(list: string[]): string {
+  return Array.from(new Set(list.map((t) => t.trim().toLowerCase()).filter(Boolean))).join(", ");
+}
+
 export function EntryEditor({
   open,
   draft,
+  allTags,
   onChange,
   onClose,
   onSave,
@@ -47,7 +61,34 @@ export function EntryEditor({
   saving,
   error,
 }: Props) {
+  const [newTag, setNewTag] = useState("");
+
   if (!draft) return null;
+
+  const selectedTags = parseTags(draft.tags);
+  const selectedSet = new Set(selectedTags);
+  const knownTags = Array.from(new Set([...allTags, ...selectedTags])).sort(
+    (a, b) => a.localeCompare(b),
+  );
+
+  function setSelected(next: string[]) {
+    onChange({ ...draft!, tags: joinTags(next) });
+  }
+  function toggleTag(tag: string) {
+    if (selectedSet.has(tag)) {
+      setSelected(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelected([...selectedTags, tag]);
+    }
+  }
+  function commitNewTag() {
+    const cleaned = newTag.trim().toLowerCase();
+    if (!cleaned) return;
+    if (!selectedSet.has(cleaned)) {
+      setSelected([...selectedTags, cleaned]);
+    }
+    setNewTag("");
+  }
 
   return (
     <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
@@ -104,18 +145,8 @@ export function EntryEditor({
                 }
               />
             </Field>
-            <Field label="CEFR">
-              <Select
-                value={draft.level ?? ""}
-                options={CEFR_VALUES}
-                placeholder="—"
-                onChange={(value) =>
-                  onChange({ ...draft, level: value || null })
-                }
-              />
-            </Field>
             {draft.pos === "noun" && (
-              <Field label="Plural" className="sm:col-span-2">
+              <Field label="Plural">
                 <Input
                   value={draft.plural ?? ""}
                   onChange={(e) =>
@@ -177,11 +208,46 @@ export function EntryEditor({
           />
 
           <Field label="Tags">
-            <Input
-              value={draft.tags}
-              onChange={(e) => onChange({ ...draft, tags: e.target.value })}
-              placeholder="family, home"
-            />
+            <div className="flex flex-col gap-2">
+              {knownTags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {knownTags.map((tag) => (
+                    <TagChip
+                      key={tag}
+                      active={selectedSet.has(tag)}
+                      onClick={() => toggleTag(tag)}
+                    >
+                      {tag}
+                    </TagChip>
+                  ))}
+                </div>
+              )}
+              <div className="flex items-center gap-2">
+                <Input
+                  value={newTag}
+                  onChange={(e) => setNewTag(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      commitNewTag();
+                    }
+                  }}
+                  placeholder="Add a new tag"
+                  className="flex-1"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="h-9"
+                  onClick={commitNewTag}
+                  disabled={!newTag.trim()}
+                >
+                  <Plus weight="bold" />
+                  Add
+                </Button>
+              </div>
+            </div>
           </Field>
           <Field label="Notes">
             <Textarea

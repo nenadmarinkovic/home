@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ChartLineUp,
-  LinkSimple,
-  PencilSimple,
-  Translate,
-} from "@phosphor-icons/react/dist/ssr";
 
 import { getArticles, getDraftArticles } from "@/app/writing/articles";
 import { getDueStats } from "@/lib/lib-db";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -21,7 +16,7 @@ type Tool = {
   href: string;
   name: string;
   tagline: string;
-  Icon: typeof PencilSimple;
+  dotClass: string;
 };
 
 export default async function AdminPage() {
@@ -36,25 +31,25 @@ export default async function AdminPage() {
       href: "/admin/writing",
       name: "Writing",
       tagline: "Drafts, publishing, snapshots to git.",
-      Icon: PencilSimple,
+      dotClass: "bg-[#F25022]",
     },
     {
       href: "/admin/lib",
       name: "Lib",
       tagline: "German, learned with a quiet AI.",
-      Icon: Translate,
+      dotClass: "bg-[#7FBA00]",
     },
     {
       href: "/admin/log",
       name: "Log",
       tagline: "Ops dashboard for the personal stack.",
-      Icon: ChartLineUp,
+      dotClass: "bg-[#00A4EF]",
     },
     {
       href: "/admin/links",
       name: "Links",
       tagline: "Saved reading and references.",
-      Icon: LinkSimple,
+      dotClass: "bg-[#FFB900]",
     },
   ];
 
@@ -87,14 +82,9 @@ export default async function AdminPage() {
         </p>
       </hgroup>
 
-      <ul className="grid w-full grid-cols-2 gap-3">
-        {tools.map((tool, index) => (
-          <ToolCard
-            key={tool.href}
-            tool={tool}
-            index={index}
-            stat={stats[tool.href]}
-          />
+      <ul className="flex w-full flex-col">
+        {tools.map((tool) => (
+          <ToolRow key={tool.href} tool={tool} stat={stats[tool.href]} />
         ))}
       </ul>
 
@@ -105,45 +95,31 @@ export default async function AdminPage() {
   );
 }
 
-function ToolCard({
-  tool,
-  index,
-  stat,
-}: {
-  tool: Tool;
-  index: number;
-  stat?: string;
-}) {
-  const { Icon } = tool;
+function ToolRow({ tool, stat }: { tool: Tool; stat?: string }) {
   return (
-    <li>
-      <Link
-        href={tool.href}
-        className="group relative flex min-h-48 flex-col justify-between gap-8 border border-foreground/10 bg-card p-6 transition-colors duration-200 hover:border-foreground/30"
-      >
-        <div className="flex items-start justify-between">
-          <span className="font-sans text-[10px] font-medium uppercase tracking-[0.2em] tabular-nums text-zinc-500 dark:text-zinc-500">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <Icon
-            weight="light"
-            className="size-8 text-foreground/85 transition-transform duration-300 group-hover:-translate-y-0.5"
-          />
-        </div>
-        <div className="space-y-3">
-          <div>
-            <p className="font-serif text-xl font-semibold leading-tight tracking-tight text-foreground">
+    <li className="py-6 first:pt-0 last:pb-0">
+      <Link href={tool.href} className="group flex items-start gap-4">
+        <span
+          aria-hidden
+          className={cn(
+            "mt-2 size-2.5 shrink-0 rounded-full transition-transform duration-200 group-hover:scale-125",
+            tool.dotClass,
+          )}
+        />
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline justify-between gap-3">
+            <p className="font-serif text-xl font-semibold leading-tight tracking-tight text-foreground transition-opacity group-hover:opacity-70">
               {tool.name}
             </p>
-            <p className="mt-1 font-serif text-sm italic leading-snug text-zinc-600 text-pretty dark:text-zinc-400">
-              {tool.tagline}
-            </p>
+            {stat && (
+              <p className="shrink-0 font-sans text-[10px] font-medium uppercase tracking-[0.2em] tabular-nums text-zinc-500 dark:text-zinc-500">
+                {stat}
+              </p>
+            )}
           </div>
-          {stat && (
-            <p className="font-sans text-[10px] font-medium uppercase tracking-[0.2em] tabular-nums text-zinc-500 dark:text-zinc-500">
-              {stat}
-            </p>
-          )}
+          <p className="mt-1 font-serif text-sm italic leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
+            {tool.tagline}
+          </p>
         </div>
       </Link>
     </li>

@@ -333,7 +333,7 @@ function FieldRow({ children }: { children: React.ReactNode }) {
 
 function RequiredMark() {
   return (
-    <span className="text-[#fd6401]" aria-hidden="true">
+    <span className="text-[#F25022]" aria-hidden="true">
       *
     </span>
   );
@@ -413,7 +413,7 @@ function EditorToolbar({ editor }: { editor: Editor }) {
           title={b.label}
           className={cn(
             b.isActive
-              ? "bg-[#fd6401]/10 text-[#fd6401] hover:bg-[#fd6401]/15 hover:text-[#fd6401]"
+              ? "bg-[#F25022]/10 text-[#F25022] hover:bg-[#F25022]/15 hover:text-[#F25022]"
               : "text-zinc-600 dark:text-zinc-400",
           )}
         >

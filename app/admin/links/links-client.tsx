@@ -475,7 +475,7 @@ function FilterMenu({
           >
             <span>{FILTER_LABELS[key]}</span>
             {filter === key && (
-              <CheckIcon weight="bold" className="size-3.5 text-[#fd6401]" />
+              <CheckIcon weight="bold" className="size-3.5 text-[#F25022]" />
             )}
           </DropdownMenuItem>
         ))}
@@ -513,7 +513,7 @@ function SortMenu({
           >
             <span>{SORT_LABELS[key]}</span>
             {sort === key && (
-              <CheckIcon weight="bold" className="size-3.5 text-[#fd6401]" />
+              <CheckIcon weight="bold" className="size-3.5 text-[#F25022]" />
             )}
           </DropdownMenuItem>
         ))}
@@ -624,7 +624,7 @@ function PrivateTag() {
 function EmptyAll({ onNew }: { onNew: () => void }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-[#fd6401]/10 text-[#fd6401]">
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#F25022]/10 text-[#F25022]">
         <LinkSimpleIcon weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
@@ -1059,7 +1059,7 @@ function SaveLinkDialog({
                   size="xs"
                   onClick={runSummarize}
                   disabled={!url.trim() || summarizing}
-                  className="font-sans text-[11px] uppercase tracking-wider text-[#fd6401] hover:bg-[#fd6401]/10 hover:text-[#fd6401]"
+                  className="font-sans text-[11px] uppercase tracking-wider text-[#F25022] hover:bg-[#F25022]/10 hover:text-[#F25022]"
                 >
                   <MagicWandIcon weight="bold" />
                   {summarizing ? "Summarizing…" : "Summarize"}
@@ -1208,7 +1208,7 @@ function EditLinkDialog({
                 size="xs"
                 onClick={runSummarize}
                 disabled={summarizing}
-                className="font-sans text-[11px] uppercase tracking-wider text-[#fd6401] hover:bg-[#fd6401]/10 hover:text-[#fd6401]"
+                className="font-sans text-[11px] uppercase tracking-wider text-[#F25022] hover:bg-[#F25022]/10 hover:text-[#F25022]"
               >
                 <MagicWandIcon weight="bold" />
                 {summarizing ? "Summarizing…" : "Summarize"}
@@ -1330,7 +1330,7 @@ function TagRow({
         <p
           className={cn(
             "truncate font-serif text-base font-semibold leading-tight",
-            isAccess ? "text-[#fd6401]" : "text-foreground",
+            isAccess ? "text-[#F25022]" : "text-foreground",
           )}
         >
           {tag.name}

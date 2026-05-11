@@ -48,7 +48,6 @@ import { Input } from "@/components/ui/input";
 
 import { ArticleEditor, type EditorInitial } from "./article-editor";
 import { ExportButton } from "./export-button";
-import { LogoutButton } from "./logout-button";
 import type { Article } from "../../writing/articles";
 
 type AdminClientProps = {
@@ -281,7 +280,6 @@ export function AdminClient({
         </div>
         <div className="flex items-center gap-2">
           <ExportButton pendingCount={pendingExportCount} />
-          <LogoutButton />
         </div>
       </header>
 
@@ -426,7 +424,7 @@ function FilterMenu({
           >
             <span>{FILTER_LABELS[key]}</span>
             {filter === key && (
-              <Check weight="bold" className="size-3.5 text-[#fd6401]" />
+              <Check weight="bold" className="size-3.5 text-[#F25022]" />
             )}
           </DropdownMenuItem>
         ))}
@@ -464,7 +462,7 @@ function SortMenu({
           >
             <span>{SORT_LABELS[key]}</span>
             {sort === key && (
-              <Check weight="bold" className="size-3.5 text-[#fd6401]" />
+              <Check weight="bold" className="size-3.5 text-[#F25022]" />
             )}
           </DropdownMenuItem>
         ))}
@@ -624,7 +622,7 @@ function EmptyAll({
 
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-[#fd6401]/10 text-[#fd6401]">
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#F25022]/10 text-[#F25022]">
         <FileText weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">

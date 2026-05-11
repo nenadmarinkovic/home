@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowSquareOutIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowSquareOutIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
 
 import {
   ACCESS_TAG_SLUGS,
@@ -74,8 +74,9 @@ export default async function LinksPage({
           {activeTags.length > 0 && (
             <Link
               href="/links"
-              className="inline-flex items-center rounded-full border border-foreground/15 px-3 py-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 transition-colors hover:border-foreground/30 hover:text-foreground dark:text-zinc-400"
+              className="inline-flex items-center gap-1 rounded-full border border-foreground/15 px-3 py-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 transition-colors hover:border-foreground/30 hover:text-foreground dark:text-zinc-400"
             >
+              <XIcon weight="bold" className="size-3" />
               Clear
             </Link>
           )}

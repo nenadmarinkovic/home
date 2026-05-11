@@ -45,8 +45,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { TagChip } from "@/components/tag-chip";
 
-import { LogoutButton } from "../writing/logout-button";
 import { BulkAddDialog } from "./bulk-add";
 import { EntryEditor } from "./entry-editor";
 import {
@@ -74,6 +74,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
   const entries = initialEntries;
   const stats = initialStats;
   const [search, setSearch] = useState("");
+  const [activeTags, setActiveTags] = useState<string[]>([]);
   const [bulkOpen, setBulkOpen] = useState(false);
 
   const [draft, setDraft] = useState<DraftEntry | null>(null);
@@ -86,14 +87,44 @@ export function LibClient({ initialEntries, initialStats }: Props) {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return entries;
-    return entries.filter(
-      (e) =>
-        e.term.toLowerCase().includes(q) ||
-        e.translationSr.toLowerCase().includes(q) ||
-        e.tags.toLowerCase().includes(q),
+    return entries.filter((e) => {
+      if (q) {
+        const matches =
+          e.term.toLowerCase().includes(q) ||
+          e.translationSr.toLowerCase().includes(q) ||
+          e.tags.toLowerCase().includes(q);
+        if (!matches) return false;
+      }
+      if (activeTags.length > 0) {
+        const slugs = new Set(
+          e.tags
+            .split(",")
+            .map((t) => t.trim().toLowerCase())
+            .filter(Boolean),
+        );
+        for (const t of activeTags) if (!slugs.has(t)) return false;
+      }
+      return true;
+    });
+  }, [entries, search, activeTags]);
+
+  function toggleFilterTag(tag: string) {
+    setActiveTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
-  }, [entries, search]);
+  }
+  const isFiltering = search.trim().length > 0 || activeTags.length > 0;
+
+  const allTags = useMemo(() => {
+    const set = new Set<string>();
+    for (const e of entries) {
+      for (const t of e.tags.split(",")) {
+        const cleaned = t.trim().toLowerCase();
+        if (cleaned) set.add(cleaned);
+      }
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [entries]);
 
   function refresh() {
     startTransition(() => router.refresh());
@@ -230,12 +261,19 @@ export function LibClient({ initialEntries, initialStats }: Props) {
               <span className="tabular-nums">{stats.total}</span> cards
             </span>
             <span aria-hidden className="text-foreground/20">·</span>
-            <span
-              title={DUE_TOOLTIP}
-              className={stats.due > 0 ? "text-blue-600 dark:text-blue-500" : ""}
-            >
-              <span className="tabular-nums">{stats.due}</span> to review
-            </span>
+            {stats.due > 0 ? (
+              <Link
+                href="/admin/lib/review"
+                title={DUE_TOOLTIP}
+                className="text-[#5C8500] transition-opacity hover:underline hover:opacity-80 dark:text-[#7FBA00]"
+              >
+                <span className="tabular-nums">{stats.due}</span> to review
+              </Link>
+            ) : (
+              <span title={DUE_TOOLTIP}>
+                <span className="tabular-nums">{stats.due}</span> to review
+              </span>
+            )}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -249,7 +287,6 @@ export function LibClient({ initialEntries, initialStats }: Props) {
               />
             </Link>
           </Button>
-          <LogoutButton />
         </div>
       </header>
 
@@ -270,10 +307,39 @@ export function LibClient({ initialEntries, initialStats }: Props) {
           </Button>
         </div>
 
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {allTags.map((tag) => (
+              <TagChip
+                key={tag}
+                active={activeTags.includes(tag)}
+                onClick={() => toggleFilterTag(tag)}
+              >
+                {tag}
+              </TagChip>
+            ))}
+            {activeTags.length > 0 && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="xs"
+                onClick={() => setActiveTags([])}
+                className="font-sans text-[11px] uppercase tracking-wider text-zinc-500"
+              >
+                <XIcon weight="bold" />
+                Clear tags
+              </Button>
+            )}
+          </div>
+        )}
+
         {filtered.length === 0 ? (
           <Empty
-            isSearching={search.trim().length > 0}
-            onClear={() => setSearch("")}
+            isSearching={isFiltering}
+            onClear={() => {
+              setSearch("");
+              setActiveTags([]);
+            }}
             onNew={openNew}
           />
         ) : (
@@ -293,6 +359,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
       <EntryEditor
         open={draft !== null}
         draft={draft}
+        allTags={allTags}
         onChange={setDraft}
         onClose={() => setDraft(null)}
         onSave={saveDraft}
@@ -372,15 +439,14 @@ function EntryRow({
             {entry.term}
           </p>
           <PosTag pos={entry.pos} />
-          {entry.level && <LevelTag level={entry.level} />}
           {entry.due > 0 && (
             <span
-              className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-500/10 px-2 py-0.5 text-[11px] font-medium text-blue-700 dark:text-blue-500"
+              className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#7FBA00]/10 px-2 py-0.5 text-[11px] font-medium text-[#5C8500] dark:text-[#7FBA00]"
               title={`${entry.due} of ${CARDS_PER_ENTRY} flashcards to review (German→Serbian and Serbian→German).`}
             >
               <span
                 aria-hidden
-                className="inline-block size-1.5 rounded-full bg-blue-600 dark:bg-blue-500"
+                className="inline-block size-1.5 rounded-full bg-[#7FBA00]"
               />
               {entry.due}/{CARDS_PER_ENTRY} cards
             </span>
@@ -421,14 +487,6 @@ function PosTag({ pos }: { pos: string }) {
   return (
     <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 text-[11px] font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
       {pos}
-    </span>
-  );
-}
-
-function LevelTag({ level }: { level: string }) {
-  return (
-    <span className="inline-flex shrink-0 items-center rounded-full bg-[#fd6401]/10 px-2 py-0.5 text-[11px] font-medium uppercase tracking-wider text-[#fd6401]">
-      {level}
     </span>
   );
 }
@@ -479,7 +537,7 @@ function Empty({
 }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-[#fd6401]/10 text-[#fd6401]">
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#F25022]/10 text-[#F25022]">
         <BookOpen weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">

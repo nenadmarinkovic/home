@@ -153,12 +153,12 @@ body:has([data-slot="dialog-overlay"][data-state="open"]) [data-mobile-menu] {
 }
 
 ::selection {
-  background: rgba(253, 100, 1, 0.22);
+  background: rgba(242, 80, 34, 0.22);
   color: var(--foreground);
 }
 
 article a {
-  color: #fd6401;
+  color: #F25022;
   text-decoration: none;
   transition: opacity 150ms;
 }
@@ -249,7 +249,7 @@ article .pull-quote {
   color: var(--foreground);
 }
 .ProseMirror a {
-  color: #fd6401;
+  color: #F25022;
   text-decoration: underline;
   text-underline-offset: 2px;
 }

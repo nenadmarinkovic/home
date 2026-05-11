@@ -30,7 +30,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 
-import { LogoutButton } from "../writing/logout-button";
 import type {
   DokployService,
   DokployServiceType,
@@ -283,7 +282,6 @@ export function LogClient({
             />
             {refreshing ? "Refreshing…" : "Refresh"}
           </Button>
-          <LogoutButton />
         </div>
       </header>
 
@@ -630,7 +628,7 @@ function EnvTag({ name }: { name: string }) {
 function EmptyAll() {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-[#fd6401]/10 text-[#fd6401]">
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#F25022]/10 text-[#F25022]">
         <Cloud weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">

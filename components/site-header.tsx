@@ -12,9 +12,9 @@ export function SiteHeader() {
           <Link href="/" className="flex items-center gap-2">
             <div
               aria-label="Logo"
-              className="size-3.5 rounded-full bg-[#FD6401]"
+              className="size-3 rounded-full bg-[#F25022]"
             />
-            <span className="font-serif text-lg italic leading-none text-foreground">
+            <span className="relative top-px font-serif text-lg italic leading-none text-foreground">
               Nenad Marinković
             </span>
           </Link>

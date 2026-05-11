@@ -66,7 +66,7 @@ export function LoginForm() {
       {error && (
         <p
           role="alert"
-          className="rounded-md bg-[#fd6401]/10 px-3 py-2 text-sm text-[#fd6401]"
+          className="rounded-md bg-[#F25022]/10 px-3 py-2 text-sm text-[#F25022]"
         >
           {error}
         </p>

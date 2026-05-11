@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, CheckCircle, Eye } from "@phosphor-icons/react";
+import { ArrowLeftIcon, CheckCircleIcon, EyeIcon } from "@phosphor-icons/react";
 
 import {
   Breadcrumb,
@@ -13,6 +13,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 import type { CardDirection, Rating } from "@/db/schema";
 import type { VocabEntry } from "@/lib/lib-db";
@@ -43,11 +44,19 @@ type Props = {
   initialStats: Stats;
 };
 
-const RATING_BUTTONS: { rating: Rating; label: string; key: string; tone: string }[] = [
-  { rating: 1, label: "Again", key: "1", tone: "bg-rose-500/10 text-rose-700 dark:text-rose-400" },
-  { rating: 2, label: "Hard", key: "2", tone: "bg-amber-500/10 text-amber-700 dark:text-amber-400" },
-  { rating: 3, label: "Good", key: "3", tone: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" },
-  { rating: 4, label: "Easy", key: "4", tone: "bg-sky-500/10 text-sky-700 dark:text-sky-400" },
+type RatingButton = {
+  rating: Rating;
+  label: string;
+  key: string;
+  color: string;
+};
+
+// Microsoft palette mapped to FSRS ratings.
+const RATING_BUTTONS: RatingButton[] = [
+  { rating: 1, label: "Again", key: "1", color: "#F25022" },
+  { rating: 2, label: "Hard", key: "2", color: "#FFB900" },
+  { rating: 3, label: "Good", key: "3", color: "#7FBA00" },
+  { rating: 4, label: "Easy", key: "4", color: "#00A4EF" },
 ];
 
 export function ReviewClient({ initialCard, initialStats }: Props) {
@@ -131,11 +140,15 @@ export function ReviewClient({ initialCard, initialStats }: Props) {
             <span>
               <span className="tabular-nums">{stats.due}</span> due
             </span>
-            <span aria-hidden className="text-foreground/20">·</span>
+            <span aria-hidden className="text-foreground/20">
+              ·
+            </span>
             <span>
               <span className="tabular-nums">{stats.newCards}</span> new
             </span>
-            <span aria-hidden className="text-foreground/20">·</span>
+            <span aria-hidden className="text-foreground/20">
+              ·
+            </span>
             <span>
               <span className="tabular-nums">{stats.total}</span> total
             </span>
@@ -143,7 +156,7 @@ export function ReviewClient({ initialCard, initialStats }: Props) {
         </div>
         <Button asChild variant="outline" className="h-9">
           <Link href="/admin/lib" className="group">
-            <ArrowLeft
+            <ArrowLeftIcon
               weight="bold"
               className="transition-transform duration-200 group-hover:-translate-x-0.5"
             />
@@ -161,8 +174,6 @@ export function ReviewClient({ initialCard, initialStats }: Props) {
       {!card ? (
         <Done stats={stats} />
       ) : (
-        // `key` remounts CardView for each new card — that resets reveal/timer
-        // state without us touching it from a parent effect.
         <CardView
           key={card.id}
           card={card}
@@ -198,8 +209,6 @@ function CardView({
     [onRate],
   );
 
-  // Start the timer once on mount. Component is keyed by card.id, so this
-  // runs fresh for every card.
   useEffect(() => {
     shownAtRef.current = Date.now();
   }, []);
@@ -228,86 +237,159 @@ function CardView({
   }, [revealed, rate]);
 
   const showGerman = card.direction === "de_sr";
-  const front = showGerman ? formatGerman(card.entry) : card.entry.translationSr;
+  const front = showGerman
+    ? formatGerman(card.entry)
+    : card.entry.translationSr;
   const back = showGerman ? card.entry.translationSr : formatGerman(card.entry);
   const directionLabel = showGerman ? "DE → SR" : "SR → DE";
+  const directionColor = showGerman ? "#F25022" : "#00A4EF";
+  const examples = card.entry.examples.slice(0, 3);
 
   return (
-    <section className="flex flex-1 flex-col items-center gap-8">
-      <div className="flex w-full max-w-xl flex-col items-center gap-6 rounded-2xl border border-foreground/10 bg-foreground/[0.02] px-6 py-12 text-center">
-        <span className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500">
-          {directionLabel} · rep {card.reps}
-        </span>
+    <section className="flex flex-1 flex-col items-center gap-6 sm:gap-8">
+      <article
+        className={cn(
+          "flex w-full max-w-xl flex-col items-center gap-6 rounded-2xl border border-foreground/10 bg-foreground/[0.02] px-6 py-10 text-center sm:py-12",
+          "animate-in fade-in-0 duration-150",
+        )}
+      >
+        <div className="flex items-center gap-2 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-500">
+          <span
+            aria-hidden
+            className="inline-block size-2 rounded-full"
+            style={{ backgroundColor: directionColor }}
+          />
+          <span className="tabular-nums">{directionLabel}</span>
+          <span aria-hidden className="text-foreground/20">
+            ·
+          </span>
+          <span className="tabular-nums">rep {card.reps}</span>
+        </div>
+
         <p className="font-serif text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
           {front}
         </p>
+
         {revealed && (
-          <>
-            <hr className="w-12 border-foreground/20" />
+          <div className="flex w-full flex-col items-center gap-5 animate-in fade-in-0 duration-150">
+            <span
+              aria-hidden
+              className="inline-block h-px w-12 bg-foreground/15"
+            />
             <p className="font-serif text-2xl italic text-zinc-700 dark:text-zinc-300 sm:text-3xl">
               {back}
             </p>
-            {card.entry.examples.length > 0 && (
-              <ul className="flex flex-col gap-2 text-left">
-                {card.entry.examples.slice(0, 3).map((ex, idx) => (
-                  <li
-                    key={idx}
-                    className="rounded-md bg-foreground/[0.03] px-3 py-2 font-serif text-sm"
-                  >
-                    <p className="text-foreground">{ex.de}</p>
-                    <p className="italic text-zinc-500">{ex.sr}</p>
+
+            {examples.length > 0 && (
+              <ul className="flex w-full flex-col gap-4 text-left">
+                {examples.map((ex, idx) => (
+                  <li key={idx} className="flex flex-col gap-0.5">
+                    <p className="font-serif text-base leading-snug text-foreground">
+                      {ex.de}
+                    </p>
+                    <p className="font-serif text-base italic leading-snug text-zinc-500 dark:text-zinc-400">
+                      {ex.sr}
+                    </p>
                   </li>
                 ))}
               </ul>
             )}
+
             {card.entry.notes && (
-              <p className="font-serif text-sm italic text-zinc-500">
+              <p className="max-w-prose px-2 font-serif text-sm italic leading-relaxed text-zinc-500">
                 {card.entry.notes}
               </p>
             )}
-          </>
+          </div>
         )}
-      </div>
+      </article>
 
       {!revealed ? (
-        <Button onClick={() => setRevealed(true)} className="h-11 px-8">
-          <Eye weight="bold" />
+        <Button
+          onClick={() => setRevealed(true)}
+          className="h-12 w-full max-w-xs px-8 sm:w-auto sm:h-11"
+        >
+          <EyeIcon weight="bold" />
           Show answer
-          <kbd className="ml-2 rounded border border-foreground/20 px-1.5 py-0.5 font-sans text-[10px] uppercase tracking-wider text-zinc-500">
+          <kbd className="ml-2 hidden rounded border border-foreground/20 px-1.5 py-0.5 font-sans text-[10px] uppercase tracking-wider text-zinc-500 sm:inline">
             Space
           </kbd>
         </Button>
       ) : (
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          {RATING_BUTTONS.map((b) => (
-            <Button
-              key={b.rating}
-              onClick={() => rate(b.rating)}
-              disabled={submitting}
-              variant="outline"
-              className={`h-11 px-5 ${b.tone}`}
-            >
-              <span className="font-medium">{b.label}</span>
-              <kbd className="ml-1 rounded border border-foreground/20 px-1.5 py-0.5 font-sans text-[10px] uppercase tracking-wider text-zinc-500">
-                {b.key}
-              </kbd>
-              <span className="ml-1 font-sans text-xs text-zinc-500">
-                {previewLabel(card.previews, b.rating)}
-              </span>
-            </Button>
-          ))}
-        </div>
+        <RatingGrid card={card} submitting={submitting} onRate={rate} />
       )}
     </section>
+  );
+}
+
+function RatingGrid({
+  card,
+  submitting,
+  onRate,
+}: {
+  card: CardPayload;
+  submitting: boolean;
+  onRate: (rating: Rating) => void;
+}) {
+  return (
+    <div className="grid w-full max-w-xl grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-4">
+      {RATING_BUTTONS.map((b) => (
+        <RatingButton
+          key={b.rating}
+          button={b}
+          preview={previewLabel(card.previews, b.rating)}
+          disabled={submitting}
+          onClick={() => onRate(b.rating)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function RatingButton({
+  button,
+  preview,
+  disabled,
+  onClick,
+}: {
+  button: RatingButton;
+  preview: string;
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  const { color, label } = button;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className={cn(
+        "group/btn flex w-full cursor-pointer items-center justify-center gap-2 bg-transparent py-2 text-center font-sans",
+        "disabled:cursor-not-allowed disabled:opacity-40",
+      )}
+    >
+      <span
+        aria-hidden
+        className="inline-block size-2.5 shrink-0 rounded-full transition-transform duration-200 group-hover/btn:scale-125"
+        style={{ backgroundColor: color }}
+      />
+      <span className="text-sm font-medium text-foreground">{label}</span>
+      <span className="font-sans text-[11px] uppercase tracking-wider tabular-nums text-zinc-500">
+        {preview}
+      </span>
+    </button>
   );
 }
 
 function Done({ stats }: { stats: Stats }) {
   const isEmpty = stats.total === 0;
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600">
-        <CheckCircle weight="fill" className="size-5" />
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center animate-in fade-in-0 duration-150">
+      <div
+        className="flex size-10 items-center justify-center rounded-full"
+        style={{ backgroundColor: "#7FBA001a", color: "#5C8500" }}
+      >
+        <CheckCircleIcon weight="fill" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
         <p className="font-serif text-base font-semibold text-foreground">
