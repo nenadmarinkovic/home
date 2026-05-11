@@ -19,24 +19,16 @@ export default async function Home() {
           writing about the craft of doing good work on the web.
         </p>
         <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
-          This is the writing half of my workshop. I publish essays here on
-          software, design, and the long arc of making things that last. No
-          schedule, no theme — just notes I need to think through.
-        </p>
-        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
-          This is the writing half of my workshop. I publish essays here on
-          software, design, and the long arc of making things that last. No
-          schedule, no theme — just notes I need to think through.
-        </p>
-        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
-          This is the writing half of my workshop. I publish essays here on
-          software, design, and the long arc of making things that last. No
-          schedule, no theme — just notes I need to think through.
-        </p>
-        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
-          This is the writing half of my workshop. I publish essays here on
-          software, design, and the long arc of making things that last. No
-          schedule, no theme — just notes I need to think through.
+          A machine is a thermodynamic system that uses power to apply forces
+          and control movement to perform an action. The term is commonly
+          applied to artificial devices, such as those employing engines or
+          motors, but also to natural biological macromolecules, such as
+          molecular machines. Machines can be driven by animals and people, by
+          natural forces such as wind and water, and by chemical, thermal, or
+          electrical power, and include a system of mechanisms that shape the
+          actuator input to achieve a specific application of output forces and
+          movement. They can also include computers and sensors that monitor
+          performance and plan movement, often called mechanical systems.
         </p>
       </section>
       <section className="w-full space-y-6">
