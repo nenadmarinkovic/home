@@ -176,3 +176,64 @@ export const reviewLog = sqliteTable(
 
 export type ReviewLogRow = typeof reviewLog.$inferSelect;
 export type NewReviewLogRow = typeof reviewLog.$inferInsert;
+
+export const LINK_TYPES = ["article", "video", "social", "podcast", "other"] as const;
+export type LinkType = (typeof LINK_TYPES)[number];
+
+export const tags = sqliteTable(
+  "tags",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    slug: text("slug").notNull(),
+    name: text("name").notNull(),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .default(sql`(unixepoch())`),
+  },
+  (table) => [uniqueIndex("tags_slug_unique").on(table.slug)],
+);
+
+export type TagRow = typeof tags.$inferSelect;
+export type NewTagRow = typeof tags.$inferInsert;
+
+export const links = sqliteTable(
+  "links",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    url: text("url").notNull(),
+    title: text("title").notNull().default(""),
+    type: text("type").notNull().default("article"),
+    note: text("note").notNull().default(""),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .default(sql`(unixepoch())`),
+    updatedAt: integer("updated_at", { mode: "timestamp" })
+      .notNull()
+      .default(sql`(unixepoch())`),
+  },
+  (table) => [uniqueIndex("links_url_unique").on(table.url)],
+);
+
+export type LinkRow = typeof links.$inferSelect;
+export type NewLinkRow = typeof links.$inferInsert;
+
+export const linkTags = sqliteTable(
+  "link_tags",
+  {
+    linkId: integer("link_id")
+      .notNull()
+      .references(() => links.id, { onDelete: "cascade" }),
+    tagId: integer("tag_id")
+      .notNull()
+      .references(() => tags.id, { onDelete: "cascade" }),
+  },
+  (table) => [
+    uniqueIndex("link_tags_unique").on(table.linkId, table.tagId),
+    index("link_tags_tag_idx").on(table.tagId),
+  ],
+);
+
+export const settings = sqliteTable("settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+});

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Save to website</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Save link</h1>
+    <p id="url" class="url"></p>
+
+    <div class="field">
+      <label for="title">Title</label>
+      <input id="title" type="text" autocomplete="off" />
+    </div>
+
+    <div class="field">
+      <label>Tags</label>
+      <div id="tags" class="tags"></div>
+    </div>
+
+    <div class="row">
+      <button id="save" class="primary">Save</button>
+      <button id="cancel" class="right">Cancel</button>
+    </div>
+
+    <p id="status" class="status"></p>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

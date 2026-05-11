@@ -1,28 +1,49 @@
 import type { Metadata } from "next";
 
+import { getApiToken } from "@/lib/api-token";
+import {
+  listLinks,
+  listTagsWithCounts,
+  type LinkWithTags,
+} from "@/lib/links-db";
+
+import { LinksAdminClient } from "./links-client";
+
 export const metadata: Metadata = {
   title: "Links · Admin",
   robots: { index: false, follow: false },
 };
 
-export default function AdminLinksPage() {
-  return (
-    <main className="flex flex-1 flex-col items-start gap-12 py-20">
-      <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-500">
-          Admin · Links
-        </p>
-        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          Saved reading.
-        </h1>
-        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          A quiet shelf for things worth keeping.
-        </p>
-      </hgroup>
+export const dynamic = "force-dynamic";
 
-      <p className="self-center font-sans text-xs font-medium uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-500">
-        Coming soon
-      </p>
-    </main>
+function toClient(rows: LinkWithTags[]) {
+  return rows.map((r) => ({
+    id: r.id,
+    url: r.url,
+    title: r.title,
+    type: r.type,
+    note: r.note,
+    createdAt:
+      r.createdAt instanceof Date ? r.createdAt.toISOString() : String(r.createdAt),
+    tags: r.tags.map((t) => ({ id: t.id, slug: t.slug, name: t.name })),
+  }));
+}
+
+export default function AdminLinksPage() {
+  const tags = listTagsWithCounts().map((t) => ({
+    id: t.id,
+    slug: t.slug,
+    name: t.name,
+    count: t.count,
+  }));
+  const links = toClient(listLinks({ limit: 1000 }));
+  const token = getApiToken();
+
+  return (
+    <LinksAdminClient
+      initialTags={tags}
+      initialLinks={links}
+      initialToken={token}
+    />
   );
 }
