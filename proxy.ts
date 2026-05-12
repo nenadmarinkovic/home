@@ -1,5 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { isValidSessionCookie, SESSION_COOKIE_NAME } from "@/lib/auth";
+import {
+  createSessionCookie,
+  isValidSessionCookie,
+  SESSION_COOKIE_NAME,
+  shouldRefreshSessionCookie,
+} from "@/lib/auth";
 
 const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
 
@@ -35,7 +40,17 @@ export async function proxy(request: NextRequest) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+
+  // Slide the session forward on active use. Keeps PWA users on iPhone signed
+  // in indefinitely so long as they keep opening the app — without ever
+  // extending past the hard TTL on a truly dormant session.
+  if (shouldRefreshSessionCookie(cookie)) {
+    const fresh = await createSessionCookie();
+    response.cookies.set(fresh.name, fresh.value, fresh.options);
+  }
+
+  return response;
 }
 
 export const config = {
