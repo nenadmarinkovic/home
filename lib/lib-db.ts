@@ -1,4 +1,5 @@
 import { and, asc, count, desc, eq, lte, or, sql } from "drizzle-orm";
+import { customAlphabet } from "nanoid";
 
 import { db } from "@/db/client";
 import {
@@ -20,6 +21,26 @@ export type VocabEntry = Omit<VocabEntryRow, "examples" | "conjugations"> & {
   examples: Example[];
   conjugations: Record<string, unknown>;
 };
+
+// Unambiguous alphabet (no 0/O, 1/I/l) at 10 chars ≈ 10^15 keyspace — collisions
+// at 10k rows are practically zero, and on a duplicate we retry.
+const generateSlug = customAlphabet(
+  "23456789abcdefghijkmnpqrstuvwxyz",
+  10,
+);
+
+function nextSlug(): string {
+  for (let i = 0; i < 5; i++) {
+    const candidate = generateSlug();
+    const existing = db
+      .select({ id: vocabEntries.id })
+      .from(vocabEntries)
+      .where(eq(vocabEntries.slug, candidate))
+      .get();
+    if (!existing) return candidate;
+  }
+  throw new Error("Could not generate unique slug after 5 attempts");
+}
 
 function lemmaKey(term: string): string {
   return term
@@ -84,6 +105,7 @@ export function saveEntry(input: WriteEntryInput): UpsertEntryResult {
   const conjugationsJson = JSON.stringify(input.conjugations ?? {});
 
   const values: NewVocabEntryRow = {
+    slug: nextSlug(),
     term: input.term.trim(),
     lemma,
     pos: input.pos,
@@ -198,6 +220,15 @@ export function getEntryById(id: number): VocabEntry | null {
     .select()
     .from(vocabEntries)
     .where(eq(vocabEntries.id, id))
+    .get();
+  return row ? rowToEntry(row) : null;
+}
+
+export function getEntryBySlug(slug: string): VocabEntry | null {
+  const row = db
+    .select()
+    .from(vocabEntries)
+    .where(eq(vocabEntries.slug, slug))
     .get();
   return row ? rowToEntry(row) : null;
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { getEntryById, listCardsForEntry } from "@/lib/lib-db";
+import { getEntryBySlug, listCardsForEntry } from "@/lib/lib-db";
 import { EntryDetailClient } from "./entry-detail-client";
 
 export const dynamic = "force-dynamic";
@@ -9,10 +9,10 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
-  const entry = getEntryById(Number(id));
+  const { slug } = await params;
+  const entry = getEntryBySlug(slug);
   if (!entry) return { title: "Lib · Admin", robots: { index: false, follow: false } };
   return {
     title: `${entry.term} · Lib · Admin`,
@@ -23,15 +23,12 @@ export async function generateMetadata({
 export default async function EntryDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
-  const entryId = Number(id);
-  if (!Number.isFinite(entryId)) notFound();
-
-  const entry = getEntryById(entryId);
+  const { slug } = await params;
+  const entry = getEntryBySlug(slug);
   if (!entry) notFound();
 
-  const cards = listCardsForEntry(entryId);
+  const cards = listCardsForEntry(entry.id);
   return <EntryDetailClient entry={entry} cards={cards} />;
 }

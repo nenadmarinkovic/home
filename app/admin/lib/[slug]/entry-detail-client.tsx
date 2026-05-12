@@ -332,7 +332,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
               variant="ghost"
               size="icon"
               aria-label={`Actions for ${entry.term}`}
-              className="text-zinc-600 dark:text-zinc-400"
+              className="-my-2 text-zinc-600 dark:text-zinc-400"
             >
               <DotsThreeVerticalIcon weight="bold" className="size-5" />
             </Button>

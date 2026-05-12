@@ -78,6 +78,8 @@ export const vocabEntries = sqliteTable(
   "vocab_entries",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
+    // Opaque short slug used in URLs so /admin/lib/<slug> doesn't reveal insert order.
+    slug: text("slug").notNull(),
     // The German headword as the user typed it (preserves capitalization for nouns).
     term: text("term").notNull(),
     // Lowercased lemma key used for de-duping (e.g. "gehen", "haus").
@@ -107,6 +109,7 @@ export const vocabEntries = sqliteTable(
   },
   (table) => [
     uniqueIndex("vocab_entries_lemma_pos_unique").on(table.lemma, table.pos),
+    uniqueIndex("vocab_entries_slug_unique").on(table.slug),
     index("vocab_entries_lemma_idx").on(table.lemma),
   ],
 );
