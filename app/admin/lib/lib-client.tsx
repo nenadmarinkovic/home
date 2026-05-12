@@ -325,7 +325,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-8 py-16 pb-28 font-sans md:pb-16">
+    <main className="flex flex-1 flex-col gap-4 pt-8 pb-28 font-sans md:gap-8 md:pt-16 md:pb-16">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
