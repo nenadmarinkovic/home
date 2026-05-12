@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { useEffect } from "react";
 
 const COLORS: Record<"light" | "dark", string> = {
-  light: "#f7f3f3",
+  light: "#f5f4f0",
   dark: "#0c1115",
 };
 

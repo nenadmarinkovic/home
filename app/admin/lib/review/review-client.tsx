@@ -390,7 +390,7 @@ function RatingButton({
       <span className="min-w-[3rem] text-left text-sm font-medium text-foreground">
         {label}
       </span>
-      <kbd className="font-sans text-[10px] uppercase tracking-wider tabular-nums text-zinc-400">
+      <kbd className="hidden font-sans text-[10px] uppercase tracking-wider tabular-nums text-zinc-400 sm:inline">
         {key}
       </kbd>
       <span className="min-w-[2.5rem] text-right font-sans text-[11px] uppercase tracking-wider tabular-nums text-zinc-500">

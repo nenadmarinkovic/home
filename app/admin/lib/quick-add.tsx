@@ -181,7 +181,7 @@ export function QuickAdd({ className }: Props) {
         onKeyDown={onKeyDown}
         rows={1}
         placeholder="Add a word or sentence…"
-        className="block max-h-44 min-h-14 w-full resize-none overflow-y-hidden border-0 bg-transparent px-3 py-4 pr-10 text-sm leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-9 md:py-1.5 md:leading-relaxed"
+        className="block max-h-44 min-h-16 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-4 pl-4 pr-12 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-9 md:px-3 md:py-1.5 md:pr-10 md:text-sm md:leading-relaxed"
         autoCapitalize="off"
         autoCorrect="off"
         spellCheck={false}
@@ -191,14 +191,14 @@ export function QuickAdd({ className }: Props) {
         aria-label="Add"
         disabled={!canSend}
         className={cn(
-          "absolute bottom-1.5 right-1.5 flex size-6 cursor-pointer items-center justify-center rounded-md transition-colors",
+          "absolute bottom-2 right-2 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors md:bottom-1.5 md:right-1.5 md:size-6",
           canSend
             ? "bg-foreground text-background hover:bg-foreground/85"
             : "bg-foreground/10 text-zinc-400",
           "disabled:cursor-not-allowed",
         )}
       >
-        <ArrowUpIcon weight="bold" className="size-3" />
+        <ArrowUpIcon weight="bold" className="size-4 md:size-3" />
       </button>
     </form>
   );
