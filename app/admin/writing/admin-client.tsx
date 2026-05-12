@@ -212,7 +212,7 @@ export function AdminClient({ published, drafts, exported }: AdminClientProps) {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-8 py-16 font-sans">
+    <main className="flex flex-1 flex-col gap-4 pt-8 pb-16 font-sans md:gap-8 md:pt-16">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
