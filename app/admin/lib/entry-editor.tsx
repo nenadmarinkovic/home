@@ -172,7 +172,7 @@ export function EntryEditor({
                 onChange={(e) => onChange({ ...draft, term: e.target.value })}
                 placeholder="Haus"
                 autoFocus={!draft.id}
-                className="h-10 font-sans text-sm"
+                className="h-10 font-sans text-base md:text-sm"
               />
             </FieldRow>
 
@@ -187,7 +187,7 @@ export function EntryEditor({
                   onChange({ ...draft, translationSr: e.target.value })
                 }
                 placeholder="kuća"
-                className="h-10 font-sans text-sm"
+                className="h-10 font-sans text-base md:text-sm"
               />
             </FieldRow>
 
@@ -246,7 +246,7 @@ export function EntryEditor({
                     onChange({ ...draft, plural: e.target.value || null })
                   }
                   placeholder="Häuser"
-                  className="h-10 font-sans text-sm"
+                  className="h-10 font-sans text-base md:text-sm"
                 />
               </FieldRow>
             )}
@@ -500,7 +500,7 @@ function ExamplesEditor({
 
   return (
     <>
-      <ul className="-mx-1 min-h-0 flex-1 space-y-3 overflow-y-auto px-1">
+      <ul className="-mx-1 space-y-3 px-1 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
         {examples.length === 0 && (
           <li className="rounded-md border border-dashed border-foreground/15 px-3 py-6 text-center text-sm text-zinc-500">
             No examples yet — add one to give the card context.
@@ -524,7 +524,7 @@ function ExamplesEditor({
                     next[idx] = { ...example, de: e.target.value };
                     onChange(next);
                   }}
-                  className="font-sans text-sm"
+                  className="font-sans text-base md:text-sm"
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -539,7 +539,7 @@ function ExamplesEditor({
                     next[idx] = { ...example, sr: e.target.value };
                     onChange(next);
                   }}
-                  className="font-sans text-sm"
+                  className="font-sans text-base md:text-sm"
                 />
               </div>
             </div>

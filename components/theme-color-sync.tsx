@@ -15,15 +15,24 @@ export function ThemeColorSync() {
     if (resolvedTheme !== "light" && resolvedTheme !== "dark") return;
     const color = COLORS[resolvedTheme];
 
-    let meta = document.querySelector<HTMLMetaElement>(
-      'meta[name="theme-color"]:not([media])',
+    // Overwrite every theme-color meta (including the media-targeted ones from
+    // viewport config). Otherwise Safari follows the OS color-scheme media query
+    // and ignores the in-app theme toggle, leaving the notch the wrong color.
+    const metas = document.querySelectorAll<HTMLMetaElement>(
+      'meta[name="theme-color"]',
     );
-    if (!meta) {
-      meta = document.createElement("meta");
+    metas.forEach((meta) => {
+      meta.content = color;
+    });
+
+    // Ensure at least one no-media meta exists so the value persists if all
+    // media-targeted ones were removed.
+    if (!document.querySelector('meta[name="theme-color"]:not([media])')) {
+      const meta = document.createElement("meta");
       meta.name = "theme-color";
+      meta.content = color;
       document.head.appendChild(meta);
     }
-    meta.content = color;
   }, [resolvedTheme]);
 
   return null;
