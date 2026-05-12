@@ -181,7 +181,7 @@ export function QuickAdd({ className }: Props) {
         onKeyDown={onKeyDown}
         rows={1}
         placeholder="Add a word or sentence…"
-        className="block max-h-44 min-h-16 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-4 pl-4 pr-12 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-9 md:px-3 md:py-1.5 md:pr-10 md:text-sm md:leading-relaxed"
+        className="block max-h-44 min-h-16 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-4 pl-4 pr-12 pt-2.5 text-sm leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-9 md:px-3 md:py-1.5 md:pr-10 md:text-sm md:leading-relaxed"
         autoCapitalize="off"
         autoCorrect="off"
         spellCheck={false}

@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import { createContext, useContext } from "react";
 
 import { ToastProvider } from "@/components/toasts";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const AuthContext = createContext<boolean>(false);
 
@@ -26,7 +27,9 @@ export function Providers({
         enableSystem
         disableTransitionOnChange
       >
-        <ToastProvider>{children}</ToastProvider>
+        <TooltipProvider delay={200}>
+          <ToastProvider>{children}</ToastProvider>
+        </TooltipProvider>
       </ThemeProvider>
     </AuthContext.Provider>
   );

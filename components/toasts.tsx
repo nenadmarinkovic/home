@@ -136,39 +136,36 @@ function ToastItem({
     <div
       role="status"
       className={cn(
-        "pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-lg border bg-card px-3 py-2.5",
-        toast.status === "pending" && "border-foreground/15",
-        toast.status === "success" && "border-emerald-500/30",
-        toast.status === "error" && "border-destructive/40",
+        "pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border border-foreground/10 bg-card px-4 py-3 font-sans",
         "animate-in fade-in-0 slide-in-from-top-2 duration-200 lg:slide-in-from-bottom-2",
       )}
     >
-      <span className="mt-0.5 shrink-0">
+      <span
+        className={cn(
+          "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full",
+          toast.status === "pending" && "bg-foreground/10 text-zinc-500",
+          toast.status === "success" &&
+            "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+          toast.status === "error" &&
+            "bg-destructive/15 text-destructive",
+        )}
+      >
         {toast.status === "pending" && (
-          <CircleNotchIcon
-            weight="bold"
-            className="size-4 animate-spin text-zinc-500"
-          />
+          <CircleNotchIcon weight="bold" className="size-3 animate-spin" />
         )}
         {toast.status === "success" && (
-          <CheckCircleIcon
-            weight="fill"
-            className="size-4 text-emerald-600 dark:text-emerald-500"
-          />
+          <CheckCircleIcon weight="bold" className="size-3.5" />
         )}
         {toast.status === "error" && (
-          <WarningCircleIcon
-            weight="fill"
-            className="size-4 text-destructive"
-          />
+          <WarningCircleIcon weight="bold" className="size-3.5" />
         )}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="truncate font-serif text-sm font-semibold leading-tight text-foreground">
+        <p className="truncate text-sm font-medium leading-tight tracking-tight text-foreground">
           {toast.title}
         </p>
         {toast.message && (
-          <p className="mt-0.5 line-clamp-2 font-sans text-xs leading-snug text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 line-clamp-2 text-[13px] leading-snug text-zinc-500 dark:text-zinc-400">
             {toast.message}
           </p>
         )}
@@ -177,7 +174,7 @@ function ToastItem({
         type="button"
         onClick={onDismiss}
         aria-label="Dismiss"
-        className="shrink-0 text-zinc-400 transition-colors hover:text-foreground"
+        className="-mr-1 -mt-1 flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-zinc-400 transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
       >
         <XIcon weight="bold" className="size-3.5" />
       </button>

@@ -515,10 +515,9 @@ function EntryRow({
       : "";
   return (
     <li className="group/row flex items-center gap-4 py-3.5">
-      <button
-        type="button"
-        onClick={onEdit}
-        className="-mx-2 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-2 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+      <Link
+        href={`/admin/lib/${entry.id}`}
+        className="-mx-2 -my-1 min-w-0 flex-1 rounded-md px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
       >
         <div className="flex items-center gap-2">
           <p className="truncate font-serif text-base font-semibold leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
@@ -542,7 +541,7 @@ function EntryRow({
         <p className="mt-1 truncate font-serif text-sm text-zinc-600 dark:text-zinc-400">
           {entry.translationSr || "—"}
         </p>
-      </button>
+      </Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
