@@ -452,7 +452,7 @@ function EntryRow({
             </span>
           )}
         </div>
-        <p className="mt-1 truncate font-serif text-sm italic text-zinc-600 dark:text-zinc-400">
+        <p className="mt-1 truncate font-serif text-sm text-zinc-600 dark:text-zinc-400">
           {entry.translationSr || "—"}
         </p>
       </button>
@@ -544,7 +544,7 @@ function Empty({
         <p className="font-serif text-base font-semibold text-foreground">
           {isSearching ? "No matches" : "Nothing here yet"}
         </p>
-        <p className="font-serif text-sm italic text-zinc-500 dark:text-zinc-500">
+        <p className="font-serif text-sm text-zinc-500 dark:text-zinc-500">
           {isSearching
             ? "Nothing here fits your search."
             : "Add a German term — Mistral fills in the rest."}

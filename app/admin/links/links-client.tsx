@@ -146,14 +146,10 @@ function applyControls(
       sorted.sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1));
       break;
     case "title-asc":
-      sorted.sort((a, b) =>
-        (a.title || a.url).localeCompare(b.title || b.url),
-      );
+      sorted.sort((a, b) => (a.title || a.url).localeCompare(b.title || b.url));
       break;
     case "title-desc":
-      sorted.sort((a, b) =>
-        (b.title || b.url).localeCompare(a.title || a.url),
-      );
+      sorted.sort((a, b) => (b.title || b.url).localeCompare(a.title || a.url));
       break;
   }
   return sorted;
@@ -257,12 +253,16 @@ export function LinksAdminClient({
             <span>
               <span className="tabular-nums">{links.length}</span> saved
             </span>
-            <span aria-hidden className="text-foreground/20">·</span>
+            <span aria-hidden className="text-foreground/20">
+              ·
+            </span>
             <span>
               <span className="tabular-nums">{tags.length}</span> tag
               {tags.length === 1 ? "" : "s"}
             </span>
-            <span aria-hidden className="text-foreground/20">·</span>
+            <span aria-hidden className="text-foreground/20">
+              ·
+            </span>
             <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-500">
               <CheckCircleIcon weight="fill" className="size-3.5" />
               <span className="tabular-nums">{publicCount}</span> public
@@ -546,11 +546,16 @@ function LinkList({
               className="-mx-2 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-2 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
             >
               <div className="flex items-center gap-2">
-                <p className="truncate font-serif text-base font-semibold leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
+                <p className="truncate font-serif text-lg font-semibold leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
                   {link.title || link.url}
                 </p>
                 {isPublic ? <PublicTag /> : <PrivateTag />}
               </div>
+              {link.note && (
+                <p className="mt-1 line-clamp-2 font-serif text-sm leading-snug text-zinc-600 dark:text-zinc-400">
+                  {link.note}
+                </p>
+              )}
               <p className="mt-1 truncate font-sans text-xs text-zinc-500 dark:text-zinc-500">
                 {hostnameOf(link.url)}
               </p>
@@ -576,11 +581,7 @@ function LinkList({
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={link.url} target="_blank" rel="noopener noreferrer">
                     <LinkSimpleIcon weight="bold" />
                     Open
                   </a>
@@ -631,7 +632,7 @@ function EmptyAll({ onNew }: { onNew: () => void }) {
         <p className="font-serif text-base font-semibold text-foreground">
           Nothing here yet
         </p>
-        <p className="font-serif text-sm italic text-zinc-500 dark:text-zinc-500">
+        <p className="font-serif text-sm text-zinc-500 dark:text-zinc-500">
           Save your first link — manually or from the extension.
         </p>
       </div>
@@ -794,7 +795,7 @@ function TagsDialog({
     return false;
   }
 
-  async function onAddSubmit(e: React.FormEvent) {
+  async function onAddSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     if (busyCreating) return;
     setBusyCreating(true);
@@ -868,11 +869,11 @@ function TagsDialog({
             </form>
 
             {sortedTags.length === 0 ? (
-              <p className="font-serif text-sm italic text-zinc-500">
+              <p className="font-serif text-sm text-zinc-500">
                 No tags yet — add one above.
               </p>
             ) : (
-              <ul className="flex flex-col divide-y divide-foreground/5">
+              <ul className="-mx-1 flex max-h-96 flex-col divide-y divide-foreground/5 overflow-y-auto px-1">
                 {sortedTags.map((tag) => (
                   <TagRow
                     key={tag.id}
@@ -987,7 +988,7 @@ function SaveLinkDialog({
     );
   }
 
-  async function submit(e: React.FormEvent) {
+  async function submit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!url.trim()) return;
     setBusy(true);
@@ -1246,12 +1247,7 @@ function EditLinkDialog({
           >
             Cancel
           </Button>
-          <Button
-            type="button"
-            className="h-9"
-            onClick={save}
-            disabled={busy}
-          >
+          <Button type="button" className="h-9" onClick={save} disabled={busy}>
             {busy ? "Saving…" : "Save"}
           </Button>
         </DialogFooter>

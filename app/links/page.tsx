@@ -135,7 +135,7 @@ export default async function LinksPage({
                     {host}
                   </p>
                   {link.note && (
-                    <p className="font-serif text-sm italic leading-snug text-zinc-600 dark:text-zinc-400">
+                    <p className="font-serif text-sm leading-snug text-zinc-600 dark:text-zinc-400">
                       {link.note}
                     </p>
                   )}

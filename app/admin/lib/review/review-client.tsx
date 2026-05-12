@@ -296,7 +296,7 @@ function CardView({
             )}
 
             {card.entry.notes && (
-              <p className="max-w-prose px-2 font-serif text-sm italic leading-relaxed text-zinc-500">
+              <p className="max-w-prose px-2 font-serif text-sm leading-relaxed text-zinc-500">
                 {card.entry.notes}
               </p>
             )}
@@ -395,7 +395,7 @@ function Done({ stats }: { stats: Stats }) {
         <p className="font-serif text-base font-semibold text-foreground">
           {isEmpty ? "No cards yet" : "Nothing due"}
         </p>
-        <p className="font-serif text-sm italic text-zinc-500">
+        <p className="font-serif text-sm text-zinc-500">
           {isEmpty
             ? "Add an entry to get started."
             : "Come back later — the schedule has done its job."}

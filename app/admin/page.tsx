@@ -117,7 +117,7 @@ function ToolRow({ tool, stat }: { tool: Tool; stat?: string }) {
               </p>
             )}
           </div>
-          <p className="mt-1 font-serif text-sm italic leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
+          <p className="mt-1 font-serif text-sm leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
             {tool.tagline}
           </p>
         </div>

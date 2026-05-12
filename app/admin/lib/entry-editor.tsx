@@ -355,7 +355,7 @@ function ExamplesEditor({
       </div>
       <ul className="space-y-2">
         {examples.length === 0 && (
-          <li className="rounded-md border border-dashed border-foreground/15 px-3 py-3 text-sm italic text-zinc-500">
+          <li className="rounded-md border border-dashed border-foreground/15 px-3 py-3 text-sm text-zinc-500">
             No examples yet.
           </li>
         )}

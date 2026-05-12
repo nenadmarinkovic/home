@@ -402,7 +402,7 @@ function ServiceRow({ service: s }: { service: DokployService }) {
         ) : null}
         {s.lastDeploy?.title ? (
           <p
-            className="mt-1.5 truncate font-sans text-xs italic text-zinc-500/80 dark:text-zinc-500/80"
+            className="mt-1.5 truncate font-sans text-xs text-zinc-500/80 dark:text-zinc-500/80"
             title={s.lastDeploy.description ?? undefined}
           >
             <span className="not-italic text-foreground/40">↳</span>{" "}
@@ -635,7 +635,7 @@ function EmptyAll() {
         <p className="font-serif text-base font-semibold text-foreground">
           Nothing deployed
         </p>
-        <p className="font-serif text-sm italic text-zinc-500 dark:text-zinc-500">
+        <p className="font-serif text-sm text-zinc-500 dark:text-zinc-500">
           Dokploy is reachable, but no projects came back.
         </p>
       </div>
@@ -661,7 +661,7 @@ function ErrorPanel({
         <p className="font-serif text-base font-semibold text-foreground">
           Couldn&apos;t reach Dokploy
         </p>
-        <p className="font-serif text-sm italic text-zinc-500 dark:text-zinc-500">
+        <p className="font-serif text-sm text-zinc-500 dark:text-zinc-500">
           {error}
         </p>
       </div>
@@ -686,7 +686,7 @@ function NotConfigured() {
         <p className="font-serif text-base font-semibold text-foreground">
           Dokploy isn&apos;t wired up yet
         </p>
-        <p className="font-serif text-sm italic text-zinc-500 dark:text-zinc-500">
+        <p className="font-serif text-sm text-zinc-500 dark:text-zinc-500">
           Set <code className="font-sans text-xs">DOKPLOY_URL</code> and{" "}
           <code className="font-sans text-xs">DOKPLOY_API_KEY</code> in the
           server environment, then redeploy.

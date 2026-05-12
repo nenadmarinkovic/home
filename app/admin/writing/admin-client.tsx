@@ -629,7 +629,7 @@ function EmptyAll({
         <p className="font-serif text-base font-semibold text-foreground">
           {title}
         </p>
-        <p className="font-serif text-sm italic text-zinc-500 dark:text-zinc-500">
+        <p className="font-serif text-sm text-zinc-500 dark:text-zinc-500">
           {description}
         </p>
       </div>
