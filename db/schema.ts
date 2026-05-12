@@ -23,6 +23,7 @@ export const POS_VALUES = [
   "numeral",
   "interjection",
   "phrase",
+  "sentence",
   "other",
 ] as const;
 export type Pos = (typeof POS_VALUES)[number];

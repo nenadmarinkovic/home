@@ -14,12 +14,23 @@ export default async function WritingIndexPage() {
   const list = await getArticles();
   return (
     <main className="flex flex-1 flex-col items-start gap-12 py-20">
-      <h1 className="sr-only">Writing</h1>
-      <ul className="w-full divide-y divide-foreground/10">
+      <hgroup className="max-w-prose self-center space-y-3 text-center">
+        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+          Writing
+        </p>
+        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
+          Notes from the workshop.
+        </h1>
+        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+          Long-form notes on software, design, and how the work actually gets
+          done.
+        </p>
+      </hgroup>
+      <ul className="flex w-full flex-col gap-12">
         {list.map((a) => (
           <li
             key={a.slug}
-            className="flex items-start justify-between gap-3 py-8 first:pt-0 last:pb-0"
+            className="flex items-start justify-between gap-3"
           >
             <Link
               href={`/writing/${a.slug}`}

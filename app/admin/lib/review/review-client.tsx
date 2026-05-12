@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeftIcon, CheckCircleIcon, EyeIcon } from "@phosphor-icons/react";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CheckCircleIcon,
+  EyeIcon,
+} from "@phosphor-icons/react";
 
 import {
   Breadcrumb,
@@ -241,7 +246,8 @@ function CardView({
     ? formatGerman(card.entry)
     : card.entry.translationSr;
   const back = showGerman ? card.entry.translationSr : formatGerman(card.entry);
-  const directionLabel = showGerman ? "DE → SR" : "SR → DE";
+  const directionFrom = showGerman ? "DE" : "SR";
+  const directionTo = showGerman ? "SR" : "DE";
   const directionColor = showGerman ? "#F25022" : "#00A4EF";
   const examples = card.entry.examples.slice(0, 3);
 
@@ -259,7 +265,15 @@ function CardView({
             className="inline-block size-2 rounded-full"
             style={{ backgroundColor: directionColor }}
           />
-          <span className="tabular-nums">{directionLabel}</span>
+          <span className="inline-flex items-center gap-1 tabular-nums">
+            <span className="font-bold text-foreground">{directionFrom}</span>
+            <ArrowRightIcon
+              weight="bold"
+              aria-hidden
+              className="size-3 text-zinc-400"
+            />
+            <span className="font-bold text-foreground">{directionTo}</span>
+          </span>
           <span aria-hidden className="text-foreground/20">
             ·
           </span>
@@ -287,7 +301,7 @@ function CardView({
                     <p className="font-serif text-base leading-snug text-foreground">
                       {ex.de}
                     </p>
-                    <p className="font-serif text-base italic leading-snug text-zinc-500 dark:text-zinc-400">
+                    <p className="font-serif text-base leading-snug text-zinc-500 dark:text-zinc-400">
                       {ex.sr}
                     </p>
                   </li>
@@ -357,14 +371,14 @@ function RatingButton({
   disabled: boolean;
   onClick: () => void;
 }) {
-  const { color, label } = button;
+  const { color, label, key } = button;
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "group/btn flex w-full cursor-pointer items-center justify-center gap-2 bg-transparent py-2 text-center font-sans",
+        "group/btn flex w-full cursor-pointer items-center justify-center gap-2 bg-transparent py-2 font-sans",
         "disabled:cursor-not-allowed disabled:opacity-40",
       )}
     >
@@ -373,8 +387,13 @@ function RatingButton({
         className="inline-block size-2.5 shrink-0 rounded-full transition-transform duration-200 group-hover/btn:scale-125"
         style={{ backgroundColor: color }}
       />
-      <span className="text-sm font-medium text-foreground">{label}</span>
-      <span className="font-sans text-[11px] uppercase tracking-wider tabular-nums text-zinc-500">
+      <span className="min-w-[3rem] text-left text-sm font-medium text-foreground">
+        {label}
+      </span>
+      <kbd className="font-sans text-[10px] uppercase tracking-wider tabular-nums text-zinc-400">
+        {key}
+      </kbd>
+      <span className="min-w-[2.5rem] text-right font-sans text-[11px] uppercase tracking-wider tabular-nums text-zinc-500">
         {preview}
       </span>
     </button>

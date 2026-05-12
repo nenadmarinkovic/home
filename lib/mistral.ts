@@ -53,27 +53,41 @@ export const EnrichedEntrySchema = z.object({
 
 export type EnrichedEntry = z.infer<typeof EnrichedEntrySchema>;
 
-const ENRICH_SYSTEM_PROMPT = `You are a German↔Serbian linguistic assistant. For a given German word or short phrase, output a single JSON object with this exact shape:
+const ENRICH_SYSTEM_PROMPT = `You are a German↔Serbian linguistic assistant. The input is in German or Serbian and may be a single word, a short noun phrase, a fixed expression, or a full sentence.
+
+First decide which mode to produce, based on the input:
+
+MODE A — single-item entry. Choose this when the input is one word, a short noun phrase, or a fixed idiomatic expression that maps to a single dictionary lemma in German. Produce a vocabulary entry for the German headword. Set pos to its true category (noun/verb/adjective/etc.).
+
+MODE B — sentence entry. Choose this when the input is a full sentence (the user wants to learn how to SAY this in German). Translate the WHOLE sentence to natural, idiomatic German and store the whole German sentence as the term. Do NOT reduce to a single headword. Set pos to "sentence". gender, plural, aux, separable, conjugations stay null/empty.
+
+Heuristics:
+- Has a finite verb and a subject, ends with a sentence-ending punctuation, or is 4+ words of clearly clause-shaped text → MODE B.
+- Otherwise → MODE A.
+
+Output JSON shape (same shape for both modes):
 
 {
-  "term": string,            // the input, normalized (nouns capitalized, no leading article)
-  "lemma": string,           // lowercase dictionary form key (verbs in infinitive, nouns lowercased)
-  "pos": "noun"|"verb"|"adjective"|"adverb"|"pronoun"|"preposition"|"conjunction"|"article"|"numeral"|"interjection"|"phrase"|"other",
+  "term": string,            // MODE A: German headword, normalized (nouns capitalized, no leading article). MODE B: the full German sentence.
+  "lemma": string,           // MODE A: lowercase dictionary form. MODE B: lowercase form of the German sentence (used as a stable key).
+  "pos": "noun"|"verb"|"adjective"|"adverb"|"pronoun"|"preposition"|"conjunction"|"article"|"numeral"|"interjection"|"phrase"|"sentence"|"other",
   "gender": "der"|"die"|"das"|null,   // null unless pos === "noun"
-  "plural": string|null,              // e.g. "Häuser"; null if not applicable
+  "plural": string|null,              // null unless pos === "noun"
   "aux": "haben"|"sein"|"both"|null,  // null unless pos === "verb"
   "separable": boolean|null,          // null unless pos === "verb"
   "level": "A1"|"A2"|"B1"|"B2"|"C1"|"C2"|null,
-  "translationSr": string,            // best Serbian translation(s), comma-separated for multiple senses
-  "examples": [{ "de": string, "sr": string }],   // 1-3 example sentences with Serbian translation
-  "conjugations": object,             // for verbs: { praesens: {...}, praeteritum: {...}, perfekt: string, partizip2: string }; for nouns: { nominativ_pl: string, genitiv_sg: string }; otherwise {}
-  "notes": string                     // optional usage notes; "" if none
+  "translationSr": string,            // MODE A: Serbian translation(s), comma-separated for multiple senses. MODE B: the full Serbian sentence (preserve the source if input was Serbian).
+  "examples": [{ "de": string, "sr": string }],   // 1-3 examples; for MODE B these can be small variations or related sentences
+  "conjugations": object,             // verbs: { praesens, praeteritum, perfekt, partizip2 }; nouns: { nominativ_pl, genitiv_sg }; otherwise {}
+  "notes": string                     // optional notes (register, formality, when to use); "" if none
 }
 
 Rules:
+- If the input is in Serbian, translate it to German first and produce the entry for the German term/sentence.
+- Prefer natural, conversational German over literal word-for-word translations.
 - Always output valid JSON. No prose, no markdown fences.
 - Use German orthography exactly (umlauts, ß).
-- Do not invent unusual senses; pick the most common.`;
+- Write all Serbian content in LATIN script (Gajica), never Cyrillic. Use š, č, ć, ž, đ. If the input is in Cyrillic, transliterate it to Latin before producing the entry.`;
 
 type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
@@ -136,6 +150,50 @@ export async function enrichTerm(
     throw new Error(`Mistral returned non-JSON content: ${content.slice(0, 200)}`);
   }
   return EnrichedEntrySchema.parse(parsed);
+}
+
+const EXAMPLES_SYSTEM_PROMPT = `You are a German↔Serbian linguistic assistant. Given a German headword (or phrase/sentence), generate exactly 3 short, natural example sentences in German with Serbian translations.
+
+Rules:
+- Output JSON exactly as: {"examples": [{"de": string, "sr": string}, ...]}.
+- Use Latin script (Gajica) for Serbian, never Cyrillic.
+- Each example ≤ 15 words.
+- Make the three examples distinct: different contexts, registers, or grammatical roles.
+- Sentences should sound like everyday German, not textbook examples.
+- No prose, no markdown.`;
+
+const ExamplesResponseSchema = z.object({
+  examples: z
+    .array(z.object({ de: z.string().min(1), sr: z.string().min(1) }))
+    .min(1)
+    .max(5),
+});
+
+export async function generateExamples(
+  term: string,
+  signal?: AbortSignal,
+): Promise<{ de: string; sr: string }[]> {
+  const trimmed = term.trim();
+  if (!trimmed) throw new Error("Empty term");
+
+  const content = await chatJSON(
+    TRANSLATE_MODEL,
+    [
+      { role: "system", content: EXAMPLES_SYSTEM_PROMPT },
+      { role: "user", content: trimmed },
+    ],
+    signal,
+  );
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(content);
+  } catch {
+    throw new Error(
+      `Mistral returned non-JSON content: ${content.slice(0, 200)}`,
+    );
+  }
+  return ExamplesResponseSchema.parse(parsed).examples;
 }
 
 const TRANSLATE_SYSTEM_PROMPT = `You translate between German (de) and Serbian (sr). Output a JSON object exactly: {"translation": string}. No prose, no markdown.`;

@@ -14,6 +14,13 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
+const ADMIN_TOOLS = [
+  { href: "/admin/writing", name: "Writing" },
+  { href: "/admin/lib", name: "Lib" },
+  { href: "/admin/log", name: "Log" },
+  { href: "/admin/links", name: "Links" },
+] as const;
+
 function HamburgerIcon({ open }: { open: boolean }) {
   return (
     <span aria-hidden="true" className="relative block h-3.5 w-4">
@@ -124,6 +131,29 @@ export function MobileMenu() {
                 </Link>
               )}
             </nav>
+
+            {authed && (
+              <nav className="mt-4 flex flex-col items-start gap-2 border-l border-foreground/10 pl-4 font-serif text-base text-zinc-500 dark:text-zinc-500">
+                {ADMIN_TOOLS.map((tool) => {
+                  const active = isNavActive(pathname, tool.href);
+                  return (
+                    <Link
+                      key={tool.href}
+                      href={tool.href}
+                      onClick={close}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        linkClass,
+                        active && "font-semibold text-foreground",
+                      )}
+                    >
+                      {tool.name}
+                    </Link>
+                  );
+                })}
+              </nav>
+            )}
+
             <div className="mt-auto flex flex-col gap-5 border-t border-foreground/10 pt-8">
               <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                 Elsewhere

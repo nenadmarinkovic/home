@@ -9,12 +9,14 @@ const DUE_TOOLTIP =
   "Each word becomes two flashcards — German→Serbian and Serbian→German. This counts how many of those are scheduled for review.";
 import {
   ArrowRight,
+  ArrowsDownUpIcon,
   BookOpen,
+  CheckIcon,
   DotsThreeVertical,
+  FunnelSimpleIcon,
   MagnifyingGlass,
   PencilSimple,
   Plus,
-  Sparkle,
   Trash,
   X as XIcon,
 } from "@phosphor-icons/react";
@@ -47,8 +49,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { TagChip } from "@/components/tag-chip";
 
-import { BulkAddDialog } from "./bulk-add";
 import { EntryEditor } from "./entry-editor";
+import { QuickAdd } from "./quick-add";
 import {
   emptyDraft,
   entryToDraft,
@@ -67,6 +69,34 @@ type Props = {
   initialStats: Stats;
 };
 
+type SortKey = "newest" | "oldest" | "title-asc" | "title-desc" | "most-due";
+type FilterKey = "all" | "nouns" | "verbs" | "phrases" | "sentences";
+
+const SORT_LABELS: Record<SortKey, string> = {
+  newest: "Newest",
+  oldest: "Oldest",
+  "title-asc": "Title A–Z",
+  "title-desc": "Title Z–A",
+  "most-due": "Most due",
+};
+
+const FILTER_LABELS: Record<FilterKey, string> = {
+  all: "All",
+  nouns: "Nouns",
+  verbs: "Verbs",
+  phrases: "Phrases",
+  sentences: "Sentences",
+};
+
+function matchesFilter(pos: string, filter: FilterKey): boolean {
+  if (filter === "all") return true;
+  if (filter === "nouns") return pos === "noun";
+  if (filter === "verbs") return pos === "verb";
+  if (filter === "phrases") return pos === "phrase";
+  if (filter === "sentences") return pos === "sentence";
+  return true;
+}
+
 export function LibClient({ initialEntries, initialStats }: Props) {
   const router = useRouter();
   const [, startTransition] = useTransition();
@@ -75,11 +105,13 @@ export function LibClient({ initialEntries, initialStats }: Props) {
   const stats = initialStats;
   const [search, setSearch] = useState("");
   const [activeTags, setActiveTags] = useState<string[]>([]);
-  const [bulkOpen, setBulkOpen] = useState(false);
+  const [filter, setFilter] = useState<FilterKey>("all");
+  const [sort, setSort] = useState<SortKey>("newest");
 
   const [draft, setDraft] = useState<DraftEntry | null>(null);
   const [editorError, setEditorError] = useState<string | null>(null);
   const [enriching, setEnriching] = useState(false);
+  const [generatingExamples, setGeneratingExamples] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const [pendingDelete, setPendingDelete] = useState<ClientEntry | null>(null);
@@ -87,7 +119,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return entries.filter((e) => {
+    const out = entries.filter((e) => {
       if (q) {
         const matches =
           e.term.toLowerCase().includes(q) ||
@@ -95,6 +127,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
           e.tags.toLowerCase().includes(q);
         if (!matches) return false;
       }
+      if (!matchesFilter(e.pos, filter)) return false;
       if (activeTags.length > 0) {
         const slugs = new Set(
           e.tags
@@ -106,7 +139,33 @@ export function LibClient({ initialEntries, initialStats }: Props) {
       }
       return true;
     });
-  }, [entries, search, activeTags]);
+
+    const sorted = [...out];
+    switch (sort) {
+      case "newest":
+        sorted.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
+        break;
+      case "oldest":
+        sorted.sort(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        );
+        break;
+      case "title-asc":
+        sorted.sort((a, b) => a.term.localeCompare(b.term));
+        break;
+      case "title-desc":
+        sorted.sort((a, b) => b.term.localeCompare(a.term));
+        break;
+      case "most-due":
+        sorted.sort((a, b) => b.due - a.due);
+        break;
+    }
+    return sorted;
+  }, [entries, search, filter, sort, activeTags]);
 
   function toggleFilterTag(tag: string) {
     setActiveTags((prev) =>
@@ -183,6 +242,40 @@ export function LibClient({ initialEntries, initialStats }: Props) {
     }
   }
 
+  async function generateMoreExamples() {
+    if (!draft) return;
+    const term = draft.term.trim();
+    if (!term) return;
+    setGeneratingExamples(true);
+    setEditorError(null);
+    try {
+      const res = await fetch("/api/lib/examples", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ term }),
+      });
+      const data = (await res.json()) as {
+        ok?: boolean;
+        examples?: { de: string; sr: string }[];
+        error?: string;
+      };
+      if (!res.ok || !data.ok || !data.examples) {
+        setEditorError(data.error ?? `Examples failed (${res.status})`);
+        return;
+      }
+      setDraft({
+        ...draft,
+        examples: [...draft.examples, ...data.examples],
+      });
+    } catch (err) {
+      setEditorError(
+        err instanceof Error ? err.message : "Couldn't generate examples",
+      );
+    } finally {
+      setGeneratingExamples(false);
+    }
+  }
+
   async function saveDraft() {
     if (!draft) return;
     setSaving(true);
@@ -232,7 +325,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-8 py-16 font-sans">
+    <main className="flex flex-1 flex-col gap-8 py-16 pb-28 font-sans md:pb-16">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -290,21 +383,13 @@ export function LibClient({ initialEntries, initialStats }: Props) {
         </div>
       </header>
 
+      <QuickAdd className="hidden md:flex" />
+
       <section className="flex flex-col gap-5">
         <div className="flex items-center gap-2">
           <SearchField search={search} onSearchChange={setSearch} />
-          <Button
-            variant="outline"
-            onClick={() => setBulkOpen(true)}
-            className="h-9 shrink-0"
-          >
-            <Sparkle weight="bold" />
-            <span className="hidden sm:inline">Bulk add</span>
-          </Button>
-          <Button onClick={openNew} className="h-9 shrink-0">
-            <Plus weight="bold" />
-            <span className="hidden sm:inline">New</span>
-          </Button>
+          <FilterMenu filter={filter} onFilterChange={setFilter} />
+          <SortMenu sort={sort} onSortChange={setSort} />
         </div>
 
         {allTags.length > 0 && (
@@ -364,15 +449,11 @@ export function LibClient({ initialEntries, initialStats }: Props) {
         onClose={() => setDraft(null)}
         onSave={saveDraft}
         onEnrich={enrichDraft}
+        onGenerateExamples={generateMoreExamples}
         enriching={enriching}
+        generatingExamples={generatingExamples}
         saving={saving}
         error={editorError}
-      />
-
-      <BulkAddDialog
-        open={bulkOpen}
-        onClose={() => setBulkOpen(false)}
-        onCompleted={refresh}
       />
 
       <AlertDialog
@@ -409,6 +490,12 @@ export function LibClient({ initialEntries, initialStats }: Props) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-6 md:hidden">
+        <div className="pointer-events-auto mx-auto max-w-2xl">
+          <QuickAdd />
+        </div>
+      </div>
     </main>
   );
 }
@@ -561,5 +648,81 @@ function Empty({
         </Button>
       )}
     </div>
+  );
+}
+
+function FilterMenu({
+  filter,
+  onFilterChange,
+}: {
+  filter: FilterKey;
+  onFilterChange: (filter: FilterKey) => void;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          aria-label={`Show: ${FILTER_LABELS[filter]}`}
+          className="h-9 shrink-0 gap-1.5"
+        >
+          <FunnelSimpleIcon weight="bold" />
+          <span className="hidden sm:inline">{FILTER_LABELS[filter]}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[10rem]">
+        {(Object.keys(FILTER_LABELS) as FilterKey[]).map((key) => (
+          <DropdownMenuItem
+            key={key}
+            onClick={() => onFilterChange(key)}
+            className="justify-between"
+          >
+            <span>{FILTER_LABELS[key]}</span>
+            {filter === key && (
+              <CheckIcon weight="bold" className="size-3.5 text-[#F25022]" />
+            )}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function SortMenu({
+  sort,
+  onSortChange,
+}: {
+  sort: SortKey;
+  onSortChange: (sort: SortKey) => void;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          aria-label={`Sort: ${SORT_LABELS[sort]}`}
+          className="h-9 shrink-0 gap-1.5"
+        >
+          <ArrowsDownUpIcon weight="bold" />
+          <span className="hidden sm:inline">{SORT_LABELS[sort]}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[10rem]">
+        {(Object.keys(SORT_LABELS) as SortKey[]).map((key) => (
+          <DropdownMenuItem
+            key={key}
+            onClick={() => onSortChange(key)}
+            className="justify-between"
+          >
+            <span>{SORT_LABELS[key]}</span>
+            {sort === key && (
+              <CheckIcon weight="bold" className="size-3.5 text-[#F25022]" />
+            )}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { ArrowLeftIcon } from "@phosphor-icons/react";
 
 import {
   baseNavItems,
@@ -19,7 +18,6 @@ export function HeaderNav() {
   const router = useRouter();
   const authed = useAuthed();
   const [pending, startTransition] = useTransition();
-  const isArticle = pathname.startsWith("/writing/");
 
   async function logout() {
     await fetch("/api/logout", { method: "POST" });
@@ -34,44 +32,6 @@ export function HeaderNav() {
   const navClass =
     "hidden flex-row items-center gap-5 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400";
   const linkClass = "py-0.5 transition-colors hover:text-foreground";
-
-  if (isArticle) {
-    return (
-      <nav className={navClass}>
-        <Link
-          href="/writing"
-          className={cn(linkClass, "group inline-flex items-center gap-1.5")}
-        >
-          <ArrowLeftIcon
-            weight="bold"
-            className="size-3 transition-transform duration-200 group-hover:-translate-x-0.5"
-          />
-          Writing
-        </Link>
-        {authItem && (
-          <Link
-            href={authItem.href}
-            aria-current={authActive ? "page" : undefined}
-            className={cn(linkClass, authActive && "text-foreground")}
-          >
-            {authItem.label}
-          </Link>
-        )}
-        {authed && (
-          <Button
-            type="button"
-            variant="ghost"
-            size="xs"
-            onClick={logout}
-            disabled={pending}
-            className="h-auto rounded-none border-0 px-0 py-0.5 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 hover:bg-transparent hover:text-foreground dark:text-zinc-400"
-          >
-            {pending ? "Signing out…" : "Sign out"}
-          </Button>
-        )}
-      </nav>
-    );
-  }
 
   return (
     <nav className={navClass}>

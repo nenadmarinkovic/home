@@ -265,6 +265,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
                 onChange={(e) => setDescription(e.target.value)}
                 rows={4}
                 placeholder="Why the most lasting tools are the ones that disappear into the work…"
+                className="resize-none [field-sizing:content]"
               />
               <p className="font-sans text-xs text-zinc-500 dark:text-zinc-500">
                 Used in metadata, RSS, and the OG image.

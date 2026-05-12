@@ -3,6 +3,8 @@
 import { ThemeProvider } from "next-themes";
 import { createContext, useContext } from "react";
 
+import { ToastProvider } from "@/components/toasts";
+
 const AuthContext = createContext<boolean>(false);
 
 export function useAuthedContext(): boolean {
@@ -24,7 +26,7 @@ export function Providers({
         enableSystem
         disableTransitionOnChange
       >
-        {children}
+        <ToastProvider>{children}</ToastProvider>
       </ThemeProvider>
     </AuthContext.Provider>
   );
