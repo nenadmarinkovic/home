@@ -140,26 +140,24 @@ function ToastItem({
         "animate-in fade-in-0 slide-in-from-top-2 duration-200 lg:slide-in-from-bottom-2",
       )}
     >
-      <span
-        className={cn(
-          "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full",
-          toast.status === "pending" && "bg-foreground/10 text-zinc-500",
-          toast.status === "success" &&
-            "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
-          toast.status === "error" &&
-            "bg-destructive/15 text-destructive",
-        )}
-      >
-        {toast.status === "pending" && (
-          <CircleNotchIcon weight="bold" className="size-3 animate-spin" />
-        )}
-        {toast.status === "success" && (
-          <CheckCircleIcon weight="bold" className="size-3.5" />
-        )}
-        {toast.status === "error" && (
-          <WarningCircleIcon weight="bold" className="size-3.5" />
-        )}
-      </span>
+      {toast.status === "pending" && (
+        <CircleNotchIcon
+          weight="regular"
+          className="mt-0.5 size-4 shrink-0 animate-spin text-zinc-500"
+        />
+      )}
+      {toast.status === "success" && (
+        <CheckCircleIcon
+          weight="regular"
+          className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400"
+        />
+      )}
+      {toast.status === "error" && (
+        <WarningCircleIcon
+          weight="regular"
+          className="mt-0.5 size-4 shrink-0 text-destructive"
+        />
+      )}
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium leading-tight tracking-tight text-foreground">
           {toast.title}

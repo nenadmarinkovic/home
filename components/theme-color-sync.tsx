@@ -25,14 +25,17 @@ export function ThemeColorSync() {
       meta.content = color;
     });
 
-    // Ensure at least one no-media meta exists so the value persists if all
-    // media-targeted ones were removed.
     if (!document.querySelector('meta[name="theme-color"]:not([media])')) {
       const meta = document.createElement("meta");
       meta.name = "theme-color";
       meta.content = color;
       document.head.appendChild(meta);
     }
+
+    // Persist the resolved theme to a cookie so the server can render the
+    // correct theme-color meta on the very first byte of the next request —
+    // prevents the notch from flashing the OS-default color on refresh.
+    document.cookie = `theme-color=${resolvedTheme}; path=/; max-age=31536000; samesite=lax`;
   }, [resolvedTheme]);
 
   return null;

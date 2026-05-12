@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Newsreader } from "next/font/google";
+import { cookies } from "next/headers";
 import { Providers } from "./providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -21,12 +22,20 @@ const newsreader = Newsreader({
   display: "swap",
 });
 
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f4f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#0c1115" },
-  ],
-};
+export async function generateViewport(): Promise<Viewport> {
+  // Read the in-app theme cookie (set by ThemeColorSync). If present, emit a
+  // single theme-color matching the user's pick — prevents the iOS notch from
+  // flashing the OS-default color when in-app theme differs from system theme.
+  const pref = (await cookies()).get("theme-color")?.value;
+  if (pref === "dark") return { themeColor: "#0c1115" };
+  if (pref === "light") return { themeColor: "#f5f4f0" };
+  return {
+    themeColor: [
+      { media: "(prefers-color-scheme: light)", color: "#f5f4f0" },
+      { media: "(prefers-color-scheme: dark)", color: "#0c1115" },
+    ],
+  };
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
