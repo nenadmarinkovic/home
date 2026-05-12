@@ -91,6 +91,84 @@ Rules:
 
 type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
+const CHAT_MODEL = process.env.MISTRAL_CHAT_MODEL ?? "mistral-small-latest";
+
+async function chatText(
+  model: string,
+  messages: ChatMessage[],
+  signal?: AbortSignal,
+): Promise<string> {
+  const res = await fetch(MISTRAL_URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${apiKey()}`,
+    },
+    body: JSON.stringify({ model, messages, temperature: 0.5 }),
+    signal,
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Mistral ${res.status}: ${text.slice(0, 300)}`);
+  }
+
+  const data = (await res.json()) as {
+    choices?: { message?: { content?: string } }[];
+  };
+  const content = data.choices?.[0]?.message?.content;
+  if (typeof content !== "string" || content.length === 0) {
+    throw new Error("Mistral returned an empty response");
+  }
+  return content;
+}
+
+export type EntryChatContext = {
+  term: string;
+  pos: string;
+  translationSr: string;
+  gender?: string | null;
+  plural?: string | null;
+  examples?: { de: string; sr: string }[];
+  notes?: string;
+};
+
+function buildChatSystemPrompt(entry: EntryChatContext): string {
+  const examples =
+    entry.examples
+      ?.slice(0, 4)
+      .map((ex, i) => `${i + 1}. DE: ${ex.de} — SR: ${ex.sr}`)
+      .join("\n") ?? "";
+  return `You are a warm, patient German tutor who speaks to the learner in Serbian.
+
+You are discussing ONE specific dictionary entry with the user:
+- term (DE): ${entry.term}
+- part of speech: ${entry.pos}${entry.gender ? `\n- gender: ${entry.gender}` : ""}${entry.plural ? `\n- plural: ${entry.plural}` : ""}
+- translation (SR): ${entry.translationSr}
+${examples ? `- examples:\n${examples}` : ""}${entry.notes ? `\n- notes: ${entry.notes}` : ""}
+
+Rules:
+- Reply ONLY in Serbian, Latin script (Gajica). Never use Cyrillic.
+- Stay focused on this entry — grammar, usage, register, etymology, common collocations, pitfalls, related words. Politely steer back if the user drifts off-topic.
+- Keep answers concise (2–6 sentences). Use short examples when they help.
+- When you give German examples, always pair them with a Serbian translation in parentheses or on the next line.
+- No markdown headings, no lists with bullets unless absolutely needed for clarity. Plain conversational prose.`;
+}
+
+export async function chatAboutEntry(
+  entry: EntryChatContext,
+  messages: ChatMessage[],
+  signal?: AbortSignal,
+): Promise<string> {
+  const system = buildChatSystemPrompt(entry);
+  return chatText(
+    CHAT_MODEL,
+    [{ role: "system", content: system }, ...messages],
+    signal,
+  );
+}
+
 async function chatJSON(
   model: string,
   messages: ChatMessage[],

@@ -157,6 +157,34 @@ body:has([data-slot="dialog-overlay"][data-state="open"]) [data-mobile-menu] {
   color: var(--foreground);
 }
 
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #d4d2cc transparent;
+}
+.dark .scrollbar-thin {
+  scrollbar-color: #2a3137 transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #d4d2cc;
+  border-radius: 3px;
+}
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #2a3137;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: #b0afa9;
+}
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: #3d454c;
+}
+
 article a {
   color: #F25022;
   text-decoration: none;

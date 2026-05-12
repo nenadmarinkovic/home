@@ -49,6 +49,7 @@ import type { VocabEntry } from "@/lib/lib-db";
 
 import { EntryEditor } from "../entry-editor";
 import { entryToDraft, type DraftEntry } from "../types";
+import { EntryChat } from "./entry-chat";
 
 type Props = {
   entry: VocabEntry;
@@ -361,22 +362,21 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
       </div>
 
       <header className="flex min-w-0 flex-col gap-3">
-        <h1 className="font-serif text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
+        <h1 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl">
           <span className="text-zinc-500 dark:text-zinc-500">{article}</span>
           {entry.term}
         </h1>
         <p className="font-serif text-xl leading-snug text-zinc-600 dark:text-zinc-400">
           {entry.translationSr || "—"}
         </p>
-        <div className="flex flex-wrap items-center gap-1.5">
-          <Pill>{entry.pos}</Pill>
-          {entry.plural ? <Pill>plural: {entry.plural}</Pill> : null}
-          {entry.aux ? <Pill>aux: {entry.aux}</Pill> : null}
-          {entry.separable ? <Pill>separable</Pill> : null}
-          {entry.level ? <Pill>{entry.level}</Pill> : null}
-          {entry.source && entry.source !== "manual" ? (
-            <Pill>{entry.source}</Pill>
-          ) : null}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <Pill>{entry.pos}</Pill>
+            {entry.plural ? <Pill>plural: {entry.plural}</Pill> : null}
+            {entry.aux ? <Pill>aux: {entry.aux}</Pill> : null}
+            {entry.separable ? <Pill>separable</Pill> : null}
+          </div>
+          <EntryChat slug={entry.slug} term={entry.term} />
         </div>
       </header>
 
