@@ -113,7 +113,7 @@ function Toaster({
 }) {
   if (toasts.length === 0) return null;
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-3 z-[60] flex flex-col items-center gap-2 px-3 lg:inset-x-auto lg:bottom-4 lg:left-4 lg:top-auto lg:flex-col-reverse lg:items-start lg:px-0">
+    <div className="pointer-events-none fixed inset-x-0 top-3 z-[60] flex flex-col items-center gap-2 px-3 lg:inset-x-auto lg:bottom-4 lg:right-4 lg:top-auto lg:flex-col-reverse lg:items-end lg:px-0">
       {toasts.map((toast) => (
         <ToastItem
           key={toast.id}

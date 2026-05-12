@@ -180,7 +180,7 @@ export function QuickAdd({ className }: Props) {
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={onKeyDown}
         rows={1}
-        placeholder="Add a word, phrase, or whole sentence."
+        placeholder="Add a word or sentence…"
         className="block max-h-44 min-h-14 w-full resize-none overflow-y-hidden border-0 bg-transparent px-3 py-4 pr-10 text-sm leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-9 md:py-1.5 md:leading-relaxed"
         autoCapitalize="off"
         autoCorrect="off"
