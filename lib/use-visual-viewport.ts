@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 export type VisualViewportState = {
   height: number;
@@ -11,37 +11,45 @@ export type VisualViewportState = {
   keyboardOpen: boolean;
 };
 
-function read(): VisualViewportState | null {
-  if (typeof window === "undefined") return null;
+function subscribe(cb: () => void) {
   const vv = window.visualViewport;
+  if (!vv) return () => {};
+  vv.addEventListener("resize", cb);
+  vv.addEventListener("scroll", cb);
+  return () => {
+    vv.removeEventListener("resize", cb);
+    vv.removeEventListener("scroll", cb);
+  };
+}
+
+// Cache the last snapshot so getSnapshot returns a stable reference between
+// reads (useSyncExternalStore bails out when the result is `Object.is` equal).
+let cached: VisualViewportState | null = null;
+
+function getSnapshot(): VisualViewportState | null {
+  const vv = typeof window === "undefined" ? null : window.visualViewport;
   if (!vv) return null;
-  return {
+  const next: VisualViewportState = {
     height: vv.height,
     offsetTop: vv.offsetTop,
     keyboardOpen: window.innerHeight - vv.height > 100,
   };
+  if (
+    cached &&
+    cached.height === next.height &&
+    cached.offsetTop === next.offsetTop &&
+    cached.keyboardOpen === next.keyboardOpen
+  ) {
+    return cached;
+  }
+  cached = next;
+  return next;
+}
+
+function getServerSnapshot(): VisualViewportState | null {
+  return null;
 }
 
 export function useVisualViewport(): VisualViewportState | null {
-  const [state, setState] = useState<VisualViewportState | null>(read);
-
-  useEffect(() => {
-    const vv = window.visualViewport;
-    if (!vv) return;
-
-    function update() {
-      setState(read());
-    }
-
-    update();
-    vv.addEventListener("resize", update);
-    vv.addEventListener("scroll", update);
-
-    return () => {
-      vv.removeEventListener("resize", update);
-      vv.removeEventListener("scroll", update);
-    };
-  }, []);
-
-  return state;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

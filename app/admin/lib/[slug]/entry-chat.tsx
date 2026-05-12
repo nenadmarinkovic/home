@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { flushSync } from "react-dom";
 import {
   ArrowUpIcon,
   ChatCircleIcon,
@@ -34,6 +35,30 @@ const INTRO: Message = {
     "Šta želiš da saznaš o ovoj reči? Možeš me pitati za upotrebu, gramatiku, primere, registar ili nešto drugo.",
 };
 
+const NARROW_QUERY = "(max-width: 639px)";
+
+function subscribeNarrow(cb: () => void) {
+  const mq = window.matchMedia(NARROW_QUERY);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
+function getNarrowSnapshot() {
+  return window.matchMedia(NARROW_QUERY).matches;
+}
+
+function getNarrowServerSnapshot() {
+  return false;
+}
+
+function useIsNarrowViewport() {
+  return useSyncExternalStore(
+    subscribeNarrow,
+    getNarrowSnapshot,
+    getNarrowServerSnapshot,
+  );
+}
+
 export function EntryChat({ slug, term }: Props) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([INTRO]);
@@ -44,28 +69,36 @@ export function EntryChat({ slug, term }: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const proxyRef = useRef<HTMLInputElement>(null);
   const vv = useVisualViewport();
+  const isNarrow = useIsNarrowViewport();
 
-  // iOS only opens the software keyboard when focus is set synchronously inside
-  // a user gesture. Radix mounts dialog content after render, so by the time
-  // its autoFocus runs the gesture is gone and the keyboard stays closed.
-  // Focusing a pre-mounted proxy input inside onClick opens the keyboard now;
-  // Radix then transfers focus to the textarea without it closing.
   function openChat() {
+    // iOS opens the software keyboard only when focus is set inside the
+    // synchronous user gesture. Focus a tiny real input here to pop the
+    // keyboard, flushSync the dialog so the textarea is in the DOM before
+    // this handler returns, then move focus to the textarea — the keyboard
+    // stays up through the transfer.
     proxyRef.current?.focus({ preventScroll: true });
-    setOpen(true);
+    flushSync(() => setOpen(true));
+    textareaRef.current?.focus({ preventScroll: true });
   }
 
-  // When the iOS keyboard is up, innerHeight stays full-screen but
-  // visualViewport shrinks. Anchor the dialog to the visible viewport so the
-  // input sits just above the keyboard and the chat above it stays in view.
-  const keyboardStyle: React.CSSProperties | undefined = vv?.keyboardOpen
-    ? {
-        top: `${vv.offsetTop + 12}px`,
-        height: `${vv.height - 24}px`,
-        maxHeight: `${vv.height - 24}px`,
-        transform: "translate(-50%, 0)",
-      }
-    : undefined;
+  // On narrow viewports, pin the dialog to the top of the *visible* viewport
+  // and size it to match. Without this, iOS centers the dialog with
+  // `top: 50%` and then the keyboard slides up under it — the messages above
+  // the input get pushed off-screen. Reading visualViewport every frame means
+  // dialog height tracks the keyboard smoothly with no jump.
+  //
+  // Tailwind 4's `-translate-x-1/2 -translate-y-1/2` writes to the CSS
+  // `translate` property, not `transform`. Override the same property.
+  const contentStyle: React.CSSProperties | undefined =
+    isNarrow && vv
+      ? {
+          top: `${vv.offsetTop + 12}px`,
+          height: `${vv.height - 24}px`,
+          maxHeight: `${vv.height - 24}px`,
+          translate: "-50% 0",
+        }
+      : undefined;
 
   function handleOpenChange(next: boolean) {
     setOpen(next);
@@ -153,18 +186,28 @@ export function EntryChat({ slug, term }: Props) {
         Chat
       </Button>
 
+      {/* iOS keyboard primer: a real, visible-to-the-engine input — 2px,
+          transparent text/caret — so .focus() inside the user gesture pops
+          the keyboard. Tab-skipped; users can't reach or see it. */}
       <input
         ref={proxyRef}
         type="text"
         inputMode="text"
-        aria-hidden="true"
         tabIndex={-1}
-        className="pointer-events-none fixed left-0 top-0 size-px opacity-0"
+        defaultValue=""
+        aria-hidden="true"
+        className="fixed bottom-0 right-0 size-2 cursor-default border-0 bg-transparent p-0 text-transparent caret-transparent outline-none"
+        style={{ fontSize: "16px" }}
       />
 
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent
-          style={keyboardStyle}
+          style={contentStyle}
+          onOpenAutoFocus={(e) => {
+            // We move focus to the textarea ourselves inside the gesture.
+            // Letting Radix re-focus async can close the iOS keyboard.
+            e.preventDefault();
+          }}
           className="flex h-[calc(100dvh-1.5rem)] w-[calc(100vw-1.5rem)] flex-col gap-0 p-0 sm:h-[min(80vh,40rem)] sm:w-[min(95vw,32rem)]"
         >
           <DialogHeader className="border-b border-foreground/10 px-5 py-3 sm:px-6 sm:py-4">
@@ -229,7 +272,6 @@ export function EntryChat({ slug, term }: Props) {
                 rows={1}
                 placeholder="Napiši pitanje…"
                 disabled={pending}
-                autoFocus
                 className="scrollbar-thin block max-h-44 min-h-12 resize-none overflow-y-hidden pr-12"
                 autoCapitalize="off"
                 autoCorrect="off"
