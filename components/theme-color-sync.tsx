@@ -15,22 +15,19 @@ export function ThemeColorSync() {
     if (resolvedTheme !== "light" && resolvedTheme !== "dark") return;
     const color = COLORS[resolvedTheme];
 
-    // Overwrite every theme-color meta (including the media-targeted ones from
-    // viewport config). Otherwise Safari follows the OS color-scheme media query
-    // and ignores the in-app theme toggle, leaving the notch the wrong color.
-    const metas = document.querySelectorAll<HTMLMetaElement>(
-      'meta[name="theme-color"]',
-    );
-    metas.forEach((meta) => {
-      meta.content = color;
-    });
+    // iOS Safari natively animates `theme-color` content-attribute changes,
+    // which makes the iPhone notch fade between colors in standalone PWA mode
+    // while the body bg snaps instantly. Removing the existing metas and
+    // appending a fresh one breaks the animation chain on the prior element,
+    // so the notch updates without a transition.
+    document
+      .querySelectorAll('meta[name="theme-color"]')
+      .forEach((meta) => meta.remove());
 
-    if (!document.querySelector('meta[name="theme-color"]:not([media])')) {
-      const meta = document.createElement("meta");
-      meta.name = "theme-color";
-      meta.content = color;
-      document.head.appendChild(meta);
-    }
+    const meta = document.createElement("meta");
+    meta.name = "theme-color";
+    meta.content = color;
+    document.head.appendChild(meta);
 
     // Persist the resolved theme to a cookie so the server can render the
     // correct theme-color meta on the very first byte of the next request —
