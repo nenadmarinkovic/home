@@ -16,6 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { useVisualViewport } from "@/lib/use-visual-viewport";
 import { cn } from "@/lib/utils";
 
 type Message = { role: "user" | "assistant"; content: string };
@@ -41,6 +42,30 @@ export function EntryChat({ slug, term }: Props) {
   const [error, setError] = useState<string | null>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const proxyRef = useRef<HTMLInputElement>(null);
+  const vv = useVisualViewport();
+
+  // iOS only opens the software keyboard when focus is set synchronously inside
+  // a user gesture. Radix mounts dialog content after render, so by the time
+  // its autoFocus runs the gesture is gone and the keyboard stays closed.
+  // Focusing a pre-mounted proxy input inside onClick opens the keyboard now;
+  // Radix then transfers focus to the textarea without it closing.
+  function openChat() {
+    proxyRef.current?.focus({ preventScroll: true });
+    setOpen(true);
+  }
+
+  // When the iOS keyboard is up, innerHeight stays full-screen but
+  // visualViewport shrinks. Anchor the dialog to the visible viewport so the
+  // input sits just above the keyboard and the chat above it stays in view.
+  const keyboardStyle: React.CSSProperties | undefined = vv?.keyboardOpen
+    ? {
+        top: `${vv.offsetTop + 12}px`,
+        height: `${vv.height - 24}px`,
+        maxHeight: `${vv.height - 24}px`,
+        transform: "translate(-50%, 0)",
+      }
+    : undefined;
 
   function handleOpenChange(next: boolean) {
     setOpen(next);
@@ -121,15 +146,27 @@ export function EntryChat({ slug, term }: Props) {
         type="button"
         variant="outline"
         className="h-9"
-        onClick={() => setOpen(true)}
+        onClick={openChat}
         aria-label="Chat about this entry"
       >
         <ChatCircleIcon weight="bold" />
         Chat
       </Button>
 
+      <input
+        ref={proxyRef}
+        type="text"
+        inputMode="text"
+        aria-hidden="true"
+        tabIndex={-1}
+        className="pointer-events-none fixed left-0 top-0 size-px opacity-0"
+      />
+
       <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogContent className="flex h-[calc(100dvh-1.5rem)] w-[calc(100vw-1.5rem)] flex-col gap-0 p-0 sm:h-[min(80vh,40rem)] sm:w-[min(95vw,32rem)]">
+        <DialogContent
+          style={keyboardStyle}
+          className="flex h-[calc(100dvh-1.5rem)] w-[calc(100vw-1.5rem)] flex-col gap-0 p-0 sm:h-[min(80vh,40rem)] sm:w-[min(95vw,32rem)]"
+        >
           <DialogHeader className="border-b border-foreground/10 px-5 py-3 sm:px-6 sm:py-4">
             <DialogTitle className="font-serif text-lg leading-tight tracking-tight">
               {term}
