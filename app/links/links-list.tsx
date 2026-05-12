@@ -23,8 +23,7 @@ type Props = {
 };
 
 export function LinksList({ tags, links, initialActiveTags }: Props) {
-  const [activeTags, setActiveTags] =
-    useState<string[]>(initialActiveTags);
+  const [activeTags, setActiveTags] = useState<string[]>(initialActiveTags);
 
   // Mirror filter state to the URL without triggering a Next.js navigation,
   // so refresh and share-link still work but the click stays instant.

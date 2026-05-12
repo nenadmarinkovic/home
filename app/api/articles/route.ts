@@ -17,7 +17,8 @@ const SLUG_RE = /^[a-z0-9][a-z0-9-]*$/;
 
 function isLanguage(value: unknown): value is Language {
   return (
-    typeof value === "string" && (LANGUAGES as readonly string[]).includes(value)
+    typeof value === "string" &&
+    (LANGUAGES as readonly string[]).includes(value)
   );
 }
 
@@ -79,7 +80,11 @@ export async function POST(request: Request) {
       body,
       draft: Boolean(payload.draft),
     });
-    return NextResponse.json({ ok: true, slug: row.slug, language: row.language });
+    return NextResponse.json({
+      ok: true,
+      slug: row.slug,
+      language: row.language,
+    });
   } catch (err: unknown) {
     const message =
       typeof err === "object" && err !== null && "message" in err

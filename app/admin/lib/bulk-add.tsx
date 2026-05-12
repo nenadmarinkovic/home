@@ -71,9 +71,7 @@ export function BulkAddDialog({ open, onClose, onCompleted }: Props) {
       if (cancelledRef.current) break;
       const row = seeded[i];
       setRows((curr) =>
-        curr.map((r) =>
-          r.id === row.id ? { ...r, status: "enriching" } : r,
-        ),
+        curr.map((r) => (r.id === row.id ? { ...r, status: "enriching" } : r)),
       );
 
       try {
@@ -88,15 +86,15 @@ export function BulkAddDialog({ open, onClose, onCompleted }: Props) {
           error?: string;
         };
         if (!enrichRes.ok || !enrichData.ok || !enrichData.entry) {
-          throw new Error(enrichData.error ?? `Enrich failed (${enrichRes.status})`);
+          throw new Error(
+            enrichData.error ?? `Enrich failed (${enrichRes.status})`,
+          );
         }
         const enriched = enrichData.entry;
 
         setRows((curr) =>
           curr.map((r) =>
-            r.id === row.id
-              ? { ...r, status: "saving", draft: enriched }
-              : r,
+            r.id === row.id ? { ...r, status: "saving", draft: enriched } : r,
           ),
         );
 
@@ -128,9 +126,7 @@ export function BulkAddDialog({ open, onClose, onCompleted }: Props) {
         }
         savedCount += 1;
         setRows((curr) =>
-          curr.map((r) =>
-            r.id === row.id ? { ...r, status: "saved" } : r,
-          ),
+          curr.map((r) => (r.id === row.id ? { ...r, status: "saved" } : r)),
         );
       } catch (err) {
         const message = err instanceof Error ? err.message : "Unknown error";

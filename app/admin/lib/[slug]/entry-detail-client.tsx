@@ -104,7 +104,10 @@ function relativeFromNow(d: Date, now: Date): string {
 function formatConjugations(
   conj: Record<string, unknown>,
 ): { heading: string; rows: { label: string; value: string }[] }[] {
-  const sections: { heading: string; rows: { label: string; value: string }[] }[] = [];
+  const sections: {
+    heading: string;
+    rows: { label: string; value: string }[];
+  }[] = [];
   for (const [key, value] of Object.entries(conj)) {
     if (value === null || value === undefined) continue;
     if (typeof value === "object" && !Array.isArray(value)) {
@@ -120,7 +123,10 @@ function formatConjugations(
         .map((v, i) => ({ label: String(i + 1), value: String(v) }));
       if (rows.length) sections.push({ heading: key, rows });
     } else if (value !== "") {
-      sections.push({ heading: key, rows: [{ label: "", value: String(value) }] });
+      sections.push({
+        heading: key,
+        rows: [{ label: "", value: String(value) }],
+      });
     }
   }
   return sections;
@@ -299,7 +305,8 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
     }
   }
 
-  const article = entry.pos === "noun" && entry.gender ? `${entry.gender} ` : "";
+  const article =
+    entry.pos === "noun" && entry.gender ? `${entry.gender} ` : "";
 
   return (
     <main className="flex flex-1 flex-col gap-2 py-16 font-sans md:gap-8">
@@ -342,7 +349,10 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
               <PencilSimpleIcon weight="bold" />
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem variant="destructive" onClick={() => setPendingDelete(true)}>
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={() => setPendingDelete(true)}
+            >
               <TrashIcon weight="bold" />
               Delete
             </DropdownMenuItem>
@@ -378,7 +388,10 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
             ) : (
               <ol className="flex flex-col divide-y divide-foreground/5">
                 {entry.examples.map((ex, idx) => (
-                  <li key={idx} className="flex flex-col gap-1.5 py-4 first:pt-0 last:pb-0">
+                  <li
+                    key={idx}
+                    className="flex flex-col gap-1.5 py-4 first:pt-0 last:pb-0"
+                  >
                     <p className="font-serif text-lg leading-snug text-foreground">
                       {ex.de || "—"}
                     </p>
@@ -452,17 +465,29 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                   to: "",
                 };
                 const overdue =
-                  !card.suspended && new Date(card.due).getTime() <= now.getTime();
+                  !card.suspended &&
+                  new Date(card.due).getTime() <= now.getTime();
                 const stateLabel = card.suspended
                   ? "Suspended"
                   : (CARD_STATE_LABEL[card.state] ?? `state ${card.state}`);
                 return (
-                  <li key={card.id} className="flex flex-col gap-1.5 py-3 first:pt-0 last:pb-0">
+                  <li
+                    key={card.id}
+                    className="flex flex-col gap-1.5 py-3 first:pt-0 last:pb-0"
+                  >
                     <div className="flex items-center justify-between gap-2">
                       <span className="inline-flex items-center gap-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                        <span className="font-semibold text-foreground">{dir.from}</span>
-                        <ArrowRightIcon weight="bold" aria-hidden className="size-3 text-zinc-400" />
-                        <span className="font-semibold text-foreground">{dir.to}</span>
+                        <span className="font-semibold text-foreground">
+                          {dir.from}
+                        </span>
+                        <ArrowRightIcon
+                          weight="bold"
+                          aria-hidden
+                          className="size-3 text-zinc-400"
+                        />
+                        <span className="font-semibold text-foreground">
+                          {dir.to}
+                        </span>
                       </span>
                       <div className="flex items-center gap-1">
                         <span
@@ -484,7 +509,9 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                                 variant="ghost"
                                 size="icon-sm"
                                 aria-label={
-                                  card.suspended ? "Resume card" : "Suspend card"
+                                  card.suspended
+                                    ? "Resume card"
+                                    : "Suspend card"
                                 }
                                 disabled={togglingCardId === card.id}
                                 onClick={() =>
@@ -493,9 +520,15 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                                 className="text-zinc-500 hover:text-foreground"
                               >
                                 {card.suspended ? (
-                                  <PlayIcon weight="bold" className="size-3.5" />
+                                  <PlayIcon
+                                    weight="bold"
+                                    className="size-3.5"
+                                  />
                                 ) : (
-                                  <PauseIcon weight="bold" className="size-3.5" />
+                                  <PauseIcon
+                                    weight="bold"
+                                    className="size-3.5"
+                                  />
                                 )}
                               </Button>
                             }
@@ -512,13 +545,20 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                       <span title={formatDateTime(card.due)}>
                         Due {relativeFromNow(card.due, now)}
                       </span>
-                      <span aria-hidden className="px-1.5 text-foreground/20">·</span>
+                      <span aria-hidden className="px-1.5 text-foreground/20">
+                        ·
+                      </span>
                       <span>
                         {card.reps} {card.reps === 1 ? "rep" : "reps"}
                       </span>
                       {card.lapses > 0 && (
                         <>
-                          <span aria-hidden className="px-1.5 text-foreground/20">·</span>
+                          <span
+                            aria-hidden
+                            className="px-1.5 text-foreground/20"
+                          >
+                            ·
+                          </span>
                           <span>{card.lapses} lapses</span>
                         </>
                       )}
@@ -543,7 +583,9 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
               </span>
               {entry.updatedAt.getTime() !== entry.createdAt.getTime() && (
                 <>
-                  <span aria-hidden className="px-1.5 text-foreground/20">·</span>
+                  <span aria-hidden className="px-1.5 text-foreground/20">
+                    ·
+                  </span>
                   <span title={formatDateTime(entry.updatedAt)}>
                     updated {relativeFromNow(entry.updatedAt, now)}
                   </span>
@@ -621,7 +663,9 @@ function Section({
   compact?: boolean;
 }) {
   return (
-    <section className={compact ? "flex flex-col gap-2" : "flex flex-col gap-4"}>
+    <section
+      className={compact ? "flex flex-col gap-2" : "flex flex-col gap-4"}
+    >
       <h2 className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
         {title}
       </h2>

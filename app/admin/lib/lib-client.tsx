@@ -349,11 +349,15 @@ export function LibClient({ initialEntries, initialStats }: Props) {
             <span>
               <span className="tabular-nums">{entries.length}</span> entries
             </span>
-            <span aria-hidden className="text-foreground/20">·</span>
+            <span aria-hidden className="text-foreground/20">
+              ·
+            </span>
             <span title={DUE_TOOLTIP}>
               <span className="tabular-nums">{stats.total}</span> cards
             </span>
-            <span aria-hidden className="text-foreground/20">·</span>
+            <span aria-hidden className="text-foreground/20">
+              ·
+            </span>
             {stats.due > 0 ? (
               <Link
                 href="/admin/lib/review"
@@ -469,7 +473,9 @@ export function LibClient({ initialEntries, initialStats }: Props) {
               {pendingDelete ? (
                 <>
                   This will permanently remove{" "}
-                  <code className="font-sans text-xs">{pendingDelete.term}</code>{" "}
+                  <code className="font-sans text-xs">
+                    {pendingDelete.term}
+                  </code>{" "}
                   along with both SRS cards and their review history.
                 </>
               ) : null}
@@ -510,9 +516,7 @@ function EntryRow({
   onDelete: () => void;
 }) {
   const article =
-    entry.pos === "noun" && entry.gender
-      ? `${entry.gender} `
-      : "";
+    entry.pos === "noun" && entry.gender ? `${entry.gender} ` : "";
   return (
     <li className="group/row flex items-center gap-4 py-3.5">
       <Link

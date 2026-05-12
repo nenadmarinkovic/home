@@ -13,10 +13,6 @@ export const dynamic = "force-dynamic";
 export default function AdminPage() {
   const { published, drafts, exported } = getAdminSnapshot();
   return (
-    <AdminClient
-      published={published}
-      drafts={drafts}
-      exported={exported}
-    />
+    <AdminClient published={published} drafts={drafts} exported={exported} />
   );
 }

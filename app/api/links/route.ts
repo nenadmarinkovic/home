@@ -23,7 +23,9 @@ export function GET(req: NextRequest) {
         .filter(Boolean)
     : [];
   const limitRaw = url.searchParams.get("limit");
-  const limit = limitRaw ? Math.max(1, Math.min(Number(limitRaw) || 100, 500)) : 100;
+  const limit = limitRaw
+    ? Math.max(1, Math.min(Number(limitRaw) || 100, 500))
+    : 100;
 
   const rows = listLinks({ publicOnly: true, tagSlugs, limit });
   const links = rows.map((r) => ({
@@ -32,7 +34,8 @@ export function GET(req: NextRequest) {
     title: r.title,
     type: r.type,
     note: r.note,
-    createdAt: r.createdAt instanceof Date ? r.createdAt.toISOString() : r.createdAt,
+    createdAt:
+      r.createdAt instanceof Date ? r.createdAt.toISOString() : r.createdAt,
     tags: r.tags.map((t) => ({ slug: t.slug, name: t.name })),
   }));
   return NextResponse.json({ links }, { headers: CORS_HEADERS });

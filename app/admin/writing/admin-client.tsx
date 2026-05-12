@@ -104,11 +104,7 @@ function applyControls(
   return sorted;
 }
 
-export function AdminClient({
-  published,
-  drafts,
-  exported,
-}: AdminClientProps) {
+export function AdminClient({ published, drafts, exported }: AdminClientProps) {
   const exportedSet = useMemo(() => new Set(exported), [exported]);
   const pendingExportCount = published.filter(
     (a) => !exportedSet.has(exportedKey(a)),
@@ -238,21 +234,24 @@ export function AdminClient({
           </h1>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
             <span>
-              <span className="tabular-nums">{published.length}</span>{" "}
-              published
+              <span className="tabular-nums">{published.length}</span> published
             </span>
             {drafts.length > 0 && (
               <>
-                <span aria-hidden className="text-foreground/20">·</span>
+                <span aria-hidden className="text-foreground/20">
+                  ·
+                </span>
                 <span>
-                  <span className="tabular-nums">{drafts.length}</span>{" "}
-                  draft{drafts.length === 1 ? "" : "s"}
+                  <span className="tabular-nums">{drafts.length}</span> draft
+                  {drafts.length === 1 ? "" : "s"}
                 </span>
               </>
             )}
             {published.length > 0 && (
               <>
-                <span aria-hidden className="text-foreground/20">·</span>
+                <span aria-hidden className="text-foreground/20">
+                  ·
+                </span>
                 {pendingExportCount === 0 ? (
                   <span
                     className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-500"
@@ -494,68 +493,68 @@ function ArticleList({
         const showUnexported = !a.draft && !isExported;
         const isExporting = exportingKey === key;
         return (
-        <li
-          key={a.slug}
-          className="group/row flex items-center gap-4 py-3.5 transition-colors"
-        >
-          <button
-            type="button"
-            onClick={() => onEdit(a)}
-            className="-mx-2 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-2 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+          <li
+            key={a.slug}
+            className="group/row flex items-center gap-4 py-3.5 transition-colors"
           >
-            <div className="flex items-center gap-2">
-              <p className="truncate font-serif text-base font-semibold leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
-                {a.title}
+            <button
+              type="button"
+              onClick={() => onEdit(a)}
+              className="-mx-2 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-2 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+            >
+              <div className="flex items-center gap-2">
+                <p className="truncate font-serif text-base font-semibold leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
+                  {a.title}
+                </p>
+                {a.draft && <DraftTag />}
+                {showUnexported && <UnexportedTag />}
+                {isExported && <ExportedTag />}
+              </div>
+              <p className="mt-1 truncate font-sans text-xs text-zinc-500 dark:text-zinc-500">
+                /writing/{a.slug}
               </p>
-              {a.draft && <DraftTag />}
-              {showUnexported && <UnexportedTag />}
-              {isExported && <ExportedTag />}
-            </div>
-            <p className="mt-1 truncate font-sans text-xs text-zinc-500 dark:text-zinc-500">
-              /writing/{a.slug}
-            </p>
-          </button>
-          <span className="shrink-0 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
-            {a.dateLabel}
-          </span>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label={`Actions for ${a.title}`}
-                className="text-zinc-600 dark:text-zinc-400"
-              >
-                <DotsThreeVertical weight="bold" className="size-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onEdit(a)}>
-                <PencilSimple weight="bold" />
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => onExport(a)}
-                disabled={a.draft || isExporting}
-              >
-                <GitCommit weight="bold" />
-                {isExporting
-                  ? "Exporting…"
-                  : isExported
-                    ? "Re-export to Git"
-                    : "Export to Git"}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => onDeleteRequest(a)}
-              >
-                <Trash weight="bold" />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </li>
+            </button>
+            <span className="shrink-0 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
+              {a.dateLabel}
+            </span>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`Actions for ${a.title}`}
+                  className="text-zinc-600 dark:text-zinc-400"
+                >
+                  <DotsThreeVertical weight="bold" className="size-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => onEdit(a)}>
+                  <PencilSimple weight="bold" />
+                  Edit
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => onExport(a)}
+                  disabled={a.draft || isExporting}
+                >
+                  <GitCommit weight="bold" />
+                  {isExporting
+                    ? "Exporting…"
+                    : isExported
+                      ? "Re-export to Git"
+                      : "Export to Git"}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => onDeleteRequest(a)}
+                >
+                  <Trash weight="bold" />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </li>
         );
       })}
     </ul>
@@ -597,13 +596,7 @@ function ExportedTag() {
   );
 }
 
-function EmptyAll({
-  filter,
-  onNew,
-}: {
-  filter: FilterKey;
-  onNew: () => void;
-}) {
+function EmptyAll({ filter, onNew }: { filter: FilterKey; onNew: () => void }) {
   const copy: Record<FilterKey, { title: string; description: string }> = {
     all: {
       title: "Nothing here yet",

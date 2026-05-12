@@ -293,11 +293,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
         )}
 
         <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={onClose}
-            disabled={pending}
-          >
+          <Button variant="outline" onClick={onClose} disabled={pending}>
             Cancel
           </Button>
           <Button

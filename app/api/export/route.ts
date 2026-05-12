@@ -19,7 +19,8 @@ function getEnv(key: string): string {
 
 function isLanguage(value: unknown): value is Language {
   return (
-    typeof value === "string" && (LANGUAGES as readonly string[]).includes(value)
+    typeof value === "string" &&
+    (LANGUAGES as readonly string[]).includes(value)
   );
 }
 
@@ -126,7 +127,9 @@ async function exportToGitHub(files: ExportFile[], selector?: ExportSelector) {
   };
 }
 
-async function parseSelector(request: Request): Promise<ExportSelector | undefined> {
+async function parseSelector(
+  request: Request,
+): Promise<ExportSelector | undefined> {
   const ctype = request.headers.get("content-type") ?? "";
   if (!ctype.includes("application/json")) return undefined;
   try {
@@ -135,7 +138,8 @@ async function parseSelector(request: Request): Promise<ExportSelector | undefin
       language?: unknown;
     };
     if (!body || typeof body !== "object") return undefined;
-    if (body.slug === undefined && body.language === undefined) return undefined;
+    if (body.slug === undefined && body.language === undefined)
+      return undefined;
     if (typeof body.slug !== "string" || !body.slug) {
       throw new Error("slug must be a non-empty string");
     }

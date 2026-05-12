@@ -119,17 +119,19 @@ export function EntryEditor({
   }
 
   const canSave =
-    !saving && draft.term.trim().length > 0 && draft.translationSr.trim().length > 0;
+    !saving &&
+    draft.term.trim().length > 0 &&
+    draft.translationSr.trim().length > 0;
 
   return (
     <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
       <DialogContent className="w-[calc(100vw-1.5rem)] max-h-[calc(100dvh-1.5rem)] sm:w-[min(95vw,72rem)] sm:max-h-[92vh]">
         <DialogHeader>
-          <DialogTitle>
-            {draft.id ? "Edit entry" : "New entry"}
-          </DialogTitle>
+          <DialogTitle>{draft.id ? "Edit entry" : "New entry"}</DialogTitle>
           <DialogDescription className="flex flex-col gap-1.5">
-            <span>German term plus the metadata used for the two SRS cards.</span>
+            <span>
+              German term plus the metadata used for the two SRS cards.
+            </span>
             <span className="flex flex-wrap items-center gap-x-3 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500">
               <span className="inline-flex items-center gap-1">
                 DE
@@ -334,9 +336,7 @@ export function EntryEditor({
                       variant="ghost"
                       size="sm"
                       onClick={() => void onGenerateExamples()}
-                      disabled={
-                        generatingExamples || !draft.term.trim()
-                      }
+                      disabled={generatingExamples || !draft.term.trim()}
                     >
                       <Sparkle weight="bold" />
                       {generatingExamples ? "Generating…" : "Generate"}
@@ -349,10 +349,7 @@ export function EntryEditor({
                     onClick={() =>
                       onChange({
                         ...draft,
-                        examples: [
-                          ...draft.examples,
-                          { de: "", sr: "" },
-                        ],
+                        examples: [...draft.examples, { de: "", sr: "" }],
                       })
                     }
                   >
@@ -483,8 +480,7 @@ function ExamplesEditor({
   onChange: (next: Example[]) => void;
 }) {
   const [pendingDelete, setPendingDelete] = useState<number | null>(null);
-  const pending =
-    pendingDelete !== null ? examples[pendingDelete] : undefined;
+  const pending = pendingDelete !== null ? examples[pendingDelete] : undefined;
 
   function removeAt(idx: number) {
     const next = examples.slice();

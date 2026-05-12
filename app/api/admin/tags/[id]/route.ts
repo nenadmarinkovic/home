@@ -20,7 +20,8 @@ export async function PATCH(
   }
   const { id: rawId } = await params;
   const id = parseId(rawId);
-  if (id === null) return NextResponse.json({ error: "bad_id" }, { status: 400 });
+  if (id === null)
+    return NextResponse.json({ error: "bad_id" }, { status: 400 });
 
   let body: { name?: unknown };
   try {
@@ -53,7 +54,8 @@ export async function DELETE(
   }
   const { id: rawId } = await params;
   const id = parseId(rawId);
-  if (id === null) return NextResponse.json({ error: "bad_id" }, { status: 400 });
+  if (id === null)
+    return NextResponse.json({ error: "bad_id" }, { status: 400 });
   const ok = deleteTag(id);
   if (!ok) return NextResponse.json({ error: "not_found" }, { status: 404 });
   return NextResponse.json({ ok: true });

@@ -28,10 +28,7 @@ export default async function WritingIndexPage() {
       </hgroup>
       <ul className="flex w-full flex-col gap-12">
         {list.map((a) => (
-          <li
-            key={a.slug}
-            className="flex items-start justify-between gap-3"
-          >
+          <li key={a.slug} className="flex items-start justify-between gap-3">
             <Link
               href={`/writing/${a.slug}`}
               className="group flex flex-1 flex-col gap-2"

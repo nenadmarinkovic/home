@@ -24,7 +24,9 @@ function toClient(rows: LinkWithTags[]) {
     type: r.type,
     note: r.note,
     createdAt:
-      r.createdAt instanceof Date ? r.createdAt.toISOString() : String(r.createdAt),
+      r.createdAt instanceof Date
+        ? r.createdAt.toISOString()
+        : String(r.createdAt),
     tags: r.tags.map((t) => ({ id: t.id, slug: t.slug, name: t.name })),
   }));
 }

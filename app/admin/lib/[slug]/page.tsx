@@ -13,7 +13,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const entry = getEntryBySlug(slug);
-  if (!entry) return { title: "Lib · Admin", robots: { index: false, follow: false } };
+  if (!entry)
+    return { title: "Lib · Admin", robots: { index: false, follow: false } };
   return {
     title: `${entry.term} · Lib · Admin`,
     robots: { index: false, follow: false },

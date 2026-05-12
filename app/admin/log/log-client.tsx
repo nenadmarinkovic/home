@@ -460,7 +460,10 @@ function buildMeta(s: DokployService): MetaEntry[] {
   for (const d of s.domains) {
     const proto = d.https ? "https" : "http";
     const url = `${proto}://${d.host}${d.path && d.path !== "/" ? d.path : ""}`;
-    const text = d.port && d.port !== (d.https ? 443 : 80) ? `${d.host}:${d.port}` : d.host;
+    const text =
+      d.port && d.port !== (d.https ? 443 : 80)
+        ? `${d.host}:${d.port}`
+        : d.host;
     out.push({ icon: "domain", text, href: url, title: "Domain" });
   }
 
@@ -665,7 +668,12 @@ function ErrorPanel({
           {error}
         </p>
       </div>
-      <Button onClick={onRetry} variant="outline" disabled={retrying} className="mt-2">
+      <Button
+        onClick={onRetry}
+        variant="outline"
+        disabled={retrying}
+        className="mt-2"
+      >
         <ArrowsClockwise
           weight="bold"
           className={retrying ? "animate-spin" : undefined}

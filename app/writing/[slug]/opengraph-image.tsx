@@ -26,77 +26,75 @@ export default async function Image({
   ]);
 
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        padding: "80px",
+        background: "#f7f3f3",
+        color: "#151515",
+        fontFamily: "Source Serif",
+      }}
+    >
       <div
         style={{
-          width: "100%",
-          height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "80px",
-          background: "#f7f3f3",
-          color: "#151515",
-          fontFamily: "Source Serif",
+          alignItems: "center",
+          gap: 16,
+          fontSize: 24,
+          fontStyle: "italic",
+          color: "#52525b",
         }}
       >
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 16,
-            fontSize: 24,
-            fontStyle: "italic",
-            color: "#52525b",
+            width: 14,
+            height: 14,
+            borderRadius: 999,
+            background: "#F25022",
+          }}
+        />
+        Nenad Marinković
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        <div
+          style={{
+            fontSize: 84,
+            fontWeight: 600,
+            lineHeight: 1.05,
+            letterSpacing: "-0.02em",
           }}
         >
-          <div
-            style={{
-              width: 14,
-              height: 14,
-              borderRadius: 999,
-              background: "#F25022",
-            }}
-          />
-          Nenad Marinković
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          <div
-            style={{
-              fontSize: 84,
-              fontWeight: 600,
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            {article.title}
-          </div>
-          <div
-            style={{
-              fontSize: 36,
-              fontStyle: "italic",
-              lineHeight: 1.2,
-              color: "#52525b",
-            }}
-          >
-            {article.subtitle}
-          </div>
+          {article.title}
         </div>
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            fontSize: 20,
-            textTransform: "uppercase",
-            letterSpacing: "0.08em",
+            fontSize: 36,
+            fontStyle: "italic",
+            lineHeight: 1.2,
             color: "#52525b",
           }}
         >
-          <span>{article.dateLabel}</span>
-          <span>nenadmarinkovic.com</span>
+          {article.subtitle}
         </div>
       </div>
-    ),
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: 20,
+          textTransform: "uppercase",
+          letterSpacing: "0.08em",
+          color: "#52525b",
+        }}
+      >
+        <span>{article.dateLabel}</span>
+        <span>nenadmarinkovic.com</span>
+      </div>
+    </div>,
     {
       ...size,
       fonts: [
