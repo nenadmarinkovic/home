@@ -97,7 +97,7 @@ export default async function AdminPage() {
 
 function ToolRow({ tool, stat }: { tool: Tool; stat?: string }) {
   return (
-    <li className="py-6 first:pt-0 last:pb-0">
+    <li className="py-3 first:pt-0 last:pb-0 sm:py-6">
       <Link href={tool.href} className="group flex items-start gap-4">
         <span
           aria-hidden
