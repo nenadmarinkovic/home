@@ -65,7 +65,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 onClick={() => toggle(tag.slug)}
                 aria-pressed={active}
                 className={cn(
-                  "inline-flex cursor-pointer items-center rounded-full border px-3 py-1 font-sans text-xs font-medium uppercase tracking-wider transition-colors",
+                  "inline-flex cursor-pointer items-center rounded-full border px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-wider transition-colors",
                   active
                     ? "border-foreground bg-foreground text-background"
                     : "border-foreground/15 text-zinc-600 hover:border-foreground/30 hover:text-foreground dark:text-zinc-400",
@@ -79,7 +79,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
             <button
               type="button"
               onClick={() => setActiveTags([])}
-              className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-foreground/15 px-3 py-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 transition-colors hover:border-foreground/30 hover:text-foreground dark:text-zinc-400"
+              className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-foreground/15 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-wider text-zinc-600 transition-colors hover:border-foreground/30 hover:text-foreground dark:text-zinc-400"
             >
               <XIcon weight="bold" className="size-3" />
               Clear

@@ -9,7 +9,6 @@ import {
   getAuthNavItem,
   isNavActive,
 } from "@/components/nav-items";
-import { Button } from "@/components/ui/button";
 import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
@@ -58,16 +57,17 @@ export function HeaderNav() {
         </Link>
       )}
       {authed && (
-        <Button
+        <button
           type="button"
-          variant="ghost"
-          size="xs"
           onClick={logout}
           disabled={pending}
-          className="h-auto rounded-none border-0 px-0 py-0.5 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 hover:bg-transparent hover:text-foreground dark:text-zinc-400"
+          className={cn(
+            linkClass,
+            "cursor-pointer font-sans text-xs font-medium uppercase tracking-wider disabled:opacity-50",
+          )}
         >
           {pending ? "Signing out…" : "Sign out"}
-        </Button>
+        </button>
       )}
     </nav>
   );
