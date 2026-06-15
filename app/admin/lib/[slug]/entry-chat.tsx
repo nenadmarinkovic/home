@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { flushSync } from "react-dom";
 import {
   ArrowUpIcon,
@@ -151,12 +157,19 @@ export function EntryChat({ slug, term }: Props) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ slug, messages: outbound }),
       });
-      const data = (await res.json()) as { ok?: boolean; reply?: string; error?: string };
+      const data = (await res.json()) as {
+        ok?: boolean;
+        reply?: string;
+        error?: string;
+      };
       if (!res.ok || !data.ok || !data.reply) {
         setError(data.error ?? `Chat failed (${res.status})`);
         return;
       }
-      setMessages((prev) => [...prev, { role: "assistant", content: data.reply! }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: data.reply! },
+      ]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Chat failed");
     } finally {
@@ -247,7 +260,10 @@ export function EntryChat({ slug, term }: Props) {
               {pending && (
                 <li className="flex justify-start">
                   <div className="flex items-center gap-2 rounded-2xl bg-foreground/[0.06] px-3.5 py-2 font-sans text-sm text-zinc-500">
-                    <CircleNotchIcon weight="bold" className="size-3.5 animate-spin" />
+                    <CircleNotchIcon
+                      weight="bold"
+                      className="size-3.5 animate-spin"
+                    />
                     Razmišljam…
                   </div>
                 </li>

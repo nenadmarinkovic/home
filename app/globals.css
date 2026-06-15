@@ -55,7 +55,7 @@
 :root {
   --unit-lg: 1.125rem;
   --background: #f5f4f0;
-  --foreground: #151515;
+  --foreground: #000000;
   --card: #fbf9f7;
   --card-foreground: oklch(0.145 0 0);
   --popover: #fbf9f7;
@@ -91,7 +91,7 @@
 
 .dark {
   --background: #0c1115;
-  --foreground: #ededed;
+  --foreground: #ffffff;
   --card: oklch(0.18 0.012 234);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.18 0.012 234);
