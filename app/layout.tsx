@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 import { cookies } from "next/headers";
 import { Providers } from "./providers";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
@@ -10,16 +10,27 @@ import { getAuthedFromCookie } from "@/lib/auth-server";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const geist = Geist({
+const sans = localFont({
+  src: "./fonts/google-sans-flex.woff2",
   variable: "--font-geist",
-  subsets: ["latin", "latin-ext"],
+  weight: "1 1000",
   display: "swap",
 });
 
-const newsreader = Newsreader({
+const newsreader = localFont({
+  src: [
+    {
+      path: "./fonts/newsreader.woff2",
+      weight: "200 800",
+      style: "normal",
+    },
+    {
+      path: "./fonts/newsreader-italic.woff2",
+      weight: "200 800",
+      style: "italic",
+    },
+  ],
   variable: "--font-newsreader",
-  subsets: ["latin", "latin-ext"],
-  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -84,7 +95,7 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geist.variable} ${newsreader.variable} antialiased`}
+      className={`${sans.variable} ${newsreader.variable} antialiased`}
     >
       <body>
         <Providers authed={authed}>
