@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nenadmarinkovic.com
 
-## Getting Started
+Personal site of Nenad Marinković — articles, a Serbian-language word library, and a few small tools.
 
-First, run the development server:
+Built with [Next.js](https://nextjs.org) (App Router) and SQLite via Drizzle.
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js (App Router)
+- Tailwind CSS v4 with shadcn/ui
+- SQLite + Drizzle ORM
+- Self-hosted fonts via `next/font/local`:
+  - **Google Sans Flex** (sans, variable) — subsetted to Latin + Latin Ext, axes trimmed to `wght` and `opsz`
+  - **Newsreader** (serif, variable, normal + italic) — subsetted to Latin + Latin Ext
 
-## Learn More
+Font files live in `app/fonts/`.
 
-To learn more about Next.js, take a look at the following resources:
+## Content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Articles are plain Markdown in `content/en/` — no CMS, no database for posts. Keeps the site portable.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` — dev server
+- `npm run build` — production build (runs migrations + seed first)
+- `npm run start` — production server
+- `npm run lint` — ESLint
+- `npm run db:migrate` — apply Drizzle migrations
+- `npm run db:studio` — Drizzle Studio

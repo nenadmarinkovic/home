@@ -12,7 +12,7 @@ import "./globals.css";
 
 const sans = localFont({
   src: "./fonts/google-sans-flex.woff2",
-  variable: "--font-geist",
+  variable: "--font-sans",
   weight: "1 1000",
   display: "swap",
 });
@@ -30,7 +30,7 @@ const newsreader = localFont({
       style: "italic",
     },
   ],
-  variable: "--font-newsreader",
+  variable: "--font-serif",
   display: "swap",
 });
 

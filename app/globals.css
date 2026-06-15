@@ -8,10 +8,10 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans:
-    var(--font-geist), -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    var(--font-sans), -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "SF Pro Display", "Helvetica Neue", Helvetica, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-serif: var(--font-serif), ui-serif, Georgia, serif;
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -186,7 +186,7 @@ body:has([data-slot="dialog-overlay"][data-state="open"]) [data-mobile-menu] {
 }
 
 article a {
-  color: #F25022;
+  color: #f25022;
   text-decoration: none;
   transition: opacity 150ms;
 }
@@ -277,7 +277,7 @@ article .pull-quote {
   color: var(--foreground);
 }
 .ProseMirror a {
-  color: #F25022;
+  color: #f25022;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
