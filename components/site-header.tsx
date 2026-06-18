@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { HeaderBio } from "@/components/header-bio";
 import { HeaderNav } from "@/components/header-nav";
 import { MobileMenu } from "@/components/mobile-menu";
 
@@ -20,7 +19,6 @@ export function SiteHeader() {
           </Link>
           <MobileMenu />
         </div>
-        <HeaderBio />
       </div>
       <HeaderNav />
     </header>
