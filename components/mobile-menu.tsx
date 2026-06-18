@@ -26,20 +26,20 @@ function HamburgerIcon({ open }: { open: boolean }) {
     <span aria-hidden="true" className="relative block h-3.5 w-4">
       <span
         className={cn(
-          "absolute left-0 block h-px w-full bg-current transition-all duration-200",
-          open ? "top-[6.5px] rotate-45" : "top-0",
+          "absolute left-0 block h-0.5 w-full rounded-full bg-current transition-all duration-200",
+          open ? "top-1.5 rotate-45" : "top-0",
         )}
       />
       <span
         className={cn(
-          "absolute left-0 top-[6.5px] block h-px w-full bg-current transition-opacity duration-200",
+          "absolute left-0 top-1.5 block h-0.5 w-full rounded-full bg-current transition-opacity duration-200",
           open && "opacity-0",
         )}
       />
       <span
         className={cn(
-          "absolute left-0 block h-px w-full bg-current transition-all duration-200",
-          open ? "top-[6.5px] -rotate-45" : "top-[13px]",
+          "absolute left-0 block h-0.5 w-full rounded-full bg-current transition-all duration-200",
+          open ? "top-1.5 -rotate-45" : "top-3",
         )}
       />
     </span>
