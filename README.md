@@ -30,10 +30,14 @@ in `content/` into it.
   syncs back when reconnected.
 - **Links** — a tagged bookmark collection with AI summaries, fed by companion
   Chrome and Firefox extensions (`extensions/`).
+- **Ops log** — the admin **Log** is a live dashboard for the personal stack: it
+  pulls a Dokploy snapshot and shows projects, applications, databases, domains,
+  and deployment status at a glance.
 - **Pages** — home, tools, infrastructure, and contact, plus an RSS feed at
   `/rss.xml`.
-- **Admin** — a password-protected area (`/admin`) for managing writing, the word
-  library and reviews, links, and an activity log.
+- **Admin** — a password-protected area (`/admin`) with four tools: **Writing**
+  (drafts, publishing, snapshots to git), **Lib** (the word library and reviews),
+  **Log** (the ops dashboard above), and **Links**.
 
 ## Stack
 
@@ -82,7 +86,7 @@ Set these in `.env.local` for development (none are committed):
 | `DATABASE_PATH` | SQLite file path (defaults to `data/articles.db`) |
 | `MISTRAL_API_KEY` | Mistral API key for AI features |
 | `MISTRAL_MODEL`, `MISTRAL_CHAT_MODEL`, `MISTRAL_TRANSLATE_MODEL`, `MISTRAL_SUMMARIZE_MODEL`, `MISTRAL_TRANSCRIBE_MODEL` | Optional per-task model overrides |
-| `DOKPLOY_URL`, `DOKPLOY_API_KEY` | Dokploy instance for the infrastructure page |
+| `DOKPLOY_URL`, `DOKPLOY_API_KEY` | Dokploy instance powering the infrastructure page and the admin Log dashboard |
 | `NEXT_PUBLIC_BUILD_ID` | Optional explicit build id (otherwise derived from the git SHA) |
 
 ## Content
