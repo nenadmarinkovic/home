@@ -1,17 +1,32 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 const COLORS: Record<"light" | "dark", string> = {
   light: "#f5f4f0",
   dark: "#0c1115",
 };
 
+// useLayoutEffect on the client, useEffect on the server. This component only
+// touches the DOM (it renders null), so the layout effect never runs during SSR
+// anyway — swapping to useEffect there just silences React's "useLayoutEffect
+// does nothing on the server" warning.
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 export function ThemeColorSync() {
   const { resolvedTheme } = useTheme();
 
-  useEffect(() => {
+  // Run as a layout effect so the authoritative theme-color meta is installed
+  // synchronously after hydration, *before* the browser paints the first
+  // post-hydration frame. A plain effect fires after that paint, which leaves a
+  // sub-second window where a stale meta — e.g. a service-worker-cached "/" that
+  // baked the opposite theme before the radio woke up (navigations are
+  // network-first; see public/sw.js) — can briefly become active and iOS
+  // animates the notch toward it before we correct it. Installing the right meta
+  // pre-paint closes that window.
+  useIsomorphicLayoutEffect(() => {
     if (resolvedTheme !== "light" && resolvedTheme !== "dark") return;
     const color = COLORS[resolvedTheme];
 
