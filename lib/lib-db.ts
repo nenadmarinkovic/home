@@ -394,6 +394,31 @@ export function getNextDueCard(now: Date = new Date()): DueCard | null {
   return { card, entry: rowToEntry(entryRow) };
 }
 
+/**
+ * The full set of non-suspended cards plus their entries — the entire
+ * reviewable deck. Used to mirror the deck into IndexedDB so reviews can run
+ * offline on a phone, with scheduling done client-side by the same FSRS code.
+ * One query per table, joined in memory, to avoid an N+1 over entries.
+ */
+export function listReviewDeck(): DueCard[] {
+  const cardRows = db
+    .select()
+    .from(srsCards)
+    .where(eq(srsCards.suspended, false))
+    .all();
+  if (cardRows.length === 0) return [];
+
+  const entryRows = db.select().from(vocabEntries).all();
+  const entryById = new Map(entryRows.map((row) => [row.id, rowToEntry(row)]));
+
+  const deck: DueCard[] = [];
+  for (const card of cardRows) {
+    const entry = entryById.get(card.entryId);
+    if (entry) deck.push({ card, entry });
+  }
+  return deck;
+}
+
 export type RecordReviewInput = {
   cardId: number;
   rating: Rating;
