@@ -61,7 +61,7 @@ export function MobileMenu() {
 
   const close = () => setOpen(false);
   const linkClass =
-    "cursor-pointer touch-manipulation py-1 leading-none transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground focus-visible:rounded-sm";
+    "cursor-pointer touch-manipulation py-1.5 leading-none transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground focus-visible:rounded-sm";
 
   return (
     <div className="md:hidden" data-mobile-menu>
@@ -88,14 +88,14 @@ export function MobileMenu() {
             <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
               Navigate
             </p>
-            <nav className="mt-4 flex flex-col items-start gap-3 font-sans text-lg font-medium tracking-tight text-zinc-600 dark:text-zinc-400">
+            <nav className="mt-4 flex flex-col items-start gap-2 font-sans text-lg font-normal tracking-tight text-zinc-600 dark:text-zinc-400">
               <Link
                 href="/"
                 onClick={close}
                 aria-current={pathname === "/" ? "page" : undefined}
                 className={cn(
                   linkClass,
-                  pathname === "/" && "font-semibold text-foreground",
+                  pathname === "/" && "text-foreground",
                 )}
               >
                 Home
@@ -110,7 +110,7 @@ export function MobileMenu() {
                     aria-current={active ? "page" : undefined}
                     className={cn(
                       linkClass,
-                      active && "font-semibold text-foreground",
+                      active && "text-foreground",
                     )}
                   >
                     {item.label}
@@ -124,7 +124,7 @@ export function MobileMenu() {
                   aria-current={authActive ? "page" : undefined}
                   className={cn(
                     linkClass,
-                    authActive && "font-semibold text-foreground",
+                    authActive && "text-foreground",
                   )}
                 >
                   {authItem.label}
@@ -144,7 +144,7 @@ export function MobileMenu() {
                       aria-current={active ? "page" : undefined}
                       className={cn(
                         linkClass,
-                        active && "font-semibold text-foreground",
+                        active && "text-foreground",
                       )}
                     >
                       {tool.name}
