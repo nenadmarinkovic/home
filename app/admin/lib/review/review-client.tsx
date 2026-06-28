@@ -1,11 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
   CheckCircleIcon,
+  CloudSlashIcon,
   EyeIcon,
 } from "@phosphor-icons/react";
 
@@ -19,34 +27,26 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import {
+  applyReview,
+  clearQueue,
+  computeStats,
+  enqueueReview,
+  getDeck,
+  getQueue,
+  pickNextCard,
+  previewsFor,
+  putCard,
+  replaceDeck,
+  type DeckStats,
+  type OfflineCard,
+} from "@/lib/offline-deck";
 
-import type { CardDirection, Rating } from "@/db/schema";
+import type { Rating } from "@/db/schema";
 import type { VocabEntry } from "@/lib/lib-db";
 
-type Stats = {
-  due: number;
-  newCards: number;
-  total: number;
-};
-
-export type CardPayload = {
-  id: number;
-  direction: CardDirection;
-  state: number;
-  reps: number;
-  due: string;
-  entry: VocabEntry;
-  previews: {
-    again: string;
-    hard: string;
-    good: string;
-    easy: string;
-  };
-};
-
 type Props = {
-  initialCard: CardPayload | null;
-  initialStats: Stats;
+  initialStats: DeckStats;
 };
 
 type RatingButton = {
@@ -64,54 +64,163 @@ const RATING_BUTTONS: RatingButton[] = [
   { rating: 4, label: "Easy", key: "4", color: "#00A4EF" },
 ];
 
-export function ReviewClient({ initialCard, initialStats }: Props) {
-  const [card, setCard] = useState<CardPayload | null>(initialCard);
-  const [stats, setStats] = useState<Stats>(initialStats);
+const SYNC_URL = "/api/lib/review/sync";
+
+function subscribeOnline(callback: () => void) {
+  window.addEventListener("online", callback);
+  window.addEventListener("offline", callback);
+  return () => {
+    window.removeEventListener("online", callback);
+    window.removeEventListener("offline", callback);
+  };
+}
+
+type SyncResponse = {
+  ok?: boolean;
+  deck?: OfflineCard[];
+  stats?: DeckStats;
+  error?: string;
+};
+
+export function ReviewClient({ initialStats }: Props) {
+  // The deck lives in a ref so background sync can refresh it without forcing a
+  // re-render or disturbing the card the user is currently looking at.
+  const deckRef = useRef<OfflineCard[]>([]);
+  const flushingRef = useRef(false);
+
+  const [current, setCurrent] = useState<OfflineCard | null>(null);
+  const [stats, setStats] = useState<DeckStats>(initialStats);
+  const [status, setStatus] = useState<"loading" | "ready">("loading");
+  const [needsDownload, setNeedsDownload] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const submit = useCallback(
-    async (cardId: number, rating: Rating, durationMs: number) => {
-      if (submitting) return;
-      setSubmitting(true);
-      setError(null);
-      try {
-        const submitRes = await fetch("/api/lib/review/submit", {
+  const offline = useSyncExternalStore(
+    subscribeOnline,
+    () => !navigator.onLine,
+    () => false,
+  );
+
+  // Pick the next card off the local deck and refresh the counters.
+  const advance = useCallback(() => {
+    const now = new Date();
+    setCurrent(pickNextCard(deckRef.current, now));
+    setStats(computeStats(deckRef.current, now));
+  }, []);
+
+  // Send queued reviews to the server, then return the authoritative deck.
+  const flushQueue = useCallback(async (): Promise<OfflineCard[] | null> => {
+    if (flushingRef.current) return null;
+    flushingRef.current = true;
+    try {
+      const queue = await getQueue();
+      let res: Response;
+      if (queue.length > 0) {
+        res = await fetch(SYNC_URL, {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ cardId, rating, durationMs }),
+          body: JSON.stringify({
+            reviews: queue.map((q) => ({
+              cardId: q.cardId,
+              rating: q.rating,
+              durationMs: q.durationMs,
+              reviewedAt: q.reviewedAt,
+            })),
+          }),
         });
-        const submitData = (await submitRes.json()) as {
-          ok?: boolean;
-          error?: string;
-        };
-        if (!submitRes.ok || !submitData.ok) {
-          setError(submitData.error ?? `Submit failed (${submitRes.status})`);
-          return;
-        }
+      } else {
+        res = await fetch(SYNC_URL, { cache: "no-store" });
+      }
+      const data = (await res.json()) as SyncResponse;
+      if (!res.ok || !data.ok || !data.deck) {
+        throw new Error(data.error ?? `Sync failed (${res.status})`);
+      }
+      if (queue.length > 0) {
+        await clearQueue(queue.map((q) => q.qid));
+      }
+      await replaceDeck(data.deck);
+      deckRef.current = data.deck;
+      return data.deck;
+    } finally {
+      flushingRef.current = false;
+    }
+  }, []);
 
-        const nextRes = await fetch("/api/lib/review/next", {
-          cache: "no-store",
-        });
-        const nextData = (await nextRes.json()) as {
-          ok?: boolean;
-          stats?: Stats;
-          card?: CardPayload | null;
-          error?: string;
-        };
-        if (!nextRes.ok || !nextData.ok) {
-          setError(nextData.error ?? `Load failed (${nextRes.status})`);
-          return;
+  // First load: drive from the local deck immediately, then reconcile with the
+  // server if we're online.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const local = await getDeck();
+      if (cancelled) return;
+      if (local.length > 0) {
+        deckRef.current = local;
+        advance();
+        setStatus("ready");
+      }
+
+      if (typeof navigator !== "undefined" && navigator.onLine) {
+        try {
+          await flushQueue();
+          if (!cancelled) advance();
+        } catch {
+          if (!cancelled && deckRef.current.length === 0) setNeedsDownload(true);
         }
-        setCard(nextData.card ?? null);
-        if (nextData.stats) setStats(nextData.stats);
+      } else if (local.length === 0) {
+        setNeedsDownload(true);
+      }
+      if (!cancelled) setStatus("ready");
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [advance, flushQueue]);
+
+  // Flush whatever's queued the moment we're back online.
+  useEffect(() => {
+    if (offline) return;
+    flushQueue().catch(() => {
+      // Still effectively offline — reviews stay queued.
+    });
+  }, [offline, flushQueue]);
+
+  const rate = useCallback(
+    async (rating: Rating, durationMs: number) => {
+      const card = current;
+      if (!card || submitting) return;
+      setSubmitting(true);
+      setError(null);
+      const now = new Date();
+      const updated = applyReview(card, rating, now);
+      deckRef.current = deckRef.current.map((c) =>
+        c.id === updated.id ? updated : c,
+      );
+      try {
+        await putCard(updated);
+        await enqueueReview({
+          cardId: card.id,
+          rating,
+          durationMs,
+          reviewedAt: now.getTime(),
+        });
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Submit failed");
-      } finally {
-        setSubmitting(false);
+        setError(
+          err instanceof Error ? err.message : "Couldn't save review locally",
+        );
+      }
+      advance();
+      setSubmitting(false);
+      // Best-effort push; failures keep the review queued for the next sync.
+      if (typeof navigator === "undefined" || navigator.onLine) {
+        flushQueue().catch(() => {});
       }
     },
-    [submitting],
+    [current, submitting, advance, flushQueue],
+  );
+
+  const previews = useMemo(
+    () => (current ? previewsFor(current, new Date()) : null),
+    [current],
   );
 
   return (
@@ -157,6 +266,17 @@ export function ReviewClient({ initialCard, initialStats }: Props) {
             <span>
               <span className="tabular-nums">{stats.total}</span> total
             </span>
+            {offline && (
+              <>
+                <span aria-hidden className="text-foreground/20">
+                  ·
+                </span>
+                <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-500">
+                  <CloudSlashIcon weight="bold" className="size-3.5" />
+                  Offline
+                </span>
+              </>
+            )}
           </p>
         </div>
         <Button asChild variant="outline" className="h-9">
@@ -176,16 +296,19 @@ export function ReviewClient({ initialCard, initialStats }: Props) {
         </p>
       )}
 
-      {!card ? (
+      {status === "loading" ? (
+        <Loading />
+      ) : needsDownload ? (
+        <NeedsDownload />
+      ) : !current || !previews ? (
         <Done stats={stats} />
       ) : (
         <CardView
-          key={card.id}
-          card={card}
+          key={current.id}
+          card={current}
+          previews={previews}
           submitting={submitting}
-          onRate={(rating, durationMs) =>
-            void submit(card.id, rating, durationMs)
-          }
+          onRate={(rating, durationMs) => void rate(rating, durationMs)}
         />
       )}
     </main>
@@ -194,10 +317,12 @@ export function ReviewClient({ initialCard, initialStats }: Props) {
 
 function CardView({
   card,
+  previews,
   submitting,
   onRate,
 }: {
-  card: CardPayload;
+  card: OfflineCard;
+  previews: Record<Rating, Date>;
   submitting: boolean;
   onRate: (rating: Rating, durationMs: number) => void;
 }) {
@@ -330,18 +455,18 @@ function CardView({
           </kbd>
         </Button>
       ) : (
-        <RatingGrid card={card} submitting={submitting} onRate={rate} />
+        <RatingGrid previews={previews} submitting={submitting} onRate={rate} />
       )}
     </section>
   );
 }
 
 function RatingGrid({
-  card,
+  previews,
   submitting,
   onRate,
 }: {
-  card: CardPayload;
+  previews: Record<Rating, Date>;
   submitting: boolean;
   onRate: (rating: Rating) => void;
 }) {
@@ -351,7 +476,7 @@ function RatingGrid({
         <RatingButton
           key={b.rating}
           button={b}
-          preview={previewLabel(card.previews, b.rating)}
+          preview={formatInterval(previews[b.rating])}
           disabled={submitting}
           onClick={() => onRate(b.rating)}
         />
@@ -400,7 +525,37 @@ function RatingButton({
   );
 }
 
-function Done({ stats }: { stats: Stats }) {
+function Loading() {
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
+      <p className="font-serif text-sm text-zinc-500">Loading deck…</p>
+    </div>
+  );
+}
+
+function NeedsDownload() {
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
+      <div
+        className="flex size-10 items-center justify-center rounded-full"
+        style={{ backgroundColor: "#FFB9001a", color: "#9A6B00" }}
+      >
+        <CloudSlashIcon weight="fill" className="size-5" />
+      </div>
+      <div className="flex flex-col gap-1">
+        <p className="font-serif text-base font-semibold text-foreground">
+          Deck not downloaded
+        </p>
+        <p className="max-w-prose font-serif text-sm text-zinc-500">
+          Connect to the internet once to download your cards. After that,
+          reviews work offline and sync back when you reconnect.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function Done({ stats }: { stats: DeckStats }) {
   const isEmpty = stats.total === 0;
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center animate-in fade-in-0 duration-150">
@@ -432,21 +587,6 @@ function formatGerman(entry: VocabEntry): string {
     return `${entry.gender} ${entry.term}`;
   }
   return entry.term;
-}
-
-function previewLabel(
-  previews: CardPayload["previews"],
-  rating: Rating,
-): string {
-  const iso =
-    rating === 1
-      ? previews.again
-      : rating === 2
-        ? previews.hard
-        : rating === 3
-          ? previews.good
-          : previews.easy;
-  return formatInterval(new Date(iso));
 }
 
 function formatInterval(due: Date): string {
