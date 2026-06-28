@@ -11,7 +11,7 @@
 
 import { cardFromRow, previewIntervals, review } from "@/lib/fsrs";
 import type { CardDirection, Rating } from "@/db/schema";
-import type { VocabEntry } from "@/lib/lib-db";
+import type { EntryListItem, VocabEntry } from "@/lib/lib-db";
 
 export type OfflineCard = {
   id: number;
@@ -166,6 +166,51 @@ export async function clearQueue(qids: number[]): Promise<void> {
   } finally {
     db.close();
   }
+}
+
+// --- Server sync -----------------------------------------------------------
+
+const SYNC_URL = "/api/lib/review/sync";
+
+// Pull the authoritative deck from the server and mirror it locally. Called
+// when online (from either the lib list or the review screen) so the offline
+// copy — the word DB and the review deck both read from it — stays current
+// without the user having to open the review screen first. Returns null when
+// offline or the request fails; callers fall back to whatever's already stored.
+export async function refreshDeck(): Promise<OfflineCard[] | null> {
+  if (!hasIndexedDb()) return null;
+  try {
+    const res = await fetch(SYNC_URL, { cache: "no-store" });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { ok?: boolean; deck?: OfflineCard[] };
+    if (!data.ok || !data.deck) return null;
+    await replaceDeck(data.deck);
+    return data.deck;
+  } catch {
+    return null;
+  }
+}
+
+// Collapse the card-level deck back into the entry list the lib page renders.
+// Each entry has two cards (DE→SR and SR→DE); we keep one row per entry and
+// fold the per-card due/reviewed counts into it, mirroring `listEntries`.
+export function entriesFromDeck(
+  deck: OfflineCard[],
+  now: Date,
+): EntryListItem[] {
+  const nowMs = now.getTime();
+  const byId = new Map<number, EntryListItem>();
+  for (const card of deck) {
+    if (card.suspended) continue;
+    let row = byId.get(card.entryId);
+    if (!row) {
+      row = { ...card.entry, due: 0, reviewed: 0 };
+      byId.set(card.entryId, row);
+    }
+    if (card.due <= nowMs) row.due += 1;
+    if (card.reps > 0) row.reviewed += 1;
+  }
+  return Array.from(byId.values());
 }
 
 // --- Scheduling (pure, no storage) -----------------------------------------
