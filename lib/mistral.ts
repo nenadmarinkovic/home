@@ -10,6 +10,12 @@ import {
 } from "@/db/schema";
 
 const MISTRAL_URL = "https://api.mistral.ai/v1/chat/completions";
+const MISTRAL_TRANSCRIBE_URL = "https://api.mistral.ai/v1/audio/transcriptions";
+
+// Voxtral is Mistral's speech model; the mini tier is plenty for short
+// single-word/sentence dictation and keeps latency low.
+const TRANSCRIBE_MODEL =
+  process.env.MISTRAL_TRANSCRIBE_MODEL ?? "voxtral-mini-latest";
 
 // Mistral has gone through several naming conventions; pick whatever the user
 // has on their account. `mistral-large-latest` is the safe default for tasks
@@ -29,6 +35,43 @@ function apiKey(): string {
     );
   }
   return key;
+}
+
+// Transcribe a recorded audio blob to text. We deliberately do NOT pin a
+// `language`: the lib accepts both German and Serbian input (enrichTerm
+// translates Serbian → German), so letting Voxtral auto-detect keeps both
+// dictation directions working.
+export async function transcribeAudio(
+  file: Blob,
+  filename: string,
+  signal?: AbortSignal,
+): Promise<string> {
+  const form = new FormData();
+  form.append("model", TRANSCRIBE_MODEL);
+  // Voxtral keys the decoder off the file extension, so pass a sensible name.
+  form.append("file", file, filename);
+
+  // Note: do not set content-type by hand — fetch derives the multipart
+  // boundary from the FormData body automatically.
+  const res = await fetch(MISTRAL_TRANSCRIBE_URL, {
+    method: "POST",
+    headers: { authorization: `Bearer ${apiKey()}` },
+    body: form,
+    signal,
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Mistral ${res.status}: ${text.slice(0, 300)}`);
+  }
+
+  const data = (await res.json()) as { text?: string };
+  const text = data.text?.trim();
+  if (!text) {
+    throw new Error("Mistral returned an empty transcription");
+  }
+  return text;
 }
 
 const ExampleSchema = z.object({
