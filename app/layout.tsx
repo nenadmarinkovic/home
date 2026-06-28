@@ -69,6 +69,35 @@ export async function generateViewport(): Promise<Viewport> {
   };
 }
 
+// Set the iOS notch (theme-color) to the live client theme synchronously,
+// before first paint, on every full document load. This is the anti-flicker
+// counterpart to generateViewport's cookie: generateViewport gets the first
+// *server* byte right, but the service worker caches each page's HTML with
+// whatever theme-color was baked in at cache time (see public/sw.js). When the
+// user later switches theme — or launches the PWA against a stale cached "/" —
+// that cached HTML paints the old notch color, and ThemeColorSync (a post-paint
+// effect) corrects it a frame later; iOS animates theme-color changes, so the
+// notch visibly fades from the stale color to the right one.
+//
+// Running this blocking script first reads the same resolved theme next-themes
+// uses (localStorage "theme", falling back to the OS preference) and writes a
+// matching theme-color meta before anything paints, so the cached/baked color
+// is never shown. ThemeColorSync's later update is then a no-op (same color ->
+// no fade). It only mutates the `media` attribute of Next's metas — which React
+// does not reconcile (see ThemeColorSync) — and inserts its own node, so it's
+// safe to run before hydration. No network dependency, so it works offline too.
+const THEME_COLOR_SCRIPT = `(function(){try{
+var t=localStorage.getItem("theme");
+if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}
+var color=t==="dark"?"#0c1115":"#f5f4f0";
+document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("media","not all");});
+var meta=document.createElement("meta");
+meta.name="theme-color";
+meta.content=color;
+meta.setAttribute("data-tcs","1");
+document.head.insertBefore(meta,document.head.firstChild);
+}catch(e){}})();`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
@@ -114,6 +143,7 @@ export default async function RootLayout({
       className={`${sans.variable} ${newsreader.variable} antialiased`}
     >
       <body>
+        <script dangerouslySetInnerHTML={{ __html: THEME_COLOR_SCRIPT }} />
         <Providers authed={authed}>
           <ThemeColorSync />
           <ServiceWorkerRegister />
