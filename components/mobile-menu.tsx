@@ -88,7 +88,7 @@ export function MobileMenu() {
             <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
               Navigate
             </p>
-            <nav className="mt-4 flex flex-col items-start gap-3 font-serif text-xl italic text-zinc-600 dark:text-zinc-400">
+            <nav className="mt-4 flex flex-col items-start gap-3 font-sans text-lg font-medium tracking-tight text-zinc-600 dark:text-zinc-400">
               <Link
                 href="/"
                 onClick={close}
@@ -133,7 +133,7 @@ export function MobileMenu() {
             </nav>
 
             {authed && (
-              <nav className="mt-4 flex flex-col items-start gap-2 border-l border-foreground/10 pl-4 font-serif text-base text-zinc-500 dark:text-zinc-500">
+              <nav className="mt-4 flex flex-col items-start gap-2 border-l border-foreground/10 pl-4 font-sans text-sm font-medium text-zinc-500 dark:text-zinc-500">
                 {ADMIN_TOOLS.map((tool) => {
                   const active = isNavActive(pathname, tool.href);
                   return (
