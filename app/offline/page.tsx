@@ -16,10 +16,9 @@ export default function OfflinePage() {
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
           You&apos;re offline.
         </h1>
-        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          Some things still work — pages you&apos;ve already visited and your
-          vocabulary review are here. Anything that needs a live connection will
-          be waiting when you reconnect.
+        <p className="font-serif text-xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+          Some things work, like your vocabulary review. Some need a connection,
+          and they&apos;ll be here when you reconnect.
         </p>
       </hgroup>
     </main>
