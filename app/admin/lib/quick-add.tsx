@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowUpIcon,
@@ -17,6 +23,36 @@ type Props = {
 };
 
 const MAX_HEIGHT_PX = 180; // matches max-h-44 area
+
+// Languages the live preview can listen for. Web Speech only does one at a
+// time, so we expose a toggle; Voxtral still auto-detects on the final pass.
+type PreviewLang = "sr-RS" | "de-DE";
+
+// Minimal shape of the Web Speech API we rely on. It isn't in the DOM lib
+// typings and is vendor-prefixed on Chromium, so we describe just what we use.
+type SpeechResultAlt = { transcript: string };
+type SpeechResult = { isFinal: boolean; 0: SpeechResultAlt };
+type SpeechEvent = { results: ArrayLike<SpeechResult> };
+interface SpeechRecognitionLike {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  onresult: ((e: SpeechEvent) => void) | null;
+  onerror: (() => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+type SpeechRecognitionCtor = new () => SpeechRecognitionLike;
+
+function getSpeechRecognitionCtor(): SpeechRecognitionCtor | null {
+  if (typeof window === "undefined") return null;
+  const w = window as unknown as {
+    SpeechRecognition?: SpeechRecognitionCtor;
+    webkitSpeechRecognition?: SpeechRecognitionCtor;
+  };
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+}
 
 // Pick a container the current browser can actually record. Chrome/Firefox
 // hand back webm/opus; iOS Safari only does mp4/aac. Feature-detect instead of
@@ -50,13 +86,37 @@ export function QuickAdd({ className }: Props) {
   const [busy, setBusy] = useState(false);
   const [recording, setRecording] = useState(false);
   const [transcribing, setTranscribing] = useState(false);
+  // Provisional live transcript shown inline while speaking. Voxtral's result
+  // replaces it once the recording is sent.
+  const [interim, setInterim] = useState("");
+  const [previewLang, setPreviewLang] = useState<PreviewLang>("sr-RS");
+  // Web Speech is client-only and absent on some browsers (e.g. iOS Safari).
+  // useSyncExternalStore renders `false` on the server and the real value after
+  // hydration, so the toggle appears without a hydration mismatch.
+  const speechSupported = useSyncExternalStore(
+    () => () => {},
+    () => getSpeechRecognitionCtor() !== null,
+    () => false,
+  );
   const { push, update } = useToasts();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+
+  // The dimmed preview is only ever visible while a live transcript exists and
+  // we're still capturing or transcribing. While it's showing, the real
+  // textarea text is rendered transparent and the overlay paints the words.
+  const previewActive = (recording || transcribing) && interim.length > 0;
+  const displayValue = previewActive
+    ? value
+      ? `${value} ${interim}`
+      : interim
+    : value;
 
   // Auto-grow the textarea with the content, up to MAX_HEIGHT_PX.
   // Skip the resize when the textarea is empty so the CSS min-height owns
@@ -66,24 +126,79 @@ export function QuickAdd({ className }: Props) {
   useLayoutEffect(() => {
     const el = textareaRef.current;
     if (!el) return;
-    if (!value) {
+    if (!displayValue) {
       el.style.height = "";
       el.style.overflowY = "hidden";
+      if (overlayRef.current) overlayRef.current.scrollTop = 0;
       return;
     }
     el.style.height = "auto";
     const target = Math.min(el.scrollHeight, MAX_HEIGHT_PX);
     el.style.height = target + "px";
     el.style.overflowY = el.scrollHeight > MAX_HEIGHT_PX ? "auto" : "hidden";
-  }, [value]);
+    // While a live preview is streaming in, keep the newest words in view and
+    // mirror the scroll position onto the overlay so the two stay aligned.
+    if (previewActive) {
+      el.scrollTop = el.scrollHeight;
+      if (overlayRef.current) overlayRef.current.scrollTop = el.scrollTop;
+    }
+  }, [displayValue, previewActive]);
 
   // Release the mic if the component unmounts mid-recording.
   useEffect(() => {
     return () => {
       const stream = streamRef.current;
       if (stream) stream.getTracks().forEach((t) => t.stop());
+      const rec = recognitionRef.current;
+      if (rec) {
+        rec.onresult = rec.onerror = rec.onend = null;
+        try {
+          rec.stop();
+        } catch {
+          /* already stopped */
+        }
+      }
     };
   }, []);
+
+  // Run the browser's on-device/cloud recognizer alongside MediaRecorder to
+  // paint words inline as they're spoken. Voxtral remains the source of truth,
+  // so any recognizer error is swallowed — we just lose the live preview.
+  function startLivePreview(lang: PreviewLang) {
+    const Ctor = getSpeechRecognitionCtor();
+    if (!Ctor) return;
+    try {
+      const rec = new Ctor();
+      rec.lang = lang;
+      rec.continuous = true;
+      rec.interimResults = true;
+      rec.onresult = (e) => {
+        let text = "";
+        for (let i = 0; i < e.results.length; i++) {
+          text += e.results[i][0].transcript;
+        }
+        setInterim(text.trim());
+      };
+      rec.onerror = () => {};
+      rec.onend = () => {};
+      recognitionRef.current = rec;
+      rec.start();
+    } catch {
+      recognitionRef.current = null;
+    }
+  }
+
+  function stopLivePreview() {
+    const rec = recognitionRef.current;
+    if (!rec) return;
+    rec.onresult = rec.onerror = rec.onend = null;
+    try {
+      rec.stop();
+    } catch {
+      /* already stopped */
+    }
+    recognitionRef.current = null;
+  }
 
   async function submitLines(lines: string[]) {
     await Promise.allSettled(lines.map((line) => addOne(line)));
@@ -223,7 +338,10 @@ export function QuickAdd({ className }: Props) {
 
     const type = mimeType || chunks[0]?.type || "audio/webm";
     const blob = new Blob(chunks, { type });
-    if (blob.size === 0) return;
+    if (blob.size === 0) {
+      setInterim("");
+      return;
+    }
 
     setTranscribing(true);
     const id = push({
@@ -277,6 +395,8 @@ export function QuickAdd({ className }: Props) {
         message: err instanceof Error ? err.message : "Network error",
       });
     } finally {
+      // Voxtral has had its say (or failed); drop the provisional preview.
+      setInterim("");
       setTranscribing(false);
     }
   }
@@ -329,11 +449,14 @@ export function QuickAdd({ className }: Props) {
       void handleRecorded(recorder.mimeType);
     };
     mediaRecorderRef.current = recorder;
+    setInterim("");
     recorder.start();
+    startLivePreview(previewLang);
     setRecording(true);
   }
 
   function stopRecording() {
+    stopLivePreview();
     const recorder = mediaRecorderRef.current;
     if (recorder && recorder.state !== "inactive") {
       recorder.stop(); // fires onstop → handleRecorded
@@ -366,44 +489,83 @@ export function QuickAdd({ className }: Props) {
         className,
       )}
     >
-      <Textarea
-        ref={textareaRef}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onKeyDown={onKeyDown}
-        rows={1}
-        placeholder="Add a word or sentence…"
-        className="block max-h-44 min-h-12 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-8 md:px-3.5 md:pt-2 md:text-sm md:leading-relaxed"
-        autoCapitalize="off"
-        autoCorrect="off"
-        spellCheck={false}
-      />
-      <div className="flex items-center justify-between gap-2 px-2.5 pb-2 md:pb-1.5">
-        <button
-          type="button"
-          onClick={toggleRecording}
-          disabled={busy || transcribing}
-          aria-pressed={recording}
-          aria-label={
-            recording ? "Stop recording" : "Record a word or sentence"
-          }
+      <div className="relative">
+        <Textarea
+          ref={textareaRef}
+          value={displayValue}
+          readOnly={previewActive}
+          onChange={(e) => {
+            if (!previewActive) setValue(e.target.value);
+          }}
+          onKeyDown={onKeyDown}
+          rows={1}
+          placeholder="Add a word or sentence…"
           className={cn(
-            "inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors",
-            "cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
-            recording
-              ? "bg-red-500/10 text-red-600 hover:bg-red-500/15 dark:text-red-400"
-              : "text-zinc-500 hover:bg-foreground/5 hover:text-foreground",
+            "block max-h-44 min-h-12 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-8 md:px-3.5 md:pt-2 md:text-sm md:leading-relaxed",
+            // Hide the real text while the styled preview overlay paints it.
+            previewActive && "text-transparent caret-transparent",
           )}
-        >
-          {transcribing ? (
-            <CircleNotchIcon weight="bold" className="size-4 animate-spin" />
-          ) : recording ? (
-            <span className="size-2.5 rounded-[2px] bg-red-500 motion-safe:animate-pulse" />
-          ) : (
-            <MicrophoneIcon weight="fill" className="size-4" />
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
+        />
+        {previewActive && (
+          <div
+            ref={overlayRef}
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 max-h-44 overflow-hidden whitespace-pre-wrap break-words px-4 pb-0.5 pt-2.5 text-base leading-normal md:px-3.5 md:pt-2 md:text-sm md:leading-relaxed"
+          >
+            {value ? <span>{value} </span> : null}
+            <span className="italic text-foreground/40">{interim}</span>
+          </div>
+        )}
+      </div>
+      <div className="flex items-center justify-between gap-2 px-2.5 pb-2 md:pb-1.5">
+        <div className="flex items-center gap-1">
+          {speechSupported && (
+            <button
+              type="button"
+              onClick={() =>
+                setPreviewLang((l) => (l === "sr-RS" ? "de-DE" : "sr-RS"))
+              }
+              disabled={recording || transcribing}
+              aria-label={`Live preview language: ${previewLang === "sr-RS" ? "Serbian" : "German"}. Tap to switch.`}
+              title="Language for the live preview while speaking"
+              className={cn(
+                "rounded-full px-2 py-1 text-xs font-semibold tabular-nums transition-colors",
+                "cursor-pointer text-zinc-500 hover:bg-foreground/5 hover:text-foreground",
+                "disabled:cursor-not-allowed disabled:opacity-50",
+              )}
+            >
+              {previewLang === "sr-RS" ? "SR" : "DE"}
+            </button>
           )}
-          <span>{voiceLabel}</span>
-        </button>
+          <button
+            type="button"
+            onClick={toggleRecording}
+            disabled={busy || transcribing}
+            aria-pressed={recording}
+            aria-label={
+              recording ? "Stop recording" : "Record a word or sentence"
+            }
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors",
+              "cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
+              recording
+                ? "bg-red-500/10 text-red-600 hover:bg-red-500/15 dark:text-red-400"
+                : "text-zinc-500 hover:bg-foreground/5 hover:text-foreground",
+            )}
+          >
+            {transcribing ? (
+              <CircleNotchIcon weight="bold" className="size-4 animate-spin" />
+            ) : recording ? (
+              <span className="size-2.5 rounded-[2px] bg-red-500 motion-safe:animate-pulse" />
+            ) : (
+              <MicrophoneIcon weight="fill" className="size-4" />
+            )}
+            <span>{voiceLabel}</span>
+          </button>
+        </div>
         <button
           type="submit"
           aria-label="Add"
