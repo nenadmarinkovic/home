@@ -521,25 +521,7 @@ export function QuickAdd({ className }: Props) {
         )}
       </div>
       <div className="flex items-center justify-between gap-2 px-2.5 pb-2 md:pb-1.5">
-        <div className="flex items-center gap-1">
-          {speechSupported && (
-            <button
-              type="button"
-              onClick={() =>
-                setPreviewLang((l) => (l === "sr-RS" ? "de-DE" : "sr-RS"))
-              }
-              disabled={recording || transcribing}
-              aria-label={`Live preview language: ${previewLang === "sr-RS" ? "Serbian" : "German"}. Tap to switch.`}
-              title="Language for the live preview while speaking"
-              className={cn(
-                "rounded-full px-2 py-1 text-xs font-semibold tabular-nums transition-colors",
-                "cursor-pointer text-zinc-500 hover:bg-foreground/5 hover:text-foreground",
-                "disabled:cursor-not-allowed disabled:opacity-50",
-              )}
-            >
-              {previewLang === "sr-RS" ? "SR" : "DE"}
-            </button>
-          )}
+        <div className="flex items-center gap-0.5">
           <button
             type="button"
             onClick={toggleRecording}
@@ -565,6 +547,24 @@ export function QuickAdd({ className }: Props) {
             )}
             <span>{voiceLabel}</span>
           </button>
+          {speechSupported && (
+            <button
+              type="button"
+              onClick={() =>
+                setPreviewLang((l) => (l === "sr-RS" ? "de-DE" : "sr-RS"))
+              }
+              disabled={recording || transcribing}
+              aria-label={`Live preview language: ${previewLang === "sr-RS" ? "Serbian" : "German"}. Tap to switch.`}
+              title="Language for the live preview while speaking"
+              className={cn(
+                "rounded-full px-2 py-1 text-xs font-semibold tabular-nums transition-colors",
+                "cursor-pointer text-zinc-500 hover:bg-foreground/5 hover:text-foreground",
+                "disabled:cursor-not-allowed disabled:opacity-50",
+              )}
+            >
+              {previewLang === "sr-RS" ? "SR" : "DE"}
+            </button>
+          )}
         </div>
         <button
           type="submit"
