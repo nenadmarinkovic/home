@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { getDueStats } from "@/lib/lib-db";
 import { ReviewClient } from "./review-client";
 
 export const metadata: Metadata = {
@@ -8,11 +7,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export const dynamic = "force-dynamic";
-
+// Statically prerendered shell with no server data: the deck is loaded and
+// scheduled entirely client-side from IndexedDB, so the page works offline and
+// caches deterministically in the service worker. Access is still gated by the
+// proxy at request time; the SW only ever serves a copy already fetched while
+// authenticated.
 export default function ReviewPage() {
-  // The deck is loaded and scheduled client-side from IndexedDB so reviews work
-  // offline; these counts are just the first paint before the client reconciles.
-  const stats = getDueStats();
-  return <ReviewClient initialStats={stats} />;
+  return <ReviewClient initialStats={{ due: 0, newCards: 0, total: 0 }} />;
 }
