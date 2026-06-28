@@ -30,6 +30,17 @@ const OFFLINE_URL = "/offline";
 const PRECACHE = `precache-${CACHE_VERSION}`;
 const RUNTIME = `runtime-${CACHE_VERSION}`;
 
+// Content-hashed build assets (`/_next/static/...`) are immutable: a given URL
+// always serves the same bytes, and a new build emits new URLs rather than
+// changing old ones. So they live in ONE cache that is NOT versioned and is
+// never purged on activate. This is what makes offline survive a deploy: the
+// versioned page shells get wiped each build, but the chunks every cached shell
+// needs stay put, so a shell always has its chunks to hydrate against — online
+// (fresh shell, cached chunks) and offline alike. Without this the previous
+// build's chunks were deleted out from under a still-cached shell, so the page
+// painted but never hydrated and every button went dead.
+const STATIC = "static-assets";
+
 // Entry points worth having before the user ever visits them offline. "/" is
 // the PWA start_url; the lib paths are the offline review flow.
 const PRECACHE_PAGES = ["/", "/admin/lib", "/admin/lib/review"];
@@ -44,6 +55,30 @@ async function cacheNavigation(pathname, response) {
   await cache.put(pathname, response.clone());
 }
 
+// Pull the `/_next/static/...` URLs a page references out of its HTML and warm
+// them into the static cache. A precached shell is useless offline without the
+// chunks it hydrates from, and those are only fetched lazily on a real online
+// navigation otherwise — so a background worker update could leave a cached
+// page that can't hydrate. Warming them at install closes that gap. Best-effort
+// throughout: a single asset failing never blocks the others or the install.
+async function warmStaticAssets(html) {
+  const matches = html.match(/\/_next\/static\/[^"'\\\s)]+/g);
+  if (!matches) return;
+  const urls = Array.from(new Set(matches));
+  const cache = await caches.open(STATIC);
+  await Promise.all(
+    urls.map(async (url) => {
+      try {
+        if (await cache.match(url)) return;
+        const response = await fetch(url, { cache: "reload" });
+        if (response.ok) await cache.put(url, response.clone());
+      } catch {
+        // Will be cached on demand the first time the page requests it online.
+      }
+    }),
+  );
+}
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
@@ -53,13 +88,16 @@ self.addEventListener("install", (event) => {
       } catch {
         // Offline fallback is optional — never block install on a network blip.
       }
-      // Warm the entry points. Each is best-effort and guarded so a redirect to
-      // login (unauthenticated) never gets cached as the page.
+      // Warm the entry points and the build assets each one needs to hydrate.
+      // Each is best-effort and guarded so a redirect to login (unauthenticated)
+      // never gets cached as the page.
       await Promise.all(
         PRECACHE_PAGES.map(async (path) => {
           try {
             const response = await fetch(new Request(path, { cache: "reload" }));
+            if (!response.ok || response.redirected) return;
             await cacheNavigation(path, response);
+            await warmStaticAssets(await response.text());
           } catch {
             // Will be cached on first successful navigation instead.
           }
@@ -73,7 +111,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
-      const keep = new Set([PRECACHE, RUNTIME]);
+      const keep = new Set([PRECACHE, RUNTIME, STATIC]);
       const keys = await caches.keys();
       await Promise.all(
         keys.filter((k) => !keep.has(k)).map((k) => caches.delete(k)),
@@ -83,9 +121,10 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Cache-first for immutable, content-hashed build assets.
+// Cache-first for immutable, content-hashed build assets. These go in the
+// shared, unversioned STATIC cache so they outlive a deploy (see above).
 async function handleStatic(request) {
-  const cache = await caches.open(RUNTIME);
+  const cache = await caches.open(STATIC);
   const cached = await cache.match(request);
   if (cached) return cached;
   const response = await fetch(request);
