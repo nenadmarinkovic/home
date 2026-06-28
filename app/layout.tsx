@@ -15,8 +15,22 @@ const sans = localFont({
   variable: "--font-sans",
   weight: "1 1000",
   display: "swap",
+  adjustFontFallback: "Arial",
+  fallback: [
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Helvetica Neue",
+    "Arial",
+    "sans-serif",
+  ],
 });
 
+// The serif is a secondary, decorative face (logo + a few headings). On mobile
+// `display: "swap"` makes it flash from the fallback to Newsreader once it
+// loads — most visible against the sans body text. "optional" gives it a tiny
+// block window and then never swaps mid-load, so there's no flicker; the
+// metric-matched fallback keeps layout from shifting either way.
 const newsreader = localFont({
   src: [
     {
@@ -31,7 +45,9 @@ const newsreader = localFont({
     },
   ],
   variable: "--font-serif",
-  display: "swap",
+  display: "optional",
+  adjustFontFallback: "Times New Roman",
+  fallback: ["Georgia", "Times New Roman", "serif"],
 });
 
 export async function generateViewport(): Promise<Viewport> {

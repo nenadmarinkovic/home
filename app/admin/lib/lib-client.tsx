@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 
-const CARDS_PER_ENTRY = 2;
 const DUE_TOOLTIP =
   "Each word becomes two flashcards — German→Serbian and Serbian→German. This counts how many of those are scheduled for review.";
 import {
@@ -524,25 +523,22 @@ function EntryRow({
         className="-mx-2 -my-1 min-w-0 flex-1 rounded-md px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
       >
         <div className="flex items-center gap-2">
-          <p className="truncate font-serif text-base font-semibold leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
-            <span className="text-zinc-500 dark:text-zinc-500">{article}</span>
+          <p className="truncate font-sans text-base font-semibold leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
+            <span className="font-normal text-zinc-400 dark:text-zinc-500">
+              {article}
+            </span>
             {entry.term}
           </p>
           <PosTag pos={entry.pos} />
           {entry.due > 0 && (
             <span
-              className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#7FBA00]/10 px-2 py-0.5 text-[11px] font-medium text-[#5C8500] dark:text-[#7FBA00]"
-              title={`${entry.due} of ${CARDS_PER_ENTRY} flashcards to review (German→Serbian and Serbian→German).`}
-            >
-              <span
-                aria-hidden
-                className="inline-block size-1.5 rounded-full bg-[#7FBA00]"
-              />
-              {entry.due}/{CARDS_PER_ENTRY} cards
-            </span>
+              aria-hidden
+              title={`${entry.due} flashcard${entry.due === 1 ? "" : "s"} to review`}
+              className="size-1.5 shrink-0 rounded-full bg-[#7FBA00]"
+            />
           )}
         </div>
-        <p className="mt-1 truncate font-serif text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="mt-0.5 truncate font-sans text-sm text-zinc-500 dark:text-zinc-400">
           {entry.translationSr || "—"}
         </p>
       </Link>
@@ -575,7 +571,7 @@ function EntryRow({
 
 function PosTag({ pos }: { pos: string }) {
   return (
-    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 text-[11px] font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-1.5 py-px text-[10px] font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
       {pos}
     </span>
   );
