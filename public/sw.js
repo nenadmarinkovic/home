@@ -12,7 +12,20 @@
 // the live server when online and fail cleanly (the review screen then falls
 // back to IndexedDB) when not.
 
-const CACHE_VERSION = "v3";
+// The cache version is taken from the `?v=` the page registers this worker
+// with — the app's build id (see components/service-worker-register.tsx). A new
+// deploy means a new build id, which means a new worker URL, so the browser
+// reinstalls this worker and `activate` deletes the previous build's caches.
+//
+// This is the whole point: without it, the worker kept one hardcoded version
+// across every deploy, so a returning visitor could be served a *stale* app
+// shell whose content-hashed JS chunks no longer exist on the server (404).
+// The page then paints but never hydrates — every button and the menu go dead
+// to taps. Versioning per build guarantees a shell is only ever served
+// alongside the chunks it was built with. Falls back to a constant for older
+// clients that registered "/sw.js" with no version.
+const CACHE_VERSION =
+  new URL(self.location.href).searchParams.get("v") || "static";
 const OFFLINE_URL = "/offline";
 const PRECACHE = `precache-${CACHE_VERSION}`;
 const RUNTIME = `runtime-${CACHE_VERSION}`;
