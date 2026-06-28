@@ -56,15 +56,29 @@ Font files live in `app/fonts/`.
 ## Project structure
 
 ```
-app/            Routes (App Router): public pages, /admin, and /api endpoints
-components/     Shared UI (shadcn/ui + custom)
-lib/            Domain logic: auth, DB access, FSRS, Mistral, exports, utils
-db/             Drizzle schema and SQLite client
-drizzle/        Generated SQL migrations
-scripts/        Migrate, seed, and export scripts
-content/        Markdown articles (source of truth for writing)
-extensions/     Chrome and Firefox link-saver extensions
-public/         Static assets, manifest, and service worker
+app/                  Routes (App Router)
+  writing/            Articles index and per-article pages
+  links/              Public links collection
+  tools/              Tools page
+  infrastructure/     How the site is built
+  contact/            Contact page
+  offline/            PWA offline fallback
+  rss.xml/            RSS feed
+  admin/              Password-protected admin area
+    writing/          Drafts, publishing, snapshots to git
+    lib/              Word library + review (lib/review)
+    log/              Ops dashboard (Dokploy snapshot)
+    links/            Manage saved links
+  api/                Route handlers (articles, lib, links, dokploy, auth…)
+  fonts/              Self-hosted variable fonts
+components/           Shared UI (shadcn/ui + custom)
+lib/                  Domain logic: auth, DB access, FSRS, Mistral, exports, utils
+db/                   Drizzle schema and SQLite client
+drizzle/              Generated SQL migrations
+scripts/              Migrate, seed, and export scripts
+content/              Markdown articles (source of truth for writing)
+extensions/           Chrome and Firefox link-saver extensions
+public/               Static assets, manifest, and service worker
 ```
 
 ## Authentication
@@ -127,7 +141,11 @@ git add content/lib && git commit -m "Update vocab export"
 
 ## Deployment
 
+The site is deployed on a [Hetzner](https://www.hetzner.com/) VPS, managed with
+[Dokploy](https://dokploy.com/) — the same instance the admin **Log** dashboard
+reads from. Pushing the branch triggers a Dokploy build and deploy.
+
 The database lives on a mounted volume in production (`data/` is git-ignored), so
-`DATABASE_PATH` should point at persistent storage. `build` and `start` run
+`DATABASE_PATH` must point at that persistent storage. `build` and `start` run
 migrations and the seed first. The service worker is versioned by build id, so
 each deploy supersedes the previously cached app shell.
