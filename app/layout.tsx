@@ -80,22 +80,30 @@ export async function generateViewport(): Promise<Viewport> {
 // notch visibly fades from the stale color to the right one.
 //
 // Running this blocking script first reads the same resolved theme next-themes
-// uses (localStorage "theme", falling back to the OS preference) and writes a
-// matching theme-color meta before anything paints, so the cached/baked color
-// is never shown. ThemeColorSync's later update is then a no-op (same color ->
-// no fade). It only mutates the `media` attribute of Next's metas — which React
-// does not reconcile (see ThemeColorSync) — and inserts its own node, so it's
-// safe to run before hydration. No network dependency, so it works offline too.
+// uses (localStorage "theme", falling back to the OS preference) and forces a
+// matching theme-color before anything paints, so the cached/baked color is
+// never shown. ThemeColorSync's later update is then a no-op (same color -> no
+// fade). No network dependency, so it works offline too.
+//
+// CRITICAL: this runs *before* React hydrates, so it must NOT add or remove any
+// node in <head> — Next renders the theme-color metas inside its React tree, and
+// changing that tree's structure pre-hydration corrupts hydration (the mobile
+// menu won't open and links stop responding until a hard refresh; see the same
+// warning in ThemeColorSync). So instead of inserting a fresh meta, it only
+// rewrites attributes on the metas Next already emitted: it points the first one
+// at the resolved color and marks it active, and deactivates the rest via
+// `media="not all"`. React does not reconcile `media` (see ThemeColorSync), and
+// hydration doesn't diff attribute values, so the head's node structure stays
+// identical to the server markup and hydration is left intact.
 const THEME_COLOR_SCRIPT = `(function(){try{
 var t=localStorage.getItem("theme");
 if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}
 var color=t==="dark"?"#0c1115":"#f5f4f0";
-document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("media","not all");});
-var meta=document.createElement("meta");
-meta.name="theme-color";
-meta.content=color;
-meta.setAttribute("data-tcs","1");
-document.head.insertBefore(meta,document.head.firstChild);
+var metas=document.querySelectorAll('meta[name="theme-color"]');
+for(var i=0;i<metas.length;i++){
+if(i===0){metas[i].setAttribute("content",color);metas[i].setAttribute("media","all");}
+else{metas[i].setAttribute("media","not all");}
+}
 }catch(e){}})();`;
 
 export const metadata: Metadata = {
