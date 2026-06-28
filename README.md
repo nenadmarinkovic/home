@@ -36,3 +36,22 @@ Articles are plain Markdown in `content/en/` — no CMS, no database for posts. 
 - `npm run lint` — ESLint
 - `npm run db:migrate` — apply Drizzle migrations
 - `npm run db:studio` — Drizzle Studio
+- `npm run db:export` — write articles from the DB back to `content/`
+- `npm run lib:export` — export the word library to `content/lib/`
+
+## Exporting the word library
+
+`npm run lib:export` dumps the whole vocab DB into the repo so it can be read
+anywhere — including the GitHub mobile app — and kept in version control:
+
+- `content/lib/vocab.md` — readable Markdown grouped by part of speech, with
+  gender/plural/level/tags, examples, and collapsible conjugation tables.
+- `content/lib/vocab.json` — a complete dump (entries, SRS cards, and review
+  log) for backups.
+
+Run it against the machine that holds the real DB, then commit the result:
+
+```bash
+npm run lib:export
+git add content/lib && git commit -m "Update vocab export"
+```
