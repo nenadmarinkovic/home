@@ -16,7 +16,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:seed": "node scripts/seed.mjs",
-    "db:export": "tsx scripts/export-to-content.ts"
+    "db:export": "tsx scripts/export-to-content.ts",
+    "lib:export": "tsx scripts/export-lib.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
