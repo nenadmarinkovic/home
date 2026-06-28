@@ -87,10 +87,6 @@ export default async function AdminPage() {
           <ToolRow key={tool.href} tool={tool} stat={stats[tool.href]} />
         ))}
       </ul>
-
-      <p className="self-center font-serif text-base italic text-zinc-500 dark:text-zinc-500">
-        Quiet hours, slow work.
-      </p>
     </main>
   );
 }
@@ -108,7 +104,7 @@ function ToolRow({ tool, stat }: { tool: Tool; stat?: string }) {
         />
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between gap-3">
-            <p className="font-serif text-xl font-semibold leading-tight tracking-tight text-foreground transition-opacity group-hover:opacity-70">
+            <p className="font-sans text-xl font-semibold leading-tight tracking-tight text-foreground transition-opacity group-hover:opacity-70">
               {tool.name}
             </p>
             {stat && (
