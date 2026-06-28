@@ -215,19 +215,6 @@ export function QuickAdd({ className }: Props) {
     mediaRecorderRef.current = null;
   }
 
-  // Run the spoken text straight through the same enrich+save pipeline as a
-  // typed entry, so the AI adds it the moment the transcript comes back.
-  async function addFromVoice(text: string) {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-    setBusy(true);
-    try {
-      await submitLines([trimmed]);
-    } finally {
-      setBusy(false);
-    }
-  }
-
   async function handleRecorded(mimeType: string) {
     const chunks = chunksRef.current;
     chunksRef.current = [];
@@ -266,10 +253,23 @@ export function QuickAdd({ className }: Props) {
       const text = data.text.trim();
       update(id, {
         status: "success",
-        title: "Heard you",
+        title: "Transcribed",
         message: text.length > 80 ? text.slice(0, 77) + "…" : text,
       });
-      await addFromVoice(text);
+      // Drop the transcript into the box so it can be reviewed/edited before
+      // sending, rather than adding it blind.
+      setValue((prev) => {
+        const base = prev.trim();
+        return base ? `${base} ${text}` : text;
+      });
+      requestAnimationFrame(() => {
+        const el = textareaRef.current;
+        if (el) {
+          el.focus();
+          const end = el.value.length;
+          el.setSelectionRange(end, end);
+        }
+      });
     } catch (err) {
       update(id, {
         status: "error",
@@ -361,7 +361,7 @@ export function QuickAdd({ className }: Props) {
       ref={formRef}
       onSubmit={onSubmit}
       className={cn(
-        "group/quick relative flex w-full flex-col rounded-2xl border border-foreground/15 bg-field shadow-sm shadow-foreground/5 transition-[color,box-shadow,border-color]",
+        "group/quick relative flex w-full flex-col rounded-[1.75rem] border border-foreground/15 bg-field shadow-sm shadow-foreground/5 transition-[color,box-shadow,border-color]",
         "focus-within:border-foreground/40 focus-within:ring-2 focus-within:ring-foreground/10",
         className,
       )}
@@ -373,12 +373,12 @@ export function QuickAdd({ className }: Props) {
         onKeyDown={onKeyDown}
         rows={1}
         placeholder="Add a word or sentence…"
-        className="block max-h-44 min-h-20 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-1 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-9 md:px-3 md:py-1.5 md:text-sm md:leading-relaxed"
+        className="block max-h-44 min-h-12 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-8 md:px-3.5 md:pt-2 md:text-sm md:leading-relaxed"
         autoCapitalize="off"
         autoCorrect="off"
         spellCheck={false}
       />
-      <div className="flex items-center justify-between gap-2 px-2 pb-2 md:pb-1.5">
+      <div className="flex items-center justify-between gap-2 px-2.5 pb-2 md:pb-1.5">
         <button
           type="button"
           onClick={toggleRecording}
@@ -388,7 +388,7 @@ export function QuickAdd({ className }: Props) {
             recording ? "Stop recording" : "Record a word or sentence"
           }
           className={cn(
-            "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-colors",
+            "inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors",
             "cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
             recording
               ? "bg-red-500/10 text-red-600 hover:bg-red-500/15 dark:text-red-400"
@@ -409,14 +409,14 @@ export function QuickAdd({ className }: Props) {
           aria-label="Add"
           disabled={!canSend}
           className={cn(
-            "flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors md:size-7",
+            "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors",
             canSend
               ? "bg-foreground text-background hover:bg-foreground/85"
               : "bg-foreground/10 text-zinc-400",
             "disabled:cursor-not-allowed",
           )}
         >
-          <ArrowUpIcon weight="bold" className="size-4 md:size-3.5" />
+          <ArrowUpIcon weight="bold" className="size-3.5" />
         </button>
       </div>
     </form>
