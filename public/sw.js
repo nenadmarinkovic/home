@@ -1,28 +1,57 @@
-// Service worker for the PWA. Mostly a graceful offline fallback, plus just
-// enough caching to let the vocab review screen run offline on a phone:
-//   - the /admin/lib/review shell (so the page loads with no network), and
-//   - Next's content-hashed static assets (the JS/CSS the shell needs).
+// Service worker for the PWA. Gives a graceful offline fallback and caches
+// enough to let the site — and especially the vocab review screen — run offline
+// on a phone:
+//   - the app entry points are precached at install (so launching the installed
+//     PWA offline works, since it always opens at start_url "/"),
+//   - every successful page navigation is cached so any page you've visited is
+//     available offline, and
+//   - Next's content-hashed static assets (the JS/CSS each page needs) are
+//     cached on demand.
 // The review data itself lives in IndexedDB (see lib/offline-deck.ts) and syncs
-// via /api/lib/review/sync — API requests are never cached so they always hit
-// the live server when online and fail cleanly (falling back to IndexedDB)
-// when not. Other pages are server-rendered and deliberately not cached to
-// avoid serving stale, auth-sensitive content.
+// via /api/lib/review/sync. API requests are never cached, so they always hit
+// the live server when online and fail cleanly (the review screen then falls
+// back to IndexedDB) when not.
 
-const CACHE_VERSION = "v2";
+const CACHE_VERSION = "v3";
 const OFFLINE_URL = "/offline";
-const REVIEW_URL = "/admin/lib/review";
 const PRECACHE = `precache-${CACHE_VERSION}`;
 const RUNTIME = `runtime-${CACHE_VERSION}`;
+
+// Entry points worth having before the user ever visits them offline. "/" is
+// the PWA start_url; the lib paths are the offline review flow.
+const PRECACHE_PAGES = ["/", "/admin/lib", "/admin/lib/review"];
+
+// Cache a navigation response under its pathname, but only when it's the real
+// page — not a redirect (e.g. to /login when the session has lapsed) or an
+// error. Keying by pathname keeps lookups deterministic across requests.
+async function cacheNavigation(pathname, response) {
+  if (!response || !response.ok || response.redirected) return;
+  if (response.type !== "basic") return;
+  const cache = await caches.open(RUNTIME);
+  await cache.put(pathname, response.clone());
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
-      const cache = await caches.open(PRECACHE);
+      const precache = await caches.open(PRECACHE);
       try {
-        await cache.add(new Request(OFFLINE_URL, { cache: "reload" }));
+        await precache.add(new Request(OFFLINE_URL, { cache: "reload" }));
       } catch {
         // Offline fallback is optional — never block install on a network blip.
       }
+      // Warm the entry points. Each is best-effort and guarded so a redirect to
+      // login (unauthenticated) never gets cached as the page.
+      await Promise.all(
+        PRECACHE_PAGES.map(async (path) => {
+          try {
+            const response = await fetch(new Request(path, { cache: "reload" }));
+            await cacheNavigation(path, response);
+          } catch {
+            // Will be cached on first successful navigation instead.
+          }
+        }),
+      );
       await self.skipWaiting();
     })(),
   );
@@ -51,33 +80,18 @@ async function handleStatic(request) {
   return response;
 }
 
-// Network-first for navigations. Keep a fresh copy of the review shell so it
-// can be served when offline; otherwise fall back to the offline page.
+// Network-first for navigations: keep the latest copy of each visited page and
+// serve it (or the offline page) when the network is gone.
 async function handleNavigate(request) {
-  const url = new URL(request.url);
-  const isReview = url.pathname === REVIEW_URL;
+  const pathname = new URL(request.url).pathname;
   try {
     const response = await fetch(request);
-    // Only cache the review shell, and only when the response really is the
-    // review page (not a redirect to /login when the session has lapsed).
-    if (isReview && response.ok) {
-      try {
-        const finalPath = new URL(response.url).pathname;
-        if (finalPath === REVIEW_URL) {
-          const cache = await caches.open(RUNTIME);
-          cache.put(REVIEW_URL, response.clone());
-        }
-      } catch {
-        // Ignore caching failures — they must never break navigation.
-      }
-    }
+    await cacheNavigation(pathname, response);
     return response;
   } catch {
-    if (isReview) {
-      const cache = await caches.open(RUNTIME);
-      const cachedReview = await cache.match(REVIEW_URL);
-      if (cachedReview) return cachedReview;
-    }
+    const cache = await caches.open(RUNTIME);
+    const cached = await cache.match(pathname);
+    if (cached) return cached;
     const precache = await caches.open(PRECACHE);
     const offline = await precache.match(OFFLINE_URL);
     if (offline) return offline;
