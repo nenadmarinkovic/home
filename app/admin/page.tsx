@@ -74,7 +74,7 @@ export default async function AdminPage() {
     .replace(",", " ·");
 
   return (
-    <main className="flex flex-1 flex-col items-start gap-14 pb-20 pt-15 sm:pt-20">
+    <main className="flex flex-1 flex-col items-start gap-14 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
         <p className="font-sans text-xs font-medium uppercase tracking-[0.2em] tabular-nums text-zinc-500 dark:text-zinc-500">
           {dateLabel}

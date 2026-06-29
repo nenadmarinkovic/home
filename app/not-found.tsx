@@ -3,7 +3,7 @@ import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 
 export default function NotFound() {
   return (
-    <main className="flex flex-1 flex-col items-start gap-12 py-20">
+    <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
         <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
           404
