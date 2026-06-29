@@ -86,11 +86,9 @@ export async function POST(request: Request) {
       language: row.language,
     });
   } catch (err: unknown) {
-    const message =
-      typeof err === "object" && err !== null && "message" in err
-        ? String((err as { message: string }).message)
-        : "Save failed";
-    return NextResponse.json({ error: message }, { status: 500 });
+    // Don't echo the raw error — it can carry file paths / DB internals.
+    console.error("article upsert failed", err);
+    return NextResponse.json({ error: "Save failed" }, { status: 500 });
   }
 }
 
@@ -108,10 +106,7 @@ export async function DELETE(request: Request) {
     const deleted = deleteArticleBySlug(slug, langParam);
     return NextResponse.json({ ok: true, deleted });
   } catch (err: unknown) {
-    const message =
-      typeof err === "object" && err !== null && "message" in err
-        ? String((err as { message: string }).message)
-        : "Delete failed";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("article delete failed", err);
+    return NextResponse.json({ error: "Delete failed" }, { status: 500 });
   }
 }
