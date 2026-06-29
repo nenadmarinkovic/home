@@ -127,30 +127,25 @@ export function MobileMenu() {
             </nav>
 
             {authed && (
-              <div className="mt-8">
-                <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-                  Admin
-                </p>
-                <nav className="mt-4 flex flex-col items-start gap-2 font-sans text-lg font-normal tracking-tight text-zinc-600 dark:text-zinc-400">
-                  {ADMIN_TOOLS.map((tool) => {
-                    const active = isNavActive(pathname, tool.href);
-                    return (
-                      <Link
-                        key={tool.href}
-                        href={tool.href}
-                        onClick={close}
-                        aria-current={active ? "page" : undefined}
-                        className={cn(
-                          linkClass,
-                          active && "text-foreground",
-                        )}
-                      >
-                        {tool.name}
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </div>
+              <nav className="mt-2 flex flex-col items-start gap-2 pl-4 font-sans text-base font-normal tracking-tight text-zinc-500 dark:text-zinc-500">
+                {ADMIN_TOOLS.map((tool) => {
+                  const active = isNavActive(pathname, tool.href);
+                  return (
+                    <Link
+                      key={tool.href}
+                      href={tool.href}
+                      onClick={close}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        linkClass,
+                        active && "text-foreground",
+                      )}
+                    >
+                      {tool.name}
+                    </Link>
+                  );
+                })}
+              </nav>
             )}
 
             <div className="mt-auto flex flex-col gap-5 border-t border-foreground/10 pt-8">
