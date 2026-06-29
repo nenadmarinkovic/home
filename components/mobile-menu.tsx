@@ -55,13 +55,30 @@ export function MobileMenu() {
 
   useEffect(() => {
     if (!open) return;
-    // The page scrolls on <html> (globals.css sets `overflow-y: scroll`), so
-    // lock it while the menu is open to stop the page behind from scrolling.
+    // The page scrolls on <html> (globals.css sets `overflow-y: scroll`). On
+    // iOS/standalone PWAs, `overflow: hidden` alone does not stop touch
+    // scrolling of the page behind the menu, so pin the body in place instead:
+    // fix it at the negative of the current scroll offset, then restore the
+    // offset on close. This reliably freezes the background across browsers.
     const html = document.documentElement;
-    const previousOverflow = html.style.overflow;
+    const body = document.body;
+    const scrollY = window.scrollY;
+    const previous = {
+      htmlOverflow: html.style.overflow,
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyWidth: body.style.width,
+    };
     html.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
     return () => {
-      html.style.overflow = previousOverflow;
+      html.style.overflow = previous.htmlOverflow;
+      body.style.position = previous.bodyPosition;
+      body.style.top = previous.bodyTop;
+      body.style.width = previous.bodyWidth;
+      window.scrollTo(0, scrollY);
     };
   }, [open]);
 
