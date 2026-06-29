@@ -22,26 +22,18 @@ const ADMIN_TOOLS = [
 ] as const;
 
 function HamburgerIcon({ open }: { open: boolean }) {
-  // Echoes the logo: rounded terminals, with staggered bar widths that carry
-  // the mark's asymmetric flow when closed, resolving to a clean X on open.
   return (
-    <span aria-hidden="true" className="relative block h-3.5 w-4">
+    <span aria-hidden="true" className="relative block h-2.5 w-[18px]">
       <span
         className={cn(
-          "absolute left-0 block h-0.5 rounded-full bg-current transition-all duration-200",
-          open ? "top-1.5 w-full rotate-45" : "top-0 w-full",
+          "absolute left-0 block h-0.5 w-full rounded-full bg-current transition-all duration-200",
+          open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0",
         )}
       />
       <span
         className={cn(
-          "absolute left-0 top-1.5 block h-0.5 rounded-full bg-current transition-all duration-200",
-          open ? "w-full opacity-0" : "w-2.5 opacity-100",
-        )}
-      />
-      <span
-        className={cn(
-          "absolute left-0 block h-0.5 rounded-full bg-current transition-all duration-200",
-          open ? "top-1.5 w-full -rotate-45" : "top-3 w-3.5",
+          "absolute left-0 block h-0.5 w-full rounded-full bg-current transition-all duration-200",
+          open ? "top-1/2 -translate-y-1/2 -rotate-45" : "bottom-0",
         )}
       />
     </span>
