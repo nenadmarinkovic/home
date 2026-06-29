@@ -26,11 +26,6 @@ const sans = localFont({
   ],
 });
 
-// The serif is a secondary, decorative face (logo + a few headings). On mobile
-// `display: "swap"` makes it flash from the fallback to Newsreader once it
-// loads — most visible against the sans body text. "optional" gives it a tiny
-// block window and then never swaps mid-load, so there's no flicker; the
-// metric-matched fallback keeps layout from shifting either way.
 const newsreader = localFont({
   src: [
     {
@@ -69,32 +64,6 @@ export async function generateViewport(): Promise<Viewport> {
   };
 }
 
-// Set the iOS notch (theme-color) to the live client theme synchronously,
-// before first paint, on every full document load. This is the anti-flicker
-// counterpart to generateViewport's cookie: generateViewport gets the first
-// *server* byte right, but the service worker caches each page's HTML with
-// whatever theme-color was baked in at cache time (see public/sw.js). When the
-// user later switches theme — or launches the PWA against a stale cached "/" —
-// that cached HTML paints the old notch color, and ThemeColorSync (a post-paint
-// effect) corrects it a frame later; iOS animates theme-color changes, so the
-// notch visibly fades from the stale color to the right one.
-//
-// Running this blocking script first reads the same resolved theme next-themes
-// uses (localStorage "theme", falling back to the OS preference) and forces a
-// matching theme-color before anything paints, so the cached/baked color is
-// never shown. ThemeColorSync's later update is then a no-op (same color -> no
-// fade). No network dependency, so it works offline too.
-//
-// CRITICAL: this runs *before* React hydrates, so it must NOT add or remove any
-// node in <head> — Next renders the theme-color metas inside its React tree, and
-// changing that tree's structure pre-hydration corrupts hydration (the mobile
-// menu won't open and links stop responding until a hard refresh; see the same
-// warning in ThemeColorSync). So instead of inserting a fresh meta, it only
-// rewrites attributes on the metas Next already emitted: it points the first one
-// at the resolved color and marks it active, and deactivates the rest via
-// `media="not all"`. React does not reconcile `media` (see ThemeColorSync), and
-// hydration doesn't diff attribute values, so the head's node structure stays
-// identical to the server markup and hydration is left intact.
 const THEME_COLOR_SCRIPT = `(function(){try{
 var t=localStorage.getItem("theme");
 if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}
@@ -143,7 +112,11 @@ export const metadata: Metadata = {
       { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
     ],
-    apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    apple: {
+      url: "/apple-touch-icon.png",
+      sizes: "180x180",
+      type: "image/png",
+    },
   },
 };
 

@@ -101,14 +101,12 @@ export function ReviewClient({ initialStats }: Props) {
     () => false,
   );
 
-  // Pick the next card off the local deck and refresh the counters.
   const advance = useCallback(() => {
     const now = new Date();
     setCurrent(pickNextCard(deckRef.current, now));
     setStats(computeStats(deckRef.current, now));
   }, []);
 
-  // Send queued reviews to the server, then return the authoritative deck.
   const flushQueue = useCallback(async (): Promise<OfflineCard[] | null> => {
     if (flushingRef.current) return null;
     flushingRef.current = true;
@@ -164,7 +162,8 @@ export function ReviewClient({ initialStats }: Props) {
           await flushQueue();
           if (!cancelled) advance();
         } catch {
-          if (!cancelled && deckRef.current.length === 0) setNeedsDownload(true);
+          if (!cancelled && deckRef.current.length === 0)
+            setNeedsDownload(true);
         }
       } else if (local.length === 0) {
         setNeedsDownload(true);
@@ -210,7 +209,6 @@ export function ReviewClient({ initialStats }: Props) {
       }
       advance();
       setSubmitting(false);
-      // Best-effort push; failures keep the review queued for the next sync.
       if (typeof navigator === "undefined" || navigator.onLine) {
         flushQueue().catch(() => {});
       }

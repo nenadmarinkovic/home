@@ -2,11 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import {
-  DotsThreeVertical,
-  PencilSimple,
-  Trash,
-} from "@phosphor-icons/react";
+import { DotsThreeVertical, PencilSimple, Trash } from "@phosphor-icons/react";
 
 import {
   AlertDialog,
@@ -89,10 +85,7 @@ export function AdminActions({ article, className }: Props) {
             variant="ghost"
             size="icon"
             aria-label={`Admin actions for ${article.title}`}
-            className={cn(
-              "text-zinc-600 dark:text-zinc-400",
-              className,
-            )}
+            className={cn("text-zinc-600 dark:text-zinc-400", className)}
           >
             <DotsThreeVertical weight="bold" className="size-5" />
           </Button>

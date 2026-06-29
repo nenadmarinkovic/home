@@ -99,10 +99,7 @@ export function MobileMenu() {
                 href="/"
                 onClick={close}
                 aria-current={pathname === "/" ? "page" : undefined}
-                className={cn(
-                  linkClass,
-                  pathname === "/" && "text-foreground",
-                )}
+                className={cn(linkClass, pathname === "/" && "text-foreground")}
               >
                 Home
               </Link>
@@ -114,10 +111,7 @@ export function MobileMenu() {
                     href={item.href}
                     onClick={close}
                     aria-current={active ? "page" : undefined}
-                    className={cn(
-                      linkClass,
-                      active && "text-foreground",
-                    )}
+                    className={cn(linkClass, active && "text-foreground")}
                   >
                     {item.label}
                   </Link>
@@ -128,10 +122,7 @@ export function MobileMenu() {
                   href={authItem.href}
                   onClick={close}
                   aria-current={authActive ? "page" : undefined}
-                  className={cn(
-                    linkClass,
-                    authActive && "text-foreground",
-                  )}
+                  className={cn(linkClass, authActive && "text-foreground")}
                 >
                   {authItem.label}
                 </Link>
@@ -148,10 +139,7 @@ export function MobileMenu() {
                       href={tool.href}
                       onClick={close}
                       aria-current={active ? "page" : undefined}
-                      className={cn(
-                        linkClass,
-                        active && "text-foreground",
-                      )}
+                      className={cn(linkClass, active && "text-foreground")}
                     >
                       {tool.name}
                     </Link>
