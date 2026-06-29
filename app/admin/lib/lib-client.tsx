@@ -411,7 +411,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
             )}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="hidden items-center gap-2 md:flex">
           <Button asChild variant="outline" className="h-9">
             <Link href="/admin/lib/review" className="group">
               <BookOpen weight="bold" />
