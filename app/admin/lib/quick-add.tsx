@@ -484,7 +484,7 @@ export function QuickAdd({ className }: Props) {
       ref={formRef}
       onSubmit={onSubmit}
       className={cn(
-        "group/quick relative flex w-full flex-col rounded-[1.75rem] border border-foreground/15 bg-field shadow-sm shadow-foreground/5 transition-[color,box-shadow,border-color] md:rounded-md",
+        "group/quick relative flex w-full flex-col rounded-[1.75rem] border border-foreground/15 bg-field shadow-sm shadow-foreground/5 transition-[color,box-shadow,border-color] md:rounded-md md:shadow-none",
         "focus-within:border-foreground/40 focus-within:ring-2 focus-within:ring-foreground/10",
         className,
       )}

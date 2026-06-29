@@ -59,11 +59,11 @@ export async function generateViewport(): Promise<Viewport> {
     viewportFit: "cover",
   };
   if (pref === "dark") return { ...base, themeColor: "#0c1115" };
-  if (pref === "light") return { ...base, themeColor: "#f5f4f0" };
+  if (pref === "light") return { ...base, themeColor: "#fafafa" };
   return {
     ...base,
     themeColor: [
-      { media: "(prefers-color-scheme: light)", color: "#f5f4f0" },
+      { media: "(prefers-color-scheme: light)", color: "#fafafa" },
       { media: "(prefers-color-scheme: dark)", color: "#0c1115" },
     ],
   };
@@ -98,7 +98,7 @@ export async function generateViewport(): Promise<Viewport> {
 const THEME_COLOR_SCRIPT = `(function(){try{
 var t=localStorage.getItem("theme");
 if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}
-var color=t==="dark"?"#0c1115":"#f5f4f0";
+var color=t==="dark"?"#0c1115":"#fafafa";
 var metas=document.querySelectorAll('meta[name="theme-color"]');
 for(var i=0;i<metas.length;i++){
 if(i===0){metas[i].setAttribute("content",color);metas[i].setAttribute("media","all");}
@@ -135,6 +135,15 @@ export const metadata: Metadata = {
     types: {
       "application/rss+xml": `${site.url}/rss.xml`,
     },
+  },
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
+    ],
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
   },
 };
 

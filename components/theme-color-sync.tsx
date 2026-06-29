@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useLayoutEffect } from "react";
 
 const COLORS: Record<"light" | "dark", string> = {
-  light: "#f5f4f0",
+  light: "#fafafa",
   dark: "#0c1115",
 };
 
