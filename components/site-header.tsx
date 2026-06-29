@@ -14,7 +14,7 @@ export function SiteHeader() {
             aria-label="Nenad Marinković — home"
             className="flex items-center text-foreground"
           >
-            <Logo className="h-5 w-auto" />
+            <Logo className="h-[18px] w-auto" />
           </Link>
           <MobileMenu />
         </div>
