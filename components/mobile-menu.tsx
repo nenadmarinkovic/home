@@ -22,9 +22,6 @@ const ADMIN_TOOLS = [
 ] as const;
 
 function HamburgerIcon({ open }: { open: boolean }) {
-  // Vercel-style: two equal full-width bars with rounded terminals that
-  // collapse to center and cross into a clean X on open. The wider footprint
-  // balances the logo on the left.
   return (
     <span aria-hidden="true" className="relative block h-2.5 w-[18px]">
       <span
