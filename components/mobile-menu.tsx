@@ -53,6 +53,18 @@ export function MobileMenu() {
     setOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!open) return;
+    // The page scrolls on <html> (globals.css sets `overflow-y: scroll`), so
+    // lock it while the menu is open to stop the page behind from scrolling.
+    const html = document.documentElement;
+    const previousOverflow = html.style.overflow;
+    html.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
   const close = () => setOpen(false);
   const linkClass =
     "cursor-pointer touch-manipulation py-1.5 leading-none transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground focus-visible:rounded-sm";
