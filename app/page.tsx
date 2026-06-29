@@ -9,7 +9,7 @@ export default async function Home() {
   const latest = (await getArticles()).slice(0, 3);
 
   return (
-    <main className="flex flex-1 flex-col items-start gap-12 py-20">
+    <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <section className="w-full space-y-5">
         <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
           Notes from the workshop

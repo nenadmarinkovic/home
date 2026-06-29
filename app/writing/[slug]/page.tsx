@@ -71,7 +71,7 @@ export default async function ArticlePage({
   };
 
   return (
-    <main className="flex flex-1 flex-col items-start gap-12 py-20">
+    <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
