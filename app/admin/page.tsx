@@ -75,10 +75,10 @@ export default async function AdminPage() {
           {dateLabel}
         </p>
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          Behind the scenes.
+          Welcome back.
         </h1>
         <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          A small workshop, kept close.
+          Your admin tools, all in one place.
         </p>
       </hgroup>
 
