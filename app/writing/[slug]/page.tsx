@@ -74,7 +74,11 @@ export default async function ArticlePage({
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        // Escape `<` so a title/description containing `</script>` can't break
+        // out of the JSON-LD block. JSON.stringify alone doesn't do this.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
       />
       <div className="relative w-full max-w-prose self-center">
         <hgroup className="space-y-3 text-center">
