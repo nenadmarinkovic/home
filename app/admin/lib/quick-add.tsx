@@ -574,7 +574,7 @@ export function QuickAdd({ className }: Props) {
           aria-label="Add"
           disabled={!canSend}
           className={cn(
-            "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors",
+            "ml-auto flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors",
             canSend
               ? "bg-foreground text-background hover:bg-foreground/85"
               : "bg-foreground/10 text-zinc-400",
