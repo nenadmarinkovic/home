@@ -119,14 +119,16 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                   </p>
                 )}
                 {link.tags.length > 0 && (
-                  <p className="flex flex-wrap gap-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-500">
-                    {link.tags.map((t, i) => (
-                      <span key={t.slug}>
-                        {i > 0 && "· "}
+                  <div className="flex flex-wrap gap-1.5">
+                    {link.tags.map((t) => (
+                      <span
+                        key={t.slug}
+                        className="inline-flex shrink-0 items-center rounded-full border border-foreground/10 px-2 py-0.5 font-sans text-[10px] font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400"
+                      >
                         {t.name}
                       </span>
                     ))}
-                  </p>
+                  </div>
                 )}
               </a>
             </li>
