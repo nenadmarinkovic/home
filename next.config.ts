@@ -48,6 +48,21 @@ const nextConfig: NextConfig = {
     inlineCss: true,
   },
   poweredByHeader: false,
+  // iOS Safari probes these well-known root paths directly when adding a site
+  // to Favourites / the Home Screen, *before* it parses the in-page
+  // `<link rel="apple-touch-icon">`. Next only emits the link (pointing at the
+  // generated `/apple-icon`), so without these the probes 404 and Safari falls
+  // back to a generated monogram tile. Map them to the same generated icon so
+  // there's one source of truth and no committed binary to keep in sync.
+  async rewrites() {
+    return [
+      { source: "/apple-touch-icon.png", destination: "/apple-icon" },
+      {
+        source: "/apple-touch-icon-precomposed.png",
+        destination: "/apple-icon",
+      },
+    ];
+  },
   async headers() {
     return [
       {
