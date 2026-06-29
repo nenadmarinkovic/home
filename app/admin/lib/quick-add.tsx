@@ -484,7 +484,7 @@ export function QuickAdd({ className }: Props) {
       ref={formRef}
       onSubmit={onSubmit}
       className={cn(
-        "group/quick relative flex w-full flex-col rounded-[1.75rem] border border-foreground/15 bg-field shadow-sm shadow-foreground/5 transition-[color,box-shadow,border-color]",
+        "group/quick relative flex w-full flex-col rounded-[1.75rem] border border-foreground/15 bg-field shadow-sm shadow-foreground/5 transition-[color,box-shadow,border-color] md:rounded-md",
         "focus-within:border-foreground/40 focus-within:ring-2 focus-within:ring-foreground/10",
         className,
       )}
@@ -521,7 +521,10 @@ export function QuickAdd({ className }: Props) {
         )}
       </div>
       <div className="flex items-center justify-between gap-2 px-2.5 pb-2 md:pb-1.5">
-        <div className="flex items-center gap-0.5">
+        {/* Voice + live-preview language toggle are mobile-only. On desktop the
+            box sits above the search field and we keep it search-like: just the
+            submit affordance, no mic or SR/DE switch. */}
+        <div className="flex items-center gap-0.5 md:hidden">
           <button
             type="button"
             onClick={toggleRecording}
