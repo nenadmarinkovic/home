@@ -1,9 +1,9 @@
 # nenadmarinkovic.com
 
-Personal site of Nenad Marinković — articles, a German–Serbian word library with
-spaced repetition, a links collection, and a few small tools. Built with
-[Next.js](https://nextjs.org) (App Router) and SQLite via Drizzle, installable as
-a PWA, and deployable to a self-hosted server.
+Personal site of Nenad Marinković — writing, a saved-links collection, a
+German–Serbian word library with spaced repetition, and a few small tools. Built
+with [Next.js](https://nextjs.org) (App Router) and SQLite via Drizzle,
+installable as a PWA, and deployable to a self-hosted server.
 
 ## Getting started
 
@@ -18,9 +18,10 @@ in `content/` into it.
 
 ## Features
 
-- **Writing** — articles authored in a TipTap rich-text editor in the admin area
-  and rendered as Markdown. They can be exported back to `content/` so the source
-  stays portable and version-controlled.
+- **Writing** — articles written in a TipTap rich-text editor in the admin area
+  and rendered as Markdown. The editor is lazy-loaded so visitors never pay for
+  it. Articles can be exported back to `content/` so the source stays portable
+  and version-controlled.
 - **Word library** — a German↔Serbian vocabulary trainer with spaced repetition
   (FSRS via `ts-fsrs`). Each entry generates two cards (de→sr, sr→de); reviews
   are scheduled per direction. Mistral powers term enrichment (gender, plural,
@@ -37,7 +38,8 @@ in `content/` into it.
   `/rss.xml`.
 - **Admin** — a password-protected area (`/admin`) with four tools: **Writing**
   (drafts, publishing, snapshots to git), **Lib** (the word library and reviews),
-  **Log** (the ops dashboard above), and **Links**.
+  **Log** (the ops dashboard above), and **Links**. Landing page shows a live
+  wall clock alongside the date.
 
 ## Stack
 
