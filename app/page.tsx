@@ -12,7 +12,7 @@ export default async function Home() {
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <section className="w-full space-y-5">
         <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-          Notes from the workshop
+          About
         </p>
         <p className="font-serif text-2xl italic leading-snug text-pretty text-foreground">
           I’m Nenad — a software developer in Vienna making thoughtful tools and
@@ -23,18 +23,13 @@ export default async function Home() {
           and control movement to perform an action. The term is commonly
           applied to artificial devices, such as those employing engines or
           motors, but also to natural biological macromolecules, such as
-          molecular machines. Machines can be driven by animals and people, by
-          natural forces such as wind and water, and by chemical, thermal, or
-          electrical power, and include a system of mechanisms that shape the
-          actuator input to achieve a specific application of output forces and
-          movement. They can also include computers and sensors that monitor
-          performance and plan movement, often called mechanical systems.
+          molecular machines.
         </p>
       </section>
       <section className="w-full space-y-6">
         <div className="flex items-baseline justify-between">
           <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-            Recent
+            Recent writing
           </p>
           <Link
             href="/writing"

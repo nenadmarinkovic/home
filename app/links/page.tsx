@@ -12,7 +12,7 @@ import { LinksList, type ClientLink, type ClientTag } from "./links-list";
 export const metadata: Metadata = {
   title: "Links",
   description:
-    "A handful of sites — friends, tools, and quiet corners of the web.",
+    "Pages I’ve come across the web and want to keep around — technology, AI, design, web development, culture, and anything else worth a look.",
 };
 
 export const dynamic = "force-dynamic";
@@ -70,10 +70,12 @@ export default async function LinksPage({
           Links
         </p>
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          Pages I keep coming back to.
+          Pages worth sharing.
         </h1>
         <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          A handful of sites — friends, tools, and quiet corners of the web.
+          Pages I&rsquo;ve come across the web and want to keep around —
+          technology, AI, design, web development, culture, and anything else
+          worth a look.
         </p>
       </hgroup>
 
