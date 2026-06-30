@@ -15,15 +15,25 @@ export default async function Home() {
           About
         </p>
         <p className="font-serif text-2xl italic leading-snug text-pretty text-foreground">
-          I’m Nenad — a software developer in Vienna making thoughtful tools and
-          writing about the craft of doing good work on the web.
+          I&rsquo;m Nenad — a software developer in Vienna. I build digital
+          platforms for online creators and educators through{" "}
+          <a
+            href="https://monolinie.com"
+            target="_blank"
+            rel="noreferrer"
+            className="text-[#d73003] transition-opacity hover:opacity-70 dark:text-[#F25022]"
+          >
+            Monolinie
+          </a>
+          , my studio.
         </p>
         <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
-          A machine is a thermodynamic system that uses power to apply forces
-          and control movement to perform an action. The term is commonly
-          applied to artificial devices, such as those employing engines or
-          motors, but also to natural biological macromolecules, such as
-          molecular machines.
+          Next year marks ten years since I started working on the web. I
+          still think it&rsquo;s the best platform we have for making things,
+          and I want to push it a little further in my own way. I kept this personal site deliberately minimal &mdash; it
+          reflects what I value: simplicity, transparency, and depth. Beneath
+          that surface, it&rsquo;s a playground where I experiment, learn,
+          write, and share.
         </p>
       </section>
       <section className="w-full space-y-6">
