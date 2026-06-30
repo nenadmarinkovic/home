@@ -292,15 +292,26 @@ export function EntryChat({ slug, term }: Props) {
                 autoCapitalize="off"
                 autoCorrect="off"
               />
-              <button
-                type="button"
-                onClick={() => void send()}
-                disabled={!draft.trim() || pending}
-                aria-label="Send"
-                className="absolute bottom-1.5 right-1.5 flex size-8 cursor-pointer items-center justify-center rounded-md bg-foreground text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-30 md:size-7"
-              >
-                <ArrowUpIcon weight="bold" className="size-4 md:size-3.5" />
-              </button>
+              {(() => {
+                const canSend = !pending && draft.trim().length > 0;
+                return (
+                  <button
+                    type="button"
+                    onClick={() => void send()}
+                    disabled={!canSend}
+                    aria-label="Send"
+                    className={cn(
+                      "absolute bottom-1.5 right-1.5 flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors md:size-6",
+                      canSend
+                        ? "bg-foreground text-background hover:bg-foreground/85"
+                        : "bg-foreground/10 text-zinc-400",
+                      "disabled:cursor-not-allowed",
+                    )}
+                  >
+                    <ArrowUpIcon weight="bold" className="size-3.5" />
+                  </button>
+                );
+              })()}
             </div>
           </div>
         </DialogContent>
