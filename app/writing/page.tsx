@@ -20,7 +20,7 @@ export default async function WritingIndexPage() {
           Writing
         </p>
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          Notes worth keeping.
+          Notes worth keeping
         </h1>
         <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
           Notes I&rsquo;ve put down along the way — software, design, the web,

@@ -79,7 +79,7 @@ export default async function AdminPage() {
       <hgroup className="max-w-prose self-center space-y-3 text-center">
         <LiveClock fallback={dateLabel} />
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          Welcome back.
+          Welcome back
         </h1>
         <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
           Your admin tools, all in one place.

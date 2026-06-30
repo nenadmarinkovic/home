@@ -14,7 +14,7 @@ export default function OfflinePage() {
           Offline
         </p>
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          You&apos;re offline.
+          You&apos;re offline
         </h1>
         <p className="font-serif text-xl italic leading-snug text-zinc-600 dark:text-zinc-400">
           Some things work, like your vocabulary review. Some need a connection,

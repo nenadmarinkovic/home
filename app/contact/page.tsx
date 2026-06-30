@@ -31,7 +31,7 @@ export default function ContactPage() {
           Contact
         </p>
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          Get in touch.
+          Get in touch
         </h1>
         <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
           Email is best. I read everything.

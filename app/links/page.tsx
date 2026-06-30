@@ -70,12 +70,11 @@ export default async function LinksPage({
           Links
         </p>
         <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
-          Pages worth sharing.
+          Pages worth sharing
         </h1>
         <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          Pages I&rsquo;ve come across the web and want to keep around —
-          technology, AI, design, web development, culture, and anything else
-          worth a look.
+          Pages I&rsquo;ve come across and want to keep around — technology, AI,
+          design, web, culture, and anything else worth a look.
         </p>
       </hgroup>
 
