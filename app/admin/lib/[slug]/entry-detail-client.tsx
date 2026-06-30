@@ -366,7 +366,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
           <span className="text-zinc-500 dark:text-zinc-500">{article}</span>
           {entry.term}
         </h1>
-        <p className="font-serif text-xl leading-snug text-zinc-600 dark:text-zinc-400">
+        <p className="font-serif text-xl italic leading-snug text-zinc-600 dark:text-zinc-400">
           {entry.translationSr || "—"}
         </p>
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -676,7 +676,7 @@ function Section({
 
 function EmptyHint({ children }: { children: React.ReactNode }) {
   return (
-    <p className="rounded-md border border-dashed border-foreground/15 px-4 py-6 text-center font-serif text-sm text-zinc-500 dark:text-zinc-500">
+    <p className="rounded-md border border-dashed border-foreground/15 px-4 py-6 text-center font-sans text-sm text-zinc-500 dark:text-zinc-500">
       {children}
     </p>
   );

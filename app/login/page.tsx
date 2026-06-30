@@ -6,7 +6,7 @@ import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Sign in to write, edit, and publish.",
+  description: "Sign in to write, learn, watch, and save.",
   robots: { index: false, follow: false },
 };
 
@@ -21,7 +21,7 @@ export default function LoginPage() {
           Welcome back.
         </h1>
         <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          The quiet side of the site — write, edit, publish.
+          Your admin tools, all in one place.
         </p>
       </hgroup>
       <LoginForm />
