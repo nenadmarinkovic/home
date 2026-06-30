@@ -82,7 +82,7 @@ export default async function ArticlePage({
       />
       <div className="relative w-full max-w-prose self-center">
         <hgroup className="space-y-3 text-center">
-          <p className="font-sans text-xs font-medium uppercase tracking-wider text-[#F25022]">
+          <p className="font-sans text-xs font-medium uppercase tracking-wider text-[#DA380C] dark:text-[#F25022]">
             {article.dateLabel}
           </p>
           <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">

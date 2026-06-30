@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { DotsThreeVertical, PencilSimple, Trash } from "@phosphor-icons/react";
@@ -24,11 +25,16 @@ import {
 import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
-import {
-  ArticleEditor,
-  type EditorInitial,
-} from "@/app/admin/writing/article-editor";
+import type { EditorInitial } from "@/app/admin/writing/article-editor";
 import type { Article } from "@/app/writing/articles";
+
+// Lazy-load Tiptap/ProseMirror only when an admin opens the editor — keeps the
+// ~650 KB editor bundle off every public page that mounts AdminActions.
+const ArticleEditor = dynamic(
+  () =>
+    import("@/app/admin/writing/article-editor").then((m) => m.ArticleEditor),
+  { ssr: false },
+);
 
 type Props = {
   article: Article;
