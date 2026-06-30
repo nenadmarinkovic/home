@@ -28,12 +28,25 @@ export default async function Home() {
           , my studio.
         </p>
         <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
-          Next year marks ten years since I started working on the web. I
-          still think it&rsquo;s the best platform we have for making things,
-          and I want to push it a little further in my own way. I kept this personal site deliberately minimal &mdash; it
-          reflects what I value: simplicity, transparency, and depth. Beneath
-          that surface, it&rsquo;s a playground where I experiment, learn,
-          write, and share.
+          Next year marks ten years since I started working on the web. I still
+          think it&rsquo;s the best platform we have for making things, and I
+          want to push it a little further &mdash; through the small projects I
+          build, the studio I run, and the platforms I help people own.
+        </p>
+        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
+          This site is the hub for it all. I share my work, thoughts, and the
+          links I find interesting. I kept it deliberately minimal, reflecting
+          what I value: simplicity, transparency, and depth. Beneath the
+          surface, it&rsquo;s my playground for experimenting, learning, and
+          writing. Have a look around, and if you&rsquo;d like to say hi,
+          there&rsquo;s a{" "}
+          <Link
+            href="/contact"
+            className="text-[#d73003] transition-opacity hover:opacity-70 dark:text-[#F25022]"
+          >
+            contact
+          </Link>{" "}
+          page.
         </p>
       </section>
       <section className="w-full space-y-6">
