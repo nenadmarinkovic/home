@@ -378,7 +378,7 @@ function CardView({
     <section className="flex flex-1 flex-col items-center gap-6 sm:gap-8">
       <article
         className={cn(
-          "flex w-full max-w-xl flex-col items-center gap-6 rounded-2xl border border-foreground/10 bg-foreground/[0.02] px-6 py-10 text-center sm:py-12",
+          "flex w-full max-w-xl flex-col items-center gap-5 rounded-2xl border border-foreground/10 bg-foreground/[0.02] px-4 py-7 text-center sm:gap-6 sm:px-6 sm:py-12",
           "animate-in fade-in-0 duration-150",
         )}
       >
@@ -501,8 +501,9 @@ function RatingButton({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "group/btn flex w-full cursor-pointer items-center justify-center gap-2 bg-transparent py-2 font-sans",
-        "disabled:cursor-not-allowed disabled:opacity-40",
+        "group/btn flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-foreground/15 bg-foreground/[0.03] px-3 font-sans text-sm font-semibold text-foreground transition-colors",
+        "hover:border-foreground/30 hover:bg-foreground/[0.06] active:scale-[0.98]",
+        "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-foreground/15 disabled:hover:bg-foreground/[0.03]",
       )}
     >
       <span
@@ -510,13 +511,11 @@ function RatingButton({
         className="inline-block size-2.5 shrink-0 rounded-full transition-transform duration-200 group-hover/btn:scale-125"
         style={{ backgroundColor: color }}
       />
-      <span className="min-w-[3rem] text-left text-sm font-medium text-foreground">
-        {label}
-      </span>
+      <span>{label}</span>
       <kbd className="hidden font-sans text-[10px] uppercase tracking-wider tabular-nums text-zinc-400 sm:inline">
         {key}
       </kbd>
-      <span className="min-w-[2.5rem] text-right font-sans text-[11px] uppercase tracking-wider tabular-nums text-zinc-500">
+      <span className="font-sans text-[11px] uppercase tracking-wider tabular-nums text-zinc-500">
         {preview}
       </span>
     </button>

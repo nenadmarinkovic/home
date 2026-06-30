@@ -484,12 +484,12 @@ export function QuickAdd({ className }: Props) {
       ref={formRef}
       onSubmit={onSubmit}
       className={cn(
-        "group/quick relative flex w-full flex-col rounded-[1.75rem] border border-foreground/15 bg-field shadow-sm shadow-foreground/5 transition-[color,box-shadow,border-color] md:rounded-md md:shadow-none",
+        "group/quick relative flex w-full flex-col rounded-[1.75rem] border border-foreground/15 bg-field shadow-sm shadow-foreground/5 transition-[color,box-shadow,border-color] md:min-h-9 md:flex-row md:items-end md:rounded-md md:shadow-none",
         "focus-within:border-foreground/40 focus-within:ring-2 focus-within:ring-foreground/10",
         className,
       )}
     >
-      <div className="relative">
+      <div className="relative md:flex-1">
         <Textarea
           ref={textareaRef}
           value={displayValue}
@@ -501,7 +501,7 @@ export function QuickAdd({ className }: Props) {
           rows={1}
           placeholder="Add a word or sentence…"
           className={cn(
-            "block max-h-44 min-h-12 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-8 md:px-3.5 md:pt-2 md:text-sm md:leading-relaxed",
+            "block max-h-44 min-h-12 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-9 md:px-3 md:py-2 md:text-sm md:leading-5",
             // Hide the real text while the styled preview overlay paints it.
             previewActive && "text-transparent caret-transparent",
           )}
@@ -513,14 +513,14 @@ export function QuickAdd({ className }: Props) {
           <div
             ref={overlayRef}
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 max-h-44 overflow-hidden whitespace-pre-wrap break-words px-4 pb-0.5 pt-2.5 text-base leading-normal md:px-3.5 md:pt-2 md:text-sm md:leading-relaxed"
+            className="pointer-events-none absolute inset-0 max-h-44 overflow-hidden whitespace-pre-wrap break-words px-4 pb-0.5 pt-2.5 text-base leading-normal md:px-3 md:py-2 md:text-sm md:leading-5"
           >
             {value ? <span>{value} </span> : null}
             <span className="italic text-foreground/40">{interim}</span>
           </div>
         )}
       </div>
-      <div className="flex items-center justify-between gap-2 px-2.5 pb-2 md:pb-1.5">
+      <div className="flex items-center justify-between gap-2 px-2.5 pb-2 md:pb-1 md:pl-0 md:pr-1">
         {/* Voice + live-preview language toggle are mobile-only. On desktop the
             box sits above the search field and we keep it search-like: just the
             submit affordance, no mic or SR/DE switch. */}
@@ -574,7 +574,7 @@ export function QuickAdd({ className }: Props) {
           aria-label="Add"
           disabled={!canSend}
           className={cn(
-            "ml-auto flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors",
+            "ml-auto flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors md:size-6",
             canSend
               ? "bg-foreground text-background hover:bg-foreground/85"
               : "bg-foreground/10 text-zinc-400",
