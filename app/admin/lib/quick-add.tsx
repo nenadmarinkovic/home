@@ -307,6 +307,28 @@ export function QuickAdd({ className }: Props) {
       return;
     }
 
+    // Serbian shortcut: if Web Speech pinned to sr-RS produced a live
+    // transcript, use it directly. Voxtral doesn't support Serbian and even
+    // with the Croatian alias its output can be uneven — the browser's on-
+    // device recognizer is often more reliable for short Serbian utterances.
+    const liveTranscript = interim.trim();
+    if (previewLang === "sr-RS" && liveTranscript.length > 0) {
+      setValue((prev) => {
+        const base = prev.trim();
+        return base ? `${base} ${liveTranscript}` : liveTranscript;
+      });
+      setInterim("");
+      requestAnimationFrame(() => {
+        const el = textareaRef.current;
+        if (el) {
+          el.focus();
+          const end = el.value.length;
+          el.setSelectionRange(end, end);
+        }
+      });
+      return;
+    }
+
     setTranscribing(true);
     const id = push({
       title: "Transcribing…",

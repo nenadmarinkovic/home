@@ -12,15 +12,9 @@ import {
 const MISTRAL_URL = "https://api.mistral.ai/v1/chat/completions";
 const MISTRAL_TRANSCRIBE_URL = "https://api.mistral.ai/v1/audio/transcriptions";
 
-// Voxtral is Mistral's speech model; the mini tier is plenty for short
-// single-word/sentence dictation and keeps latency low.
 const TRANSCRIBE_MODEL =
   process.env.MISTRAL_TRANSCRIBE_MODEL ?? "voxtral-mini-latest";
 
-// Mistral has gone through several naming conventions; pick whatever the user
-// has on their account. `mistral-large-latest` is the safe default for tasks
-// that need accuracy (linguistic analysis); `mistral-small-latest` is cheaper
-// for plain translations.
 const ENRICH_MODEL = process.env.MISTRAL_MODEL ?? "mistral-large-latest";
 const TRANSLATE_MODEL =
   process.env.MISTRAL_TRANSLATE_MODEL ?? "mistral-small-latest";
@@ -37,14 +31,9 @@ function apiKey(): string {
   return key;
 }
 
-// Transcribe a recorded audio blob to text. Callers can pin a `language` (ISO
-// 639-1) so short/unclear clips of German or Serbian don't get misidentified
-// as Russian or another Slavic language by Voxtral's auto-detect.
-//
-// Voxtral only supports a fixed set of languages (English, German, French,
-// Spanish, Italian, Portuguese, Dutch, Hindi at time of writing). If the hint
-// is rejected with a 4xx, we transparently retry without the hint so callers
-// that pass e.g. Serbian still get *some* transcription instead of a hard fail.
+const VOXTRAL_LANGUAGE_ALIASES: Record<string, string> = {
+  sr: "hr",
+};
 export async function transcribeAudio(
   file: Blob,
   filename: string,
@@ -53,12 +42,9 @@ export async function transcribeAudio(
   const attempt = async (language: string | undefined) => {
     const form = new FormData();
     form.append("model", TRANSCRIBE_MODEL);
-    // Voxtral keys the decoder off the file extension, so pass a sensible name.
     form.append("file", file, filename);
     if (language) form.append("language", language);
 
-    // Note: do not set content-type by hand — fetch derives the multipart
-    // boundary from the FormData body automatically.
     const res = await fetch(MISTRAL_TRANSCRIBE_URL, {
       method: "POST",
       headers: { authorization: `Bearer ${apiKey()}` },
@@ -80,17 +66,15 @@ export async function transcribeAudio(
     return text;
   };
 
+  const requested = options?.language;
+  const mapped = requested
+    ? (VOXTRAL_LANGUAGE_ALIASES[requested] ?? requested)
+    : undefined;
+
   try {
-    return await attempt(options?.language);
+    return await attempt(mapped);
   } catch (err) {
-    // Retry without the language hint if the first call failed with a client
-    // error while a hint was set — most likely the language isn't in
-    // Voxtral's supported set. Any other failure is genuine and rethrown.
-    if (
-      options?.language &&
-      err instanceof Error &&
-      /Mistral 4\d\d/.test(err.message)
-    ) {
+    if (mapped && err instanceof Error && /Mistral 4\d\d/.test(err.message)) {
       return await attempt(undefined);
     }
     throw err;
@@ -291,7 +275,9 @@ export async function enrichTerm(
   try {
     parsed = JSON.parse(content);
   } catch {
-    throw new Error(`Mistral returned non-JSON content: ${content.slice(0, 200)}`);
+    throw new Error(
+      `Mistral returned non-JSON content: ${content.slice(0, 200)}`,
+    );
   }
   return EnrichedEntrySchema.parse(parsed);
 }
@@ -353,12 +339,16 @@ export async function translate(
 ): Promise<string> {
   const trimmed = text.trim();
   if (!trimmed) return "";
-  const [from, to] = direction === "de_sr" ? ["German", "Serbian"] : ["Serbian", "German"];
+  const [from, to] =
+    direction === "de_sr" ? ["German", "Serbian"] : ["Serbian", "German"];
   const content = await chatJSON(
     TRANSLATE_MODEL,
     [
       { role: "system", content: TRANSLATE_SYSTEM_PROMPT },
-      { role: "user", content: `Translate from ${from} to ${to}:\n\n${trimmed}` },
+      {
+        role: "user",
+        content: `Translate from ${from} to ${to}:\n\n${trimmed}`,
+      },
     ],
     signal,
   );
@@ -366,7 +356,9 @@ export async function translate(
   try {
     parsed = JSON.parse(content);
   } catch {
-    throw new Error(`Mistral returned non-JSON content: ${content.slice(0, 200)}`);
+    throw new Error(
+      `Mistral returned non-JSON content: ${content.slice(0, 200)}`,
+    );
   }
   return TranslateResponseSchema.parse(parsed).translation;
 }
