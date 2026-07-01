@@ -75,6 +75,15 @@ export function QuickAdd({ className }: Props) {
 
   const [interim, setInterim] = useState("");
   const [previewLang, setPreviewLang] = useState<PreviewLang>("de-DE");
+
+  // `recorder.onstop` captures `handleRecorded` from the render where recording
+  // started, so the plain `interim`/`previewLang` it closes over are frozen at
+  // their start-of-recording values (interim is "" then). Mirror both into refs
+  // so the stop handler reads what the user actually dictated — otherwise the
+  // Serbian live-transcript shortcut never fires and audio wrongly falls
+  // through to Voxtral.
+  const interimRef = useRef("");
+  const previewLangRef = useRef<PreviewLang>("de-DE");
   const { push, update } = useToasts();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
@@ -111,6 +120,14 @@ export function QuickAdd({ className }: Props) {
       if (overlayRef.current) overlayRef.current.scrollTop = el.scrollTop;
     }
   }, [displayValue, previewActive]);
+
+  useEffect(() => {
+    interimRef.current = interim;
+  }, [interim]);
+
+  useEffect(() => {
+    previewLangRef.current = previewLang;
+  }, [previewLang]);
 
   useEffect(() => {
     return () => {
@@ -315,11 +332,15 @@ export function QuickAdd({ className }: Props) {
       return;
     }
 
-    // Prefer the Web Speech live transcript whenever it produced anything —
-    // for short/dialectal German and for Serbian both, the browser's on-
-    // device recognizer tends to beat Voxtral. Voxtral only runs as a
-    // fallback when Web Speech gave us nothing (iOS Safari, Firefox, etc.).
-    const liveTranscript = interim.trim();
+
+    // Prefer the Web Speech live transcript for any language — for short or
+    // dialectal German and for Serbian, the browser's on-device recognizer
+    // tends to beat Voxtral, and this keeps what the user saw during
+    // recording. Voxtral only runs when Web Speech gave us nothing (iOS
+    // Safari, Firefox, etc.). Read from refs so the stale closure captured
+    // by `recorder.onstop` doesn't see empty values.
+    const lang = previewLangRef.current;
+    const liveTranscript = interimRef.current.trim();
     if (liveTranscript.length > 0) {
       setValue((prev) => {
         const base = prev.trim();
@@ -345,7 +366,7 @@ export function QuickAdd({ className }: Props) {
     try {
       const fd = new FormData();
       fd.append("audio", blob, `recording.${extForMimeType(type)}`);
-      fd.append("language", voxtralLangCode(previewLang));
+      fd.append("language", voxtralLangCode(lang));
       const res = await fetch("/api/lib/transcribe", {
         method: "POST",
         body: fd,
