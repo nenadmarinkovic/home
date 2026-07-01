@@ -128,10 +128,6 @@ export function QuickAdd({ className }: Props) {
     };
   }, []);
 
-  // Voxtral doesn't ship a Serbian model and Web Speech's `sr-RS` support is
-  // patchy across browsers — but both handle Croatian well, and Latin-script
-  // Serbian is orthographically ~identical to Croatian. So we run the whole
-  // Serbian pipeline through Croatian: cleaner transcripts, same output.
   function recognizerLangCode(lang: PreviewLang): string {
     return lang === "sr-RS" ? "hr-HR" : lang;
   }
@@ -319,12 +315,12 @@ export function QuickAdd({ className }: Props) {
       return;
     }
 
-    // Serbian shortcut: if Web Speech pinned to sr-RS produced a live
-    // transcript, use it directly. Voxtral doesn't support Serbian and even
-    // with the Croatian alias its output can be uneven — the browser's on-
-    // device recognizer is often more reliable for short Serbian utterances.
+    // Prefer the Web Speech live transcript whenever it produced anything —
+    // for short/dialectal German and for Serbian both, the browser's on-
+    // device recognizer tends to beat Voxtral. Voxtral only runs as a
+    // fallback when Web Speech gave us nothing (iOS Safari, Firefox, etc.).
     const liveTranscript = interim.trim();
-    if (previewLang === "sr-RS" && liveTranscript.length > 0) {
+    if (liveTranscript.length > 0) {
       setValue((prev) => {
         const base = prev.trim();
         return base ? `${base} ${liveTranscript}` : liveTranscript;
