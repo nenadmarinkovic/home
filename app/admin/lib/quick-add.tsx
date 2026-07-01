@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowUpIcon,
@@ -24,12 +18,8 @@ type Props = {
 
 const MAX_HEIGHT_PX = 180; // matches max-h-44 area
 
-// Languages the live preview can listen for. Web Speech only does one at a
-// time, so we expose a toggle; Voxtral still auto-detects on the final pass.
 type PreviewLang = "sr-RS" | "de-DE";
 
-// Minimal shape of the Web Speech API we rely on. It isn't in the DOM lib
-// typings and is vendor-prefixed on Chromium, so we describe just what we use.
 type SpeechResultAlt = { transcript: string };
 type SpeechResult = { isFinal: boolean; 0: SpeechResultAlt };
 type SpeechEvent = { results: ArrayLike<SpeechResult> };
@@ -54,9 +44,6 @@ function getSpeechRecognitionCtor(): SpeechRecognitionCtor | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
-// Pick a container the current browser can actually record. Chrome/Firefox
-// hand back webm/opus; iOS Safari only does mp4/aac. Feature-detect instead of
-// hard-coding so the same code path works on the iPhone PWA.
 function pickPreferredMimeType(): string {
   if (typeof MediaRecorder === "undefined") return "";
   const candidates = [
@@ -72,8 +59,6 @@ function pickPreferredMimeType(): string {
   return "";
 }
 
-// Voxtral keys its decoder off the file extension, so map the recorded
-// container to a matching name.
 function extForMimeType(mimeType: string): string {
   if (mimeType.includes("mp4")) return "mp4";
   if (mimeType.includes("mpeg")) return "mp3";
@@ -86,18 +71,9 @@ export function QuickAdd({ className }: Props) {
   const [busy, setBusy] = useState(false);
   const [recording, setRecording] = useState(false);
   const [transcribing, setTranscribing] = useState(false);
-  // Provisional live transcript shown inline while speaking. Voxtral's result
-  // replaces it once the recording is sent.
+
   const [interim, setInterim] = useState("");
-  const [previewLang, setPreviewLang] = useState<PreviewLang>("sr-RS");
-  // Web Speech is client-only and absent on some browsers (e.g. iOS Safari).
-  // useSyncExternalStore renders `false` on the server and the real value after
-  // hydration, so the toggle appears without a hydration mismatch.
-  const speechSupported = useSyncExternalStore(
-    () => () => {},
-    () => getSpeechRecognitionCtor() !== null,
-    () => false,
-  );
+  const [previewLang, setPreviewLang] = useState<PreviewLang>("de-DE");
   const { push, update } = useToasts();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
@@ -108,9 +84,6 @@ export function QuickAdd({ className }: Props) {
   const chunksRef = useRef<Blob[]>([]);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
 
-  // The dimmed preview is only ever visible while a live transcript exists and
-  // we're still capturing or transcribing. While it's showing, the real
-  // textarea text is rendered transparent and the overlay paints the words.
   const previewActive = (recording || transcribing) && interim.length > 0;
   const displayValue = previewActive
     ? value
@@ -118,11 +91,6 @@ export function QuickAdd({ className }: Props) {
       : interim
     : value;
 
-  // Auto-grow the textarea with the content, up to MAX_HEIGHT_PX.
-  // Skip the resize when the textarea is empty so the CSS min-height owns
-  // the initial render (otherwise the brief `height: auto` reset causes a
-  // flicker on hydration before min-h reasserts). Toggle overflow so the
-  // scrollbar only appears once we hit MAX, not transiently while growing.
   useLayoutEffect(() => {
     const el = textareaRef.current;
     if (!el) return;
@@ -136,15 +104,13 @@ export function QuickAdd({ className }: Props) {
     const target = Math.min(el.scrollHeight, MAX_HEIGHT_PX);
     el.style.height = target + "px";
     el.style.overflowY = el.scrollHeight > MAX_HEIGHT_PX ? "auto" : "hidden";
-    // While a live preview is streaming in, keep the newest words in view and
-    // mirror the scroll position onto the overlay so the two stay aligned.
+
     if (previewActive) {
       el.scrollTop = el.scrollHeight;
       if (overlayRef.current) overlayRef.current.scrollTop = el.scrollTop;
     }
   }, [displayValue, previewActive]);
 
-  // Release the mic if the component unmounts mid-recording.
   useEffect(() => {
     return () => {
       const stream = streamRef.current;
@@ -161,9 +127,6 @@ export function QuickAdd({ className }: Props) {
     };
   }, []);
 
-  // Run the browser's on-device/cloud recognizer alongside MediaRecorder to
-  // paint words inline as they're spoken. Voxtral remains the source of truth,
-  // so any recognizer error is swallowed — we just lose the live preview.
   function startLivePreview(lang: PreviewLang) {
     const Ctor = getSpeechRecognitionCtor();
     if (!Ctor) return;
@@ -351,6 +314,7 @@ export function QuickAdd({ className }: Props) {
     try {
       const fd = new FormData();
       fd.append("audio", blob, `recording.${extForMimeType(type)}`);
+      fd.append("language", previewLang.slice(0, 2));
       const res = await fetch("/api/lib/transcribe", {
         method: "POST",
         body: fd,
@@ -374,8 +338,7 @@ export function QuickAdd({ className }: Props) {
         title: "Transcribed",
         message: text.length > 80 ? text.slice(0, 77) + "…" : text,
       });
-      // Drop the transcript into the box so it can be reviewed/edited before
-      // sending, rather than adding it blind.
+
       setValue((prev) => {
         const base = prev.trim();
         return base ? `${base} ${text}` : text;
@@ -395,7 +358,6 @@ export function QuickAdd({ className }: Props) {
         message: err instanceof Error ? err.message : "Network error",
       });
     } finally {
-      // Voxtral has had its say (or failed); drop the provisional preview.
       setInterim("");
       setTranscribing(false);
     }
@@ -502,7 +464,6 @@ export function QuickAdd({ className }: Props) {
           placeholder="Add a word or sentence…"
           className={cn(
             "block max-h-44 min-h-12 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-9 md:px-3 md:py-2 md:text-sm md:leading-5",
-            // Hide the real text while the styled preview overlay paints it.
             previewActive && "text-transparent caret-transparent",
           )}
           autoCapitalize="off"
@@ -521,17 +482,17 @@ export function QuickAdd({ className }: Props) {
         )}
       </div>
       <div className="flex items-center justify-between gap-2 px-2.5 pb-2 md:pb-1 md:pl-0 md:pr-1">
-        {/* Voice + live-preview language toggle are mobile-only. On desktop the
-            box sits above the search field and we keep it search-like: just the
-            submit affordance, no mic or SR/DE switch. */}
-        <div className="flex items-center gap-0.5 md:hidden">
+        <div className="flex items-center gap-1.5 md:hidden">
           <button
             type="button"
+            onMouseDown={(e) => e.preventDefault()}
             onClick={toggleRecording}
             disabled={busy || transcribing}
             aria-pressed={recording}
             aria-label={
-              recording ? "Stop recording" : "Record a word or sentence"
+              recording
+                ? "Stop recording"
+                : `Record in ${previewLang === "de-DE" ? "German" : "Serbian"}`
             }
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors",
@@ -550,24 +511,33 @@ export function QuickAdd({ className }: Props) {
             )}
             <span>{voiceLabel}</span>
           </button>
-          {speechSupported && (
-            <button
-              type="button"
-              onClick={() =>
-                setPreviewLang((l) => (l === "sr-RS" ? "de-DE" : "sr-RS"))
-              }
-              disabled={recording || transcribing}
-              aria-label={`Live preview language: ${previewLang === "sr-RS" ? "Serbian" : "German"}. Tap to switch.`}
-              title="Language for the live preview while speaking"
-              className={cn(
-                "rounded-full px-2 py-1 text-xs font-semibold tabular-nums transition-colors",
-                "cursor-pointer text-zinc-500 hover:bg-foreground/5 hover:text-foreground",
-                "disabled:cursor-not-allowed disabled:opacity-50",
-              )}
-            >
-              {previewLang === "sr-RS" ? "SR" : "DE"}
-            </button>
-          )}
+
+          <div className="inline-flex items-center rounded-full bg-foreground/[0.06] p-0.5 text-[11px] font-semibold tabular-nums">
+            {(["de-DE", "sr-RS"] as const).map((lang) => {
+              const active = previewLang === lang;
+              const label = lang === "de-DE" ? "DE" : "SR";
+              return (
+                <button
+                  key={lang}
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => setPreviewLang(lang)}
+                  disabled={recording || transcribing}
+                  aria-pressed={active}
+                  aria-label={`${lang === "de-DE" ? "German" : "Serbian"} recording language`}
+                  className={cn(
+                    "rounded-full px-2 py-0.5 transition-colors",
+                    "cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
+                    active
+                      ? "bg-foreground text-background"
+                      : "text-zinc-500 hover:text-foreground",
+                  )}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
         </div>
         <button
           type="submit"

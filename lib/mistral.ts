@@ -37,19 +37,22 @@ function apiKey(): string {
   return key;
 }
 
-// Transcribe a recorded audio blob to text. We deliberately do NOT pin a
-// `language`: the lib accepts both German and Serbian input (enrichTerm
-// translates Serbian → German), so letting Voxtral auto-detect keeps both
-// dictation directions working.
+// Transcribe a recorded audio blob to text. Callers can pin a `language` (ISO
+// 639-1) so short/unclear clips of German or Serbian don't get misidentified
+// as Russian or another Slavic language by Voxtral's auto-detect. Omit
+// `language` if genuinely mixed input is expected.
 export async function transcribeAudio(
   file: Blob,
   filename: string,
-  signal?: AbortSignal,
+  options?: { language?: string; signal?: AbortSignal },
 ): Promise<string> {
   const form = new FormData();
   form.append("model", TRANSCRIBE_MODEL);
   // Voxtral keys the decoder off the file extension, so pass a sensible name.
   form.append("file", file, filename);
+  if (options?.language) {
+    form.append("language", options.language);
+  }
 
   // Note: do not set content-type by hand — fetch derives the multipart
   // boundary from the FormData body automatically.
@@ -57,7 +60,7 @@ export async function transcribeAudio(
     method: "POST",
     headers: { authorization: `Bearer ${apiKey()}` },
     body: form,
-    signal,
+    signal: options?.signal,
     cache: "no-store",
   });
 

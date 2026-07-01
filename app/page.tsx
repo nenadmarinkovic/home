@@ -30,8 +30,9 @@ export default async function Home() {
         <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
           Next year marks ten years since I started working on the web. I still
           think it&rsquo;s the best platform we have for making things, and I
-          want to push it a little further &mdash; through the small projects I
-          build, the studio I run, and the platforms I help people own.
+          want to push it a little further. Mostly through small projects, the
+          studio I run, and custom education platforms &mdash; built for people
+          who&rsquo;d rather own their work than rent it.
         </p>
         <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
           This site is the hub for it all. I share my work, thoughts, and the
@@ -52,7 +53,7 @@ export default async function Home() {
       <section className="w-full space-y-6">
         <div className="flex items-baseline justify-between">
           <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-            Recent writing
+            Recent
           </p>
           <Link
             href="/writing"
