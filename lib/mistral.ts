@@ -39,42 +39,62 @@ function apiKey(): string {
 
 // Transcribe a recorded audio blob to text. Callers can pin a `language` (ISO
 // 639-1) so short/unclear clips of German or Serbian don't get misidentified
-// as Russian or another Slavic language by Voxtral's auto-detect. Omit
-// `language` if genuinely mixed input is expected.
+// as Russian or another Slavic language by Voxtral's auto-detect.
+//
+// Voxtral only supports a fixed set of languages (English, German, French,
+// Spanish, Italian, Portuguese, Dutch, Hindi at time of writing). If the hint
+// is rejected with a 4xx, we transparently retry without the hint so callers
+// that pass e.g. Serbian still get *some* transcription instead of a hard fail.
 export async function transcribeAudio(
   file: Blob,
   filename: string,
   options?: { language?: string; signal?: AbortSignal },
 ): Promise<string> {
-  const form = new FormData();
-  form.append("model", TRANSCRIBE_MODEL);
-  // Voxtral keys the decoder off the file extension, so pass a sensible name.
-  form.append("file", file, filename);
-  if (options?.language) {
-    form.append("language", options.language);
-  }
+  const attempt = async (language: string | undefined) => {
+    const form = new FormData();
+    form.append("model", TRANSCRIBE_MODEL);
+    // Voxtral keys the decoder off the file extension, so pass a sensible name.
+    form.append("file", file, filename);
+    if (language) form.append("language", language);
 
-  // Note: do not set content-type by hand — fetch derives the multipart
-  // boundary from the FormData body automatically.
-  const res = await fetch(MISTRAL_TRANSCRIBE_URL, {
-    method: "POST",
-    headers: { authorization: `Bearer ${apiKey()}` },
-    body: form,
-    signal: options?.signal,
-    cache: "no-store",
-  });
+    // Note: do not set content-type by hand — fetch derives the multipart
+    // boundary from the FormData body automatically.
+    const res = await fetch(MISTRAL_TRANSCRIBE_URL, {
+      method: "POST",
+      headers: { authorization: `Bearer ${apiKey()}` },
+      body: form,
+      signal: options?.signal,
+      cache: "no-store",
+    });
 
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`Mistral ${res.status}: ${text.slice(0, 300)}`);
-  }
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(`Mistral ${res.status}: ${text.slice(0, 300)}`);
+    }
 
-  const data = (await res.json()) as { text?: string };
-  const text = data.text?.trim();
-  if (!text) {
-    throw new Error("Mistral returned an empty transcription");
+    const data = (await res.json()) as { text?: string };
+    const text = data.text?.trim();
+    if (!text) {
+      throw new Error("Mistral returned an empty transcription");
+    }
+    return text;
+  };
+
+  try {
+    return await attempt(options?.language);
+  } catch (err) {
+    // Retry without the language hint if the first call failed with a client
+    // error while a hint was set — most likely the language isn't in
+    // Voxtral's supported set. Any other failure is genuine and rethrown.
+    if (
+      options?.language &&
+      err instanceof Error &&
+      /Mistral 4\d\d/.test(err.message)
+    ) {
+      return await attempt(undefined);
+    }
+    throw err;
   }
-  return text;
 }
 
 const ExampleSchema = z.object({

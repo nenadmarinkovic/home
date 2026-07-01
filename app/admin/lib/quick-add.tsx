@@ -6,6 +6,7 @@ import {
   ArrowUpIcon,
   CircleNotchIcon,
   MicrophoneIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 
 import { useToasts } from "@/components/toasts";
@@ -539,20 +540,41 @@ export function QuickAdd({ className }: Props) {
             })}
           </div>
         </div>
-        <button
-          type="submit"
-          aria-label="Add"
-          disabled={!canSend}
-          className={cn(
-            "ml-auto flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors md:size-6",
-            canSend
-              ? "bg-foreground text-background hover:bg-foreground/85"
-              : "bg-foreground/10 text-zinc-400",
-            "disabled:cursor-not-allowed",
+        <div className="ml-auto flex items-center gap-1.5">
+          {value.length > 0 && !recording && !transcribing && (
+            <button
+              type="button"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                setValue("");
+                setInterim("");
+                requestAnimationFrame(() => textareaRef.current?.focus());
+              }}
+              aria-label="Clear text"
+              className={cn(
+                "inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium transition-colors",
+                "cursor-pointer text-zinc-500 hover:bg-foreground/5 hover:text-foreground",
+              )}
+            >
+              <XIcon weight="bold" className="size-3" />
+              <span>Clear</span>
+            </button>
           )}
-        >
-          <ArrowUpIcon weight="bold" className="size-3.5" />
-        </button>
+          <button
+            type="submit"
+            aria-label="Add"
+            disabled={!canSend}
+            className={cn(
+              "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors md:size-6",
+              canSend
+                ? "bg-foreground text-background hover:bg-foreground/85"
+                : "bg-foreground/10 text-zinc-400",
+              "disabled:cursor-not-allowed",
+            )}
+          >
+            <ArrowUpIcon weight="bold" className="size-3.5" />
+          </button>
+        </div>
       </div>
     </form>
   );
