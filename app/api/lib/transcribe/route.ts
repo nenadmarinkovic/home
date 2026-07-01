@@ -29,9 +29,13 @@ export async function POST(request: Request) {
   const filename =
     file instanceof File && file.name ? file.name : "recording.webm";
 
+  // Accept the codes the client actually sends. Client maps sr → hr because
+  // Voxtral has a Croatian model but no Serbian one; keeping `sr` in the
+  // allow-list too means older/cached clients still get the server-side
+  // alias applied instead of a silent auto-detect.
   const rawLang = form.get("language");
   const language =
-    typeof rawLang === "string" && (rawLang === "de" || rawLang === "sr")
+    typeof rawLang === "string" && /^(de|sr|hr|en|fr|es|it|pt|nl)$/.test(rawLang)
       ? rawLang
       : undefined;
 

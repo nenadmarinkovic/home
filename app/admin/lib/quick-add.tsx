@@ -128,12 +128,24 @@ export function QuickAdd({ className }: Props) {
     };
   }, []);
 
+  // Voxtral doesn't ship a Serbian model and Web Speech's `sr-RS` support is
+  // patchy across browsers — but both handle Croatian well, and Latin-script
+  // Serbian is orthographically ~identical to Croatian. So we run the whole
+  // Serbian pipeline through Croatian: cleaner transcripts, same output.
+  function recognizerLangCode(lang: PreviewLang): string {
+    return lang === "sr-RS" ? "hr-HR" : lang;
+  }
+
+  function voxtralLangCode(lang: PreviewLang): string {
+    return lang === "sr-RS" ? "hr" : lang.slice(0, 2);
+  }
+
   function startLivePreview(lang: PreviewLang) {
     const Ctor = getSpeechRecognitionCtor();
     if (!Ctor) return;
     try {
       const rec = new Ctor();
-      rec.lang = lang;
+      rec.lang = recognizerLangCode(lang);
       rec.continuous = true;
       rec.interimResults = true;
       rec.onresult = (e) => {
@@ -337,7 +349,7 @@ export function QuickAdd({ className }: Props) {
     try {
       const fd = new FormData();
       fd.append("audio", blob, `recording.${extForMimeType(type)}`);
-      fd.append("language", previewLang.slice(0, 2));
+      fd.append("language", voxtralLangCode(previewLang));
       const res = await fetch("/api/lib/transcribe", {
         method: "POST",
         body: fd,
