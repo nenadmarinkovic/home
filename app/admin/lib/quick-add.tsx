@@ -75,6 +75,15 @@ export function QuickAdd({ className }: Props) {
 
   const [interim, setInterim] = useState("");
   const [previewLang, setPreviewLang] = useState<PreviewLang>("de-DE");
+
+  // `recorder.onstop` captures `handleRecorded` from the render where recording
+  // started, so the plain `interim`/`previewLang` it closes over are frozen at
+  // their start-of-recording values (interim is "" then). Mirror both into refs
+  // so the stop handler reads what the user actually dictated — otherwise the
+  // Serbian live-transcript shortcut never fires and audio wrongly falls
+  // through to Voxtral.
+  const interimRef = useRef("");
+  const previewLangRef = useRef<PreviewLang>("de-DE");
   const { push, update } = useToasts();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
@@ -111,6 +120,14 @@ export function QuickAdd({ className }: Props) {
       if (overlayRef.current) overlayRef.current.scrollTop = el.scrollTop;
     }
   }, [displayValue, previewActive]);
+
+  useEffect(() => {
+    interimRef.current = interim;
+  }, [interim]);
+
+  useEffect(() => {
+    previewLangRef.current = previewLang;
+  }, [previewLang]);
 
   useEffect(() => {
     return () => {
@@ -323,8 +340,9 @@ export function QuickAdd({ className }: Props) {
     // transcript, use it directly. Voxtral doesn't support Serbian and even
     // with the Croatian alias its output can be uneven — the browser's on-
     // device recognizer is often more reliable for short Serbian utterances.
-    const liveTranscript = interim.trim();
-    if (previewLang === "sr-RS" && liveTranscript.length > 0) {
+    const lang = previewLangRef.current;
+    const liveTranscript = interimRef.current.trim();
+    if (lang === "sr-RS" && liveTranscript.length > 0) {
       setValue((prev) => {
         const base = prev.trim();
         return base ? `${base} ${liveTranscript}` : liveTranscript;
@@ -349,7 +367,7 @@ export function QuickAdd({ className }: Props) {
     try {
       const fd = new FormData();
       fd.append("audio", blob, `recording.${extForMimeType(type)}`);
-      fd.append("language", voxtralLangCode(previewLang));
+      fd.append("language", voxtralLangCode(lang));
       const res = await fetch("/api/lib/transcribe", {
         method: "POST",
         body: fd,
