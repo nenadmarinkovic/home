@@ -15,24 +15,16 @@ export default async function Home() {
           About
         </p>
         <p className="font-serif text-2xl italic leading-snug text-pretty text-foreground">
-          I&rsquo;m Nenad — a software developer in Vienna. I build digital
-          platforms for online creators and educators through{" "}
-          <a
-            href="https://monolinie.com"
-            target="_blank"
-            rel="noreferrer"
-            className="text-[#d73003] transition-opacity hover:opacity-70 dark:text-[#F25022]"
-          >
-            Monolinie
-          </a>
-          , my studio.
+          I&rsquo;m Nenad — a software developer in Vienna, experienced in
+          building high-performance web applications.
         </p>
         <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
           Next year marks ten years since I started working on the web. I still
           think it&rsquo;s the best platform we have for making things, and I
-          want to push it a little further. Mostly through small projects, the
-          studio I run, and custom education platforms &mdash; built for people
-          who&rsquo;d rather own their work than rent it.
+          want to push it a little further. Right now, that means building a
+          German-learning platform and laying the groundwork for my first studio
+          &mdash; for educators and online creators who need more than a
+          template.
         </p>
         <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
           This site is the hub for it all. I share my work, thoughts, and the
