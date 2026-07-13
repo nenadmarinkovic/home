@@ -217,6 +217,52 @@ article .pull-quote {
   color: var(--foreground);
 }
 
+/* Contain floats so the article's own height respects the image. */
+article {
+  display: flow-root;
+}
+
+/* Headings always break out of a floated image. */
+article h2,
+article h3,
+article h4 {
+  clear: both;
+}
+
+article img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem auto;
+  border-radius: 0.5rem;
+}
+
+article img.img-left,
+article img.img-right {
+  max-width: 50%;
+  margin: 0.5rem 0 1rem;
+}
+
+article img.img-left {
+  float: left;
+  margin-right: 1.5rem;
+}
+
+article img.img-right {
+  float: right;
+  margin-left: 1.5rem;
+}
+
+/* Reset floats on small screens — stack instead of wrap. */
+@media (max-width: 640px) {
+  article img.img-left,
+  article img.img-right {
+    float: none;
+    max-width: 100%;
+    margin: 2rem auto;
+  }
+}
+
 .ProseMirror h1 {
   font-size: 1.5rem;
   font-weight: 600;

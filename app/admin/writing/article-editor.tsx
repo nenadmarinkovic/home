@@ -6,9 +6,12 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
 import { Markdown } from "tiptap-markdown";
 import { useRouter } from "next/navigation";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { format, parseISO } from "date-fns";
 import {
+  AlignLeft,
+  AlignCenterHorizontal,
+  AlignRight,
   CalendarBlank,
   Image as ImageIcon,
   ListBullets,
@@ -17,6 +20,7 @@ import {
   TextHOne,
   TextHTwo,
   TextItalic,
+  Trash,
   Link as LinkIcon,
 } from "@phosphor-icons/react";
 
@@ -96,7 +100,28 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
       Placeholder.configure({
         placeholder: "Start writing the essay…",
       }),
-      Image.configure({ inline: false, allowBase64: false }),
+      Image.extend({
+        addAttributes() {
+          return {
+            ...this.parent?.(),
+            align: {
+              default: null as null | "left" | "right",
+              parseHTML: (el) => {
+                const cls = el.getAttribute("class") ?? "";
+                if (cls.includes("img-left")) return "left";
+                if (cls.includes("img-right")) return "right";
+                return null;
+              },
+              renderHTML: (attrs) => {
+                if (!attrs.align) return {};
+                return {
+                  class: attrs.align === "left" ? "img-left" : "img-right",
+                };
+              },
+            },
+          };
+        },
+      }).configure({ inline: false, allowBase64: false }),
       Markdown.configure({
         html: true,
         tightLists: true,
@@ -342,6 +367,20 @@ function RequiredMark() {
 function EditorToolbar({ editor }: { editor: Editor }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [imageSelected, setImageSelected] = useState(false);
+
+  useEffect(() => {
+    const sync = () => setImageSelected(editor.isActive("image"));
+    sync();
+    editor.on("selectionUpdate", sync);
+    editor.on("update", sync);
+    editor.on("transaction", sync);
+    return () => {
+      editor.off("selectionUpdate", sync);
+      editor.off("update", sync);
+      editor.off("transaction", sync);
+    };
+  }, [editor]);
 
   async function handleImageUpload(file: File) {
     setUploading(true);
@@ -375,6 +414,7 @@ function EditorToolbar({ editor }: { editor: Editor }) {
     icon: React.ReactNode;
     isActive: boolean;
     run: () => void;
+    tone?: "danger";
   }> = [
     {
       label: "H2",
@@ -433,6 +473,50 @@ function EditorToolbar({ editor }: { editor: Editor }) {
       isActive: false,
       run: () => fileInputRef.current?.click(),
     },
+    ...(imageSelected
+      ? [
+          {
+            label: "Align left",
+            icon: <AlignLeft weight="bold" />,
+            isActive: editor.isActive("image", { align: "left" }),
+            run: () =>
+              editor
+                .chain()
+                .focus()
+                .updateAttributes("image", { align: "left" })
+                .run(),
+          },
+          {
+            label: "No float",
+            icon: <AlignCenterHorizontal weight="bold" />,
+            isActive: editor.isActive("image", { align: null }),
+            run: () =>
+              editor
+                .chain()
+                .focus()
+                .updateAttributes("image", { align: null })
+                .run(),
+          },
+          {
+            label: "Align right",
+            icon: <AlignRight weight="bold" />,
+            isActive: editor.isActive("image", { align: "right" }),
+            run: () =>
+              editor
+                .chain()
+                .focus()
+                .updateAttributes("image", { align: "right" })
+                .run(),
+          },
+          {
+            label: "Remove image",
+            icon: <Trash weight="bold" />,
+            isActive: false,
+            run: () => editor.chain().focus().deleteSelection().run(),
+            tone: "danger" as const,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -449,9 +533,11 @@ function EditorToolbar({ editor }: { editor: Editor }) {
           title={b.label}
           disabled={b.label === "Image" && uploading}
           className={cn(
-            b.isActive
-              ? "bg-[#F25022]/10 text-[#F25022] hover:bg-[#F25022]/15 hover:text-[#F25022]"
-              : "text-zinc-600 dark:text-zinc-400",
+            b.tone === "danger"
+              ? "text-red-500 hover:bg-red-500/10 hover:text-red-500 dark:text-red-400 dark:hover:text-red-400"
+              : b.isActive
+                ? "bg-[#F25022]/10 text-[#F25022] hover:bg-[#F25022]/15 hover:text-[#F25022]"
+                : "text-zinc-600 dark:text-zinc-400",
           )}
         >
           {b.icon}

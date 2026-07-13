@@ -1,9 +1,10 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, like, ne, or, sql } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 
 import { db } from "@/db/client";
 import { articles, type ArticleRow, type Language } from "@/db/schema";
 import { ARTICLES_TAG, type Article } from "@/app/writing/articles";
+import { deleteImageByUrl, extractImageUrls } from "@/lib/uploads";
 
 export type WriteArticleInput = {
   slug: string;
@@ -38,7 +39,50 @@ function rowToArticle(row: ArticleRow): Article {
   };
 }
 
+function isImageUrlUsedElsewhere(
+  url: string,
+  excludeSlug: string,
+  excludeLanguage: Language,
+): boolean {
+  const row = db
+    .select({ n: sql<number>`count(*)` })
+    .from(articles)
+    .where(
+      and(
+        like(articles.body, `%${url}%`),
+        or(
+          ne(articles.slug, excludeSlug),
+          ne(articles.language, excludeLanguage),
+        ),
+      ),
+    )
+    .get();
+  return (row?.n ?? 0) > 0;
+}
+
+async function cleanupOrphanedImages(
+  urls: string[],
+  ownerSlug: string,
+  ownerLanguage: Language,
+) {
+  for (const url of urls) {
+    if (isImageUrlUsedElsewhere(url, ownerSlug, ownerLanguage)) continue;
+    await deleteImageByUrl(url);
+  }
+}
+
 export function upsertArticle(input: WriteArticleInput) {
+  const previous = db
+    .select({ body: articles.body })
+    .from(articles)
+    .where(
+      and(
+        eq(articles.slug, input.slug),
+        eq(articles.language, input.language),
+      ),
+    )
+    .get();
+
   const now = new Date();
   const row = db
     .insert(articles)
@@ -70,16 +114,41 @@ export function upsertArticle(input: WriteArticleInput) {
     })
     .returning()
     .get();
+
+  if (previous?.body) {
+    const oldUrls = new Set(extractImageUrls(previous.body));
+    const newUrls = new Set(extractImageUrls(input.body));
+    const orphans = [...oldUrls].filter((u) => !newUrls.has(u));
+    if (orphans.length > 0) {
+      void cleanupOrphanedImages(orphans, input.slug, input.language);
+    }
+  }
+
   revalidateTag(ARTICLES_TAG, { expire: 0 });
   return row;
 }
 
 export function deleteArticleBySlug(slug: string, language: Language) {
+  const existing = db
+    .select({ body: articles.body })
+    .from(articles)
+    .where(and(eq(articles.slug, slug), eq(articles.language, language)))
+    .get();
+
   const result = db
     .delete(articles)
     .where(and(eq(articles.slug, slug), eq(articles.language, language)))
     .run();
-  if (result.changes > 0) revalidateTag(ARTICLES_TAG, { expire: 0 });
+
+  if (result.changes > 0) {
+    if (existing?.body) {
+      const urls = extractImageUrls(existing.body);
+      if (urls.length > 0) {
+        void cleanupOrphanedImages(urls, slug, language);
+      }
+    }
+    revalidateTag(ARTICLES_TAG, { expire: 0 });
+  }
   return result.changes > 0;
 }
 

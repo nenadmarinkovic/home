@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const DEFAULT_DIR = path.join(process.cwd(), "uploads");
@@ -39,11 +39,22 @@ export async function saveImage(file: File): Promise<SavedImage> {
   const absDir = path.join(UPLOADS_DIR, bucket);
   const absPath = path.join(absDir, filename);
 
-  if (!existsSync(absDir)) {
-    await mkdir(absDir, { recursive: true });
+  try {
+    if (!existsSync(absDir)) {
+      await mkdir(absDir, { recursive: true });
+    }
+    const buffer = Buffer.from(await file.arrayBuffer());
+    await writeFile(absPath, buffer);
+  } catch (err) {
+    // Surface a clear, actionable message. Common cause: UPLOADS_DIR points
+    // to a path the process can't create (e.g. "/app/uploads" locally when
+    // /app doesn't exist). In dev, unset UPLOADS_DIR to default to ./uploads.
+    const message =
+      err instanceof Error ? err.message : "unknown filesystem error";
+    throw new Error(
+      `Could not write upload to ${absDir} — ${message}. Check UPLOADS_DIR (currently: ${UPLOADS_DIR}).`,
+    );
   }
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(absPath, buffer);
 
   return { url: `/writing/img/${relPath}`, relPath };
 }
@@ -55,6 +66,31 @@ export function resolveUploadPath(relPath: string): string | null {
     return null;
   }
   return abs;
+}
+
+const IMAGE_URL_RE = /\/writing\/img\/([A-Za-z0-9._\-/]+)/g;
+
+export function extractImageUrls(body: string): string[] {
+  const seen = new Set<string>();
+  for (const match of body.matchAll(IMAGE_URL_RE)) {
+    // Guard against trailing punctuation captured by the regex.
+    const relPath = match[1].replace(/[.,;:!?)]+$/, "");
+    seen.add(`/writing/img/${relPath}`);
+  }
+  return Array.from(seen);
+}
+
+export async function deleteImageByUrl(url: string): Promise<boolean> {
+  if (!url.startsWith("/writing/img/")) return false;
+  const relPath = url.slice("/writing/img/".length);
+  const abs = resolveUploadPath(relPath);
+  if (!abs || !existsSync(abs)) return false;
+  try {
+    await unlink(abs);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function contentTypeFor(ext: string): string {
