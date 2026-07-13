@@ -58,7 +58,7 @@ export default async function Home() {
             />
           </Link>
         </div>
-        <ul className="divide-y divide-foreground/10">
+        <ul>
           {latest.map((a) => (
             <li
               key={a.slug}

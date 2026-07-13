@@ -6,6 +6,7 @@ export type NavItem = {
 export const baseNavItems: NavItem[] = [
   { href: "/writing", label: "Writing" },
   { href: "/links", label: "Links" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function getAuthNavItem(authed: boolean): NavItem | null {

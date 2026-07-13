@@ -103,7 +103,7 @@ export default async function ArticlePage({
       {(prev || next) && (
         <nav
           aria-label="More writing"
-          className="grid w-full grid-cols-2 gap-8 border-t border-foreground/10 pt-8 font-sans text-sm"
+          className="grid w-full grid-cols-2 gap-8 pt-8 font-sans text-sm"
         >
           <div className="flex flex-col gap-1">
             {prev && (
