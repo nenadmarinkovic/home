@@ -11,7 +11,6 @@ import {
 } from "@/components/nav-items";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { WaveDivider } from "@/components/wave-divider";
 import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
@@ -208,7 +207,6 @@ export function MobileMenu() {
                 </span>
                 <ThemeToggle />
               </div>
-              <WaveDivider />
               <p className="font-sans text-xs text-zinc-600 dark:text-zinc-400">
                 © {new Date().getFullYear()} Nenad Marinković
               </p>

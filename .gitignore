@@ -50,3 +50,6 @@ next-env.d.ts
 # extension build artifacts
 *.xpi
 *.zip
+
+# local uploaded images (mounted volume in prod)
+/uploads

@@ -42,7 +42,7 @@ export default function ContactPage() {
           Get in touch
         </h1>
         <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-          Email is best. I read everything.
+          Ideas, collaborations, or a hello.
         </p>
       </hgroup>
       <section className="grid w-full gap-10 md:grid-cols-[auto_minmax(0,1fr)] md:items-start md:gap-14">

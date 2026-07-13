@@ -3,12 +3,14 @@
 import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
+import Image from "@tiptap/extension-image";
 import { Markdown } from "tiptap-markdown";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { format, parseISO } from "date-fns";
 import {
   CalendarBlank,
+  Image as ImageIcon,
   ListBullets,
   Quotes,
   TextB,
@@ -94,6 +96,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
       Placeholder.configure({
         placeholder: "Start writing the essay…",
       }),
+      Image.configure({ inline: false, allowBase64: false }),
       Markdown.configure({
         html: true,
         tightLists: true,
@@ -337,6 +340,36 @@ function RequiredMark() {
 }
 
 function EditorToolbar({ editor }: { editor: Editor }) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleImageUpload(file: File) {
+    setUploading(true);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch("/api/admin/upload/image", {
+        method: "POST",
+        body: form,
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        url?: string;
+        error?: string;
+      };
+      if (!res.ok || !data.url) {
+        window.alert(data.error ?? `Upload failed (${res.status})`);
+        return;
+      }
+      editor
+        .chain()
+        .focus()
+        .setImage({ src: data.url, alt: file.name.replace(/\.[^.]+$/, "") })
+        .run();
+    } finally {
+      setUploading(false);
+    }
+  }
+
   const buttons: Array<{
     label: string;
     icon: React.ReactNode;
@@ -394,6 +427,12 @@ function EditorToolbar({ editor }: { editor: Editor }) {
           .run();
       },
     },
+    {
+      label: uploading ? "Uploading…" : "Image",
+      icon: <ImageIcon weight="bold" />,
+      isActive: false,
+      run: () => fileInputRef.current?.click(),
+    },
   ];
 
   return (
@@ -408,6 +447,7 @@ function EditorToolbar({ editor }: { editor: Editor }) {
           aria-label={b.label}
           aria-pressed={b.isActive}
           title={b.label}
+          disabled={b.label === "Image" && uploading}
           className={cn(
             b.isActive
               ? "bg-[#F25022]/10 text-[#F25022] hover:bg-[#F25022]/15 hover:text-[#F25022]"
@@ -417,6 +457,18 @@ function EditorToolbar({ editor }: { editor: Editor }) {
           {b.icon}
         </Button>
       ))}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+        className="hidden"
+        onChange={async (event) => {
+          const file = event.target.files?.[0];
+          event.target.value = "";
+          if (!file) return;
+          await handleImageUpload(file);
+        }}
+      />
     </div>
   );
 }
