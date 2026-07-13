@@ -20,6 +20,11 @@ const links = [
     href: "https://github.com/nenadmarinkovic",
   },
   {
+    label: "Bluesky",
+    value: "@nenadmarinkovic.com",
+    href: "https://bsky.app/profile/nenadmarinkovic.com",
+  },
+  {
     label: "RSS",
     value: "/rss.xml",
     href: "/rss.xml",

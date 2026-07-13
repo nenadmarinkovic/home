@@ -63,7 +63,6 @@ export default async function AdminPage() {
     "/admin/writing": `${published.length} published · ${drafts.length} draft${drafts.length === 1 ? "" : "s"}`,
     "/admin/lib": `${libStats.total} cards · ${libStats.due} due`,
     "/admin/log": "Live",
-    "/admin/links": "Coming soon",
   };
 
   const dateLabel = new Intl.DateTimeFormat("en-GB", {
@@ -99,10 +98,9 @@ function ToolRow({ tool, stat }: { tool: Tool; stat?: string }) {
   return (
     <li className="py-3 first:pt-0 last:pb-0 sm:py-6">
       <Link href={tool.href} className="group flex items-start gap-4">
-        <tool.Icon
-          weight="regular"
-          className="mt-1 size-6 shrink-0 text-foreground transition-transform duration-200 group-hover:scale-110"
-        />
+        <div className="mt-0.5 shrink-0 rounded-xl border border-foreground/10 bg-white p-2 transition-transform duration-200 group-hover:scale-110">
+          <tool.Icon weight="regular" className="size-6 text-black" />
+        </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between gap-3">
             <p className="font-sans text-xl font-semibold leading-tight tracking-tight text-foreground transition-opacity group-hover:opacity-70">

@@ -11,6 +11,7 @@ import {
 } from "@/components/nav-items";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { WaveDivider } from "@/components/wave-divider";
 import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
@@ -165,44 +166,50 @@ export function MobileMenu() {
               </nav>
             )}
 
-            <div className="mt-auto flex flex-col gap-5 border-t border-foreground/10 pt-8">
-              <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-                Elsewhere
-              </p>
-              <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-                <a
-                  href="https://github.com/nenadmarinkovic"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="py-1.5 transition-colors duration-150 hover:text-foreground"
-                >
-                  GitHub
-                </a>
-                <a
-                  href="https://bsky.app/profile/nenadmarinkovic.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="py-1.5 transition-colors duration-150 hover:text-foreground"
-                >
-                  Bluesky
-                </a>
-                <a
-                  href="mailto:nenadmarinkovic@protonmail.com"
-                  className="py-1.5 transition-colors duration-150 hover:text-foreground"
-                >
-                  Email
-                </a>
-                <a href="/rss.xml" className="py-1.5 hover:text-foreground">
-                  RSS
-                </a>
-              </nav>
+            <div className="mt-auto flex flex-col gap-8 pt-8">
+              <div className="flex flex-col gap-3">
+                <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+                  Elsewhere
+                </p>
+                <nav className="flex flex-wrap items-center gap-x-5 gap-y-1 font-sans text-sm text-zinc-600 dark:text-zinc-400">
+                  <a
+                    href="https://github.com/nenadmarinkovic"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="py-1 transition-colors duration-150 hover:text-foreground"
+                  >
+                    GitHub
+                  </a>
+                  <a
+                    href="https://bsky.app/profile/nenadmarinkovic.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="py-1 transition-colors duration-150 hover:text-foreground"
+                  >
+                    Bluesky
+                  </a>
+                  <a
+                    href="mailto:nenadmarinkovic@protonmail.com"
+                    className="py-1 transition-colors duration-150 hover:text-foreground"
+                  >
+                    Email
+                  </a>
+                  <a
+                    href="/rss.xml"
+                    className="py-1 transition-colors duration-150 hover:text-foreground"
+                  >
+                    RSS
+                  </a>
+                </nav>
+              </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                   Theme
                 </span>
                 <ThemeToggle />
               </div>
-              <p className="border-t border-foreground/10 pt-5 font-sans text-xs text-zinc-600 dark:text-zinc-400">
+              <WaveDivider />
+              <p className="font-sans text-xs text-zinc-600 dark:text-zinc-400">
                 © {new Date().getFullYear()} Nenad Marinković
               </p>
             </div>

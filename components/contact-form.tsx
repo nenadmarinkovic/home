@@ -31,16 +31,18 @@ export function ContactForm() {
       className="flex w-full flex-col gap-5"
       noValidate
     >
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="contact-name">Name</Label>
           <Input
             id="contact-name"
             name="name"
             autoComplete="name"
+            placeholder="Your name"
             required
             value={name}
             onChange={(event) => setName(event.target.value)}
+            className="text-sm md:text-sm"
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -50,9 +52,11 @@ export function ContactForm() {
             name="email"
             type="email"
             autoComplete="email"
+            placeholder="you@example.com"
             required
             value={email}
             onChange={(event) => setEmail(event.target.value)}
+            className="text-sm md:text-sm"
           />
         </div>
       </div>
@@ -61,10 +65,11 @@ export function ContactForm() {
         <Textarea
           id="contact-message"
           name="message"
-          rows={6}
+          placeholder="What's on your mind?"
           required
           value={message}
           onChange={(event) => setMessage(event.target.value)}
+          className="h-[120px] min-h-[120px] resize-none text-sm md:text-sm"
         />
       </div>
       <Button type="submit" size="lg" className="self-end">
