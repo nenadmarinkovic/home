@@ -69,7 +69,7 @@ export default function ContactPage() {
           </dl>
         </aside>
         <div className="flex flex-col gap-6">
-          <p className="font-serif text-base italic leading-relaxed text-pretty text-zinc-600 dark:text-zinc-400">
+          <p className="font-serif text-md leading-relaxed text-pretty text-zinc-600 dark:text-zinc-400">
             Feel free to get in touch. I would love to hear from you and
             discuss any inquiries, collaborations, or opportunities.
           </p>
