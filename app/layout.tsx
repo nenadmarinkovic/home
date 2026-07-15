@@ -5,7 +5,6 @@ import { Providers } from "./providers";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { WaveDivider } from "@/components/wave-divider";
 import { ThemeColorSync } from "@/components/theme-color-sync";
 import { getAuthedFromCookie } from "@/lib/auth-server";
 import { site } from "@/lib/site";
@@ -152,7 +151,6 @@ export default async function RootLayout({
               <div className="flex w-full max-w-2xl flex-1 flex-col bg-background">
                 <SiteHeader />
                 {children}
-                <WaveDivider />
                 <SiteFooter />
               </div>
             </div>

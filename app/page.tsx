@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 import { AdminActions } from "@/components/admin-actions";
+import { WaveDivider } from "@/components/wave-divider";
 
 import { getArticles } from "./writing/articles";
 
@@ -18,7 +19,7 @@ export default async function Home() {
           I&rsquo;m Nenad — a software developer in Vienna, experienced in
           building high-performance web applications.
         </p>
-        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
+        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-foreground">
           Next year marks ten years since I started working on the web. I still
           think it&rsquo;s the best platform we have for making things, and I
           want to push it a little further. Right now, that means building a
@@ -26,7 +27,7 @@ export default async function Home() {
           &mdash; for educators and online creators who need more than a
           template.
         </p>
-        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
+        <p className="font-serif text-(length:--unit-lg) leading-[1.5] text-pretty text-foreground">
           This site is the hub for it all. I share my work, thoughts, and the
           links I find interesting. I kept it deliberately minimal, reflecting
           what I value: simplicity, transparency, and depth. Beneath the
@@ -42,8 +43,9 @@ export default async function Home() {
           page.
         </p>
       </section>
-      <section className="w-full space-y-6">
-        <div className="flex items-baseline justify-between">
+      <section className="w-full space-y-6 -mt-6">
+        <WaveDivider />
+        <div className="flex items-baseline justify-between pt-4">
           <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
             Recent
           </p>
@@ -77,7 +79,7 @@ export default async function Home() {
                 <p className="font-serif text-(length:--unit-lg) italic leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
                   {a.subtitle}
                 </p>
-                <p className="font-serif text-base leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
+                <p className="font-serif text-base leading-[1.5] text-pretty text-foreground">
                   {a.description}
                 </p>
               </Link>
