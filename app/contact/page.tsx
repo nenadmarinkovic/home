@@ -34,14 +34,14 @@ const links = [
 export default function ContactPage() {
   return (
     <main className="flex flex-1 flex-col items-start gap-14 pb-20 pt-12 md:pt-20">
-      <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+      <hgroup className="max-w-[46ch] self-center space-y-4 text-center">
+        <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
           Contact
         </p>
-        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
+        <h1 className="text-4xl font-light text-balance text-foreground">
           Get in touch
         </h1>
-        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+        <p className="text-base font-light italic leading-[1.5] text-balance text-zinc-600 dark:text-zinc-400">
           Ideas, collaborations, or a hello.
         </p>
       </hgroup>
@@ -51,10 +51,10 @@ export default function ContactPage() {
           <dl className="flex w-full flex-col items-center gap-4 text-center md:items-start md:text-left">
             {links.map((l) => (
               <div key={l.label} className="flex flex-col gap-1">
-                <dt className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+                <dt className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
                   {l.label}
                 </dt>
-                <dd className="font-serif text-sm leading-[1.3] text-pretty break-words">
+                <dd className="font-sans text-sm leading-[1.35] text-pretty break-words">
                   <a
                     href={l.href}
                     target={l.href.startsWith("http") ? "_blank" : undefined}
@@ -68,10 +68,10 @@ export default function ContactPage() {
             ))}
           </dl>
         </aside>
-        <div className="flex flex-col gap-6">
-          <p className="font-serif text-md leading-relaxed text-pretty text-zinc-600 dark:text-zinc-400">
-            Feel free to get in touch. I would love to hear from you and
-            discuss any inquiries, collaborations, or opportunities.
+        <div className="flex max-w-[46ch] flex-col gap-4">
+          <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+            Welcome to my inbox. Drop a line about a project, a collaboration,
+            or just to say hi — I read everything that comes in.
           </p>
           <ContactForm />
         </div>

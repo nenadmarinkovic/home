@@ -380,7 +380,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
 
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-1.5">
-          <h1 className="font-serif text-3xl font-semibold leading-none tracking-tight text-foreground">
+          <h1 className="text-3xl font-semibold leading-none tracking-tight text-foreground">
             Lib
           </h1>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
@@ -666,10 +666,10 @@ function Empty({
         <BookOpen weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
-        <p className="font-serif text-base font-semibold text-foreground">
+        <p className="text-base font-semibold text-foreground">
           {isSearching ? "No matches" : "Nothing here yet"}
         </p>
-        <p className="font-serif text-sm text-zinc-500 dark:text-zinc-500">
+        <p className="text-sm text-zinc-500 dark:text-zinc-500">
           {isSearching
             ? "Nothing here fits your search."
             : "Add a German term — Mistral fills in the rest."}

@@ -22,7 +22,7 @@ export function ContactQR() {
         </span>
         <a
           href="https://nenadmarinkovic.com"
-          className="font-serif text-sm leading-[1.3] text-pretty transition-opacity hover:opacity-70"
+          className="text-sm leading-[1.3] text-pretty transition-opacity hover:opacity-70"
         >
           nenadmarinkovic.com
         </a>

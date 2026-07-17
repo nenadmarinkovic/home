@@ -4,15 +4,58 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Albert Sans — Latin subset (basic English + Western European) */
+@font-face {
+  font-family: "Albert Sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/AlbertSans-Variable.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Albert Sans";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/AlbertSans-Italic-Variable.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Albert Sans — Latin Extended (č, ć, đ, š, ž, ő, ű, and other CE/EE glyphs) */
+@font-face {
+  font-family: "Albert Sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/AlbertSans-LatinExt-Variable.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+@font-face {
+  font-family: "Albert Sans";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/AlbertSans-Italic-LatinExt-Variable.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans:
-    var(--font-sans), -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "SF Pro Display", "Helvetica Neue", Helvetica, sans-serif;
+    "Albert Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --font-serif: var(--font-serif), ui-serif, Georgia, serif;
-  --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -50,6 +93,84 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --font-weight-light: 300;
+  --font-weight-semilight: 360;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --breakpoint-laptop: 1024px;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.4375rem;
+  --text-2xl: 1.6875rem;
+  --text-3xl: 2.125rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 3.125rem;
+  --text-6xl: 3.75rem;
+}
+
+@utility ss01 {
+  font-feature-settings: "ss01";
+}
+
+@keyframes wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(14deg);
+  }
+  30% {
+    transform: rotate(-8deg);
+  }
+  45% {
+    transform: rotate(14deg);
+  }
+  60% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+}
+
+.animate-wave {
+  display: inline-block;
+  transform-origin: 70% 80%;
+  animation: wave 1.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) both;
+}
+
+@keyframes greeting-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes greeting-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-0.5em);
+  }
+}
+
+.animate-greeting-in {
+  animation: greeting-in 460ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.animate-greeting-out {
+  animation: greeting-out 360ms cubic-bezier(0.4, 0, 0.68, 0.06) both;
 }
 
 :root {
@@ -90,7 +211,7 @@
 }
 
 .dark {
-  --background: #0c1115;
+  --background: #000000;
   --foreground: #ffffff;
   --card: oklch(0.18 0.012 234);
   --card-foreground: oklch(0.985 0 0);
@@ -124,10 +245,6 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-body {
-  font-family: var(--font-serif);
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -138,6 +255,7 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    font-synthesis: none;
   }
 }
 
@@ -199,7 +317,6 @@ article blockquote {
   margin: 2.5rem 0;
   padding-left: 1.5rem;
   border-left: 2px solid var(--foreground);
-  font-style: italic;
   color: var(--foreground);
 }
 
@@ -210,8 +327,9 @@ article blockquote p + p {
 article .pull-quote {
   margin: 3rem 0;
   font-size: 1.875rem;
-  line-height: 1.2;
-  font-style: italic;
+  line-height: 1.15;
+  font-weight: 550;
+  letter-spacing: -0.02em;
   text-align: center;
   text-wrap: balance;
   color: var(--foreground);
@@ -227,6 +345,20 @@ article h2,
 article h3,
 article h4 {
   clear: both;
+  font-weight: 300;
+  line-height: 1.2;
+  margin: 2rem 0 0.75rem;
+  color: var(--foreground);
+}
+article h2 {
+  font-size: 1.5rem;
+}
+article h3 {
+  font-size: 1.25rem;
+}
+article h4 {
+  font-size: 1.125rem;
+  font-weight: 500;
 }
 
 article img {
@@ -319,7 +451,6 @@ article img.img-right {
   margin: 0.75rem 0;
   padding-left: 0.875rem;
   border-left: 2px solid var(--foreground);
-  font-style: italic;
   color: var(--foreground);
 }
 .ProseMirror a {

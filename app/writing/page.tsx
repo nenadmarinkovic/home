@@ -16,13 +16,13 @@ export default async function WritingIndexPage() {
   return (
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+        <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
           Writing
         </p>
-        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
+        <h1 className="text-4xl font-light text-balance text-foreground">
           Notes worth keeping
         </h1>
-        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
           Notes I&rsquo;ve put down along the way — software, design, the web,
           and anything else worth thinking about.
         </p>
@@ -34,18 +34,22 @@ export default async function WritingIndexPage() {
               href={`/writing/${a.slug}`}
               className="group flex flex-1 flex-col gap-2"
             >
-              <p className="font-sans text-xs font-medium uppercase tracking-wider text-[#F25022]">
+              <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-[#F25022]">
                 {a.dateLabel}
               </p>
-              <h2 className="font-serif text-2xl font-semibold leading-tight tracking-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
+              <h2 className="text-2xl font-light text-balance text-foreground transition-opacity group-hover:opacity-70">
                 {a.title}
               </h2>
-              <p className="font-serif text-(length:--unit-lg) italic leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
-                {a.subtitle}
-              </p>
-              <p className="font-serif text-base leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
-                {a.description}
-              </p>
+              {a.subtitle && (
+                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                  {a.subtitle}
+                </p>
+              )}
+              {a.description && (
+                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                  {a.description}
+                </p>
+              )}
             </Link>
             <AdminActions article={a} className="-mt-1" />
           </li>

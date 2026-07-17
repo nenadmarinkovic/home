@@ -19,10 +19,11 @@ export default async function Image({
     return new ImageResponse(<div>Not found</div>, size);
   }
 
-  const fontsDir = join(process.cwd(), "app", "fonts");
-  const [serifNormal, serifItalic] = await Promise.all([
-    readFile(join(fontsDir, "source-serif-4-og.ttf")),
-    readFile(join(fontsDir, "source-serif-4-og-italic.ttf")),
+  const fontsDir = join(process.cwd(), "public", "fonts");
+  const [sansRegular, sansSemibold, sansItalic] = await Promise.all([
+    readFile(join(fontsDir, "AlbertSans-Regular.ttf")),
+    readFile(join(fontsDir, "AlbertSans-SemiBold.ttf")),
+    readFile(join(fontsDir, "AlbertSans-Italic.ttf")),
   ]);
 
   return new ImageResponse(
@@ -36,7 +37,7 @@ export default async function Image({
         padding: "80px",
         background: "#f7f3f3",
         color: "#151515",
-        fontFamily: "Source Serif",
+        fontFamily: "Albert Sans",
       }}
     >
       <div
@@ -99,14 +100,20 @@ export default async function Image({
       ...size,
       fonts: [
         {
-          name: "Source Serif",
-          data: serifNormal,
+          name: "Albert Sans",
+          data: sansRegular,
+          weight: 400,
+          style: "normal",
+        },
+        {
+          name: "Albert Sans",
+          data: sansSemibold,
           weight: 600,
           style: "normal",
         },
         {
-          name: "Source Serif",
-          data: serifItalic,
+          name: "Albert Sans",
+          data: sansItalic,
           weight: 400,
           style: "italic",
         },

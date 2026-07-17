@@ -87,7 +87,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
       )}
 
       {filtered.length === 0 ? (
-        <p className="self-center font-serif text-base text-zinc-500 dark:text-zinc-500">
+        <p className="self-center text-base text-zinc-500 dark:text-zinc-500">
           {activeTags.length > 0
             ? "Nothing here for that combination yet."
             : "No links saved yet."}
@@ -102,17 +102,17 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 rel="noopener noreferrer"
                 className="group flex flex-col gap-2"
               >
-                <p className="font-sans text-xs font-medium uppercase tracking-wider text-[#d73003] dark:text-[#F25022]">
+                <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#d73003] dark:text-[#F25022]">
                   {link.dateLabel}
                 </p>
-                <h2 className="font-serif text-2xl font-semibold leading-tight tracking-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
+                <h2 className="text-2xl font-light text-balance text-foreground transition-opacity group-hover:opacity-70">
                   {link.title || link.url}
                 </h2>
-                <p className="font-serif text-(length:--unit-lg) italic leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
+                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
                   {link.hostname}
                 </p>
                 {link.note && (
-                  <p className="font-serif text-base leading-[1.5] text-pretty text-zinc-700 dark:text-zinc-300">
+                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
                     {link.note}
                   </p>
                 )}

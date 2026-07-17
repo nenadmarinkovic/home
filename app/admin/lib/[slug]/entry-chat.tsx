@@ -224,7 +224,7 @@ export function EntryChat({ slug, term }: Props) {
           className="flex h-[calc(100dvh-1.5rem)] w-[calc(100vw-1.5rem)] flex-col gap-0 p-0 sm:h-[min(80vh,40rem)] sm:w-[min(95vw,32rem)]"
         >
           <DialogHeader className="border-b border-foreground/10 px-5 py-3 sm:px-6 sm:py-4">
-            <DialogTitle className="font-serif text-lg leading-tight tracking-tight">
+            <DialogTitle className="text-lg leading-tight tracking-tight">
               {term}
             </DialogTitle>
             <DialogDescription className="font-sans text-xs">

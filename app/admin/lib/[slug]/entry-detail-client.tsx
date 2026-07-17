@@ -362,11 +362,11 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
       </div>
 
       <header className="flex min-w-0 flex-col gap-3">
-        <h1 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl">
+        <h1 className="text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl">
           <span className="text-zinc-500 dark:text-zinc-500">{article}</span>
           {entry.term}
         </h1>
-        <p className="font-serif text-xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+        <p className="text-xl italic leading-snug text-zinc-600 dark:text-zinc-400">
           {entry.translationSr || "—"}
         </p>
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -392,10 +392,10 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                     key={idx}
                     className="flex flex-col gap-1.5 py-4 first:pt-0 last:pb-0"
                   >
-                    <p className="font-serif text-lg leading-snug text-foreground">
+                    <p className="text-lg leading-snug text-foreground">
                       {ex.de || "—"}
                     </p>
-                    <p className="font-serif text-base leading-snug text-zinc-500 dark:text-zinc-500">
+                    <p className="text-base leading-snug text-zinc-500 dark:text-zinc-500">
                       {ex.sr || "—"}
                     </p>
                   </li>
@@ -406,7 +406,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
 
           {entry.notes.trim().length > 0 && (
             <Section title="Notes">
-              <p className="whitespace-pre-wrap font-serif text-base leading-relaxed text-foreground/90">
+              <p className="whitespace-pre-wrap text-base leading-relaxed text-foreground/90">
                 {entry.notes}
               </p>
             </Section>
@@ -431,7 +431,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                               {row.label}
                             </dt>
                           ) : null}
-                          <dd className="font-serif text-base text-foreground">
+                          <dd className="text-base text-foreground">
                             {row.value}
                           </dd>
                         </div>

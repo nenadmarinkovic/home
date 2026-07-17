@@ -14,20 +14,20 @@ export default function LoginPage() {
   return (
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
           Sign in
         </p>
-        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
+        <h1 className="text-4xl font-light text-balance text-foreground">
           Welcome back
         </h1>
-        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+        <p className="text-base font-light italic leading-[1.5] text-balance text-zinc-600 dark:text-zinc-400">
           Your admin tools, all in one place.
         </p>
       </hgroup>
       <LoginForm />
       <Link
         href="/"
-        className="group inline-flex items-center gap-1.5 self-center font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 transition-colors hover:text-foreground dark:text-zinc-500"
+        className="group inline-flex items-center gap-1.5 self-center text-xs font-medium uppercase tracking-[0.12em] text-zinc-500 transition-colors hover:text-foreground dark:text-zinc-500"
       >
         <ArrowLeft
           weight="bold"

@@ -82,22 +82,24 @@ export default async function ArticlePage({
       />
       <div className="relative w-full max-w-prose self-center">
         <hgroup className="space-y-3 text-center">
-          <p className="font-sans text-xs font-medium uppercase tracking-wider text-[#d73003] dark:text-[#F25022]">
+          <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-[#d73003] dark:text-[#F25022]">
             {article.dateLabel}
           </p>
-          <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
+          <h1 className="text-4xl font-light text-balance text-foreground">
             {article.title}
           </h1>
-          <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
-            {article.subtitle}
-          </p>
+          {article.subtitle && (
+            <p className="text-base leading-[1.55] text-balance text-foreground/70">
+              {article.subtitle}
+            </p>
+          )}
         </hgroup>
         <div className="absolute right-0 top-0">
           <AdminActions article={article} />
         </div>
       </div>
       <article
-        className="space-y-6 font-serif text-(length:--unit-lg) leading-[1.5] text-pretty oldstyle-nums"
+        className="space-y-6 text-(length:--unit-lg) leading-[1.5] text-pretty text-foreground/70 oldstyle-nums"
         dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }}
       />
       {(prev || next) && (
@@ -118,7 +120,7 @@ export default async function ArticlePage({
                   />
                   Older
                 </span>
-                <span className="font-serif text-base font-semibold leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
+                <span className="text-base font-light leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
                   {prev.title}
                 </span>
               </Link>
@@ -137,7 +139,7 @@ export default async function ArticlePage({
                     className="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
                   />
                 </span>
-                <span className="font-serif text-base font-semibold leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
+                <span className="text-base font-light leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
                   {next.title}
                 </span>
               </Link>

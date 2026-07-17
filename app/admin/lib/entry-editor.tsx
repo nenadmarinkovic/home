@@ -571,10 +571,10 @@ function ExamplesEditor({
           </AlertDialogHeader>
           {pending && (
             <div className="flex flex-col gap-2 rounded-md border border-foreground/10 bg-foreground/[0.03] px-4 py-3">
-              <p className="font-serif text-base leading-snug text-foreground">
+              <p className="text-base leading-snug text-foreground">
                 {pending.de || "—"}
               </p>
-              <p className="font-serif text-sm leading-snug text-zinc-500">
+              <p className="text-sm leading-snug text-zinc-500">
                 {pending.sr || "—"}
               </p>
             </div>

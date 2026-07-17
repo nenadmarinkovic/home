@@ -66,13 +66,13 @@ export default async function LinksPage({
   return (
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
           Links
         </p>
-        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
+        <h1 className="text-4xl font-light text-balance text-foreground">
           Pages worth sharing
         </h1>
-        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
           Pages I&rsquo;ve come across and want to keep around — technology, AI,
           design, web, culture, and anything else worth a look.
         </p>

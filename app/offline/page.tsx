@@ -10,13 +10,13 @@ export default function OfflinePage() {
   return (
     <main className="flex flex-1 flex-col items-start gap-6 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
           Offline
         </p>
-        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
+        <h1 className="text-4xl font-light text-balance text-foreground">
           You&apos;re offline
         </h1>
-        <p className="font-serif text-xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+        <p className="text-base font-light italic leading-[1.5] text-balance text-zinc-600 dark:text-zinc-400">
           Some things work, like your vocabulary review. Some need a connection,
           and they&apos;ll be here when you reconnect.
         </p>

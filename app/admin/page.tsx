@@ -77,10 +77,10 @@ export default async function AdminPage() {
     <main className="flex flex-1 flex-col items-start gap-14 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
         <LiveClock fallback={dateLabel} />
-        <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
+        <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
           Welcome back
         </h1>
-        <p className="font-serif text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+        <p className="text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
           Your admin tools, all in one place.
         </p>
       </hgroup>
@@ -112,7 +112,7 @@ function ToolRow({ tool, stat }: { tool: Tool; stat?: string }) {
               </p>
             )}
           </div>
-          <p className="mt-1 font-serif text-sm leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
+          <p className="mt-1 text-sm leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
             {tool.tagline}
           </p>
         </div>

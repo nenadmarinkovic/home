@@ -245,7 +245,7 @@ export function ReviewClient({ initialStats }: Props) {
 
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-1.5">
-          <h1 className="font-serif text-3xl font-semibold leading-none tracking-tight text-foreground">
+          <h1 className="text-3xl font-semibold leading-none tracking-tight text-foreground">
             Review
           </h1>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500">
@@ -403,7 +403,7 @@ function CardView({
           <span className="tabular-nums">rep {card.reps}</span>
         </div>
 
-        <p className="font-serif text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
+        <p className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
           {front}
         </p>
 
@@ -413,7 +413,7 @@ function CardView({
               aria-hidden
               className="inline-block h-px w-12 bg-foreground/15"
             />
-            <p className="font-serif text-2xl italic text-zinc-700 dark:text-zinc-300 sm:text-3xl">
+            <p className="text-2xl italic text-zinc-700 dark:text-zinc-300 sm:text-3xl">
               {back}
             </p>
 
@@ -421,10 +421,10 @@ function CardView({
               <ul className="flex w-full flex-col gap-4 text-left">
                 {examples.map((ex, idx) => (
                   <li key={idx} className="flex flex-col gap-0.5">
-                    <p className="font-serif text-base leading-snug text-foreground">
+                    <p className="text-base leading-snug text-foreground">
                       {ex.de}
                     </p>
-                    <p className="font-serif text-base leading-snug text-zinc-500 dark:text-zinc-400">
+                    <p className="text-base leading-snug text-zinc-500 dark:text-zinc-400">
                       {ex.sr}
                     </p>
                   </li>
@@ -433,7 +433,7 @@ function CardView({
             )}
 
             {card.entry.notes && (
-              <p className="max-w-prose px-2 font-serif text-sm leading-relaxed text-zinc-500">
+              <p className="max-w-prose px-2 text-sm leading-relaxed text-zinc-500">
                 {card.entry.notes}
               </p>
             )}
@@ -525,7 +525,7 @@ function RatingButton({
 function Loading() {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <p className="font-serif text-sm text-zinc-500">Loading deck…</p>
+      <p className="text-sm text-zinc-500">Loading deck…</p>
     </div>
   );
 }
@@ -540,10 +540,10 @@ function NeedsDownload() {
         <CloudSlashIcon weight="fill" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
-        <p className="font-serif text-base font-semibold text-foreground">
+        <p className="text-base font-semibold text-foreground">
           Deck not downloaded
         </p>
-        <p className="max-w-prose font-serif text-sm text-zinc-500">
+        <p className="max-w-prose text-sm text-zinc-500">
           Connect to the internet once to download your cards. After that,
           reviews work offline and sync back when you reconnect.
         </p>
@@ -563,10 +563,10 @@ function Done({ stats }: { stats: DeckStats }) {
         <CheckCircleIcon weight="fill" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
-        <p className="font-serif text-base font-semibold text-foreground">
+        <p className="text-base font-semibold text-foreground">
           {isEmpty ? "No cards yet" : "Nothing due"}
         </p>
-        <p className="font-serif text-sm text-zinc-500">
+        <p className="text-sm text-zinc-500">
           {isEmpty
             ? "Add an entry to get started."
             : "Come back later — the schedule has done its job."}
