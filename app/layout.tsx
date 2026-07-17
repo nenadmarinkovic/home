@@ -31,7 +31,7 @@ export async function generateViewport(): Promise<Viewport> {
 const THEME_COLOR_SCRIPT = `(function(){try{
 var t=localStorage.getItem("theme");
 if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}
-var color=t==="dark"?"#000000":"#fafafa";
+var color=t==="dark"?"#0c1115":"#fafafa";
 var metas=document.querySelectorAll('meta[name="theme-color"]');
 for(var i=0;i<metas.length;i++){
 if(i===0){metas[i].setAttribute("content",color);metas[i].setAttribute("media","all");}
