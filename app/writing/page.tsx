@@ -34,7 +34,7 @@ export default async function WritingIndexPage() {
               href={`/writing/${a.slug}`}
               className="group flex flex-1 flex-col gap-2"
             >
-              <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-[#F25022]">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#cd2d00] dark:text-[#F25022]">
                 {a.dateLabel}
               </p>
               <h2 className="text-xl font-normal text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">

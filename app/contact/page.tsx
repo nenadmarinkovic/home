@@ -68,10 +68,10 @@ export default function ContactPage() {
             ))}
           </dl>
         </aside>
-        <div className="flex max-w-[46ch] flex-col gap-4">
-          <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-            Welcome to my inbox. Drop a line about a project, a collaboration,
-            or just to say hi — I read everything that comes in.
+        <div className="flex flex-col gap-4">
+          <p className="text-base leading-[1.55] text-foreground/70">
+            Drop a line about a project, a collaboration, or just to say hi.
+            I&rsquo;d be happy to answer back.
           </p>
           <ContactForm />
         </div>
