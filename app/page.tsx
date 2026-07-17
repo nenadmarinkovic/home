@@ -13,10 +13,10 @@ export default async function Home() {
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <section className="w-full space-y-4">
         <div className="space-y-2">
-          <p className="text-3xl font-light text-foreground">
+          <p className="text-2xl font-light text-foreground sm:text-3xl">
             <AnimatedGreeting />
           </p>
-          <h1 className="text-3xl font-light text-balance text-foreground">
+          <h1 className="text-2xl font-light text-balance text-foreground sm:text-3xl">
             I&rsquo;m Nenad, a Vienna-based software developer.
           </h1>
         </div>
@@ -74,7 +74,7 @@ export default async function Home() {
                 <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-[#d73003] dark:text-[#F25022]">
                   {a.dateLabel}
                 </p>
-                <h2 className="text-2xl font-light text-balance text-foreground transition-opacity group-hover:opacity-70">
+                <h2 className="text-xl font-light text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
                   {a.title}
                 </h2>
                 {a.subtitle && (

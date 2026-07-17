@@ -13,7 +13,7 @@ export default function OfflinePage() {
         <p className="text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
           Offline
         </p>
-        <h1 className="text-4xl font-light text-balance text-foreground">
+        <h1 className="text-3xl font-light text-balance text-foreground sm:text-4xl">
           You&apos;re offline
         </h1>
         <p className="text-base font-light italic leading-[1.5] text-balance text-zinc-600 dark:text-zinc-400">

@@ -69,7 +69,7 @@ export default async function LinksPage({
         <p className="text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
           Links
         </p>
-        <h1 className="text-4xl font-light text-balance text-foreground">
+        <h1 className="text-3xl font-light text-balance text-foreground sm:text-4xl">
           Pages worth sharing
         </h1>
         <p className="text-base italic leading-[1.55] text-balance text-foreground/70">

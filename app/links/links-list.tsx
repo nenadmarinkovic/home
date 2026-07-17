@@ -105,7 +105,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#d73003] dark:text-[#F25022]">
                   {link.dateLabel}
                 </p>
-                <h2 className="text-2xl font-light text-balance text-foreground transition-opacity group-hover:opacity-70">
+                <h2 className="text-xl font-light text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
                   {link.title || link.url}
                 </h2>
                 <p className="text-base leading-[1.55] text-pretty text-foreground/70">
