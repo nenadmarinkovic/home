@@ -17,13 +17,13 @@ export async function generateViewport(): Promise<Viewport> {
   const base: Viewport = {
     viewportFit: "cover",
   };
-  if (pref === "dark") return { ...base, themeColor: "#000000" };
+  if (pref === "dark") return { ...base, themeColor: "#0c1115" };
   if (pref === "light") return { ...base, themeColor: "#fafafa" };
   return {
     ...base,
     themeColor: [
       { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-      { media: "(prefers-color-scheme: dark)", color: "#000000" },
+      { media: "(prefers-color-scheme: dark)", color: "#0c1115" },
     ],
   };
 }
