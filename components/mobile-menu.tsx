@@ -108,10 +108,7 @@ export function MobileMenu() {
         >
           <SheetTitle className="sr-only">Menu</SheetTitle>
           <div className="flex h-full flex-col px-6 pt-14 pb-8">
-            <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-              Navigate
-            </p>
-            <nav className="mt-4 flex flex-col items-start gap-2 font-sans text-lg font-normal tracking-tight text-zinc-600 dark:text-zinc-400">
+            <nav className="flex flex-col items-start gap-2 font-sans text-lg font-normal tracking-tight text-zinc-600 dark:text-zinc-400">
               <Link
                 href="/"
                 onClick={close}

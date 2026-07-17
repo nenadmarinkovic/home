@@ -29,7 +29,7 @@ export function HeaderNav() {
   const authItem = getAuthNavItem(authed);
   const authActive = authItem ? isNavActive(pathname, authItem.href) : false;
   const navClass =
-    "hidden flex-row items-center gap-5 font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 md:flex dark:text-zinc-400";
+    "hidden flex-row items-center gap-5 text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 md:flex dark:text-zinc-400";
   const linkClass = "py-0.5 transition-colors hover:text-foreground";
 
   return (
@@ -63,7 +63,7 @@ export function HeaderNav() {
           disabled={pending}
           className={cn(
             linkClass,
-            "cursor-pointer font-sans text-xs font-medium uppercase tracking-wider disabled:opacity-50",
+            "cursor-pointer text-xs font-medium uppercase tracking-[0.12em] disabled:opacity-50",
           )}
         >
           {pending ? "Signing out…" : "Sign out"}

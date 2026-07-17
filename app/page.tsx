@@ -52,7 +52,7 @@ export default async function Home() {
           </p>
           <Link
             href="/writing"
-            className="group inline-flex items-center gap-1.5 font-sans text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 transition-opacity hover:opacity-70 dark:text-zinc-400"
+            className="group inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 transition-colors hover:text-foreground dark:text-zinc-400"
           >
             All writing
             <ArrowRight

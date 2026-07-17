@@ -113,14 +113,14 @@ export default async function ArticlePage({
                 href={`/writing/${prev.slug}`}
                 className="group flex flex-col gap-1"
               >
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.12em] text-foreground/70 transition-colors group-hover:text-foreground">
                   <ArrowLeft
                     weight="bold"
                     className="size-3 transition-transform duration-200 group-hover:-translate-x-0.5"
                   />
                   Older
                 </span>
-                <span className="text-base font-light leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
+                <span className="text-base font-normal leading-tight text-pretty text-foreground/70 transition-colors group-hover:text-foreground">
                   {prev.title}
                 </span>
               </Link>
@@ -132,14 +132,14 @@ export default async function ArticlePage({
                 href={`/writing/${next.slug}`}
                 className="group flex flex-col items-end gap-1"
               >
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.12em] text-foreground/70 transition-colors group-hover:text-foreground">
                   Newer
                   <ArrowRight
                     weight="bold"
                     className="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
                   />
                 </span>
-                <span className="text-base font-light leading-tight text-pretty text-foreground transition-opacity group-hover:opacity-70">
+                <span className="text-base font-normal leading-tight text-pretty text-foreground/70 transition-colors group-hover:text-foreground">
                   {next.title}
                 </span>
               </Link>
