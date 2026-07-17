@@ -100,6 +100,7 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --breakpoint-laptop: 1024px;
+  --container-3xl: 45rem;
   --text-xs: 0.75rem;
   --text-xs--line-height: 1.5;
   --text-sm: 0.875rem;
