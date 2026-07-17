@@ -17,13 +17,13 @@ export async function generateViewport(): Promise<Viewport> {
   const base: Viewport = {
     viewportFit: "cover",
   };
-  if (pref === "dark") return { ...base, themeColor: "#0c1115" };
+  if (pref === "dark") return { ...base, themeColor: "#000000" };
   if (pref === "light") return { ...base, themeColor: "#fafafa" };
   return {
     ...base,
     themeColor: [
       { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-      { media: "(prefers-color-scheme: dark)", color: "#0c1115" },
+      { media: "(prefers-color-scheme: dark)", color: "#000000" },
     ],
   };
 }
@@ -31,7 +31,7 @@ export async function generateViewport(): Promise<Viewport> {
 const THEME_COLOR_SCRIPT = `(function(){try{
 var t=localStorage.getItem("theme");
 if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}
-var color=t==="dark"?"#0c1115":"#fafafa";
+var color=t==="dark"?"#000000":"#fafafa";
 var metas=document.querySelectorAll('meta[name="theme-color"]');
 for(var i=0;i<metas.length;i++){
 if(i===0){metas[i].setAttribute("content",color);metas[i].setAttribute("media","all");}
@@ -100,11 +100,7 @@ export default async function RootLayout({
 }>) {
   const authed = await getAuthedFromCookie();
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className="antialiased"
-    >
+    <html lang="en" suppressHydrationWarning className="antialiased">
       <head>
         <link
           rel="preload"
