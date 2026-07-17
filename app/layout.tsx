@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: site.name,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
   },
   formatDetection: {
     telephone: false,
@@ -105,6 +105,15 @@ export default async function RootLayout({
       suppressHydrationWarning
       className="antialiased"
     >
+      <head>
+        <link
+          rel="preload"
+          href="/fonts/AlbertSans-Variable.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>
         <script dangerouslySetInnerHTML={{ __html: THEME_COLOR_SCRIPT }} />
         <Providers authed={authed}>

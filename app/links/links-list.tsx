@@ -102,7 +102,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 rel="noopener noreferrer"
                 className="group flex flex-col gap-2"
               >
-                <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#d73003] dark:text-[#F25022]">
+                <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#a72500] dark:text-[#F25022]">
                   {link.dateLabel}
                 </p>
                 <h2 className="text-xl font-normal text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
