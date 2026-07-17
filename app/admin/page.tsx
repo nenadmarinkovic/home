@@ -77,10 +77,10 @@ export default async function AdminPage() {
     <main className="flex flex-1 flex-col items-start gap-14 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
         <LiveClock fallback={dateLabel} />
-        <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight text-pretty">
+        <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
           Welcome back
         </h1>
-        <p className="text-2xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
           Your admin tools, all in one place.
         </p>
       </hgroup>
@@ -103,16 +103,16 @@ function ToolRow({ tool, stat }: { tool: Tool; stat?: string }) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between gap-3">
-            <p className="font-sans text-xl font-semibold leading-tight tracking-tight text-foreground transition-opacity group-hover:opacity-70">
+            <p className="text-lg font-medium leading-tight text-foreground transition-opacity group-hover:opacity-70">
               {tool.name}
             </p>
             {stat && (
-              <p className="shrink-0 font-sans text-[10px] font-medium uppercase tracking-[0.2em] tabular-nums text-zinc-500 dark:text-zinc-500">
+              <p className="shrink-0 text-[10px] font-medium uppercase tracking-[0.2em] tabular-nums text-foreground/50">
                 {stat}
               </p>
             )}
           </div>
-          <p className="mt-1 text-sm leading-snug text-pretty text-zinc-600 dark:text-zinc-400">
+          <p className="mt-1 text-sm leading-[1.55] text-pretty text-foreground/70">
             {tool.tagline}
           </p>
         </div>

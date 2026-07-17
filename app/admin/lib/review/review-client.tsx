@@ -245,7 +245,7 @@ export function ReviewClient({ initialStats }: Props) {
 
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-1.5">
-          <h1 className="text-3xl font-semibold leading-none tracking-tight text-foreground">
+          <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
             Review
           </h1>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500">
@@ -403,7 +403,7 @@ function CardView({
           <span className="tabular-nums">rep {card.reps}</span>
         </div>
 
-        <p className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
+        <p className="mt-3 text-3xl font-normal text-balance text-foreground sm:mt-6 sm:text-4xl">
           {front}
         </p>
 
@@ -413,7 +413,7 @@ function CardView({
               aria-hidden
               className="inline-block h-px w-12 bg-foreground/15"
             />
-            <p className="text-2xl italic text-zinc-700 dark:text-zinc-300 sm:text-3xl">
+            <p className="text-xl italic text-balance text-foreground/70 sm:text-2xl">
               {back}
             </p>
 
@@ -540,7 +540,7 @@ function NeedsDownload() {
         <CloudSlashIcon weight="fill" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
-        <p className="text-base font-semibold text-foreground">
+        <p className="text-base font-medium text-foreground">
           Deck not downloaded
         </p>
         <p className="max-w-prose text-sm text-zinc-500">
@@ -563,7 +563,7 @@ function Done({ stats }: { stats: DeckStats }) {
         <CheckCircleIcon weight="fill" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
-        <p className="text-base font-semibold text-foreground">
+        <p className="text-base font-medium text-foreground">
           {isEmpty ? "No cards yet" : "Nothing due"}
         </p>
         <p className="text-sm text-zinc-500">

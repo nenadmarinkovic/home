@@ -210,7 +210,7 @@ export function LogClient({
 
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-1.5">
-          <h1 className="text-3xl font-semibold leading-none tracking-tight text-foreground">
+          <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
             Log
           </h1>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
@@ -329,7 +329,7 @@ function ProjectSection({
   return (
     <section className="flex flex-col gap-3">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-        <h2 className="min-w-0 max-w-full truncate text-lg font-semibold leading-tight tracking-tight text-foreground sm:text-xl sm:leading-none">
+        <h2 className="min-w-0 max-w-full truncate text-lg font-medium leading-tight text-foreground sm:text-xl">
           {group.name}
         </h2>
         <div className="flex items-center gap-3 sm:gap-4">
@@ -386,7 +386,7 @@ function ServiceRow({ service: s }: { service: DokployService }) {
     <li className="flex items-start gap-3 py-3.5 sm:gap-4">
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
-          <p className="min-w-0 max-w-full truncate text-base font-semibold leading-tight text-foreground">
+          <p className="min-w-0 max-w-full truncate text-base font-medium leading-tight text-foreground">
             {s.name}
           </p>
           <StatusTag status={s.status} />
@@ -635,7 +635,7 @@ function EmptyAll() {
         <Cloud weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
-        <p className="text-base font-semibold text-foreground">
+        <p className="text-base font-medium text-foreground">
           Nothing deployed
         </p>
         <p className="text-sm text-zinc-500 dark:text-zinc-500">
@@ -661,7 +661,7 @@ function ErrorPanel({
         <WarningCircle weight="regular" className="size-5" />
       </div>
       <div className="flex max-w-prose flex-col gap-1">
-        <p className="text-base font-semibold text-foreground">
+        <p className="text-base font-medium text-foreground">
           Couldn&apos;t reach Dokploy
         </p>
         <p className="text-sm text-zinc-500 dark:text-zinc-500">
@@ -691,7 +691,7 @@ function NotConfigured() {
         <Cloud weight="regular" className="size-5" />
       </div>
       <div className="flex max-w-prose flex-col gap-1">
-        <p className="text-base font-semibold text-foreground">
+        <p className="text-base font-medium text-foreground">
           Dokploy isn&apos;t wired up yet
         </p>
         <p className="text-sm text-zinc-500 dark:text-zinc-500">

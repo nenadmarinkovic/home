@@ -19,7 +19,7 @@ export default async function WritingIndexPage() {
         <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
           Writing
         </p>
-        <h1 className="text-3xl font-light text-balance text-foreground sm:text-4xl">
+        <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
           Notes worth keeping
         </h1>
         <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
@@ -37,7 +37,7 @@ export default async function WritingIndexPage() {
               <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-[#F25022]">
                 {a.dateLabel}
               </p>
-              <h2 className="text-xl font-light text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
+              <h2 className="text-xl font-normal text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
                 {a.title}
               </h2>
               {a.subtitle && (

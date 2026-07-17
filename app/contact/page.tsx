@@ -38,7 +38,7 @@ export default function ContactPage() {
         <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
           Contact
         </p>
-        <h1 className="text-3xl font-light text-balance text-foreground sm:text-4xl">
+        <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
           Get in touch
         </h1>
         <p className="text-base font-light italic leading-[1.5] text-balance text-zinc-600 dark:text-zinc-400">

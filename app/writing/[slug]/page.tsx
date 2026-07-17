@@ -85,7 +85,7 @@ export default async function ArticlePage({
           <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-[#d73003] dark:text-[#F25022]">
             {article.dateLabel}
           </p>
-          <h1 className="text-3xl font-light text-balance text-foreground sm:text-4xl">
+          <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
             {article.title}
           </h1>
           {article.subtitle && (

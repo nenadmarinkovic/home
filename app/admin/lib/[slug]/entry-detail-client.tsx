@@ -362,11 +362,11 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
       </div>
 
       <header className="flex min-w-0 flex-col gap-3">
-        <h1 className="text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl">
-          <span className="text-zinc-500 dark:text-zinc-500">{article}</span>
+        <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
+          <span className="text-foreground/40">{article}</span>
           {entry.term}
         </h1>
-        <p className="text-xl italic leading-snug text-zinc-600 dark:text-zinc-400">
+        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
           {entry.translationSr || "—"}
         </p>
         <div className="flex flex-wrap items-center justify-between gap-3">
