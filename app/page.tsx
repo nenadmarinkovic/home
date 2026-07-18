@@ -47,12 +47,12 @@ export default async function Home() {
       </section>
       <section className="w-full space-y-8">
         <div className="flex items-baseline justify-between">
-          <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
+          <p className="font-sans text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
             Recent
           </p>
           <Link
             href="/writing"
-            className="group inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 transition-colors hover:text-foreground dark:text-zinc-400"
+            className="group inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 transition-colors hover:text-foreground dark:text-zinc-400"
           >
             All writing
             <ArrowRight
@@ -71,7 +71,7 @@ export default async function Home() {
                 href={`/writing/${a.slug}`}
                 className="group flex flex-1 flex-col gap-3"
               >
-                <p className="font-sans text-xs font-semibold uppercase tracking-[0.12em] text-[#cd2d00] dark:text-[#F25022]">
+                <p className="font-sans text-xs font-semibold uppercase tracking-[0.06em] text-[#cd2d00] dark:text-[#F25022]">
                   {a.dateLabel}
                 </p>
                 <h2 className="text-xl font-normal text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">

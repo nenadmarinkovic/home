@@ -66,7 +66,7 @@ export default async function LinksPage({
   return (
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
+        <p className="text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
           Links
         </p>
         <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">

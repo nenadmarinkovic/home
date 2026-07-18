@@ -82,7 +82,7 @@ export default async function ArticlePage({
       />
       <div className="relative w-full max-w-prose self-center">
         <hgroup className="space-y-3 text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-[0.12em] text-[#cd2d00] dark:text-[#F25022]">
+          <p className="font-sans text-xs font-semibold uppercase tracking-[0.06em] text-[#cd2d00] dark:text-[#F25022]">
             {article.dateLabel}
           </p>
           <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
@@ -113,7 +113,7 @@ export default async function ArticlePage({
                 href={`/writing/${prev.slug}`}
                 className="group flex flex-col gap-1"
               >
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.12em] text-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-foreground/70 transition-colors group-hover:text-foreground">
                   <ArrowLeft
                     weight="bold"
                     className="size-3 transition-transform duration-200 group-hover:-translate-x-0.5"
@@ -132,7 +132,7 @@ export default async function ArticlePage({
                 href={`/writing/${next.slug}`}
                 className="group flex flex-col items-end gap-1"
               >
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.12em] text-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-foreground/70 transition-colors group-hover:text-foreground">
                   Newer
                   <ArrowRight
                     weight="bold"

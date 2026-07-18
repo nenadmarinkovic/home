@@ -35,7 +35,7 @@ export default function ContactPage() {
   return (
     <main className="flex flex-1 flex-col items-start gap-14 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-[46ch] self-center space-y-4 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
+        <p className="font-sans text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
           Contact
         </p>
         <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
@@ -51,7 +51,7 @@ export default function ContactPage() {
           <dl className="flex w-full flex-col items-center gap-4 text-center md:items-start md:text-left">
             {links.map((l) => (
               <div key={l.label} className="flex flex-col gap-1">
-                <dt className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400">
+                <dt className="font-sans text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
                   {l.label}
                 </dt>
                 <dd className="font-sans text-sm leading-[1.35] text-pretty break-words">
