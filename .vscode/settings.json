@@ -1,0 +1,14 @@
+{
+  // Tailwind v4 moves configuration into CSS via at-rules (@theme,
+  // @custom-variant, @utility, @apply). The editor's built-in CSS language
+  // server doesn't know them and flags every one as "Unknown at rule", so turn
+  // that specific check off — the Tailwind toolchain validates them at build.
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+  // Hand .css files to the Tailwind CSS IntelliSense extension, which
+  // understands the v4 at-rules and adds completions for the theme tokens.
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
+}
