@@ -104,7 +104,7 @@ export default async function RootLayout({
       <head>
         <link
           rel="preload"
-          href="/fonts/AlbertSans-Variable.woff2"
+          href="/fonts/HankenGrotesk-Variable.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"

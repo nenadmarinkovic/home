@@ -21,9 +21,9 @@ export default async function Image({
 
   const fontsDir = join(process.cwd(), "public", "fonts");
   const [sansRegular, sansSemibold, sansItalic] = await Promise.all([
-    readFile(join(fontsDir, "AlbertSans-Regular.ttf")),
-    readFile(join(fontsDir, "AlbertSans-SemiBold.ttf")),
-    readFile(join(fontsDir, "AlbertSans-Italic.ttf")),
+    readFile(join(fontsDir, "HankenGrotesk-Regular.ttf")),
+    readFile(join(fontsDir, "HankenGrotesk-SemiBold.ttf")),
+    readFile(join(fontsDir, "HankenGrotesk-Italic.ttf")),
   ]);
 
   return new ImageResponse(
@@ -37,7 +37,7 @@ export default async function Image({
         padding: "80px",
         background: "#f7f3f3",
         color: "#151515",
-        fontFamily: "Albert Sans",
+        fontFamily: "Hanken Grotesk",
       }}
     >
       <div
@@ -100,19 +100,19 @@ export default async function Image({
       ...size,
       fonts: [
         {
-          name: "Albert Sans",
+          name: "Hanken Grotesk",
           data: sansRegular,
           weight: 400,
           style: "normal",
         },
         {
-          name: "Albert Sans",
+          name: "Hanken Grotesk",
           data: sansSemibold,
           weight: 600,
           style: "normal",
         },
         {
-          name: "Albert Sans",
+          name: "Hanken Grotesk",
           data: sansItalic,
           weight: 400,
           style: "italic",

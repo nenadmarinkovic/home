@@ -95,6 +95,19 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Files under `public/` are served with `max-age=0` by default because
+      // Next can't fingerprint their names, so the fonts get revalidated on
+      // every visit. Their contents never change in place — a different font
+      // means a different filename — so cache them immutably for a year.
+      {
+        source: "/fonts/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
 };
