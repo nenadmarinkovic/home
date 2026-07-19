@@ -106,7 +106,7 @@
   --text-xs--line-height: 1.5;
   --text-sm: 0.875rem;
   --text-sm--line-height: 1.5;
-  --text-base: 1rem;
+  --text-base: 1.0625rem;
   --text-base--line-height: 1.55;
   --text-lg: 1.1875rem;
   --text-lg--line-height: 1.4;
@@ -188,7 +188,9 @@
   --foreground: #000000;
   --card: #fbf9f7;
   --card-foreground: oklch(0.145 0 0);
-  --popover: #fbf9f7;
+  /* Floating surfaces (dropdowns, popovers) sit on the off-white page and read
+     better as pure white, matching --field. */
+  --popover: #ffffff;
   --popover-foreground: oklch(0.145 0 0);
   --field: #ffffff;
   --primary: oklch(0.205 0 0);

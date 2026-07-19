@@ -99,7 +99,7 @@ export default async function ArticlePage({
         </div>
       </div>
       <article
-        className="space-y-6 text-(length:--unit-lg) leading-[1.5] text-pretty text-foreground/70 oldstyle-nums"
+        className="space-y-6 text-base leading-[1.5] text-pretty text-foreground/70 oldstyle-nums"
         dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }}
       />
       {(prev || next) && (

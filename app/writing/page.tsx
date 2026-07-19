@@ -37,7 +37,7 @@ export default async function WritingIndexPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.06em] text-[#cd2d00] dark:text-[#F25022]">
                 {a.dateLabel}
               </p>
-              <h2 className="text-xl font-normal text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
+              <h2 className="text-xl font-medium text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
                 {a.title}
               </h2>
               {a.subtitle && (

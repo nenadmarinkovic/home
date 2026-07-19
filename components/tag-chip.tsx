@@ -22,7 +22,7 @@ export function TagChip({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "rounded-full px-3 font-sans text-[11px] font-medium uppercase tracking-wider",
+        "rounded-full px-3 font-sans text-[11px] font-semibold uppercase tracking-wider",
         active
           ? "bg-foreground text-background hover:bg-foreground/90"
           : "border-foreground/15 bg-transparent text-zinc-600 hover:border-foreground/30 hover:bg-transparent hover:text-foreground dark:text-zinc-400",

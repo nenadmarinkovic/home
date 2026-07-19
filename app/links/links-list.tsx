@@ -63,7 +63,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 onClick={() => toggle(tag.slug)}
                 aria-pressed={active}
                 className={cn(
-                  "inline-flex cursor-pointer items-center rounded-full border px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-wider transition-colors",
+                  "inline-flex cursor-pointer items-center rounded-full border px-3 py-1 font-sans text-[10px] font-semibold uppercase tracking-wider transition-colors",
                   active
                     ? "border-foreground bg-foreground text-background"
                     : "border-foreground/15 text-zinc-600 hover:border-foreground/30 hover:text-foreground dark:text-zinc-400",
@@ -77,7 +77,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
             <button
               type="button"
               onClick={() => setActiveTags([])}
-              className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-foreground/15 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-wider text-zinc-600 transition-colors hover:border-foreground/30 hover:text-foreground dark:text-zinc-400"
+              className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-foreground/15 px-3 py-1 font-sans text-[10px] font-semibold uppercase tracking-wider text-zinc-600 transition-colors hover:border-foreground/30 hover:text-foreground dark:text-zinc-400"
             >
               <XIcon weight="bold" className="size-3" />
               Clear
@@ -105,7 +105,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 <p className="text-xs font-semibold uppercase tracking-[0.06em] text-[#cd2d00] dark:text-[#F25022]">
                   {link.dateLabel}
                 </p>
-                <h2 className="text-xl font-normal text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
+                <h2 className="text-xl font-medium text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
                   {link.title || link.url}
                 </h2>
                 <p className="text-base leading-[1.55] text-pretty text-foreground/70">
@@ -121,7 +121,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                     {link.tags.map((t) => (
                       <span
                         key={t.slug}
-                        className="inline-flex shrink-0 items-center rounded-full border border-foreground/10 px-2 py-0.5 font-sans text-[10px] font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400"
+                        className="inline-flex shrink-0 items-center rounded-full border border-foreground/10 px-2 py-0.5 font-sans text-[10px] font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400"
                       >
                         {t.name}
                       </span>
