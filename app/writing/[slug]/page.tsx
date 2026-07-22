@@ -89,7 +89,7 @@ export default async function ArticlePage({
             {article.title}
           </h1>
           {article.subtitle && (
-            <p className="text-base leading-[1.55] text-balance text-foreground/70">
+            <p className="text-base leading-[1.55] text-balance text-foreground/80">
               {article.subtitle}
             </p>
           )}
@@ -99,7 +99,7 @@ export default async function ArticlePage({
         </div>
       </div>
       <article
-        className="space-y-6 text-base leading-[1.5] text-pretty text-foreground/70 oldstyle-nums"
+        className="space-y-6 text-base leading-[1.5] text-pretty text-foreground/80 oldstyle-nums"
         dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }}
       />
       {(prev || next) && (
@@ -113,14 +113,14 @@ export default async function ArticlePage({
                 href={`/writing/${prev.slug}`}
                 className="group flex flex-col gap-1"
               >
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-foreground/80 transition-colors group-hover:text-foreground">
                   <ArrowLeft
                     weight="bold"
                     className="size-3 transition-transform duration-200 group-hover:-translate-x-0.5"
                   />
                   Older
                 </span>
-                <span className="text-base font-normal leading-tight text-pretty text-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="text-base font-normal leading-tight text-pretty text-foreground/80 transition-colors group-hover:text-foreground">
                   {prev.title}
                 </span>
               </Link>
@@ -132,14 +132,14 @@ export default async function ArticlePage({
                 href={`/writing/${next.slug}`}
                 className="group flex flex-col items-end gap-1"
               >
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-foreground/80 transition-colors group-hover:text-foreground">
                   Newer
                   <ArrowRight
                     weight="bold"
                     className="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
                   />
                 </span>
-                <span className="text-base font-normal leading-tight text-pretty text-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="text-base font-normal leading-tight text-pretty text-foreground/80 transition-colors group-hover:text-foreground">
                   {next.title}
                 </span>
               </Link>

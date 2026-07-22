@@ -108,11 +108,11 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 <h2 className="text-xl font-medium text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
                   {link.title || link.url}
                 </h2>
-                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                <p className="text-base leading-[1.55] text-pretty text-foreground/80">
                   {link.hostname}
                 </p>
                 {link.note && (
-                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                  <p className="text-base leading-[1.55] text-pretty text-foreground/80">
                     {link.note}
                   </p>
                 )}

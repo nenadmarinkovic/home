@@ -80,7 +80,7 @@ export default async function AdminPage() {
         <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
           Welcome back
         </h1>
-        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
+        <p className="text-base italic leading-[1.55] text-balance text-foreground/80">
           Your admin tools, all in one place.
         </p>
       </hgroup>
@@ -112,7 +112,7 @@ function ToolRow({ tool, stat }: { tool: Tool; stat?: string }) {
               </p>
             )}
           </div>
-          <p className="mt-1 text-sm leading-[1.55] text-pretty text-foreground/70">
+          <p className="mt-1 text-sm leading-[1.55] text-pretty text-foreground/80">
             {tool.tagline}
           </p>
         </div>

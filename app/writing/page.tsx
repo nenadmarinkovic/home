@@ -22,7 +22,7 @@ export default async function WritingIndexPage() {
         <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
           Notes worth keeping
         </h1>
-        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
+        <p className="text-base italic leading-[1.55] text-balance text-foreground/80">
           Notes I&rsquo;ve put down along the way — software, design, the web,
           and anything else worth thinking about.
         </p>
@@ -41,12 +41,12 @@ export default async function WritingIndexPage() {
                 {a.title}
               </h2>
               {a.subtitle && (
-                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                <p className="text-base leading-[1.55] text-pretty text-foreground/80">
                   {a.subtitle}
                 </p>
               )}
               {a.description && (
-                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                <p className="text-base leading-[1.55] text-pretty text-foreground/80">
                   {a.description}
                 </p>
               )}

@@ -69,7 +69,7 @@ export default function ContactPage() {
           </dl>
         </aside>
         <div className="flex flex-col gap-4">
-          <p className="text-base leading-[1.55] text-foreground/70">
+          <p className="text-base leading-[1.55] text-foreground/80">
             Drop a line about a project, a collaboration, or just to say hi.
             I&rsquo;d be happy to answer back.
           </p>

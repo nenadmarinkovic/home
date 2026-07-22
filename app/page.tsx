@@ -20,21 +20,21 @@ export default async function Home() {
             I&rsquo;m Nenad, a Vienna-based software developer.
           </h1>
         </div>
-        <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+        <p className="text-base leading-[1.55] text-pretty text-foreground/80">
           Next year marks ten years since I started working on the web. I still
           think it&rsquo;s the best platform we have for making things, and I
           want to push it a little further.
         </p>
-        <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+        <p className="text-base leading-[1.55] text-pretty text-foreground/80">
           Right now, that means building a German-learning platform and laying
           the groundwork for my first studio — for educators and online creators
           who need more than a template.
         </p>
-        <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+        <p className="text-base leading-[1.55] text-pretty text-foreground/80">
           This site is the hub for it all. I share my work, thoughts, and the
           links I find interesting.
         </p>
-        <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+        <p className="text-base leading-[1.55] text-pretty text-foreground/80">
           Have a look around, and if you&rsquo;d like to say hi, there&rsquo;s a{" "}
           <Link
             href="/contact"
@@ -78,12 +78,12 @@ export default async function Home() {
                   {a.title}
                 </h2>
                 {a.subtitle && (
-                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                  <p className="text-base leading-[1.55] text-pretty text-foreground/80">
                     {a.subtitle}
                   </p>
                 )}
                 {a.description && (
-                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                  <p className="text-base leading-[1.55] text-pretty text-foreground/80">
                     {a.description}
                   </p>
                 )}
