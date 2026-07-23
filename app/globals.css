@@ -103,7 +103,7 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --breakpoint-laptop: 1024px;
-  --container-3xl: 45rem;
+  --container-3xl: 40rem;
   --text-xs: 0.75rem;
   --text-xs--line-height: 1.5;
   --text-sm: 0.875rem;
@@ -389,32 +389,6 @@ article img {
   height: auto;
   margin: 2rem auto;
   border-radius: 0.5rem;
-}
-
-article img.img-left,
-article img.img-right {
-  max-width: 50%;
-  margin: 0.5rem 0 1rem;
-}
-
-article img.img-left {
-  float: left;
-  margin-right: 1.5rem;
-}
-
-article img.img-right {
-  float: right;
-  margin-left: 1.5rem;
-}
-
-/* Reset floats on small screens — stack instead of wrap. */
-@media (max-width: 640px) {
-  article img.img-left,
-  article img.img-right {
-    float: none;
-    max-width: 100%;
-    margin: 2rem auto;
-  }
 }
 
 .ProseMirror h1 {

@@ -9,9 +9,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { format, parseISO } from "date-fns";
 import {
-  AlignLeft,
-  AlignCenterHorizontal,
-  AlignRight,
   CalendarBlank,
   Image as ImageIcon,
   ListBullets,
@@ -100,28 +97,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
       Placeholder.configure({
         placeholder: "Start writing the essay…",
       }),
-      Image.extend({
-        addAttributes() {
-          return {
-            ...this.parent?.(),
-            align: {
-              default: null as null | "left" | "right",
-              parseHTML: (el) => {
-                const cls = el.getAttribute("class") ?? "";
-                if (cls.includes("img-left")) return "left";
-                if (cls.includes("img-right")) return "right";
-                return null;
-              },
-              renderHTML: (attrs) => {
-                if (!attrs.align) return {};
-                return {
-                  class: attrs.align === "left" ? "img-left" : "img-right",
-                };
-              },
-            },
-          };
-        },
-      }).configure({ inline: false, allowBase64: false }),
+      Image.configure({ inline: false, allowBase64: false }),
       Markdown.configure({
         html: true,
         tightLists: true,
@@ -475,39 +451,6 @@ function EditorToolbar({ editor }: { editor: Editor }) {
     },
     ...(imageSelected
       ? [
-          {
-            label: "Align left",
-            icon: <AlignLeft weight="bold" />,
-            isActive: editor.isActive("image", { align: "left" }),
-            run: () =>
-              editor
-                .chain()
-                .focus()
-                .updateAttributes("image", { align: "left" })
-                .run(),
-          },
-          {
-            label: "No float",
-            icon: <AlignCenterHorizontal weight="bold" />,
-            isActive: editor.isActive("image", { align: null }),
-            run: () =>
-              editor
-                .chain()
-                .focus()
-                .updateAttributes("image", { align: null })
-                .run(),
-          },
-          {
-            label: "Align right",
-            icon: <AlignRight weight="bold" />,
-            isActive: editor.isActive("image", { align: "right" }),
-            run: () =>
-              editor
-                .chain()
-                .focus()
-                .updateAttributes("image", { align: "right" })
-                .run(),
-          },
           {
             label: "Remove image",
             icon: <Trash weight="bold" />,
