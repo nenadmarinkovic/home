@@ -22,7 +22,7 @@ export default async function WritingIndexPage() {
         <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
           Notes worth keeping
         </h1>
-        <p className="text-base italic leading-[1.55] text-balance text-foreground/80">
+        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
           Notes I&rsquo;ve put down along the way — software, design, the web,
           and anything else worth thinking about.
         </p>
@@ -34,19 +34,19 @@ export default async function WritingIndexPage() {
               href={`/writing/${a.slug}`}
               className="group flex flex-1 flex-col gap-2"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.06em] text-[#cd2d00] dark:text-[#F25022]">
+              <p className="text-xs font-semibold uppercase tracking-[0.06em] text-[#ff000e] dark:text-[#ffff01]">
                 {a.dateLabel}
               </p>
               <h2 className="text-xl font-medium text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
                 {a.title}
               </h2>
               {a.subtitle && (
-                <p className="text-base leading-[1.55] text-pretty text-foreground/80">
+                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
                   {a.subtitle}
                 </p>
               )}
               {a.description && (
-                <p className="text-base leading-[1.55] text-pretty text-foreground/80">
+                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
                   {a.description}
                 </p>
               )}

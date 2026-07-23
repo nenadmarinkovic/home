@@ -267,7 +267,7 @@
   body {
     @apply bg-background text-foreground;
     font-synthesis: none;
-    font-weight: 350;
+    font-weight: 300;
   }
 }
 
@@ -283,8 +283,12 @@ body:has([data-slot="dialog-overlay"][data-state="open"]) [data-mobile-menu] {
 }
 
 ::selection {
-  background: rgba(242, 80, 34, 0.22);
+  background: rgba(255, 0, 14, 0.22);
   color: var(--foreground);
+}
+
+.dark ::selection {
+  background: rgba(255, 255, 1, 0.28);
 }
 
 .scrollbar-thin {
@@ -316,9 +320,13 @@ body:has([data-slot="dialog-overlay"][data-state="open"]) [data-mobile-menu] {
 }
 
 article a {
-  color: #f25022;
+  color: #ff000e;
   text-decoration: none;
   transition: opacity 150ms;
+}
+
+.dark article a {
+  color: #ffff01;
 }
 
 article a:hover {
@@ -466,9 +474,12 @@ article img.img-right {
   color: var(--foreground);
 }
 .ProseMirror a {
-  color: #f25022;
+  color: #ff000e;
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+.dark .ProseMirror a {
+  color: #ffff01;
 }
 .ProseMirror code {
   border-radius: 4px;

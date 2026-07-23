@@ -413,7 +413,7 @@ function CardView({
               aria-hidden
               className="inline-block h-px w-12 bg-foreground/15"
             />
-            <p className="text-xl italic text-balance text-foreground/80 sm:text-2xl">
+            <p className="text-xl italic text-balance text-foreground/70 sm:text-2xl">
               {back}
             </p>
 

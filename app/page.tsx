@@ -20,25 +20,25 @@ export default async function Home() {
             I&rsquo;m Nenad, a Vienna-based software developer.
           </h1>
         </div>
-        <p className="text-base leading-[1.55] text-pretty text-foreground/80">
+        <p className="text-base leading-[1.55] text-pretty text-foreground/70">
           Next year marks ten years since I started working on the web. I still
           think it&rsquo;s the best platform we have for making things, and I
           want to push it a little further.
         </p>
-        <p className="text-base leading-[1.55] text-pretty text-foreground/80">
+        <p className="text-base leading-[1.55] text-pretty text-foreground/70">
           Right now, that means building a German-learning platform and laying
           the groundwork for my first studio — for educators and online creators
           who need more than a template.
         </p>
-        <p className="text-base leading-[1.55] text-pretty text-foreground/80">
+        <p className="text-base leading-[1.55] text-pretty text-foreground/70">
           This site is the hub for it all. I share my work, thoughts, and the
           links I find interesting.
         </p>
-        <p className="text-base leading-[1.55] text-pretty text-foreground/80">
+        <p className="text-base leading-[1.55] text-pretty text-foreground/70">
           Have a look around, and if you&rsquo;d like to say hi, there&rsquo;s a{" "}
           <Link
             href="/contact"
-            className="font-semibold text-[#cd2d00] transition-opacity hover:opacity-70 dark:text-[#F25022]"
+            className="font-semibold text-[#ff000e] transition-opacity hover:opacity-70 dark:text-[#ffff01]"
           >
             contact
           </Link>{" "}
@@ -71,19 +71,19 @@ export default async function Home() {
                 href={`/writing/${a.slug}`}
                 className="group flex flex-1 flex-col gap-3"
               >
-                <p className="font-sans text-xs font-semibold uppercase tracking-[0.06em] text-[#cd2d00] dark:text-[#F25022]">
+                <p className="font-sans text-xs font-semibold uppercase tracking-[0.06em] text-[#ff000e] dark:text-[#ffff01]">
                   {a.dateLabel}
                 </p>
                 <h2 className="text-xl font-medium text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
                   {a.title}
                 </h2>
                 {a.subtitle && (
-                  <p className="text-base leading-[1.55] text-pretty text-foreground/80">
+                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
                     {a.subtitle}
                   </p>
                 )}
                 {a.description && (
-                  <p className="text-base leading-[1.55] text-pretty text-foreground/80">
+                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
                     {a.description}
                   </p>
                 )}

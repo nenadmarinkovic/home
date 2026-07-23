@@ -59,7 +59,7 @@ export function LiveClock({ fallback }: { fallback: string }) {
           <span aria-hidden className="text-foreground/20">
             ·
           </span>
-          <span className="font-semibold text-[#DA380C] dark:text-[#F25022]">
+          <span className="font-semibold text-[#ff000e] dark:text-[#ffff01]">
             {TIME_FMT.format(now)}
           </span>
         </>

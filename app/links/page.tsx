@@ -72,7 +72,7 @@ export default async function LinksPage({
         <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
           Pages worth sharing
         </h1>
-        <p className="text-base italic leading-[1.55] text-balance text-foreground/80">
+        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
           Pages I&rsquo;ve come across and want to keep around — technology, AI,
           design, web, culture, and anything else worth a look.
         </p>

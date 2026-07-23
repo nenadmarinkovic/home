@@ -102,17 +102,17 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 rel="noopener noreferrer"
                 className="group flex flex-col gap-2"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.06em] text-[#cd2d00] dark:text-[#F25022]">
+                <p className="text-xs font-semibold uppercase tracking-[0.06em] text-[#ff000e] dark:text-[#ffff01]">
                   {link.dateLabel}
                 </p>
                 <h2 className="text-xl font-medium text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
                   {link.title || link.url}
                 </h2>
-                <p className="text-base leading-[1.55] text-pretty text-foreground/80">
+                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
                   {link.hostname}
                 </p>
                 {link.note && (
-                  <p className="text-base leading-[1.55] text-pretty text-foreground/80">
+                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
                     {link.note}
                   </p>
                 )}
