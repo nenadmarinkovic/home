@@ -63,13 +63,23 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 onClick={() => toggle(tag.slug)}
                 aria-pressed={active}
                 className={cn(
-                  "inline-flex cursor-pointer items-center rounded-full border px-3 py-1 font-sans text-[10px] font-semibold uppercase tracking-wider transition-colors",
+                  "inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 font-sans text-[10px] font-semibold uppercase tracking-wider transition-colors",
                   active
-                    ? "border-foreground bg-foreground text-background"
+                    ? "border-[#0040ff] bg-[#0040ff] text-white dark:border-[#ffff01] dark:bg-[#ffff01] dark:text-black"
                     : "border-foreground/15 text-zinc-600 hover:border-foreground/30 hover:text-foreground dark:text-zinc-400",
                 )}
               >
-                {tag.name}
+                <span>{tag.name}</span>
+                <span
+                  className={cn(
+                    "tabular-nums",
+                    active
+                      ? "text-white/70 dark:text-black/60"
+                      : "text-foreground/40",
+                  )}
+                >
+                  {tag.count}
+                </span>
               </button>
             );
           })}
@@ -117,13 +127,13 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                   </p>
                 )}
                 {link.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex flex-wrap gap-x-2 gap-y-1">
                     {link.tags.map((t) => (
                       <span
                         key={t.slug}
-                        className="inline-flex shrink-0 items-center rounded-full border border-foreground/10 px-2 py-0.5 font-sans text-[10px] font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400"
+                        className="font-sans text-xs text-foreground/50"
                       >
-                        {t.name}
+                        #{t.slug}
                       </span>
                     ))}
                   </div>

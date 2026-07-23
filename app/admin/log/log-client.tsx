@@ -236,7 +236,7 @@ export function LogClient({
             {totals.running > 0 && (
               <>
                 <Bullet />
-                <span className="inline-flex items-center gap-1 text-[#0040ff] dark:text-[#ffff01]">
+                <span className="inline-flex items-center gap-1 text-foreground">
                   <CircleNotch
                     weight="bold"
                     className="size-3.5 animate-spin"
@@ -580,7 +580,7 @@ function StatusTag({ status }: { status: DokployStatus }) {
     return (
       <span
         title="Deploy or operation in progress."
-        className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#0040ff]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]"
+        className="inline-flex shrink-0 items-center gap-1 rounded-full bg-foreground px-2.5 py-0.5 text-[11px] font-medium text-background"
       >
         <CircleNotch weight="bold" className="size-3 animate-spin" />
         Deploying
