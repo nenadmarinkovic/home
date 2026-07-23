@@ -16,17 +16,6 @@ export function ContactQR() {
           />
         </svg>
       </div>
-      <figcaption className="flex flex-col items-center gap-1 md:items-start">
-        <span className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-          Website
-        </span>
-        <a
-          href="https://nenadmarinkovic.com"
-          className="text-sm leading-[1.3] text-pretty transition-opacity hover:opacity-70"
-        >
-          nenadmarinkovic.com
-        </a>
-      </figcaption>
     </figure>
   );
 }

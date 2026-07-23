@@ -8,12 +8,6 @@ const DATE_FMT = new Intl.DateTimeFormat("en-GB", {
   month: "long",
 });
 
-const TIME_FMT = new Intl.DateTimeFormat("en-GB", {
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: false,
-});
-
 function formatDate(d: Date) {
   return DATE_FMT.format(d).replace(",", " ·");
 }
@@ -52,18 +46,8 @@ export function LiveClock({ fallback }: { fallback: string }) {
   const now = minute === null ? null : new Date();
 
   return (
-    <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 font-sans text-xs font-medium uppercase tracking-[0.2em] tabular-nums text-zinc-500 dark:text-zinc-500">
-      <span>{now ? formatDate(now) : fallback}</span>
-      {now && (
-        <>
-          <span aria-hidden className="text-foreground/20">
-            ·
-          </span>
-          <span className="font-semibold text-[#ff000e] dark:text-[#ffff01]">
-            {TIME_FMT.format(now)}
-          </span>
-        </>
-      )}
+    <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] tabular-nums text-foreground/50">
+      {now ? formatDate(now) : fallback}
     </p>
   );
 }

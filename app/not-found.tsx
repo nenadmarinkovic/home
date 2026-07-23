@@ -4,14 +4,14 @@ import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 export default function NotFound() {
   return (
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
-      <hgroup className="max-w-[46ch] self-center space-y-4 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
+      <hgroup className="max-w-prose self-center text-center">
+        <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] text-foreground/50">
           404
         </p>
-        <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
+        <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
           Page not found.
         </h1>
-        <p className="text-base font-light italic leading-[1.5] text-balance text-zinc-600 dark:text-zinc-400">
+        <p className="mt-4 text-base italic leading-[1.5] text-balance text-foreground/70">
           The page you&rsquo;re looking for isn&rsquo;t here.
         </p>
       </hgroup>

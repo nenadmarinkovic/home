@@ -15,14 +15,14 @@ export default async function WritingIndexPage() {
   const list = await getArticles();
   return (
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
-      <hgroup className="max-w-prose self-center space-y-3 text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
+      <hgroup className="max-w-prose self-center text-center">
+        <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] text-foreground/50">
           Writing
         </p>
-        <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
+        <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
           Notes worth keeping
         </h1>
-        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
+        <p className="mt-4 text-base italic leading-[1.5] text-balance text-foreground/70">
           Notes I&rsquo;ve put down along the way — software, design, the web,
           and anything else worth thinking about.
         </p>
@@ -34,7 +34,7 @@ export default async function WritingIndexPage() {
               href={`/writing/${a.slug}`}
               className="group flex flex-1 flex-col gap-2"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.06em] text-[#ff000e] dark:text-[#ffff01]">
+              <p className="text-xs font-semibold uppercase tracking-[0.06em] text-foreground/50">
                 {a.dateLabel}
               </p>
               <h2 className="text-xl font-medium text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">

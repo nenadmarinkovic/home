@@ -38,7 +38,7 @@ export default async function Home() {
           Have a look around, and if you&rsquo;d like to say hi, there&rsquo;s a{" "}
           <Link
             href="/contact"
-            className="font-semibold text-[#ff000e] transition-opacity hover:opacity-70 dark:text-[#ffff01]"
+            className="font-semibold text-[#0040ff] transition-opacity hover:opacity-70 dark:text-[#ffff01]"
           >
             contact
           </Link>{" "}
@@ -71,7 +71,7 @@ export default async function Home() {
                 href={`/writing/${a.slug}`}
                 className="group flex flex-1 flex-col gap-3"
               >
-                <p className="font-sans text-xs font-semibold uppercase tracking-[0.06em] text-[#ff000e] dark:text-[#ffff01]">
+                <p className="font-sans text-xs font-semibold uppercase tracking-[0.06em] text-foreground/50">
                   {a.dateLabel}
                 </p>
                 <h2 className="text-xl font-medium text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">

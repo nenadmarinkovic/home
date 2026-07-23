@@ -75,12 +75,12 @@ export default async function AdminPage() {
 
   return (
     <main className="flex flex-1 flex-col items-start gap-14 pb-20 pt-12 md:pt-20">
-      <hgroup className="max-w-prose self-center space-y-3 text-center">
+      <hgroup className="max-w-prose self-center text-center">
         <LiveClock fallback={dateLabel} />
-        <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
+        <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
           Welcome back
         </h1>
-        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
+        <p className="mt-4 text-base italic leading-[1.5] text-balance text-foreground/70">
           Your admin tools, all in one place.
         </p>
       </hgroup>
