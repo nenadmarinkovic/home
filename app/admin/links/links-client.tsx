@@ -263,7 +263,7 @@ export function LinksAdminClient({
             <span aria-hidden className="text-foreground/20">
               ·
             </span>
-            <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-500">
+            <span className="inline-flex items-center gap-1 text-[#0040ff] dark:text-[#ffff01]">
               <CheckCircleIcon weight="fill" className="size-3.5" />
               <span className="tabular-nums">{publicCount}</span> public
             </span>
@@ -475,7 +475,7 @@ function FilterMenu({
           >
             <span>{FILTER_LABELS[key]}</span>
             {filter === key && (
-              <CheckIcon weight="bold" className="size-3.5 text-[#F25022]" />
+              <CheckIcon weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
             )}
           </DropdownMenuItem>
         ))}
@@ -513,7 +513,7 @@ function SortMenu({
           >
             <span>{SORT_LABELS[key]}</span>
             {sort === key && (
-              <CheckIcon weight="bold" className="size-3.5 text-[#F25022]" />
+              <CheckIcon weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
             )}
           </DropdownMenuItem>
         ))}
@@ -606,7 +606,7 @@ function PublicTag() {
   return (
     <span
       title="Visible on the public /links page."
-      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-500"
+      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#0040ff]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]"
     >
       <CheckCircleIcon weight="fill" className="size-3" />
       Public
@@ -625,7 +625,7 @@ function PrivateTag() {
 function EmptyAll({ onNew }: { onNew: () => void }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-[#F25022]/10 text-[#F25022]">
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#0040ff]/10 text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]">
         <LinkSimpleIcon weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
@@ -714,7 +714,7 @@ function TokenDialog({
                   className="shrink-0 text-zinc-600 hover:bg-foreground/[0.04] dark:text-zinc-400"
                 >
                   {copied ? (
-                    <CheckIcon weight="bold" className="text-emerald-600" />
+                    <CheckIcon weight="bold" className="text-[#0040ff] dark:text-[#ffff01]" />
                   ) : (
                     <CopyIcon weight="bold" />
                   )}
@@ -1060,7 +1060,7 @@ function SaveLinkDialog({
                   size="xs"
                   onClick={runSummarize}
                   disabled={!url.trim() || summarizing}
-                  className="font-sans text-[11px] uppercase tracking-wider text-[#F25022] hover:bg-[#F25022]/10 hover:text-[#F25022]"
+                  className="font-sans text-[11px] uppercase tracking-wider text-[#0040ff] hover:bg-[#0040ff]/10 hover:text-[#0040ff] dark:text-[#ffff01] dark:hover:bg-[#ffff01]/10 dark:hover:text-[#ffff01]"
                 >
                   <MagicWandIcon weight="bold" />
                   {summarizing ? "Summarizing…" : "Summarize"}
@@ -1209,7 +1209,7 @@ function EditLinkDialog({
                 size="xs"
                 onClick={runSummarize}
                 disabled={summarizing}
-                className="font-sans text-[11px] uppercase tracking-wider text-[#F25022] hover:bg-[#F25022]/10 hover:text-[#F25022]"
+                className="font-sans text-[11px] uppercase tracking-wider text-[#0040ff] hover:bg-[#0040ff]/10 hover:text-[#0040ff] dark:text-[#ffff01] dark:hover:bg-[#ffff01]/10 dark:hover:text-[#ffff01]"
               >
                 <MagicWandIcon weight="bold" />
                 {summarizing ? "Summarizing…" : "Summarize"}
@@ -1326,7 +1326,7 @@ function TagRow({
         <p
           className={cn(
             "truncate text-base font-medium leading-tight",
-            isAccess ? "text-[#F25022]" : "text-foreground",
+            isAccess ? "text-[#0040ff] dark:text-[#ffff01]" : "text-foreground",
           )}
         >
           {tag.name}

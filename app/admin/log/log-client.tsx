@@ -236,7 +236,7 @@ export function LogClient({
             {totals.running > 0 && (
               <>
                 <Bullet />
-                <span className="inline-flex items-center gap-1 text-blue-700 dark:text-blue-500">
+                <span className="inline-flex items-center gap-1 text-[#0040ff] dark:text-[#ffff01]">
                   <CircleNotch
                     weight="bold"
                     className="size-3.5 animate-spin"
@@ -250,7 +250,7 @@ export function LogClient({
               <>
                 <Bullet />
                 <span
-                  className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-500"
+                  className="inline-flex items-center gap-1 text-[#0040ff] dark:text-[#ffff01]"
                   title="All services healthy."
                 >
                   <CheckCircle weight="fill" className="size-3.5" />
@@ -569,7 +569,7 @@ function StatusTag({ status }: { status: DokployStatus }) {
     return (
       <span
         title="Deployed and healthy."
-        className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-500"
+        className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#0040ff]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]"
       >
         <CheckCircle weight="fill" className="size-3" />
         Healthy
@@ -580,7 +580,7 @@ function StatusTag({ status }: { status: DokployStatus }) {
     return (
       <span
         title="Deploy or operation in progress."
-        className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-medium text-blue-700 dark:text-blue-500"
+        className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#0040ff]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]"
       >
         <CircleNotch weight="bold" className="size-3 animate-spin" />
         Deploying
@@ -631,7 +631,7 @@ function EnvTag({ name }: { name: string }) {
 function EmptyAll() {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-[#F25022]/10 text-[#F25022]">
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#0040ff]/10 text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]">
         <Cloud weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">

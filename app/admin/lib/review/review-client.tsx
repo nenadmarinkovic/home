@@ -53,15 +53,16 @@ type RatingButton = {
   rating: Rating;
   label: string;
   key: string;
-  color: string;
+  dotClass: string;
 };
 
-// Microsoft palette mapped to FSRS ratings.
+// Accent palette: destructive for wrong, neutral for hard, foreground for good,
+// accent (vibrant blue / bauhaus yellow) for easy.
 const RATING_BUTTONS: RatingButton[] = [
-  { rating: 1, label: "Again", key: "1", color: "#F25022" },
-  { rating: 2, label: "Hard", key: "2", color: "#FFB900" },
-  { rating: 3, label: "Good", key: "3", color: "#7FBA00" },
-  { rating: 4, label: "Easy", key: "4", color: "#00A4EF" },
+  { rating: 1, label: "Again", key: "1", dotClass: "bg-destructive" },
+  { rating: 2, label: "Hard", key: "2", dotClass: "bg-foreground/40" },
+  { rating: 3, label: "Good", key: "3", dotClass: "bg-foreground" },
+  { rating: 4, label: "Easy", key: "4", dotClass: "bg-[#0040ff] dark:bg-[#ffff01]" },
 ];
 
 const SYNC_URL = "/api/lib/review/sync";
@@ -269,7 +270,7 @@ export function ReviewClient({ initialStats }: Props) {
                 <span aria-hidden className="text-foreground/20">
                   ·
                 </span>
-                <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-500">
+                <span className="inline-flex items-center gap-1 text-foreground/60">
                   <CloudSlashIcon weight="bold" className="size-3.5" />
                   Offline
                 </span>
@@ -371,7 +372,9 @@ function CardView({
   const back = showGerman ? card.entry.translationSr : formatGerman(card.entry);
   const directionFrom = showGerman ? "DE" : "SR";
   const directionTo = showGerman ? "SR" : "DE";
-  const directionColor = showGerman ? "#F25022" : "#00A4EF";
+  const directionDotClass = showGerman
+    ? "bg-foreground/60"
+    : "bg-[#0040ff] dark:bg-[#ffff01]";
   const examples = card.entry.examples.slice(0, 3);
 
   return (
@@ -385,8 +388,7 @@ function CardView({
         <div className="flex items-center gap-2 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-500">
           <span
             aria-hidden
-            className="inline-block size-2 rounded-full"
-            style={{ backgroundColor: directionColor }}
+            className={cn("inline-block size-2 rounded-full", directionDotClass)}
           />
           <span className="inline-flex items-center gap-1 tabular-nums">
             <span className="font-bold text-foreground">{directionFrom}</span>
@@ -494,7 +496,7 @@ function RatingButton({
   disabled: boolean;
   onClick: () => void;
 }) {
-  const { color, label, key } = button;
+  const { dotClass, label, key } = button;
   return (
     <button
       type="button"
@@ -508,8 +510,10 @@ function RatingButton({
     >
       <span
         aria-hidden
-        className="inline-block size-2.5 shrink-0 rounded-full transition-transform duration-200 group-hover/btn:scale-125"
-        style={{ backgroundColor: color }}
+        className={cn(
+          "inline-block size-2.5 shrink-0 rounded-full transition-transform duration-200 group-hover/btn:scale-125",
+          dotClass,
+        )}
       />
       <span>{label}</span>
       <kbd className="hidden font-sans text-[10px] uppercase tracking-wider tabular-nums text-zinc-400 sm:inline">
@@ -533,10 +537,7 @@ function Loading() {
 function NeedsDownload() {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div
-        className="flex size-10 items-center justify-center rounded-full"
-        style={{ backgroundColor: "#FFB9001a", color: "#9A6B00" }}
-      >
+      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/[0.06] text-foreground/70">
         <CloudSlashIcon weight="fill" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
@@ -556,10 +557,7 @@ function Done({ stats }: { stats: DeckStats }) {
   const isEmpty = stats.total === 0;
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center animate-in fade-in-0 duration-150">
-      <div
-        className="flex size-10 items-center justify-center rounded-full"
-        style={{ backgroundColor: "#7FBA001a", color: "#5C8500" }}
-      >
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#0040ff]/10 text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]">
         <CheckCircleIcon weight="fill" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">

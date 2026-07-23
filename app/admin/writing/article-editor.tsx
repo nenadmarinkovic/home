@@ -358,7 +358,7 @@ function FieldRow({ children }: { children: React.ReactNode }) {
 
 function RequiredMark() {
   return (
-    <span className="text-[#F25022]" aria-hidden="true">
+    <span className="text-destructive" aria-hidden="true">
       *
     </span>
   );
@@ -536,7 +536,7 @@ function EditorToolbar({ editor }: { editor: Editor }) {
             b.tone === "danger"
               ? "text-red-500 hover:bg-red-500/10 hover:text-red-500 dark:text-red-400 dark:hover:text-red-400"
               : b.isActive
-                ? "bg-[#F25022]/10 text-[#F25022] hover:bg-[#F25022]/15 hover:text-[#F25022]"
+                ? "bg-[#0040ff]/10 text-[#0040ff] hover:bg-[#0040ff]/15 hover:text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01] dark:hover:bg-[#ffff01]/15 dark:hover:text-[#ffff01]"
                 : "text-zinc-600 dark:text-zinc-400",
           )}
         >

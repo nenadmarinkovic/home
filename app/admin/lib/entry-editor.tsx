@@ -466,7 +466,7 @@ function FieldRow({ children }: { children: React.ReactNode }) {
 
 function RequiredMark() {
   return (
-    <span className="text-[#F25022]" aria-hidden="true">
+    <span className="text-destructive" aria-hidden="true">
       *
     </span>
   );

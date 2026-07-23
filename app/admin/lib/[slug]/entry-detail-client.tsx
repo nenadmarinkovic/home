@@ -495,7 +495,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                             card.suspended
                               ? "inline-flex items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-500"
                               : overdue
-                                ? "inline-flex items-center gap-1 rounded-full bg-[#7FBA00]/10 px-2 py-0.5 text-[11px] font-medium text-[#5C8500] dark:text-[#7FBA00]"
+                                ? "inline-flex items-center gap-1 rounded-full bg-[#0040ff]/10 px-2 py-0.5 text-[11px] font-medium text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]"
                                 : "inline-flex items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300"
                           }
                         >

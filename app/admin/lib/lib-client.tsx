@@ -400,7 +400,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
               <Link
                 href="/admin/lib/review"
                 title={DUE_TOOLTIP}
-                className="text-[#5C8500] transition-opacity hover:underline hover:opacity-80 dark:text-[#7FBA00]"
+                className="text-[#0040ff] transition-opacity hover:underline hover:opacity-80 dark:text-[#ffff01]"
               >
                 <span className="tabular-nums">{stats.due}</span> to review
               </Link>
@@ -573,7 +573,7 @@ function EntryRow({
             <span
               aria-hidden
               title={`${entry.due} flashcard${entry.due === 1 ? "" : "s"} to review`}
-              className="size-1.5 shrink-0 rounded-full bg-[#7FBA00]"
+              className="size-1.5 shrink-0 rounded-full bg-[#0040ff] dark:bg-[#ffff01]"
             />
           )}
         </div>
@@ -662,7 +662,7 @@ function Empty({
 }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-[#F25022]/10 text-[#F25022]">
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#0040ff]/10 text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]">
         <BookOpen weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
@@ -718,7 +718,7 @@ function FilterMenu({
           >
             <span>{FILTER_LABELS[key]}</span>
             {filter === key && (
-              <CheckIcon weight="bold" className="size-3.5 text-[#F25022]" />
+              <CheckIcon weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
             )}
           </DropdownMenuItem>
         ))}
@@ -756,7 +756,7 @@ function SortMenu({
           >
             <span>{SORT_LABELS[key]}</span>
             {sort === key && (
-              <CheckIcon weight="bold" className="size-3.5 text-[#F25022]" />
+              <CheckIcon weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
             )}
           </DropdownMenuItem>
         ))}

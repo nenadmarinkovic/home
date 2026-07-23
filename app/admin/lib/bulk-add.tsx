@@ -234,19 +234,19 @@ function RowStatusBadge({ row }: { row: Row }) {
       );
     case "enriching":
       return (
-        <span className="text-xs uppercase tracking-wider text-blue-600">
+        <span className="text-xs uppercase tracking-wider text-[#0040ff] dark:text-[#ffff01]">
           Enriching…
         </span>
       );
     case "saving":
       return (
-        <span className="text-xs uppercase tracking-wider text-blue-600">
+        <span className="text-xs uppercase tracking-wider text-[#0040ff] dark:text-[#ffff01]">
           Saving…
         </span>
       );
     case "saved":
       return (
-        <span className="inline-flex items-center gap-1 text-xs uppercase tracking-wider text-emerald-600">
+        <span className="inline-flex items-center gap-1 text-xs uppercase tracking-wider text-[#0040ff] dark:text-[#ffff01]">
           <CheckCircle weight="fill" className="size-3.5" />
           Saved
         </span>

@@ -254,7 +254,7 @@ export function AdminClient({ published, drafts, exported }: AdminClientProps) {
                 </span>
                 {pendingExportCount === 0 ? (
                   <span
-                    className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-500"
+                    className="inline-flex items-center gap-1 text-[#0040ff] dark:text-[#ffff01]"
                     title="Every published article is committed to git."
                   >
                     <CheckCircle weight="fill" className="size-3.5" />
@@ -262,12 +262,12 @@ export function AdminClient({ published, drafts, exported }: AdminClientProps) {
                   </span>
                 ) : (
                   <span
-                    className="inline-flex items-center gap-1 text-blue-700 dark:text-blue-500"
+                    className="inline-flex items-center gap-1 text-[#0040ff] dark:text-[#ffff01]"
                     title="Articles edited since the last snapshot. Click Export to git to commit."
                   >
                     <span
                       aria-hidden
-                      className="inline-block size-1.5 rounded-full bg-blue-600 dark:bg-blue-500"
+                      className="inline-block size-1.5 rounded-full bg-[#0040ff] dark:bg-[#ffff01]"
                     />
                     <span className="tabular-nums">{pendingExportCount}</span>{" "}
                     pending export
@@ -423,7 +423,7 @@ function FilterMenu({
           >
             <span>{FILTER_LABELS[key]}</span>
             {filter === key && (
-              <Check weight="bold" className="size-3.5 text-[#F25022]" />
+              <Check weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
             )}
           </DropdownMenuItem>
         ))}
@@ -461,7 +461,7 @@ function SortMenu({
           >
             <span>{SORT_LABELS[key]}</span>
             {sort === key && (
-              <Check weight="bold" className="size-3.5 text-[#F25022]" />
+              <Check weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
             )}
           </DropdownMenuItem>
         ))}
@@ -573,11 +573,11 @@ function UnexportedTag() {
   return (
     <span
       title="Not yet committed to git — click Export to git to snapshot."
-      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-medium text-blue-700 dark:text-blue-500"
+      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#0040ff]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]"
     >
       <span
         aria-hidden
-        className="inline-block size-1.5 rounded-full bg-blue-600 dark:bg-blue-500"
+        className="inline-block size-1.5 rounded-full bg-[#0040ff] dark:bg-[#ffff01]"
       />
       Pending export
     </span>
@@ -588,7 +588,7 @@ function ExportedTag() {
   return (
     <span
       title="Committed to git — content matches the latest snapshot."
-      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-500"
+      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#0040ff]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]"
     >
       <CheckCircle weight="fill" className="size-3" />
       In git
@@ -615,7 +615,7 @@ function EmptyAll({ filter, onNew }: { filter: FilterKey; onNew: () => void }) {
 
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-[#F25022]/10 text-[#F25022]">
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#0040ff]/10 text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]">
         <FileText weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">

@@ -81,7 +81,7 @@ export function ExportButton({ pendingCount }: ExportButtonProps) {
           className={
             status === "error"
               ? "inline-flex items-center gap-1 font-sans text-xs text-destructive"
-              : "inline-flex items-center gap-1 font-sans text-xs text-emerald-600 dark:text-emerald-500"
+              : "inline-flex items-center gap-1 font-sans text-xs text-[#0040ff] dark:text-[#ffff01]"
           }
         >
           {status === "error" ? (
