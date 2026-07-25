@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
+  ArrowSquareOutIcon,
   ArrowsClockwiseIcon,
   ArrowsDownUpIcon,
   CheckCircleIcon,
@@ -582,8 +583,8 @@ function LinkList({
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <a href={link.url} target="_blank" rel="noopener noreferrer">
-                    <LinkSimpleIcon weight="bold" />
-                    Open
+                    <ArrowSquareOutIcon weight="bold" />
+                    Open link
                   </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem
