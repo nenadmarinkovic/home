@@ -535,7 +535,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
         </AlertDialogContent>
       </AlertDialog>
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-6 md:hidden">
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-3 pb-(--safe-bottom) pt-6 md:hidden">
         <div className="pointer-events-auto mx-auto max-w-2xl">
           <QuickAdd />
         </div>

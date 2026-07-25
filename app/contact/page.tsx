@@ -24,6 +24,11 @@ const links = [
     value: "@nenadmarinkovic.com",
     href: "https://bsky.app/profile/nenadmarinkovic.com",
   },
+  {
+    label: "RSS",
+    value: "nenadmarinkovic.com/rss.xml",
+    href: "/rss.xml",
+  },
 ];
 
 export default function ContactPage() {

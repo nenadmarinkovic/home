@@ -186,6 +186,11 @@
 
 :root {
   --unit-lg: 1.125rem;
+  /* Room for the home indicator under anything pinned to the bottom of the
+     screen. A token rather than env() at each call site because an iframe
+     reports no insets, so the phone frame in an article has to be able to
+     stand one in — see app/mockup/layout.tsx. */
+  --safe-bottom: max(env(safe-area-inset-bottom), 0.75rem);
   --background: #fafafa;
   --foreground: #000000;
   --card: #fbf9f7;
@@ -493,6 +498,24 @@ article .device .device-status {
   height: auto;
 
   color: var(--foreground);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Home indicator. iOS draws it over the app and it adapts to what is under it,
+   so it takes the page's ink like the status bar does. Sized off the real one:
+   140pt wide and 5pt tall on a 402pt screen, sitting ~8pt above the bottom
+   edge — expressed against the frame's own 1350x2760 grid. */
+article .device .device-home {
+  position: absolute;
+  left: 50%;
+  bottom: 3.37%;
+  width: 31.1%;
+  height: calc(var(--device-w) * 0.0111 * 1px);
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: var(--foreground);
+  opacity: 0.75;
   pointer-events: none;
   z-index: 2;
 }

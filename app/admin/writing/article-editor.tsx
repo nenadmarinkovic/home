@@ -481,7 +481,7 @@ function SharePreview({
             draws centred inside it rather than sitting against the left edge. */}
         <Logo
           className="relative w-auto self-start"
-          style={{ height: "2.83cqw" }}
+          style={{ height: "2.33cqw" }}
         />
         <div className="relative flex flex-col" style={{ gap: "1.67cqw" }}>
           <div

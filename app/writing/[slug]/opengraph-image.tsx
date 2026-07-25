@@ -59,7 +59,7 @@ export default async function Image({
   // layouts share their structure and differ only in colour and backdrop.
   const ink = cover ? "#ffffff" : "#000000";
   const muted = cover ? "rgba(255,255,255,0.78)" : "rgba(0,0,0,0.56)";
-  const LOGO_H = 34;
+  const LOGO_H = 28;
 
   return new ImageResponse(
     <div

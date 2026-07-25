@@ -69,7 +69,7 @@ export function ContactForm() {
           required
           value={message}
           onChange={(event) => setMessage(event.target.value)}
-          className="min-h-[115px] resize-y text-sm md:text-sm"
+          className="min-h-40 resize-y text-sm md:text-sm"
         />
       </div>
       <Button type="submit" size="lg" className="self-end">

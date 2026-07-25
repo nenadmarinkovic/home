@@ -193,7 +193,10 @@ function renderDeviceFence(text: string): string | null {
   // Placeholder, swapped for the real markup after sanitising: the SVG in it
   // would otherwise be stripped, since USE_PROFILES only enables html.
   const status = fields.route
-    ? `<span class="device-status" data-device-status="1"></span>`
+    ? `<span class="device-status" data-device-status="1"></span>` +
+      // The home indicator is iOS chrome too, and for the same reason is drawn
+      // out here rather than inside the scaled iframe.
+      `<span class="device-home" aria-hidden="true"></span>`
     : "";
   return `<figure class="${cls}">${parts.join("")}${status}${chrome}</figure>`;
 }

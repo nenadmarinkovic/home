@@ -83,8 +83,12 @@ export function MobileMenu() {
   }, [open]);
 
   const close = () => setOpen(false);
+  // Full-width rows at least 44px tall — the iOS minimum. `py-1.5` around
+  // 16-18px type left a ~28px target, which is accurate to hit with a mouse
+  // and fiddly with a thumb. The type is unchanged; only the box around it
+  // grows, so the menu still reads as a list rather than a stack of buttons.
   const linkClass =
-    "cursor-pointer touch-manipulation py-1.5 leading-none transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground focus-visible:rounded-sm";
+    "flex min-h-11 w-full cursor-pointer touch-manipulation items-center leading-none transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground focus-visible:rounded-sm";
 
   return (
     <div className="md:hidden" data-mobile-menu>
@@ -108,7 +112,7 @@ export function MobileMenu() {
         >
           <SheetTitle className="sr-only">Menu</SheetTitle>
           <div className="flex h-full flex-col px-6 pt-14 pb-8">
-            <nav className="flex flex-col items-start gap-2 font-sans text-lg font-normal tracking-tight text-zinc-600 dark:text-zinc-400">
+            <nav className="flex flex-col items-start gap-0 font-sans text-lg font-normal tracking-tight text-zinc-600 dark:text-zinc-400">
               <Link
                 href="/"
                 onClick={close}
@@ -144,7 +148,7 @@ export function MobileMenu() {
             </nav>
 
             {authed && (
-              <nav className="mt-2 flex flex-col items-start gap-2 pl-4 font-sans text-base font-normal tracking-tight text-zinc-500 dark:text-zinc-500">
+              <nav className="mt-1 flex flex-col items-start gap-0 pl-4 font-sans text-lg font-normal tracking-tight text-zinc-500 dark:text-zinc-500">
                 {ADMIN_TOOLS.map((tool) => {
                   const active = isNavActive(pathname, tool.href);
                   return (
