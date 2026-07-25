@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import {
   Article as ArticleIcon,
+  ArrowSquareOutIcon,
   ArrowsDownUp,
   Check,
   CheckCircle,
@@ -533,6 +534,16 @@ function ArticleList({
                 <DropdownMenuItem onClick={() => onEdit(a)}>
                   <PencilSimple weight="bold" />
                   Edit
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href={`/writing/${a.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ArrowSquareOutIcon weight="bold" />
+                    Open link
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => onExport(a)}
