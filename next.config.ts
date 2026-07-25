@@ -69,6 +69,17 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
+      // The frame in an article embeds these routes in a same-origin iframe,
+      // which the site-wide `X-Frame-Options: DENY` above would block. Browsers
+      // ignore XFO entirely when CSP `frame-ancestors` is present, so this pair
+      // narrows the policy to same-origin framing for /mockup/* only.
+      {
+        source: "/mockup/:path*",
+        headers: [
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+        ],
+      },
       {
         source: "/sw.js",
         headers: [

@@ -362,11 +362,11 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
       </div>
 
       <header className="flex min-w-0 flex-col gap-3">
-        <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
+        <h1 className="text-2xl font-normal text-balance text-foreground sm:text-4xl">
           <span className="text-foreground/40">{article}</span>
           {entry.term}
         </h1>
-        <p className="text-base italic leading-[1.55] text-balance text-foreground/70">
+        <p className="text-sm italic leading-[1.55] text-balance text-foreground/70 sm:text-base">
           {entry.translationSr || "—"}
         </p>
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -390,12 +390,12 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                 {entry.examples.map((ex, idx) => (
                   <li
                     key={idx}
-                    className="flex flex-col gap-1.5 py-4 first:pt-0 last:pb-0"
+                    className="flex flex-col gap-1 py-3 first:pt-0 last:pb-0 sm:gap-1.5 sm:py-4"
                   >
-                    <p className="text-lg leading-snug text-foreground">
+                    <p className="text-base leading-snug text-foreground sm:text-lg">
                       {ex.de || "—"}
                     </p>
-                    <p className="text-base leading-snug text-zinc-500 dark:text-zinc-500">
+                    <p className="text-sm leading-snug text-zinc-500 dark:text-zinc-500 sm:text-base">
                       {ex.sr || "—"}
                     </p>
                   </li>
@@ -406,7 +406,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
 
           {entry.notes.trim().length > 0 && (
             <Section title="Notes">
-              <p className="whitespace-pre-wrap text-base leading-relaxed text-foreground/90">
+              <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/90 sm:text-base">
                 {entry.notes}
               </p>
             </Section>
@@ -431,7 +431,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                               {row.label}
                             </dt>
                           ) : null}
-                          <dd className="text-base text-foreground">
+                          <dd className="text-sm text-foreground sm:text-base">
                             {row.value}
                           </dd>
                         </div>

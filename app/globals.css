@@ -391,6 +391,177 @@ article img {
   border-radius: 0.5rem;
 }
 
+/* iPhone frame. The hardware is one Figma export (public/iphone-frame.svg)
+   laid over a live screen: the screen aperture is knocked out of the body with
+   an even-odd fill, so whatever sits underneath shows through the hole while
+   the bezel, buttons, Dynamic Island and lens draw on top of it. Authored as
+   raw HTML in Markdown (`<figure class="device">`), so these must be plain
+   classes, not Tailwind utilities: article bodies are injected via
+   dangerouslySetInnerHTML and are never scanned by Tailwind. Same reasoning as
+   .pull-quote above. */
+article .device {
+  /* The only number worth tuning — unitless so the screen scale below can be
+     derived from it (CSS can't divide a length by a length). It measures the
+     whole export, side buttons included, not the body. */
+  --device-w: 240;
+  /* The screen aperture, as fractions of the export's 1300x2642 viewBox:
+     x=50, y=40, 1200x2562, corner radius 170. The SVG stays the single source
+     of truth for the geometry; nothing here is redrawn, only measured. The
+     inset is 40 on a 1280-wide body — about 3%, which is what a 17 looks
+     like. The export's own 55 read as an older phone. */
+  --screen-x: 3.8462%;
+  --screen-y: 1.514%;
+  --screen-w: 92.3077%;
+  --screen-h: 96.972%;
+  --screen-radius: calc(var(--device-w) * 0.13077 * 1px);
+  /* An iframe renders at a real 402pt viewport, then scales down to fit.
+     858 = 402 x 2562/1200, so it fills the aperture exactly with no crop. */
+  --viewport-w: 402;
+  --viewport-h: 858;
+  --screen-scale: calc(var(--device-w) * 0.923077 / var(--viewport-w));
+
+  position: relative;
+  width: 100%;
+  max-width: calc(var(--device-w) * 1px);
+  aspect-ratio: 1300 / 2642;
+  margin: 2.5rem auto;
+}
+
+/* The hardware. Opaque everywhere except the aperture, so it also trims the
+   screen's square corners down to the bezel radius. */
+article .device .device-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border-radius: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* The screen itself: a live route in a same-origin iframe, or a still. The
+   iframe gets its own 402px viewport, so the app's own breakpoints resolve to
+   the real mobile layout instead of a squashed desktop one. */
+article .device .device-screen {
+  position: absolute;
+  left: var(--screen-x);
+  top: var(--screen-y);
+  width: var(--screen-w);
+  height: var(--screen-h);
+  overflow: hidden;
+  border-radius: var(--screen-radius);
+  background: var(--background);
+}
+
+article .device .device-screen iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--viewport-w) * 1px);
+  height: calc(var(--viewport-h) * 1px);
+  border: 0;
+  transform: scale(var(--screen-scale));
+  transform-origin: top left;
+  /* Presentation only — the frame is a screenshot that happens to be live. */
+  pointer-events: none;
+}
+
+article .device .device-screen video,
+article .device .device-screen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* Status bar, drawn in the page rather than inside the iframe. The iframe is
+   scaled to ~0.46, so glyphs rendered in there land at ~5px and turn to mush;
+   out here they draw at full resolution. It carries the frame's own viewBox
+   and is stretched over the whole figure, so the glyphs land exactly where the
+   export put them. Under the frame in the stack: the Dynamic Island is part of
+   the hardware and should cover anything that runs into it. */
+article .device .device-status {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Figma bakes a white fill into every path; re-tagged to currentColor in
+     lib/markdown.ts so the bar follows the theme rather than shipping twice. */
+  color: var(--foreground);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Positioned out of flow so a long caption can't stretch the frame, and given
+   more width than the frame so it doesn't wrap every three words. */
+article .device figcaption {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: min(22rem, 90vw);
+  margin-top: 0.875rem;
+  transform: translateX(-50%);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: center;
+  text-wrap: balance;
+  color: var(--foreground);
+  opacity: 0.6;
+}
+
+/* The caption sits outside the flow, so the figure's own margin has to leave
+   room for it. */
+article .device:has(figcaption) {
+  margin-bottom: 4.5rem;
+}
+
+/* `side: left|right` on the fence floats the frame into the column's empty
+   margin, so body text wraps alongside rather than the phone taking a whole
+   screen to itself. `article { display: flow-root }` already contains the
+   float and headings already `clear: both`, so nothing else has to change.
+   Only above 768px — below that the column is too narrow to share. */
+@media (min-width: 768px) {
+  article .device-right {
+    float: right;
+    margin: 0.25rem 0 1.5rem 2.5rem;
+  }
+  article .device-left {
+    float: left;
+    margin: 0.25rem 2.5rem 1.5rem 0;
+  }
+  /* Never let two floats sandwich a paragraph — a frame is ~520px tall and a
+     section rarely has that much text, so the copy ends up in a column a few
+     words wide. Each floated frame starts below the previous one. */
+  article .device-left,
+  article .device-right {
+    clear: both;
+  }
+  /* A floated frame's caption has to stay inside the float, or it overlaps the
+     wrapped text. Centred frames keep the wider, easier-to-read measure. */
+  article .device-left figcaption,
+  article .device-right figcaption {
+    width: 100%;
+  }
+}
+
+/* Autoplay can't be cancelled from CSS, so a reduced-motion reader gets the
+   poster still instead: add <img class="device-still"> after the <video>. */
+article .device .device-still {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  article .device video {
+    display: none;
+  }
+  article .device .device-still {
+    display: block;
+  }
+}
+
 .ProseMirror h1 {
   font-size: 1.5rem;
   font-weight: 600;
