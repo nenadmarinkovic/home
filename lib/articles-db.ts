@@ -12,6 +12,7 @@ export type WriteArticleInput = {
   title: string;
   subtitle: string;
   description: string;
+  image: string;
   date: string;
   body: string;
   draft: boolean;
@@ -32,6 +33,7 @@ function rowToArticle(row: ArticleRow): Article {
     title: row.title,
     subtitle: row.subtitle,
     description: row.description,
+    image: row.image,
     body: row.body,
     draft: row.draft,
     date: row.date,
@@ -49,7 +51,8 @@ function isImageUrlUsedElsewhere(
     .from(articles)
     .where(
       and(
-        like(articles.body, `%${url}%`),
+        // Referenced either from a body or as another post's share image.
+        or(like(articles.body, `%${url}%`), eq(articles.image, url)),
         or(
           ne(articles.slug, excludeSlug),
           ne(articles.language, excludeLanguage),
@@ -73,7 +76,7 @@ async function cleanupOrphanedImages(
 
 export function upsertArticle(input: WriteArticleInput) {
   const previous = db
-    .select({ body: articles.body })
+    .select({ body: articles.body, image: articles.image })
     .from(articles)
     .where(
       and(
@@ -92,6 +95,7 @@ export function upsertArticle(input: WriteArticleInput) {
       title: input.title,
       subtitle: input.subtitle,
       description: input.description,
+      image: input.image,
       body: input.body,
       draft: input.draft,
       date: input.date,
@@ -105,6 +109,7 @@ export function upsertArticle(input: WriteArticleInput) {
         title: input.title,
         subtitle: input.subtitle,
         description: input.description,
+        image: input.image,
         body: input.body,
         draft: input.draft,
         date: input.date,
@@ -115,9 +120,13 @@ export function upsertArticle(input: WriteArticleInput) {
     .returning()
     .get();
 
-  if (previous?.body) {
+  if (previous) {
+    // The share image is tracked alongside the body's images: swapping or
+    // clearing it leaves the old upload on disk otherwise.
     const oldUrls = new Set(extractImageUrls(previous.body));
+    if (previous.image) oldUrls.add(previous.image);
     const newUrls = new Set(extractImageUrls(input.body));
+    if (input.image) newUrls.add(input.image);
     const orphans = [...oldUrls].filter((u) => !newUrls.has(u));
     if (orphans.length > 0) {
       void cleanupOrphanedImages(orphans, input.slug, input.language);
@@ -130,7 +139,7 @@ export function upsertArticle(input: WriteArticleInput) {
 
 export function deleteArticleBySlug(slug: string, language: Language) {
   const existing = db
-    .select({ body: articles.body })
+    .select({ body: articles.body, image: articles.image })
     .from(articles)
     .where(and(eq(articles.slug, slug), eq(articles.language, language)))
     .get();
@@ -141,8 +150,9 @@ export function deleteArticleBySlug(slug: string, language: Language) {
     .run();
 
   if (result.changes > 0) {
-    if (existing?.body) {
+    if (existing) {
       const urls = extractImageUrls(existing.body);
+      if (existing.image) urls.push(existing.image);
       if (urls.length > 0) {
         void cleanupOrphanedImages(urls, slug, language);
       }

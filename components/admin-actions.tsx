@@ -56,6 +56,7 @@ export function AdminActions({ article, className }: Props) {
     title: article.title,
     subtitle: article.subtitle,
     description: article.description,
+    image: article.image,
     date: article.date,
     body: article.body,
     draft: article.draft,

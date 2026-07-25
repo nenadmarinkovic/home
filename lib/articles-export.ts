@@ -23,6 +23,7 @@ function buildMarkdown(row: {
   title: string;
   subtitle: string;
   description: string;
+  image: string;
   date: string;
   body: string;
 }): string {
@@ -31,6 +32,9 @@ function buildMarkdown(row: {
     `title: ${yamlEscape(row.title)}`,
     `subtitle: ${yamlEscape(row.subtitle)}`,
     `description: ${yamlEscape(row.description)}`,
+    // Omitted when unset, so posts without a share image keep clean
+    // frontmatter rather than carrying an empty key.
+    ...(row.image ? [`image: ${yamlEscape(row.image)}`] : []),
     `date: ${row.date}`,
     "---",
     "",

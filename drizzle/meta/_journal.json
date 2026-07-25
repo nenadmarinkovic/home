@@ -36,6 +36,13 @@
       "when": 1779000000000,
       "tag": "0004_add_vocab_slug",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1785007786368,
+      "tag": "0005_add_article_image",
+      "breakpoints": true
     }
   ]
 }

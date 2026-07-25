@@ -13,6 +13,7 @@ function slugify(input: string): string {
 }
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const IMAGE_URL = /^\/writing\/img\/[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*$/;
 const SLUG_RE = /^[a-z0-9][a-z0-9-]*$/;
 
 function isLanguage(value: unknown): value is Language {
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
     title?: string;
     subtitle?: string;
     description?: string;
+    image?: string;
     date?: string;
     body?: string;
     draft?: boolean;
@@ -42,6 +44,7 @@ export async function POST(request: Request) {
   const title = String(payload.title ?? "").trim();
   const subtitle = String(payload.subtitle ?? "").trim();
   const description = String(payload.description ?? "").trim();
+  const image = String(payload.image ?? "").trim();
   const date = String(payload.date ?? "").trim();
   const body = String(payload.body ?? "").trim();
   const language: Language = isLanguage(payload.language)
@@ -53,6 +56,12 @@ export async function POST(request: Request) {
   }
   if (!body) {
     return NextResponse.json({ error: "Body required" }, { status: 400 });
+  }
+  // Only an upload of ours may be the share image: the OG route reads this
+  // path off disk, so anything else is either a dead link in the card or a
+  // way to point the reader at a file that isn't an upload.
+  if (image && !IMAGE_URL.test(image)) {
+    return NextResponse.json({ error: "Invalid image" }, { status: 400 });
   }
   if (!ISO_DATE.test(date)) {
     return NextResponse.json(
@@ -76,6 +85,7 @@ export async function POST(request: Request) {
       title,
       subtitle,
       description,
+      image,
       date,
       body,
       draft: Boolean(payload.draft),

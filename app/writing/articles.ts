@@ -10,6 +10,8 @@ export type Article = {
   title: string;
   subtitle: string;
   description: string;
+  /** Share image for the OG card. Empty when the post has none. */
+  image: string;
   date: string;
   dateLabel: string;
   body: string;
@@ -34,6 +36,7 @@ function rowToArticle(row: ArticleRow): Article {
     title: row.title,
     subtitle: row.subtitle,
     description: row.description,
+    image: row.image,
     body: row.body,
     draft: row.draft,
     date: row.date,

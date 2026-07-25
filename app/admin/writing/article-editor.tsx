@@ -21,6 +21,7 @@ import {
   Link as LinkIcon,
 } from "@phosphor-icons/react";
 
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -47,6 +48,7 @@ export type EditorInitial = {
   title: string;
   subtitle: string;
   description: string;
+  image: string;
   date: string;
   body: string;
   draft: boolean;
@@ -81,6 +83,9 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
   const [title, setTitle] = useState(initial?.title ?? "");
   const [subtitle, setSubtitle] = useState(initial?.subtitle ?? "");
   const [description, setDescription] = useState(initial?.description ?? "");
+  const [image, setImage] = useState(initial?.image ?? "");
+  const [imageUploading, setImageUploading] = useState(false);
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [date, setDate] = useState(initial?.date ?? todayIso());
   const [error, setError] = useState<string | null>(null);
   const [pendingMode, setPendingMode] = useState<"draft" | "publish" | null>(
@@ -142,6 +147,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
           title: title.trim(),
           subtitle: subtitle.trim(),
           description: description.trim(),
+          image,
           date,
           body,
           draft: mode === "draft",
@@ -158,6 +164,33 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
       });
     } finally {
       setPendingMode(null);
+    }
+  }
+
+  // Share image uploads go through the same endpoint as body images, but only
+  // PNG and JPEG: the OG card is rasterised by Satori, which decodes nothing
+  // else, and a WebP cover would silently fall back to the plain card.
+  async function uploadShareImage(file: File) {
+    setImageUploading(true);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch("/api/admin/upload/image", {
+        method: "POST",
+        body: form,
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        url?: string;
+        error?: string;
+      };
+      if (!res.ok || !data.url) {
+        setError(data.error ?? `Upload failed (${res.status})`);
+        return;
+      }
+      setError(null);
+      setImage(data.url);
+    } finally {
+      setImageUploading(false);
     }
   }
 
@@ -275,6 +308,59 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
                 Used in metadata, RSS, and the OG image.
               </p>
             </FieldRow>
+
+            <FieldRow>
+              <Label>Share image</Label>
+              <input
+                ref={imageInputRef}
+                type="file"
+                accept="image/png,image/jpeg"
+                hidden
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void uploadShareImage(file);
+                  e.target.value = "";
+                }}
+              />
+              <SharePreview
+                image={image}
+                title={title.trim() || "Untitled"}
+                subtitle={subtitle.trim()}
+              />
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={imageUploading}
+                  onClick={() => imageInputRef.current?.click()}
+                >
+                  <ImageIcon weight="regular" className="size-4" />
+                  {imageUploading
+                    ? "Uploading…"
+                    : image
+                      ? "Replace"
+                      : "Add photo"}
+                </Button>
+                {image && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    disabled={imageUploading}
+                    onClick={() => setImage("")}
+                  >
+                    <Trash weight="regular" className="size-4" />
+                    Remove
+                  </Button>
+                )}
+              </div>
+              <p className="font-sans text-xs text-zinc-500 dark:text-zinc-500">
+                PNG or JPEG, 1200x630 or wider. Shown when the post is linked on
+                social media; without one the card is type only. Takes effect
+                once saved.
+              </p>
+            </FieldRow>
           </aside>
 
           <section className="flex min-h-[40dvh] flex-col gap-3 px-5 py-4 sm:px-6 sm:py-5 lg:min-h-[60vh]">
@@ -337,6 +423,92 @@ function RequiredMark() {
     <span className="text-destructive" aria-hidden="true">
       *
     </span>
+  );
+}
+
+/**
+ * What the link unfurls to, at 1200x630. Every size here is the same fraction
+ * of the card's width as in app/writing/[slug]/opengraph-image.tsx, expressed
+ * in cqw against a sized container — so the preview holds its proportions at
+ * any sidebar width and only has to be kept in step with the OG route if that
+ * layout changes, not if the panel is resized.
+ */
+function SharePreview({
+  image,
+  title,
+  subtitle,
+}: {
+  image: string;
+  title: string;
+  subtitle: string;
+}) {
+  const ink = image ? "#ffffff" : "#000000";
+  const muted = image ? "rgba(255,255,255,0.78)" : "rgba(0,0,0,0.56)";
+
+  return (
+    <div
+      className="w-full overflow-hidden rounded-md border border-foreground/15"
+      style={{ containerType: "inline-size" }}
+    >
+      <div
+        className="relative flex flex-col justify-between font-sans"
+        style={{
+          aspectRatio: "1200 / 630",
+          padding: "6.67cqw",
+          background: image ? "#151515" : "#fafafa",
+          color: ink,
+        }}
+      >
+        {image && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={image}
+            alt=""
+            className="absolute inset-0 size-full object-cover"
+          />
+        )}
+        {image && (
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 32%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.9) 100%)",
+            }}
+          />
+        )}
+        {/* Mark top left, title bottom left, nothing else. */}
+        {/* self-start, or the SVG stretches to the column's width and the mark
+            draws centred inside it rather than sitting against the left edge. */}
+        <Logo
+          className="relative w-auto self-start"
+          style={{ height: "2.83cqw" }}
+        />
+        <div className="relative flex flex-col" style={{ gap: "1.67cqw" }}>
+          <div
+            style={{
+              fontSize: "5cqw",
+              fontWeight: 600,
+              lineHeight: 1.08,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {title}
+          </div>
+          {subtitle && (
+            <div
+              style={{
+                fontSize: "2.5cqw",
+                fontStyle: "italic",
+                lineHeight: 1.25,
+                color: muted,
+              }}
+            >
+              {subtitle}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 

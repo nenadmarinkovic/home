@@ -11,9 +11,9 @@ const sqlite = new Database(dbPath);
 
 const insert = sqlite.prepare(
   `INSERT OR IGNORE INTO articles
-    (slug, language, title, subtitle, description, body, draft, date, created_at, updated_at)
+    (slug, language, title, subtitle, description, image, body, draft, date, created_at, updated_at)
    VALUES
-    (@slug, @language, @title, @subtitle, @description, @body, @draft, @date, unixepoch(), unixepoch())`,
+    (@slug, @language, @title, @subtitle, @description, @image, @body, @draft, @date, unixepoch(), unixepoch())`,
 );
 
 function isoDate(value) {
@@ -35,6 +35,7 @@ function loadFromDir(dir, language) {
       title: String(data.title ?? ""),
       subtitle: String(data.subtitle ?? ""),
       description: String(data.description ?? ""),
+      image: String(data.image ?? ""),
       body: content.trim(),
       draft: data.draft === true ? 1 : 0,
       date: isoDate(data.date),

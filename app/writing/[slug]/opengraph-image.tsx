@@ -1,12 +1,39 @@
 import { ImageResponse } from "next/og";
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { extname, join } from "node:path";
 
+import { LOGO_ASPECT, logoDataUri } from "@/lib/logo";
+import { contentTypeFor, resolveUploadPath } from "@/lib/uploads";
 import { getArticle } from "../articles";
 
 export const alt = "Nenad Marinković — writing";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+// Satori rasterises what it is given rather than fetching it, and only decodes
+// PNG and JPEG. A share image in any other format falls back to the
+// typographic card, which is why the editor only offers those two.
+const RASTERISABLE = new Set(["image/png", "image/jpeg"]);
+
+/**
+ * Read a share image off disk as a data URI. Returns null for anything that
+ * isn't one of our uploads, is missing, or can't be drawn — every one of those
+ * is a card without a photo rather than a broken card.
+ */
+async function loadCover(url: string): Promise<string | null> {
+  if (!url.startsWith("/writing/img/")) return null;
+  const abs = resolveUploadPath(url.slice("/writing/img/".length));
+  if (!abs || !existsSync(abs)) return null;
+  const mime = contentTypeFor(extname(abs));
+  if (!RASTERISABLE.has(mime)) return null;
+  try {
+    const bytes = await readFile(abs);
+    return `data:${mime};base64,${bytes.toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
 
 export default async function Image({
   params,
@@ -20,52 +47,84 @@ export default async function Image({
   }
 
   const fontsDir = join(process.cwd(), "public", "fonts");
-  const [sansRegular, sansSemibold, sansItalic] = await Promise.all([
+  const [sansRegular, sansSemibold, sansItalic, cover] = await Promise.all([
     readFile(join(fontsDir, "HankenGrotesk-Regular.ttf")),
     readFile(join(fontsDir, "HankenGrotesk-SemiBold.ttf")),
     readFile(join(fontsDir, "HankenGrotesk-Italic.ttf")),
+    article.image ? loadCover(article.image) : Promise.resolve(null),
   ]);
+
+  // Over a photo the palette inverts: light ink on a scrim rather than dark
+  // ink on paper. Everything else about the card is the same, so the two
+  // layouts share their structure and differ only in colour and backdrop.
+  const ink = cover ? "#ffffff" : "#000000";
+  const muted = cover ? "rgba(255,255,255,0.78)" : "rgba(0,0,0,0.56)";
+  const LOGO_H = 34;
 
   return new ImageResponse(
     <div
       style={{
+        position: "relative",
         width: "100%",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "80px",
-        background: "#f7f3f3",
-        color: "#151515",
+        background: cover ? "#151515" : "#fafafa",
+        color: ink,
         fontFamily: "Hanken Grotesk",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 16,
-          fontSize: 24,
-          fontStyle: "italic",
-          color: "#52525b",
-        }}
-      >
-        <div
+      {cover && (
+        <img
+          src={cover}
+          alt=""
+          width={size.width}
+          height={size.height}
           style={{
-            width: 14,
-            height: 14,
-            borderRadius: 999,
-            background: "#F25022",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: size.width,
+            height: size.height,
+            objectFit: "cover",
           }}
         />
-        Nenad Marinković
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      )}
+      {/* Weighted to the bottom, where the title sits: enough contrast to read
+          small without flattening the photo into a grey rectangle. */}
+      {cover && (
         <div
           style={{
-            fontSize: 84,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: size.width,
+            height: size.height,
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 32%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.9) 100%)",
+          }}
+        />
+      )}
+      {/* Mark top left, title bottom left, nothing else — the card carries the
+          post, and the domain is already in the link the card is attached to. */}
+      <img
+        src={logoDataUri(ink)}
+        alt=""
+        width={Math.round(LOGO_H * LOGO_ASPECT)}
+        height={LOGO_H}
+        style={{
+          width: Math.round(LOGO_H * LOGO_ASPECT),
+          height: LOGO_H,
+        }}
+      />
+      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <div
+          style={{
+            fontSize: 60,
             fontWeight: 600,
-            lineHeight: 1.05,
+            lineHeight: 1.08,
             letterSpacing: "-0.02em",
           }}
         >
@@ -73,27 +132,14 @@ export default async function Image({
         </div>
         <div
           style={{
-            fontSize: 36,
+            fontSize: 30,
             fontStyle: "italic",
-            lineHeight: 1.2,
-            color: "#52525b",
+            lineHeight: 1.25,
+            color: muted,
           }}
         >
           {article.subtitle}
         </div>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          fontSize: 20,
-          textTransform: "uppercase",
-          letterSpacing: "0.08em",
-          color: "#52525b",
-        }}
-      >
-        <span>{article.dateLabel}</span>
-        <span>nenadmarinkovic.com</span>
       </div>
     </div>,
     {

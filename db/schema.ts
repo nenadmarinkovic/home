@@ -57,6 +57,9 @@ export const articles = sqliteTable(
     title: text("title").notNull(),
     subtitle: text("subtitle").notNull().default(""),
     description: text("description").notNull().default(""),
+    // Share image: an uploads URL (/writing/img/...) used as the card behind
+    // the title in the OG image. Empty means the typographic card is used.
+    image: text("image").notNull().default(""),
     body: text("body").notNull(),
     draft: integer("draft", { mode: "boolean" }).notNull().default(true),
     date: text("date").notNull(),

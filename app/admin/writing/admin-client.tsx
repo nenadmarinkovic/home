@@ -151,6 +151,7 @@ export function AdminClient({ published, drafts, exported }: AdminClientProps) {
         title: article.title,
         subtitle: article.subtitle,
         description: article.description,
+        image: article.image,
         date: article.date,
         body: article.body,
         draft: article.draft,
