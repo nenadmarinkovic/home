@@ -190,8 +190,6 @@
   --foreground: #000000;
   --card: #fbf9f7;
   --card-foreground: oklch(0.145 0 0);
-  /* Floating surfaces (dropdowns, popovers) sit on the off-white page and read
-     better as pure white, matching --field. */
   --popover: #ffffff;
   --popover-foreground: oklch(0.145 0 0);
   --field: #ffffff;
@@ -391,58 +389,63 @@ article img {
   border-radius: 0.5rem;
 }
 
-/* iPhone frame. The hardware is one Figma export (public/iphone-frame.svg)
-   laid over a live screen: the screen aperture is knocked out of the body with
-   an even-odd fill, so whatever sits underneath shows through the hole while
-   the bezel, buttons, Dynamic Island and lens draw on top of it. Authored as
-   raw HTML in Markdown (`<figure class="device">`), so these must be plain
-   classes, not Tailwind utilities: article bodies are injected via
-   dangerouslySetInnerHTML and are never scanned by Tailwind. Same reasoning as
-   .pull-quote above. */
 article .device {
-  /* The only number worth tuning — unitless so the screen scale below can be
-     derived from it (CSS can't divide a length by a length). It measures the
-     whole export, side buttons included, not the body. */
-  --device-w: 240;
-  /* The screen aperture, as fractions of the export's 1300x2642 viewBox:
-     x=50, y=40, 1200x2562, corner radius 170. The SVG stays the single source
-     of truth for the geometry; nothing here is redrawn, only measured. The
-     inset is 40 on a 1280-wide body — about 3%, which is what a 17 looks
-     like. The export's own 55 read as an older phone. */
-  --screen-x: 3.8462%;
-  --screen-y: 1.514%;
-  --screen-w: 92.3077%;
-  --screen-h: 96.972%;
-  --screen-radius: calc(var(--device-w) * 0.13077 * 1px);
-  /* An iframe renders at a real 402pt viewport, then scales down to fit.
-     858 = 402 x 2562/1200, so it fills the aperture exactly with no crop. */
+  --device-w: 250;
+
+  --device-body: #1c1c1e;
+  --device-edge: #47474d;
+
+  --screen-x: 5.3333%;
+  --screen-y: 2.5%;
+  --screen-w: 89.3333%;
+  --screen-h: 95%;
+
+  --screen-radius: calc(var(--device-w) * 0.1111 * 1px);
   --viewport-w: 402;
-  --viewport-h: 858;
-  --screen-scale: calc(var(--device-w) * 0.923077 / var(--viewport-w));
+  --viewport-h: 874;
+  --screen-scale: calc(var(--device-w) * 0.893333 / var(--viewport-w));
 
   position: relative;
   width: 100%;
   max-width: calc(var(--device-w) * 1px);
-  aspect-ratio: 1300 / 2642;
+  aspect-ratio: 1350 / 2760;
   margin: 2.5rem auto;
 }
 
-/* The hardware. Opaque everywhere except the aperture, so it also trims the
-   screen's square corners down to the bezel radius. */
 article .device .device-frame {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: auto;
-  margin: 0;
-  border-radius: 0;
+  height: 100%;
   pointer-events: none;
   z-index: 3;
 }
 
-/* The screen itself: a live route in a same-origin iframe, or a still. The
-   iframe gets its own 402px viewport, so the app's own breakpoints resolve to
-   the real mobile layout instead of a squashed desktop one. */
+article .device .device-body {
+  fill: var(--device-body);
+}
+
+article .device .device-btn {
+  fill: var(--device-edge);
+}
+
+article .device .device-rim {
+  stroke: var(--device-edge);
+  stroke-width: 4;
+}
+
+article .device .device-rim-inner {
+  opacity: 0.45;
+  stroke-width: 2;
+}
+
+article .device .device-island {
+  fill: #000;
+  stroke: var(--device-edge);
+  stroke-width: 2;
+  stroke-opacity: 0.5;
+}
+
 article .device .device-screen {
   position: absolute;
   left: var(--screen-x);
@@ -477,26 +480,23 @@ article .device .device-screen img {
   border-radius: 0;
 }
 
-/* Status bar, drawn in the page rather than inside the iframe. The iframe is
-   scaled to ~0.46, so glyphs rendered in there land at ~5px and turn to mush;
-   out here they draw at full resolution. It carries the frame's own viewBox
-   and is stretched over the whole figure, so the glyphs land exactly where the
-   export put them. Under the frame in the stack: the Dynamic Island is part of
-   the hardware and should cover anything that runs into it. */
+:where(.dark) article .device {
+  --device-body: #121215;
+  --device-edge: #55555f;
+}
+
 article .device .device-status {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  /* Figma bakes a white fill into every path; re-tagged to currentColor in
-     lib/markdown.ts so the bar follows the theme rather than shipping twice. */
+  left: var(--screen-x);
+  top: var(--screen-y);
+  width: var(--screen-w);
+  height: auto;
+
   color: var(--foreground);
   pointer-events: none;
   z-index: 2;
 }
 
-/* Positioned out of flow so a long caption can't stretch the frame, and given
-   more width than the frame so it doesn't wrap every three words. */
 article .device figcaption {
   position: absolute;
   top: 100%;
@@ -513,17 +513,10 @@ article .device figcaption {
   opacity: 0.6;
 }
 
-/* The caption sits outside the flow, so the figure's own margin has to leave
-   room for it. */
 article .device:has(figcaption) {
   margin-bottom: 4.5rem;
 }
 
-/* `side: left|right` on the fence floats the frame into the column's empty
-   margin, so body text wraps alongside rather than the phone taking a whole
-   screen to itself. `article { display: flow-root }` already contains the
-   float and headings already `clear: both`, so nothing else has to change.
-   Only above 768px — below that the column is too narrow to share. */
 @media (min-width: 768px) {
   article .device-right {
     float: right;
@@ -533,23 +526,17 @@ article .device:has(figcaption) {
     float: left;
     margin: 0.25rem 2.5rem 1.5rem 0;
   }
-  /* Never let two floats sandwich a paragraph — a frame is ~520px tall and a
-     section rarely has that much text, so the copy ends up in a column a few
-     words wide. Each floated frame starts below the previous one. */
+
   article .device-left,
   article .device-right {
     clear: both;
   }
-  /* A floated frame's caption has to stay inside the float, or it overlaps the
-     wrapped text. Centred frames keep the wider, easier-to-read measure. */
   article .device-left figcaption,
   article .device-right figcaption {
     width: 100%;
   }
 }
 
-/* Autoplay can't be cancelled from CSS, so a reduced-motion reader gets the
-   poster still instead: add <img class="device-still"> after the <video>. */
 article .device .device-still {
   display: none;
 }

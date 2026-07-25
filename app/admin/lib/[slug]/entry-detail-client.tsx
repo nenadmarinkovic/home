@@ -327,7 +327,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="max-w-[14rem] truncate sm:max-w-[28rem]">
+              <BreadcrumbPage className="max-w-56 truncate sm:max-w-wd">
                 {entry.term}
               </BreadcrumbPage>
             </BreadcrumbItem>
@@ -493,10 +493,10 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                         <span
                           className={
                             card.suspended
-                              ? "inline-flex items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-500"
+                              ? "inline-flex items-center rounded-full bg-foreground/6 px-2 py-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-500"
                               : overdue
                                 ? "inline-flex items-center gap-1 rounded-full bg-[#0040ff]/10 px-2 py-0.5 text-[11px] font-medium text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]"
-                                : "inline-flex items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300"
+                                : "inline-flex items-center rounded-full bg-foreground/6 px-2 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300"
                           }
                         >
                           {stateLabel}
@@ -647,7 +647,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 font-sans text-[11px] font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/6 px-2 py-0.5 font-sans text-[11px] font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
       {children}
     </span>
   );

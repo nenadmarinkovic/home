@@ -20,18 +20,20 @@ const MOCKUP_ROUTE = /^\/mockup\/[a-z0-9][a-z0-9-]{0,48}$/;
 const STATUS_BAR_RE =
   /<span class="device-status" data-device-status="1"><\/span>/g;
 
-// Clock, cellular, wifi and battery, lifted out of the same Figma export as
-// the frame and kept in its 1300x2642 coordinate system — the SVG is stretched
-// over the whole figure, so every glyph lands where the export put it and
-// there is no second set of numbers to keep in sync with the frame. Figma
-// bakes a white fill into each path; they are re-tagged to currentColor here
-// so the bar follows the site's theme instead of shipping two versions.
+// Clock, cellular, wifi and battery, from a Figma iOS export. The viewBox is a
+// band across the top of that export's screen, and globals.css sizes the SVG to
+// the frame's screen aperture, so the glyphs sit where iOS puts them at any
+// frame size without a second set of coordinates to keep in sync. Figma bakes a
+// white fill into each path; they are re-tagged to currentColor here so the bar
+// follows the site's theme instead of shipping two versions.
 const STATUS_BAR =
-  `<svg class="device-status" viewBox="0 0 1300 2642" fill="none" aria-hidden="true">` +
-  `<g transform="translate(-15 -15)">` +
+  `<svg class="device-status" viewBox="65 55 1170 300" fill="none" aria-hidden="true">` +
+  // The clock came out of the export a touch larger than the icons it sits
+  // opposite; scaled about its own left edge and centre line so the left inset
+  // and the shared centre line stay put.
+  `<g transform="translate(216.7 149.6) scale(0.9) translate(-216.7 -149.6)">` +
   `<path d="M231.241 129.576C239.781 129.576 246.898 135.565 246.898 149.154V149.208C246.898 162.018 240.963 169.672 231.08 169.672C223.91 169.672 218.539 165.536 217.33 159.681L217.276 159.386H224.151L224.232 159.628C225.279 162.286 227.643 164.005 231.107 164.005C237.337 164.005 239.942 158.043 240.211 150.712C240.238 150.309 240.265 149.906 240.265 149.476H240.104C238.573 153.021 234.706 155.707 229.469 155.707C222.003 155.707 216.739 150.336 216.739 143.058V143.004C216.739 135.189 222.889 129.576 231.241 129.576ZM231.241 150.363C235.672 150.363 239.056 147.247 239.056 142.924V142.897C239.056 138.6 235.672 135.243 231.322 135.243C227.025 135.243 223.561 138.573 223.561 142.763V142.816C223.561 147.221 226.837 150.363 231.241 150.363ZM255.545 143.649C253.37 143.649 251.651 141.93 251.651 139.755C251.651 137.579 253.37 135.888 255.545 135.888C257.721 135.888 259.413 137.579 259.413 139.755C259.413 141.93 257.721 143.649 255.545 143.649ZM255.545 163.361C253.37 163.361 251.651 161.642 251.651 159.467C251.651 157.291 253.37 155.599 255.545 155.599C257.721 155.599 259.413 157.291 259.413 159.467C259.413 161.642 257.721 163.361 255.545 163.361ZM283.233 169V161.561H263.897V155.653L279.984 130.248H289.84V155.868H295.104V161.561H289.84V169H283.233ZM270.128 156.029H283.341V135.485H283.18L270.128 155.841V156.029ZM309.149 169V136.854H308.988L298.971 143.729V137.365L309.095 130.248H315.943V169H309.149Z" fill="currentColor"/>` +
   `</g>` +
-  `<g transform="translate(15 -15)">` +
   `<g opacity="0.9">` +
   `<rect x="902" y="150" width="10" height="12" rx="1" fill="currentColor"/>` +
   `<rect x="916" y="144" width="10" height="18" rx="1" fill="currentColor"/>` +
@@ -46,7 +48,37 @@ const STATUS_BAR =
   `<rect opacity="0.6" x="1063.5" y="129.5" width="67" height="32" rx="6.5" stroke="currentColor" stroke-width="3"/>` +
   `<rect opacity="0.9" x="1067" y="133" width="60" height="25" rx="4" fill="currentColor"/>` +
   `<path opacity="0.6" d="M1134 141C1136.21 141 1138 142.791 1138 145V146C1138 148.209 1136.21 150 1134 150V141Z" fill="currentColor"/>` +
-  `</g>` +
+  `</svg>`;
+
+const FRAME_RE = /<span class="device-frame" data-device-frame="1"><\/span>/g;
+
+// The phone itself, drawn rather than rendered: a flat vector frame costs a few
+// KB against ~590 for the photoreal export it replaces, stays sharp at any DPI,
+// and takes its colours from the theme. Geometry is measured off that export's
+// alpha channel and kept in its coordinate system (1350x2760, screen at 72,69,
+// 1206x2622), so globals.css and the status bar above did not have to move.
+// Inline rather than a file in public/ because a plain <img> cannot see CSS
+// custom properties, and the body has to follow light and dark.
+const FRAME =
+  `<svg class="device-frame" viewBox="0 0 1350 2760" fill="none" aria-hidden="true">` +
+  // Buttons first: the body is drawn over their inner ends, so the joins
+  // never show a seam. Positions are fractions of the 2708-unit body.
+  `<rect class="device-btn" x="31" y="467" width="17" height="126" rx="5"/>` +
+  `<rect class="device-btn" x="31" y="647" width="17" height="234" rx="5"/>` +
+  `<rect class="device-btn" x="31" y="937" width="17" height="234" rx="5"/>` +
+  `<rect class="device-btn" x="1302" y="719" width="17" height="341" rx="5"/>` +
+  // Body, with the screen knocked out of it by the even-odd rule. Both
+  // outlines are superellipses (n=2.4), the corners a plain border-radius
+  // cannot draw. The bezel is 32 units — 2.5% of the body width, thinner than
+  // the ~3.4% a 17 measures, because on the real thing the outer edge curves
+  // away and the black border you actually see is narrower than the spec.
+  // The screen is left exactly where it was; only the body hugs it closer.
+  `<path class="device-body" fill-rule="evenodd" d="M292.0 37.0L1058.0 37.0L1088.2 37.6L1111.7 39.6L1133.0 42.8L1152.7 47.3L1171.2 53.1L1188.5 60.1L1204.7 68.3L1219.8 77.8L1233.9 88.4L1246.8 100.2L1258.6 113.1L1269.2 127.2L1278.7 142.3L1286.9 158.5L1293.9 175.8L1299.7 194.3L1304.2 214.0L1307.4 235.3L1309.4 258.8L1310.0 289.0L1310.0 2471.0L1309.4 2501.2L1307.4 2524.7L1304.2 2546.0L1299.7 2565.7L1293.9 2584.2L1286.9 2601.5L1278.7 2617.7L1269.2 2632.8L1258.6 2646.9L1246.8 2659.8L1233.9 2671.6L1219.8 2682.2L1204.7 2691.7L1188.5 2699.9L1171.2 2706.9L1152.7 2712.7L1133.0 2717.2L1111.7 2720.4L1088.2 2722.4L1058.0 2723.0L292.0 2723.0L261.8 2722.4L238.3 2720.4L217.0 2717.2L197.3 2712.7L178.8 2706.9L161.5 2699.9L145.3 2691.7L130.2 2682.2L116.1 2671.6L103.2 2659.8L91.4 2646.9L80.8 2632.8L71.3 2617.7L63.1 2601.5L56.1 2584.2L50.3 2565.7L45.8 2546.0L42.6 2524.7L40.6 2501.2L40.0 2471.0L40.0 289.0L40.6 258.8L42.6 235.3L45.8 214.0L50.3 194.3L56.1 175.8L63.1 158.5L71.3 142.3L80.8 127.2L91.4 113.1L103.2 100.2L116.1 88.4L130.2 77.8L145.3 68.3L161.5 60.1L178.8 53.1L197.3 47.3L217.0 42.8L238.3 39.6L261.8 37.6L292.0 37.0ZM292.0 69.0L1058.0 69.0L1084.4 69.6L1104.9 71.3L1123.5 74.1L1140.7 78.0L1156.8 83.0L1171.9 89.2L1186.1 96.4L1199.3 104.6L1211.5 113.9L1222.8 124.2L1233.1 135.5L1242.4 147.7L1250.6 160.9L1257.8 175.1L1264.0 190.2L1269.0 206.3L1272.9 223.5L1275.7 242.1L1277.4 262.6L1278.0 289.0L1278.0 2471.0L1277.4 2497.4L1275.7 2517.9L1272.9 2536.5L1269.0 2553.7L1264.0 2569.8L1257.8 2584.9L1250.6 2599.1L1242.4 2612.3L1233.1 2624.5L1222.8 2635.8L1211.5 2646.1L1199.3 2655.4L1186.1 2663.6L1171.9 2670.8L1156.8 2677.0L1140.7 2682.0L1123.5 2685.9L1104.9 2688.7L1084.4 2690.4L1058.0 2691.0L292.0 2691.0L265.6 2690.4L245.1 2688.7L226.5 2685.9L209.3 2682.0L193.2 2677.0L178.1 2670.8L163.9 2663.6L150.7 2655.4L138.5 2646.1L127.2 2635.8L116.9 2624.5L107.6 2612.3L99.4 2599.1L92.2 2584.9L86.0 2569.8L81.0 2553.7L77.1 2536.5L74.3 2517.9L72.6 2497.4L72.0 2471.0L72.0 289.0L72.6 262.6L74.3 242.1L77.1 223.5L81.0 206.3L86.0 190.2L92.2 175.1L99.4 160.9L107.6 147.7L116.9 135.5L127.2 124.2L138.5 113.9L150.7 104.6L163.9 96.4L178.1 89.2L193.2 83.0L209.3 78.0L226.5 74.1L245.1 71.3L265.6 69.6L292.0 69.0Z"/>` +
+  `<path class="device-rim" d="M292.0 37.0L1058.0 37.0L1088.2 37.6L1111.7 39.6L1133.0 42.8L1152.7 47.3L1171.2 53.1L1188.5 60.1L1204.7 68.3L1219.8 77.8L1233.9 88.4L1246.8 100.2L1258.6 113.1L1269.2 127.2L1278.7 142.3L1286.9 158.5L1293.9 175.8L1299.7 194.3L1304.2 214.0L1307.4 235.3L1309.4 258.8L1310.0 289.0L1310.0 2471.0L1309.4 2501.2L1307.4 2524.7L1304.2 2546.0L1299.7 2565.7L1293.9 2584.2L1286.9 2601.5L1278.7 2617.7L1269.2 2632.8L1258.6 2646.9L1246.8 2659.8L1233.9 2671.6L1219.8 2682.2L1204.7 2691.7L1188.5 2699.9L1171.2 2706.9L1152.7 2712.7L1133.0 2717.2L1111.7 2720.4L1088.2 2722.4L1058.0 2723.0L292.0 2723.0L261.8 2722.4L238.3 2720.4L217.0 2717.2L197.3 2712.7L178.8 2706.9L161.5 2699.9L145.3 2691.7L130.2 2682.2L116.1 2671.6L103.2 2659.8L91.4 2646.9L80.8 2632.8L71.3 2617.7L63.1 2601.5L56.1 2584.2L50.3 2565.7L45.8 2546.0L42.6 2524.7L40.6 2501.2L40.0 2471.0L40.0 289.0L40.6 258.8L42.6 235.3L45.8 214.0L50.3 194.3L56.1 175.8L63.1 158.5L71.3 142.3L80.8 127.2L91.4 113.1L103.2 100.2L116.1 88.4L130.2 77.8L145.3 68.3L161.5 60.1L178.8 53.1L197.3 47.3L217.0 42.8L238.3 39.6L261.8 37.6L292.0 37.0Z"/>` +
+  `<path class="device-rim device-rim-inner" d="M292.0 69.0L1058.0 69.0L1084.4 69.6L1104.9 71.3L1123.5 74.1L1140.7 78.0L1156.8 83.0L1171.9 89.2L1186.1 96.4L1199.3 104.6L1211.5 113.9L1222.8 124.2L1233.1 135.5L1242.4 147.7L1250.6 160.9L1257.8 175.1L1264.0 190.2L1269.0 206.3L1272.9 223.5L1275.7 242.1L1277.4 262.6L1278.0 289.0L1278.0 2471.0L1277.4 2497.4L1275.7 2517.9L1272.9 2536.5L1269.0 2553.7L1264.0 2569.8L1257.8 2584.9L1250.6 2599.1L1242.4 2612.3L1233.1 2624.5L1222.8 2635.8L1211.5 2646.1L1199.3 2655.4L1186.1 2663.6L1171.9 2670.8L1156.8 2677.0L1140.7 2682.0L1123.5 2685.9L1104.9 2688.7L1084.4 2690.4L1058.0 2691.0L292.0 2691.0L265.6 2690.4L245.1 2688.7L226.5 2685.9L209.3 2682.0L193.2 2677.0L178.1 2670.8L163.9 2663.6L150.7 2655.4L138.5 2646.1L127.2 2635.8L116.9 2624.5L107.6 2612.3L99.4 2599.1L92.2 2584.9L86.0 2569.8L81.0 2553.7L77.1 2536.5L74.3 2517.9L72.6 2497.4L72.0 2471.0L72.0 289.0L72.6 262.6L74.3 242.1L77.1 223.5L81.0 206.3L86.0 190.2L92.2 175.1L99.4 160.9L107.6 147.7L116.9 135.5L127.2 124.2L138.5 113.9L150.7 104.6L163.9 96.4L178.1 89.2L193.2 83.0L209.3 78.0L226.5 74.1L245.1 71.3L265.6 69.6L292.0 69.0Z"/>` +
+  // The Island is a hole in the hardware, not themed ink: black in both
+  // themes, exactly where the render had it.
+  `<rect class="device-island" x="488" y="112" width="373" height="108" rx="54"/>` +
   `</svg>`;
 
 const DEVICE_SCREEN_RE =
@@ -148,11 +180,13 @@ function renderDeviceFence(text: string): string | null {
   const side =
     fields.side === "left" || fields.side === "right" ? fields.side : null;
   const cls = side ? `device device-${side}` : "device";
-  // The hardware — body, bezel, buttons, Dynamic Island — is one SVG laid over
-  // the screen, with the aperture knocked out of it so the screen shows
-  // through. It comes last so it draws on top, which is also what trims the
-  // screen's corners to the bezel's radius.
-  const chrome = `<img class="device-frame" src="/iphone-frame.svg" alt="" aria-hidden="true">`;
+  // The hardware — body, bezel, buttons, Dynamic Island — is one render laid
+  // over the screen, with the screen itself transparent in it so the live app
+  // shows through. It comes last so it draws on top, which is also what trims
+  // the screen's square corners to the aperture's shape.
+  // Placeholder, swapped for the frame after sanitising, same as the status
+  // bar below: DOMPurify's html profile drops SVG.
+  const chrome = `<span class="device-frame" data-device-frame="1"></span>`;
   // The status bar is drawn here rather than inside the mockup route: the
   // iframe is scaled to ~0.46, so anything in it renders at under half size
   // and 5px glyphs turn to mush. Out here it draws at full resolution.
@@ -193,6 +227,7 @@ export function renderMarkdown(source: string): string {
   // src no matter what survived sanitisation.
   // Both swaps are of markup this module generated, never of author content.
   return clean
+    .replace(FRAME_RE, FRAME)
     .replace(STATUS_BAR_RE, STATUS_BAR)
     .replace(DEVICE_SCREEN_RE, (_match, route: string, title = "") => {
       if (!MOCKUP_ROUTE.test(route)) return "";
