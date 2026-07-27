@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { cookies } from "next/headers";
+import Script from "next/script";
 import { Providers } from "./providers";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
 import { SiteFooter } from "@/components/site-footer";
@@ -28,16 +29,22 @@ export async function generateViewport(): Promise<Viewport> {
   };
 }
 
-const THEME_COLOR_SCRIPT = `(function(){try{
+// next/script puts this in <head>, which can run before the theme-color metas
+// are parsed — hence the DOMContentLoaded retry. It only ever edits attributes:
+// inserting a node here would desync React's hydration of the document.
+const THEME_COLOR_SCRIPT = `(function(){function a(){try{
+var metas=document.querySelectorAll('meta[name="theme-color"]');
+if(!metas.length)return false;
 var t=localStorage.getItem("theme");
 if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}
 var color=t==="dark"?"#000000":"#fafafa";
-var metas=document.querySelectorAll('meta[name="theme-color"]');
 for(var i=0;i<metas.length;i++){
 if(i===0){metas[i].setAttribute("content",color);metas[i].setAttribute("media","all");}
 else{metas[i].setAttribute("media","not all");}
 }
-}catch(e){}})();`;
+return true;
+}catch(e){return true;}}
+if(!a())document.addEventListener("DOMContentLoaded",a);})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -111,7 +118,11 @@ export default async function RootLayout({
         />
       </head>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: THEME_COLOR_SCRIPT }} />
+        <Script
+          id="theme-color-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: THEME_COLOR_SCRIPT }}
+        />
         <Providers authed={authed}>
           <ThemeColorSync />
           <ServiceWorkerRegister />

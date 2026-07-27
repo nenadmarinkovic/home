@@ -48,6 +48,7 @@ import type { SrsCardRow } from "@/db/schema";
 import type { VocabEntry } from "@/lib/lib-db";
 
 import { EntryEditor } from "../entry-editor";
+import { SpeakButton } from "../speak-button";
 import { entryToDraft, type DraftEntry } from "../types";
 import { EntryChat } from "./entry-chat";
 
@@ -390,14 +391,21 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
                 {entry.examples.map((ex, idx) => (
                   <li
                     key={idx}
-                    className="flex flex-col gap-1 py-3 first:pt-0 last:pb-0 sm:gap-1.5 sm:py-4"
+                    className="flex items-start justify-between gap-2 py-3 first:pt-0 last:pb-0 sm:py-4"
                   >
-                    <p className="text-base leading-snug text-foreground sm:text-lg">
-                      {ex.de || "—"}
-                    </p>
-                    <p className="text-sm leading-snug text-zinc-500 dark:text-zinc-500 sm:text-base">
-                      {ex.sr || "—"}
-                    </p>
+                    <div className="flex min-w-0 flex-col gap-1 sm:gap-1.5">
+                      <p className="text-base font-medium leading-snug text-foreground">
+                        {ex.de || "—"}
+                      </p>
+                      <p className="text-sm leading-snug text-zinc-500 dark:text-zinc-500 sm:text-base">
+                        {ex.sr || "—"}
+                      </p>
+                    </div>
+                    <SpeakButton
+                      text={ex.de}
+                      label="Listen to the German"
+                      className="-mt-0.5 shrink-0"
+                    />
                   </li>
                 ))}
               </ol>
