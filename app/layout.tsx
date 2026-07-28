@@ -32,16 +32,29 @@ export async function generateViewport(): Promise<Viewport> {
 // next/script puts this in <head>, which can run before the theme-color metas
 // are parsed — hence the DOMContentLoaded retry. It only ever edits attributes:
 // inserting a node here would desync React's hydration of the document.
+//
+// It also writes *nothing* when the markup already resolves to the right color,
+// which is the normal case. iOS animates the status bar — the strip above the
+// header — on every theme-color change, so a redundant write shows up as a
+// color fade each time the PWA is opened. Since the retry path runs after first
+// paint, that fade was visible on essentially every launch.
 const THEME_COLOR_SCRIPT = `(function(){function a(){try{
 var metas=document.querySelectorAll('meta[name="theme-color"]');
 if(!metas.length)return false;
-var t=localStorage.getItem("theme");
-if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}
+var s=localStorage.getItem("theme");
+var pick=s==="dark"||s==="light";
+var t=pick?s:(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
 var color=t==="dark"?"#000000":"#fafafa";
+var active=null;
 for(var i=0;i<metas.length;i++){
-if(i===0){metas[i].setAttribute("content",color);metas[i].setAttribute("media","all");}
-else{metas[i].setAttribute("media","not all");}
+var m=metas[i].getAttribute("media");
+if(!m||window.matchMedia(m).matches){active=metas[i];break;}
 }
+if(!active)return true;
+if(active.getAttribute("content")!==color)active.setAttribute("content",color);
+if(pick){for(var j=0;j<metas.length;j++){
+if(metas[j]!==active&&metas[j].getAttribute("media")!=="not all")metas[j].setAttribute("media","not all");
+}}
 return true;
 }catch(e){return true;}}
 if(!a())document.addEventListener("DOMContentLoaded",a);})();`;
