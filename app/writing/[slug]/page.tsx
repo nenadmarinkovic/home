@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 import { AdminActions } from "@/components/admin-actions";
+import { ArticleEmbeds } from "@/components/article-embeds";
+import { embedOrigins } from "@/lib/embeds";
 import { renderMarkdown } from "@/lib/markdown";
 import { site } from "@/lib/site";
 import { getAdjacent, getArticle } from "../articles";
@@ -97,9 +99,10 @@ export default async function ArticlePage({
         </div>
       </div>
       <article
-        className="space-y-6 text-base leading-normal text-pretty text-foreground/70 oldstyle-nums"
+        className="w-full space-y-6 text-base leading-normal text-pretty text-foreground/70 oldstyle-nums"
         dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }}
       />
+      <ArticleEmbeds origins={embedOrigins()} />
       {(prev || next) && (
         <nav
           aria-label="More writing"
