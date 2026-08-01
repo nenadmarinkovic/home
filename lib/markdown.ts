@@ -158,6 +158,10 @@ function renderEmbedFence(text: string): string | null {
   if (!EMBED_PATH.test(path)) return null;
 
   const href = `${origin}${path === "/" ? "" : path}`;
+
+  const frame = fields.frame ?? `${path === "/" ? "" : path}/embed`;
+  if (!EMBED_PATH.test(frame)) return null;
+
   const title = escapeAttr(fields.title || fields.app);
   const ratio = EMBED_RATIOS[fields.ratio] ?? EMBED_RATIOS["16/9"];
   const label = escapeAttr(fields.link || "Open ↗");
@@ -184,7 +188,7 @@ function renderEmbedFence(text: string): string | null {
 
   return (
     `<figure class="embed ${ratio}">` +
-    `<div class="embed-frame" data-embed-src="${escapeAttr(`${href}?embed=1`)}"` +
+    `<div class="embed-frame" data-embed-src="${escapeAttr(`${origin}${frame}`)}"` +
     ` data-embed-full="${escapeAttr(href)}"` +
     ` data-embed-title="${title}">` +
     `<a class="embed-card" href="${escapeAttr(visit?.href ?? href)}">` +
