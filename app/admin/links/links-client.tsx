@@ -685,7 +685,6 @@ function TokenDialog({
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      // ignore
     }
   }
 
@@ -832,7 +831,6 @@ function TagsDialog({
   }
 
   const sortedTags = [...tags].sort((a, b) => {
-    // public always pinned to top.
     if (a.slug === "public" && b.slug !== "public") return -1;
     if (b.slug === "public" && a.slug !== "public") return 1;
     return b.count - a.count || a.name.localeCompare(b.name);

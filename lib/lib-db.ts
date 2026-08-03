@@ -22,8 +22,6 @@ export type VocabEntry = Omit<VocabEntryRow, "examples" | "conjugations"> & {
   conjugations: Record<string, unknown>;
 };
 
-// Unambiguous alphabet (no 0/O, 1/I/l) at 10 chars ≈ 10^15 keyspace — collisions
-// at 10k rows are practically zero, and on a duplicate we retry.
 const generateSlug = customAlphabet(
   "23456789abcdefghijkmnpqrstuvwxyz",
   10,
@@ -85,7 +83,6 @@ export type WriteEntryInput = {
   notes?: string;
   tags?: string;
   source?: string;
-  // When provided, update this row (and re-key its lemma); otherwise insert.
   id?: number;
 };
 
@@ -94,10 +91,6 @@ export type UpsertEntryResult = {
   created: boolean;
 };
 
-/**
- * Insert or update an entry, then ensure the two SRS cards (de_sr, sr_de) exist.
- * Lemma uniqueness is `(lemma, pos)`; collisions update in place.
- */
 export function saveEntry(input: WriteEntryInput): UpsertEntryResult {
   const now = new Date();
   const lemma = lemmaKey(input.term);
@@ -352,11 +345,6 @@ export function getDueStats(now: Date = new Date()): DueStats {
   };
 }
 
-/**
- * Pick the next card to review. Order: cards in learning/relearning that are
- * past due first (state=1 or 3), then review-state cards that are past due,
- * then new cards. Within each bucket, oldest due first.
- */
 export function getNextDueCard(now: Date = new Date()): DueCard | null {
   const card = db
     .select()
@@ -394,12 +382,6 @@ export function getNextDueCard(now: Date = new Date()): DueCard | null {
   return { card, entry: rowToEntry(entryRow) };
 }
 
-/**
- * The full set of non-suspended cards plus their entries — the entire
- * reviewable deck. Used to mirror the deck into IndexedDB so reviews can run
- * offline on a phone, with scheduling done client-side by the same FSRS code.
- * One query per table, joined in memory, to avoid an N+1 over entries.
- */
 export function listReviewDeck(): DueCard[] {
   const cardRows = db
     .select()

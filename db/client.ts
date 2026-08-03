@@ -30,9 +30,6 @@ function ensureDb(): Db {
   return _db;
 }
 
-// Lazy proxy: nothing opens the DB until a method is actually called on it.
-// This keeps `next build`'s page-data collection workers from contending for
-// the SQLite lock at module load.
 export const db = new Proxy({} as Db, {
   get(_target, prop, receiver) {
     return Reflect.get(ensureDb() as object, prop, receiver);

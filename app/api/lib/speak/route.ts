@@ -19,7 +19,6 @@ export async function GET(request: Request) {
     );
   }
 
-  // Derived from the request alone, so a revalidation costs no ElevenLabs characters.
   const etag = speechEtag(text);
   if (request.headers.get("if-none-match") === etag) {
     return new Response(null, {

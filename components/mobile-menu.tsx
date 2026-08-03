@@ -55,11 +55,6 @@ export function MobileMenu() {
 
   useEffect(() => {
     if (!open) return;
-    // The page scrolls on <html> (globals.css sets `overflow-y: scroll`). On
-    // iOS/standalone PWAs, `overflow: hidden` alone does not stop touch
-    // scrolling of the page behind the menu, so pin the body in place instead:
-    // fix it at the negative of the current scroll offset, then restore the
-    // offset on close. This reliably freezes the background across browsers.
     const html = document.documentElement;
     const body = document.body;
     const scrollY = window.scrollY;
@@ -83,10 +78,6 @@ export function MobileMenu() {
   }, [open]);
 
   const close = () => setOpen(false);
-  // Full-width rows at least 44px tall — the iOS minimum. `py-1.5` around
-  // 16-18px type left a ~28px target, which is accurate to hit with a mouse
-  // and fiddly with a thumb. The type is unchanged; only the box around it
-  // grows, so the menu still reads as a list rather than a stack of buttons.
   const linkClass =
     "flex min-h-11 w-full cursor-pointer touch-manipulation items-center leading-none transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground focus-visible:rounded-sm";
 

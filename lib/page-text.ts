@@ -7,16 +7,10 @@ const MAX_CHARS = 16_000;
 const FETCH_TIMEOUT_MS = 12_000;
 const MAX_REDIRECTS = 5;
 
-// SSRF guard. The summarize endpoint fetches a caller-supplied URL server-side,
-// so an authenticated caller could otherwise point it at loopback, link-local
-// (cloud metadata at 169.254.169.254), or RFC-1918 hosts and read internal
-// responses back through the summary. We resolve the host and reject any
-// private/reserved address before each request — and revalidate on every
-// redirect hop, since the first host can 30x to an internal one.
 function ipv4IsPrivate(ip: string): boolean {
   const p = ip.split(".").map(Number);
   if (p.length !== 4 || p.some((n) => !Number.isInteger(n) || n < 0 || n > 255))
-    return true; // malformed → treat as unsafe
+    return true;
   const [a, b] = p;
   if (a === 0 || a === 10 || a === 127) return true; // this-host, private, loopback
   if (a === 169 && b === 254) return true; // link-local (incl. metadata)
@@ -33,7 +27,6 @@ function ipIsPrivate(ip: string): boolean {
   if (kind === 6) {
     const lower = ip.toLowerCase();
     if (lower === "::1" || lower === "::") return true; // loopback / unspecified
-    // IPv4-mapped (::ffff:a.b.c.d) — validate the embedded v4 address.
     const mapped = lower.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/);
     if (mapped) return ipv4IsPrivate(mapped[1]);
     if (lower.startsWith("fe8") || lower.startsWith("fe9")) return true; // link-local
@@ -45,8 +38,6 @@ function ipIsPrivate(ip: string): boolean {
 }
 
 async function assertPublicHost(hostname: string): Promise<void> {
-  // Resolve every address the host maps to; if any is private, refuse. This
-  // also blunts DNS-rebinding within a single fetch attempt.
   let records: { address: string }[];
   try {
     records = await lookup(hostname, { all: true });
@@ -123,9 +114,6 @@ export async function fetchPageText(url: string): Promise<string> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
-    // Follow redirects by hand so we can re-validate the target host on every
-    // hop — `redirect: "follow"` would chase a 30x to an internal address
-    // without giving us a chance to inspect it.
     let current = parsed;
     for (let hop = 0; ; hop++) {
       await assertPublicHost(current.hostname);

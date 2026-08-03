@@ -18,8 +18,6 @@ type Seed = {
   reviewed: number;
 };
 
-// A deliberately tidy deck — the real one has scratch entries in it, and this
-// is what the feature looks like when used as intended.
 const SEEDS: Seed[] = [
   { term: "Verbindung", pos: "noun", gender: "die", plural: "die Verbindungen", translationSr: "veza, spoj, povezanost", tags: "reisen,technik", due: 2, reviewed: 7 },
   { term: "ausdrucken", pos: "verb", aux: "haben", separable: true, translationSr: "odštampati, isprintati", tags: "büro", due: 1, reviewed: 12 },
@@ -52,7 +50,6 @@ const entries: ClientEntry[] = SEEDS.map((s, i) => ({
   notes: "",
   tags: s.tags,
   source: "mistral",
-  // Descending so the list reads newest-first, matching listEntries().
   createdAt: new Date(BASE.getTime() - i * 864e5),
   updatedAt: new Date(BASE.getTime() - i * 864e5),
   due: s.due,

@@ -102,9 +102,6 @@ export default async function ArticlePage({
         className="w-full space-y-6 text-base leading-normal text-pretty text-foreground/70 oldstyle-nums"
         dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }}
       />
-      {/* The card inside an embed frame is hidden in globals.css so it cannot
-          flash before the iframe replaces it. Without script there is no
-          iframe, so it comes back as the link it was there to be. */}
       <noscript
         dangerouslySetInnerHTML={{
           __html: "<style>article .embed-card{display:flex}</style>",

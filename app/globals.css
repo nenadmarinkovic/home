@@ -4,7 +4,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Hanken Grotesk — Latin subset (basic English + Western European) */
 @font-face {
   font-family: "Hanken Grotesk";
   font-style: normal;
@@ -28,7 +27,6 @@
     U+2215, U+FEFF, U+FFFD;
 }
 
-/* Hanken Grotesk — Latin Extended (č, ć, đ, š, ž, ő, ű, and other CE/EE glyphs) */
 @font-face {
   font-family: "Hanken Grotesk";
   font-style: normal;
@@ -186,10 +184,6 @@
 
 :root {
   --unit-lg: 1.125rem;
-  /* Room for the home indicator under anything pinned to the bottom of the
-     screen. A token rather than env() at each call site because an iframe
-     reports no insets, so the phone frame in an article has to be able to
-     stand one in — see app/mockup/layout.tsx. */
   --safe-bottom: max(env(safe-area-inset-bottom), 0.75rem);
   --background: #fafafa;
   --foreground: #000000;
@@ -360,12 +354,10 @@ article .pull-quote {
   color: var(--foreground);
 }
 
-/* Contain floats so the article's own height respects the image. */
 article {
   display: flow-root;
 }
 
-/* Headings always break out of a floated image. */
 article h2,
 article h3,
 article h4 {
@@ -394,18 +386,12 @@ article img {
   border-radius: 0.5rem;
 }
 
-/* An app framed in an article. The text column is 48rem and a map wants a
-   viewport, so the figure steps out of the column and centres on the page —
-   the width leaves the same 1.5rem gutter the layout already keeps. */
 article .embed {
   width: min(100vw - 3rem, 56rem);
   margin: 3rem 0 3rem 50%;
   transform: translateX(-50%);
 }
 
-/* The page's own colour, not a card tint: for the moment before the frame
-   paints anything this is the only thing on screen, and it should read as an
-   empty box rather than a grey slab. */
 article .embed-frame {
   position: relative;
   overflow: hidden;
@@ -436,10 +422,6 @@ article .embed-frame iframe {
   border: 0;
 }
 
-/* The frame is mounted by script at every width now, so this is the no-JS
-   fallback alone — a <noscript> rule on the article page turns it back on.
-   Left visible it flashes the app's name and a link for the moment before the
-   iframe lands on top of it. */
 article .embed-card {
   display: none;
   height: 100%;
@@ -467,8 +449,6 @@ article .embed-card-open {
   opacity: 0.6;
 }
 
-/* The app's own controls, lifted out of the frame so nothing sits on top of
-   the map. Populated by <ArticleEmbeds>; empty when no frame is mounted. */
 article .embed-controls {
   display: flex;
   flex-wrap: wrap;
@@ -534,8 +514,6 @@ article .embed-control-action:hover {
   opacity: 1;
 }
 
-/* Dimmed with a colour rather than `opacity`, which would make a group and
-   take the link down with the prose. */
 article .embed figcaption {
   margin: 1rem auto 0;
   width: min(32rem, 100%);
@@ -558,8 +536,6 @@ article .embed figcaption a {
   text-decoration: none;
 }
 
-/* A 16:9 slice of a phone is barely a map, and there is no text column to keep
-   out of the way down here. */
 @media (max-width: 767px) {
   article .embed .embed-frame {
     aspect-ratio: 4 / 3;
@@ -643,7 +619,6 @@ article .device .device-screen iframe {
   border: 0;
   transform: scale(var(--screen-scale));
   transform-origin: top left;
-  /* Presentation only — the frame is a screenshot that happens to be live. */
   pointer-events: none;
 }
 
@@ -674,10 +649,6 @@ article .device .device-status {
   z-index: 2;
 }
 
-/* Home indicator. iOS draws it over the app and it adapts to what is under it,
-   so it takes the page's ink like the status bar does. Sized off the real one:
-   140pt wide and 5pt tall on a 402pt screen, sitting ~8pt above the bottom
-   edge — expressed against the frame's own 1350x2760 grid. */
 article .device .device-home {
   position: absolute;
   left: 50%;

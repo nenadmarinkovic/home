@@ -77,9 +77,6 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
   const router = useRouter();
   const isEditing = initial !== null;
 
-  // Form state seeds directly from `initial`. The parent gives this component a
-  // fresh `key` per open, so React mounts a new instance whenever the target
-  // article changes — no effect-driven sync needed.
   const [title, setTitle] = useState(initial?.title ?? "");
   const [subtitle, setSubtitle] = useState(initial?.subtitle ?? "");
   const [description, setDescription] = useState(initial?.description ?? "");
@@ -167,9 +164,6 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
     }
   }
 
-  // Share image uploads go through the same endpoint as body images, but only
-  // PNG and JPEG: the OG card is rasterised by Satori, which decodes nothing
-  // else, and a WebP cover would silently fall back to the plain card.
   async function uploadShareImage(file: File) {
     setImageUploading(true);
     try {
@@ -426,13 +420,6 @@ function RequiredMark() {
   );
 }
 
-/**
- * What the link unfurls to, at 1200x630. Every size here is the same fraction
- * of the card's width as in app/writing/[slug]/opengraph-image.tsx, expressed
- * in cqw against a sized container — so the preview holds its proportions at
- * any sidebar width and only has to be kept in step with the OG route if that
- * layout changes, not if the panel is resized.
- */
 function SharePreview({
   image,
   title,
@@ -476,9 +463,6 @@ function SharePreview({
             }}
           />
         )}
-        {/* Mark top left, title bottom left, nothing else. */}
-        {/* self-start, or the SVG stretches to the column's width and the mark
-            draws centred inside it rather than sitting against the left edge. */}
         <Logo
           className="relative w-auto self-start"
           style={{ height: "2.33cqw" }}

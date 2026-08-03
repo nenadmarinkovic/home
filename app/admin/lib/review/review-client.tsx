@@ -56,8 +56,6 @@ type RatingButton = {
   dotClass: string;
 };
 
-// Accent palette: destructive for wrong, neutral for hard, foreground for good,
-// accent (vibrant blue / bauhaus yellow) for easy.
 const RATING_BUTTONS: RatingButton[] = [
   { rating: 1, label: "Again", key: "1", dotClass: "bg-destructive" },
   { rating: 2, label: "Hard", key: "2", dotClass: "bg-foreground/40" },
@@ -84,8 +82,6 @@ type SyncResponse = {
 };
 
 export function ReviewClient({ initialStats }: Props) {
-  // The deck lives in a ref so background sync can refresh it without forcing a
-  // re-render or disturbing the card the user is currently looking at.
   const deckRef = useRef<OfflineCard[]>([]);
   const flushingRef = useRef(false);
 
@@ -145,8 +141,6 @@ export function ReviewClient({ initialStats }: Props) {
     }
   }, []);
 
-  // First load: drive from the local deck immediately, then reconcile with the
-  // server if we're online.
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -176,11 +170,9 @@ export function ReviewClient({ initialStats }: Props) {
     };
   }, [advance, flushQueue]);
 
-  // Flush whatever's queued the moment we're back online.
   useEffect(() => {
     if (offline) return;
     flushQueue().catch(() => {
-      // Still effectively offline — reviews stay queued.
     });
   }, [offline, flushQueue]);
 

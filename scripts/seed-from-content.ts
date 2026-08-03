@@ -40,9 +40,7 @@ function loadFromDir(dir: string, language: string): number {
 
 function main() {
   let total = 0;
-  // Existing flat content/*.md → assume English
   total += loadFromDir(CONTENT_DIR, "en");
-  // Already-namespaced content/<lang>/*.md
   for (const lang of ["en", "sr", "de"]) {
     total += loadFromDir(path.join(CONTENT_DIR, lang), lang);
   }

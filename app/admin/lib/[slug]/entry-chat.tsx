@@ -78,24 +78,11 @@ export function EntryChat({ slug, term }: Props) {
   const isNarrow = useIsNarrowViewport();
 
   function openChat() {
-    // iOS opens the software keyboard only when focus is set inside the
-    // synchronous user gesture. Focus a tiny real input here to pop the
-    // keyboard, flushSync the dialog so the textarea is in the DOM before
-    // this handler returns, then move focus to the textarea — the keyboard
-    // stays up through the transfer.
     proxyRef.current?.focus({ preventScroll: true });
     flushSync(() => setOpen(true));
     textareaRef.current?.focus({ preventScroll: true });
   }
 
-  // On narrow viewports, pin the dialog to the top of the *visible* viewport
-  // and size it to match. Without this, iOS centers the dialog with
-  // `top: 50%` and then the keyboard slides up under it — the messages above
-  // the input get pushed off-screen. Reading visualViewport every frame means
-  // dialog height tracks the keyboard smoothly with no jump.
-  //
-  // Tailwind 4's `-translate-x-1/2 -translate-y-1/2` writes to the CSS
-  // `translate` property, not `transform`. Override the same property.
   const contentStyle: React.CSSProperties | undefined =
     isNarrow && vv
       ? {
@@ -116,14 +103,12 @@ export function EntryChat({ slug, term }: Props) {
     }
   }
 
-  // Auto-scroll to newest message.
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
     el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [messages, pending]);
 
-  // Auto-grow textarea with content up to MAX_HEIGHT_PX, then scroll inside.
   useLayoutEffect(() => {
     const el = textareaRef.current;
     if (!el) return;
@@ -149,8 +134,6 @@ export function EntryChat({ slug, term }: Props) {
     setPending(true);
 
     try {
-      // Strip the hardcoded intro before sending — model gets full user history,
-      // not its own greeting, which would otherwise count toward token budget.
       const outbound = next.filter((m) => m !== INTRO);
       const res = await fetch("/api/lib/chat", {
         method: "POST",
@@ -174,7 +157,6 @@ export function EntryChat({ slug, term }: Props) {
       setError(err instanceof Error ? err.message : "Chat failed");
     } finally {
       setPending(false);
-      // Refocus the textarea so the user can keep typing without tapping.
       textareaRef.current?.focus();
     }
   }
@@ -199,9 +181,6 @@ export function EntryChat({ slug, term }: Props) {
         Chat
       </Button>
 
-      {/* iOS keyboard primer: a real, visible-to-the-engine input — 2px,
-          transparent text/caret — so .focus() inside the user gesture pops
-          the keyboard. Tab-skipped; users can't reach or see it. */}
       <input
         ref={proxyRef}
         type="text"
@@ -217,8 +196,6 @@ export function EntryChat({ slug, term }: Props) {
         <DialogContent
           style={contentStyle}
           onOpenAutoFocus={(e) => {
-            // We move focus to the textarea ourselves inside the gesture.
-            // Letting Radix re-focus async can close the iOS keyboard.
             e.preventDefault();
           }}
           className="flex h-[calc(100dvh-1.5rem)] w-[calc(100vw-1.5rem)] flex-col gap-0 p-0 sm:h-[min(80vh,40rem)] sm:w-[min(95vw,32rem)]"

@@ -142,7 +142,6 @@ export function listLinks(options: ListLinkOptions = {}): LinkWithTags[] {
       .limit(limit)
       .all();
   } else {
-    // Pick links that have every required tag. Done with a grouped subquery.
     const matchingIds = db
       .select({ linkId: linkTags.linkId })
       .from(linkTags)
@@ -176,7 +175,6 @@ export type UpsertLinkInput = {
   type?: LinkType;
   note?: string;
   tagSlugs?: string[];
-  /** When true, replace tags entirely; otherwise tags are added to existing. */
   replaceTags?: boolean;
 };
 

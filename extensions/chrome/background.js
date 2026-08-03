@@ -44,8 +44,6 @@ async function getLiveTags() {
     tagsCache: fresh,
     tagsCacheAt: Date.now(),
   });
-  // If the list changed since the menu was built, rebuild it so the
-  // context menu stays in sync without requiring an extension restart.
   if (!tagsEqual(fresh, tagsCache)) {
     rebuildMenu(fresh).catch(() => {});
   }
@@ -184,15 +182,11 @@ function flashBadge(text, color) {
 }
 
 async function openCustomPopup() {
-  // Prefer the toolbar action popup so we stay inside the current macOS Space
-  // (full-screen window). Falls back to a separate browser popup window if the
-  // browser can't open it (older Firefox, no user gesture, etc.).
   if (chrome.action && typeof chrome.action.openPopup === "function") {
     try {
       await chrome.action.openPopup();
       return;
     } catch {
-      // fall through
     }
   }
   chrome.windows.create({

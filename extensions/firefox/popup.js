@@ -11,9 +11,6 @@ const statusEl = document.getElementById("status");
 const isWindowed =
   new URLSearchParams(location.search).get("context") === "window";
 
-// Treat a context-menu save attempt as "pending" for ~10s. If the toolbar
-// popup opens within that window, prefer the URL/title that was right-clicked
-// over the currently-active tab.
 const PENDING_FRESH_MS = 10_000;
 let usedPending = false;
 
@@ -94,8 +91,6 @@ saveBtn.addEventListener("click", async () => {
   });
   if (resp?.ok) {
     showStatus("Saved.", "ok");
-    // Clear the pending marker so a stale right-click doesn't preload it again
-    // the next time the toolbar popup is opened.
     if (usedPending) {
       browser.storage.local.remove("pending");
     }

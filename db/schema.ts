@@ -40,12 +40,8 @@ export type Cefr = (typeof CEFR_VALUES)[number];
 export const CARD_DIRECTIONS = ["de_sr", "sr_de"] as const;
 export type CardDirection = (typeof CARD_DIRECTIONS)[number];
 
-// FSRS card lifecycle states. Numeric values mirror the `ts-fsrs` State enum:
-// 0 New, 1 Learning, 2 Review, 3 Relearning.
 export type CardState = 0 | 1 | 2 | 3;
 
-// FSRS rating values. Mirror the `ts-fsrs` Rating enum:
-// 1 Again, 2 Hard, 3 Good, 4 Easy.
 export type Rating = 1 | 2 | 3 | 4;
 
 export const articles = sqliteTable(
@@ -57,8 +53,6 @@ export const articles = sqliteTable(
     title: text("title").notNull(),
     subtitle: text("subtitle").notNull().default(""),
     description: text("description").notNull().default(""),
-    // Share image: an uploads URL (/writing/img/...) used as the card behind
-    // the title in the OG image. Empty means the typographic card is used.
     image: text("image").notNull().default(""),
     body: text("body").notNull(),
     draft: integer("draft", { mode: "boolean" }).notNull().default(true),
@@ -81,11 +75,8 @@ export const vocabEntries = sqliteTable(
   "vocab_entries",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
-    // Opaque short slug used in URLs so /admin/lib/<slug> doesn't reveal insert order.
     slug: text("slug").notNull(),
-    // The German headword as the user typed it (preserves capitalization for nouns).
     term: text("term").notNull(),
-    // Lowercased lemma key used for de-duping (e.g. "gehen", "haus").
     lemma: text("lemma").notNull(),
     pos: text("pos").notNull(),
     gender: text("gender"),
@@ -93,14 +84,10 @@ export const vocabEntries = sqliteTable(
     aux: text("aux"),
     separable: integer("separable", { mode: "boolean" }),
     level: text("level"),
-    // Primary translation in Serbian, comma-separated if multiple senses.
     translationSr: text("translation_sr").notNull().default(""),
-    // JSON array: [{ de: string, sr: string }]
     examples: text("examples").notNull().default("[]"),
-    // JSON object: arbitrary conjugation/declension table from Mistral.
     conjugations: text("conjugations").notNull().default("{}"),
     notes: text("notes").notNull().default(""),
-    // Comma-separated tags, lowercased.
     tags: text("tags").notNull().default(""),
     source: text("source").notNull().default("manual"),
     createdAt: integer("created_at", { mode: "timestamp" })
@@ -128,7 +115,6 @@ export const srsCards = sqliteTable(
       .notNull()
       .references(() => vocabEntries.id, { onDelete: "cascade" }),
     direction: text("direction").notNull(),
-    // FSRS state. See ts-fsrs Card type for field meanings.
     due: integer("due", { mode: "timestamp_ms" }).notNull(),
     stability: real("stability").notNull().default(0),
     difficulty: real("difficulty").notNull().default(0),

@@ -5,9 +5,6 @@ import { useSyncExternalStore } from "react";
 export type VisualViewportState = {
   height: number;
   offsetTop: number;
-  // iOS Safari/standalone PWA does not shrink innerHeight when the software
-  // keyboard opens; only visualViewport.height does. A meaningful delta means
-  // the keyboard (or some other on-screen widget) is covering content.
   keyboardOpen: boolean;
 };
 
@@ -22,8 +19,6 @@ function subscribe(cb: () => void) {
   };
 }
 
-// Cache the last snapshot so getSnapshot returns a stable reference between
-// reads (useSyncExternalStore bails out when the result is `Object.is` equal).
 let cached: VisualViewportState | null = null;
 
 function getSnapshot(): VisualViewportState | null {

@@ -10,9 +10,6 @@ import {
 
 import type { Rating, SrsCardRow } from "@/db/schema";
 
-// Single shared scheduler. Uses ts-fsrs defaults — these are the same defaults
-// that Anki's FSRS implementation ships with, which Gwern's article on spaced
-// repetition argues is the right baseline before any per-user optimization.
 const scheduler = fsrs(generatorParameters());
 
 export type SchedulerCard = FsrsCard;
@@ -20,12 +17,10 @@ export type SchedulerLog = FsrsReviewLog;
 
 export { FsrsRating };
 
-/** New card snapshot for inserting into the DB. */
 export function newCard(now: Date = new Date()): SchedulerCard {
   return createEmptyCard(now);
 }
 
-/** Convert a DB row into the in-memory FSRS Card the scheduler expects. */
 export function cardFromRow(
   row: Pick<
     SrsCardRow,
@@ -60,7 +55,6 @@ export type ReviewResult = {
   log: SchedulerLog;
 };
 
-/** Score a card with the given rating, returning the next FSRS state + log row. */
 export function review(
   card: SchedulerCard,
   rating: Rating,
@@ -69,7 +63,6 @@ export function review(
   return scheduler.next(card, now, rating as unknown as Grade);
 }
 
-/** Preview each rating's resulting due date — used to label review buttons. */
 export function previewIntervals(
   card: SchedulerCard,
   now: Date = new Date(),

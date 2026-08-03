@@ -7,9 +7,6 @@ import type { Rating } from "@/db/schema";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Wire shape for an offline card: timestamps as epoch ms so the payload is
-// plain JSON and IndexedDB can store it verbatim. The client rebuilds Dates
-// before handing rows to the FSRS scheduler.
 function serializeState() {
   const deck = listReviewDeck().map(({ card, entry }) => ({
     id: card.id,
@@ -31,7 +28,6 @@ function serializeState() {
   return { deck, stats: getDueStats(), serverTime: Date.now() };
 }
 
-// Pull the whole deck for offline use.
 export async function GET() {
   return NextResponse.json({ ok: true, ...serializeState() });
 }
@@ -45,8 +41,6 @@ const ReviewItem = z.object({
     .min(0)
     .max(10 * 60 * 1000)
     .optional(),
-  // When the review actually happened on the device — FSRS scheduling depends
-  // on the real elapsed time, not on when the queue happened to flush.
   reviewedAt: z.number().int().positive(),
 });
 
@@ -54,8 +48,6 @@ const BatchSchema = z.object({
   reviews: z.array(ReviewItem).max(1000),
 });
 
-// Flush a batch of reviews recorded offline, then return the fresh deck so the
-// client can replace its local copy with the authoritative server state.
 export async function POST(request: Request) {
   let raw: unknown;
   try {
@@ -71,8 +63,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // Apply in the order the reviews were performed — each one schedules the next
-  // off the state the previous one left behind.
   const items = [...parsed.data.reviews].sort(
     (a, b) => a.reviewedAt - b.reviewedAt,
   );

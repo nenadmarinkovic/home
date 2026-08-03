@@ -54,7 +54,6 @@ import type { Article } from "../../writing/articles";
 type AdminClientProps = {
   published: Article[];
   drafts: Article[];
-  /** Keys "<lang>:<slug>" of published articles whose content/<lang>/<slug>.md exists. */
   exported: string[];
 };
 

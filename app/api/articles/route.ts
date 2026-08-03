@@ -57,9 +57,6 @@ export async function POST(request: Request) {
   if (!body) {
     return NextResponse.json({ error: "Body required" }, { status: 400 });
   }
-  // Only an upload of ours may be the share image: the OG route reads this
-  // path off disk, so anything else is either a dead link in the card or a
-  // way to point the reader at a file that isn't an upload.
   if (image && !IMAGE_URL.test(image)) {
     return NextResponse.json({ error: "Invalid image" }, { status: 400 });
   }
@@ -96,7 +93,6 @@ export async function POST(request: Request) {
       language: row.language,
     });
   } catch (err: unknown) {
-    // Don't echo the raw error — it can carry file paths / DB internals.
     console.error("article upsert failed", err);
     return NextResponse.json({ error: "Save failed" }, { status: 500 });
   }

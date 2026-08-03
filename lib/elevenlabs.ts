@@ -4,14 +4,11 @@ import { createHash } from "node:crypto";
 
 const TTS_URL = "https://api.elevenlabs.io/v1/text-to-speech";
 
-// Sarah — one of the default voices, which is what a free plan is allowed to
-// use over the API. Library voices 402 unless the account is paid.
 const DEFAULT_VOICE_ID = "EXAVITQu4vr4xnSDxMaL";
 
 const MODEL = process.env.ELEVENLABS_MODEL ?? "eleven_multilingual_v2";
 const OUTPUT_FORMAT = process.env.ELEVENLABS_OUTPUT_FORMAT ?? "mp3_44100_128";
 
-// Only turbo/flash v2.5 and v3 accept `language_code`; multilingual_v2 rejects it.
 const SUPPORTS_LANGUAGE_CODE = /(turbo_v2_5|flash_v2_5|_v3)/.test(MODEL);
 
 export const MAX_SPEAK_CHARS = 500;

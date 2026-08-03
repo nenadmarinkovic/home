@@ -46,9 +46,6 @@ export async function saveImage(file: File): Promise<SavedImage> {
     const buffer = Buffer.from(await file.arrayBuffer());
     await writeFile(absPath, buffer);
   } catch (err) {
-    // Surface a clear, actionable message. Common cause: UPLOADS_DIR points
-    // to a path the process can't create (e.g. "/app/uploads" locally when
-    // /app doesn't exist). In dev, unset UPLOADS_DIR to default to ./uploads.
     const message =
       err instanceof Error ? err.message : "unknown filesystem error";
     throw new Error(
@@ -61,7 +58,6 @@ export async function saveImage(file: File): Promise<SavedImage> {
 
 export function resolveUploadPath(relPath: string): string | null {
   const abs = path.resolve(UPLOADS_DIR, relPath);
-  // Prevent path traversal — must stay inside UPLOADS_DIR
   if (!abs.startsWith(UPLOADS_DIR + path.sep) && abs !== UPLOADS_DIR) {
     return null;
   }
@@ -73,7 +69,6 @@ const IMAGE_URL_RE = /\/writing\/img\/([A-Za-z0-9._\-/]+)/g;
 export function extractImageUrls(body: string): string[] {
   const seen = new Set<string>();
   for (const match of body.matchAll(IMAGE_URL_RE)) {
-    // Guard against trailing punctuation captured by the regex.
     const relPath = match[1].replace(/[.,;:!?)]+$/, "");
     seen.add(`/writing/img/${relPath}`);
   }

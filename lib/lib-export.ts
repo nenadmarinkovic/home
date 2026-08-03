@@ -48,11 +48,6 @@ function rowToEntry(row: VocabEntryRow): ExportEntry {
   };
 }
 
-/**
- * Read the entire vocab DB into a plain object: every entry (with examples and
- * conjugations parsed back into JSON), every SRS card, and the full review log.
- * Rows are sorted by stable keys so re-exports produce minimal git diffs.
- */
 export function buildLibExport(at: Date = new Date()): LibExport {
   const entryRows = db
     .select()
@@ -136,10 +131,6 @@ function renderEntry(entry: ExportEntry): string[] {
   return lines;
 }
 
-/**
- * Render the vocab DB as a single Markdown document grouped by part of speech,
- * alphabetical by lemma within each group — readable in the GitHub mobile app.
- */
 export function buildLibMarkdown(data: LibExport): string {
   const date = data.exportedAt.slice(0, 10);
   const lines = [
@@ -156,7 +147,6 @@ export function buildLibMarkdown(data: LibExport): string {
     byPos.set(entry.pos, list);
   }
 
-  // Known parts of speech in schema order, then any unexpected pos values.
   const orderedPos = [
     ...POS_VALUES.filter((pos) => byPos.has(pos)),
     ...[...byPos.keys()].filter(
@@ -177,10 +167,6 @@ export function buildLibMarkdown(data: LibExport): string {
   return `${lines.join("\n").trimEnd()}\n`;
 }
 
-/**
- * The full set of files written by the export: a readable Markdown document and
- * a complete JSON dump of the vocab DB.
- */
 export function buildLibExportFiles(at: Date = new Date()): ExportFile[] {
   const data = buildLibExport(at);
   return [

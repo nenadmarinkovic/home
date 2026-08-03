@@ -107,12 +107,6 @@ export function LibClient({ initialEntries, initialStats }: Props) {
   const router = useRouter();
   const [, startTransition] = useTransition();
 
-  // Server data is authoritative when we have it (online), and stays live
-  // through `router.refresh()` after edits. When the page is served from the
-  // service-worker cache offline, `initialEntries` is a stale snapshot — so we
-  // overlay the word DB hydrated from IndexedDB, which the review deck keeps in
-  // sync and which reflects words added since. The overlay stays null online, so
-  // fresh server props always win.
   const [offlineEntries, setOfflineEntries] = useState<ClientEntry[] | null>(
     null,
   );
@@ -138,12 +132,9 @@ export function LibClient({ initialEntries, initialStats }: Props) {
     (async () => {
       const online = typeof navigator === "undefined" || navigator.onLine;
       if (online) {
-        // Online: server data already drives the page; just refresh the offline
-        // mirror so the word DB is current the next time the network drops.
         await refreshDeck();
         return;
       }
-      // Offline: rebuild the list from the locally synced deck.
       const deck = await getDeck();
       if (cancelled || deck.length === 0) return;
       const now = new Date();

@@ -25,10 +25,6 @@ function isLanguage(value: unknown): value is Language {
 }
 
 function relativeWithinContent(filePath: string): string | null {
-  // file.path always begins with "content/" — strip the prefix and reject any
-  // traversal segments. Returning the relative-within-content path lets us
-  // statically scope path.join to the content dir, which avoids tripping
-  // Turbopack's NFT trace.
   if (!filePath.startsWith("content/")) return null;
   const rel = filePath.slice("content/".length);
   const segments = rel.split("/");
@@ -61,7 +57,6 @@ async function exportToGitHub(files: ExportFile[], selector?: ExportSelector) {
 
   const octokit = new Octokit({ auth: token });
 
-  // Get the current commit on the branch
   const { data: refData } = await octokit.git.getRef({
     owner,
     repo,

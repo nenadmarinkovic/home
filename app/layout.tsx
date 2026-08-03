@@ -11,9 +11,6 @@ import { site } from "@/lib/site";
 import "./globals.css";
 
 export async function generateViewport(): Promise<Viewport> {
-  // Read the in-app theme cookie (set by ThemeColorSync). If present, emit a
-  // single theme-color matching the user's pick — prevents the iOS notch from
-  // flashing the OS-default color when in-app theme differs from system theme.
   const pref = (await cookies()).get("theme-color")?.value;
   const base: Viewport = {
     viewportFit: "cover",
@@ -29,15 +26,6 @@ export async function generateViewport(): Promise<Viewport> {
   };
 }
 
-// next/script puts this in <head>, which can run before the theme-color metas
-// are parsed — hence the DOMContentLoaded retry. It only ever edits attributes:
-// inserting a node here would desync React's hydration of the document.
-//
-// It also writes *nothing* when the markup already resolves to the right color,
-// which is the normal case. iOS animates the status bar — the strip above the
-// header — on every theme-color change, so a redundant write shows up as a
-// color fade each time the PWA is opened. Since the retry path runs after first
-// paint, that fade was visible on essentially every launch.
 const THEME_COLOR_SCRIPT = `(function(){function a(){try{
 var metas=document.querySelectorAll('meta[name="theme-color"]');
 if(!metas.length)return false;

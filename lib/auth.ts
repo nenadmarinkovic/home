@@ -1,11 +1,5 @@
 const COOKIE_NAME = "admin_session";
-// Long-lived so a phone-installed PWA stays logged in across days/weeks.
-// The cookie's HMAC binds it to AUTH_SECRET, so rotating that secret revokes
-// every outstanding session.
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 180; // 180 days
-// When a cookie is older than this, the proxy will mint a fresh one on the
-// next authenticated request — sliding the expiration so active users never
-// hit the hard TTL.
 const SESSION_REFRESH_AFTER_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
 type CookieOptions = {
@@ -114,11 +108,6 @@ export async function isValidSessionCookie(
   return ageSec >= 0 && ageSec < SESSION_TTL_SECONDS;
 }
 
-/**
- * True when a valid cookie is old enough that we should mint a fresh one to
- * slide the expiration forward. Cheap path — assumes the caller has already
- * confirmed validity with `isValidSessionCookie`.
- */
 export function shouldRefreshSessionCookie(value: string | undefined): boolean {
   if (!value) return false;
   const idx = value.indexOf(".");
@@ -129,10 +118,6 @@ export function shouldRefreshSessionCookie(value: string | undefined): boolean {
   return ageSec > SESSION_REFRESH_AFTER_SECONDS;
 }
 
-/**
- * Returns true when `target` is a safe local path to redirect to.
- * Rejects schemes, protocol-relative (//host) paths, and backslashes.
- */
 export function isSafeRedirectTarget(target: unknown): target is string {
   if (typeof target !== "string" || target.length === 0) return false;
   if (target.length > 512) return false;

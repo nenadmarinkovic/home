@@ -76,12 +76,6 @@ export function QuickAdd({ className }: Props) {
   const [interim, setInterim] = useState("");
   const [previewLang, setPreviewLang] = useState<PreviewLang>("de-DE");
 
-  // `recorder.onstop` captures `handleRecorded` from the render where recording
-  // started, so the plain `interim`/`previewLang` it closes over are frozen at
-  // their start-of-recording values (interim is "" then). Mirror both into refs
-  // so the stop handler reads what the user actually dictated — otherwise the
-  // Serbian live-transcript shortcut never fires and audio wrongly falls
-  // through to Voxtral.
   const interimRef = useRef("");
   const previewLangRef = useRef<PreviewLang>("de-DE");
   const { push, update } = useToasts();
@@ -139,7 +133,6 @@ export function QuickAdd({ className }: Props) {
         try {
           rec.stop();
         } catch {
-          /* already stopped */
         }
       }
     };
@@ -184,7 +177,6 @@ export function QuickAdd({ className }: Props) {
     try {
       rec.stop();
     } catch {
-      /* already stopped */
     }
     recognitionRef.current = null;
   }
@@ -333,12 +325,6 @@ export function QuickAdd({ className }: Props) {
     }
 
 
-    // Prefer the Web Speech live transcript for any language — for short or
-    // dialectal German and for Serbian, the browser's on-device recognizer
-    // tends to beat Voxtral, and this keeps what the user saw during
-    // recording. Voxtral only runs when Web Speech gave us nothing (iOS
-    // Safari, Firefox, etc.). Read from refs so the stale closure captured
-    // by `recorder.onstop` doesn't see empty values.
     const lang = previewLangRef.current;
     const liveTranscript = interimRef.current.trim();
     if (liveTranscript.length > 0) {

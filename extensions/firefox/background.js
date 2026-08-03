@@ -182,15 +182,11 @@ function flashBadge(text, color) {
 }
 
 async function openCustomPopup() {
-  // Prefer the toolbar action popup so we stay inside the current macOS Space
-  // (full-screen window). Falls back to a separate browser popup window if the
-  // browser can't open it (older Firefox, no user gesture, etc.).
   if (browser.action && typeof browser.action.openPopup === "function") {
     try {
       await browser.action.openPopup();
       return;
     } catch {
-      // fall through
     }
   }
   browser.windows.create({

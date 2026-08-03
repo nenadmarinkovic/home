@@ -42,9 +42,6 @@ export async function proxy(request: NextRequest) {
 
   const response = NextResponse.next();
 
-  // Slide the session forward on active use. Keeps PWA users on iPhone signed
-  // in indefinitely so long as they keep opening the app — without ever
-  // extending past the hard TTL on a truly dormant session.
   if (shouldRefreshSessionCookie(cookie)) {
     const fresh = await createSessionCookie();
     response.cookies.set(fresh.name, fresh.value, fresh.options);

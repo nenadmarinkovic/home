@@ -11,16 +11,8 @@ export const alt = "Nenad Marinković — writing";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Satori rasterises what it is given rather than fetching it, and only decodes
-// PNG and JPEG. A share image in any other format falls back to the
-// typographic card, which is why the editor only offers those two.
 const RASTERISABLE = new Set(["image/png", "image/jpeg"]);
 
-/**
- * Read a share image off disk as a data URI. Returns null for anything that
- * isn't one of our uploads, is missing, or can't be drawn — every one of those
- * is a card without a photo rather than a broken card.
- */
 async function loadCover(url: string): Promise<string | null> {
   if (!url.startsWith("/writing/img/")) return null;
   const abs = resolveUploadPath(url.slice("/writing/img/".length));
@@ -54,9 +46,6 @@ export default async function Image({
     article.image ? loadCover(article.image) : Promise.resolve(null),
   ]);
 
-  // Over a photo the palette inverts: light ink on a scrim rather than dark
-  // ink on paper. Everything else about the card is the same, so the two
-  // layouts share their structure and differ only in colour and backdrop.
   const ink = cover ? "#ffffff" : "#000000";
   const muted = cover ? "rgba(255,255,255,0.78)" : "rgba(0,0,0,0.56)";
   const LOGO_H = 28;
@@ -92,8 +81,6 @@ export default async function Image({
           }}
         />
       )}
-      {/* Weighted to the bottom, where the title sits: enough contrast to read
-          small without flattening the photo into a grey rectangle. */}
       {cover && (
         <div
           style={{
@@ -107,8 +94,6 @@ export default async function Image({
           }}
         />
       )}
-      {/* Mark top left, title bottom left, nothing else — the card carries the
-          post, and the domain is already in the link the card is attached to. */}
       <img
         src={logoDataUri(ink)}
         alt=""

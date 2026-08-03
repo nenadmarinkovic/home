@@ -1,6 +1,3 @@
-// TEMPORARY — used to capture a UI mockup for the blog post, then deleted.
-// It renders the real EntryDetailClient so the mockup is the actual component
-// tree at the actual sizes, not a hand-drawn approximation.
 import { EntryDetailClient } from "@/app/admin/lib/[slug]/entry-detail-client";
 import type { SrsCardRow } from "@/db/schema";
 import type { VocabEntry } from "@/lib/lib-db";

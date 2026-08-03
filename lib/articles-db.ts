@@ -51,7 +51,6 @@ function isImageUrlUsedElsewhere(
     .from(articles)
     .where(
       and(
-        // Referenced either from a body or as another post's share image.
         or(like(articles.body, `%${url}%`), eq(articles.image, url)),
         or(
           ne(articles.slug, excludeSlug),
@@ -121,8 +120,6 @@ export function upsertArticle(input: WriteArticleInput) {
     .get();
 
   if (previous) {
-    // The share image is tracked alongside the body's images: swapping or
-    // clearing it leaves the old upload on disk otherwise.
     const oldUrls = new Set(extractImageUrls(previous.body));
     if (previous.image) oldUrls.add(previous.image);
     const newUrls = new Set(extractImageUrls(input.body));

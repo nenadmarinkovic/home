@@ -1,14 +1,3 @@
-/**
- * Read-only Dokploy client. First hits `GET /api/project.all` for the slim
- * listing, then fans out to the per-service detail endpoints to enrich each
- * row with source, domains, last deploy, image, replicas, volumes, etc.
- *
- * Secrets (`env`, `databasePassword`, `refreshToken`) are stripped before the
- * data leaves this module.
- *
- * Auth: `x-api-key` header. Generate the token from the Dokploy UI under
- * Settings → Profile → API/CLI.
- */
 
 export type DokployStatus = "idle" | "running" | "done" | "error";
 
@@ -63,12 +52,9 @@ export type DokployService = {
   status: DokployStatus;
   projectId: string;
   projectName: string;
-  /** Default environment hidden; non-default surfaced as "production" etc. */
   environment: string | null;
   environmentId: string | null;
-  /** Internal docker container name, e.g. "home-nextjs-hv2sew". */
   appName: string | null;
-  /** railpack / dockerfile / nixpacks / heroku-buildpacks / static (apps only). */
   buildType: string | null;
   replicas: number | null;
   port: number | null;
@@ -78,7 +64,6 @@ export type DokployService = {
   database: DokployDatabaseInfo | null;
   volumes: string[];
   lastDeploy: DokployDeployment | null;
-  /** ISO timestamp: most recent finished deploy, or service createdAt fallback. */
   updatedAt: string | null;
   createdAt: string | null;
 };
@@ -86,7 +71,6 @@ export type DokployService = {
 export type DokploySnapshot = {
   services: DokployService[];
   fetchedAt: string;
-  /** Dokploy instance base URL, used to build per-service deep links. */
   dokployUrl: string;
 };
 
@@ -295,7 +279,6 @@ function pickVolumes(detail: RawDetail): string[] {
 function pickLastDeploy(detail: RawDetail): DokployDeployment | null {
   const list = Array.isArray(detail.deployments) ? detail.deployments : [];
   if (list.length === 0) return null;
-  // Dokploy returns deployments newest-first. Trust that, but be defensive.
   let best: RawDeployment | null = null;
   let bestT = -Infinity;
   for (const dep of list) {
@@ -328,8 +311,6 @@ function pickSource(detail: RawDetail, type: DokployServiceType): DokployService
         return {
           kind: "github",
           label: `${owner}/${repo}@${branch}`,
-          // Repo root is always valid (handles private repos, deleted/renamed
-          // branches, and lets iOS Universal Links hand off to the GitHub app).
           url: `https://github.com/${owner}/${repo}`,
         };
       }

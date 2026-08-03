@@ -48,7 +48,6 @@ type ProjectGroup = {
   id: string;
   name: string;
   services: DokployService[];
-  /** Default environment id, used to build the project-level deep link. */
   environmentId: string | null;
 };
 

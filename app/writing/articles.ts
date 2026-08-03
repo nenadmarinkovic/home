@@ -10,7 +10,6 @@ export type Article = {
   title: string;
   subtitle: string;
   description: string;
-  /** Share image for the OG card. Empty when the post has none. */
   image: string;
   date: string;
   dateLabel: string;
