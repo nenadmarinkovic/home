@@ -3,19 +3,19 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import {
-  Article as ArticleIcon,
+  ArticleIcon,
   ArrowSquareOutIcon,
-  ArrowsDownUp,
-  Check,
-  CheckCircle,
-  DotsThreeVertical,
-  FileText,
-  FunnelSimple,
-  GitCommit,
-  MagnifyingGlass,
-  PencilSimple,
-  Trash,
-  X as XIcon,
+  ArrowsDownUpIcon,
+  CheckIcon,
+  CheckCircleIcon,
+  DotsThreeVerticalIcon,
+  FileTextIcon,
+  FunnelSimpleIcon,
+  GitCommitIcon,
+  MagnifyingGlassIcon,
+  PencilSimpleIcon,
+  TrashIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 
 import Link from "next/link";
@@ -258,7 +258,7 @@ export function AdminClient({ published, drafts, exported }: AdminClientProps) {
                     className="inline-flex items-center gap-1 text-[#0040ff] dark:text-[#ffff01]"
                     title="Every published article is committed to git."
                   >
-                    <CheckCircle weight="fill" className="size-3.5" />
+                    <CheckCircleIcon weight="fill" className="size-3.5" />
                     All in git
                   </span>
                 ) : (
@@ -369,7 +369,7 @@ function SearchField({
 }) {
   return (
     <div className="relative flex-1">
-      <MagnifyingGlass
+      <MagnifyingGlassIcon
         weight="regular"
         className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-500"
       />
@@ -411,11 +411,11 @@ function FilterMenu({
           aria-label={`Show: ${FILTER_LABELS[filter]}`}
           className="h-9 shrink-0 gap-1.5"
         >
-          <FunnelSimple weight="bold" />
+          <FunnelSimpleIcon weight="bold" />
           <span className="hidden sm:inline">{FILTER_LABELS[filter]}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[10rem]">
+      <DropdownMenuContent align="end" className="min-w-40">
         {(Object.keys(FILTER_LABELS) as FilterKey[]).map((key) => (
           <DropdownMenuItem
             key={key}
@@ -424,7 +424,10 @@ function FilterMenu({
           >
             <span>{FILTER_LABELS[key]}</span>
             {filter === key && (
-              <Check weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
+              <CheckIcon
+                weight="bold"
+                className="size-3.5 text-[#0040ff] dark:text-[#ffff01]"
+              />
             )}
           </DropdownMenuItem>
         ))}
@@ -449,11 +452,11 @@ function SortMenu({
           aria-label={`Sort: ${SORT_LABELS[sort]}`}
           className="h-9 shrink-0 gap-1.5"
         >
-          <ArrowsDownUp weight="bold" />
+          <ArrowsDownUpIcon weight="bold" />
           <span className="hidden sm:inline">{SORT_LABELS[sort]}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[10rem]">
+      <DropdownMenuContent align="end" className="min-w-40">
         {(Object.keys(SORT_LABELS) as SortKey[]).map((key) => (
           <DropdownMenuItem
             key={key}
@@ -462,7 +465,10 @@ function SortMenu({
           >
             <span>{SORT_LABELS[key]}</span>
             {sort === key && (
-              <Check weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
+              <CheckIcon
+                weight="bold"
+                className="size-3.5 text-[#0040ff] dark:text-[#ffff01]"
+              />
             )}
           </DropdownMenuItem>
         ))}
@@ -527,12 +533,12 @@ function ArticleList({
                   aria-label={`Actions for ${a.title}`}
                   className="text-zinc-600 dark:text-zinc-400"
                 >
-                  <DotsThreeVertical weight="bold" className="size-5" />
+                  <DotsThreeVerticalIcon weight="bold" className="size-5" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onEdit(a)}>
-                  <PencilSimple weight="bold" />
+                  <PencilSimpleIcon weight="bold" />
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -549,7 +555,7 @@ function ArticleList({
                   onClick={() => onExport(a)}
                   disabled={a.draft || isExporting}
                 >
-                  <GitCommit weight="bold" />
+                  <GitCommitIcon weight="bold" />
                   {isExporting
                     ? "Exporting…"
                     : isExported
@@ -560,7 +566,7 @@ function ArticleList({
                   variant="destructive"
                   onClick={() => onDeleteRequest(a)}
                 >
-                  <Trash weight="bold" />
+                  <TrashIcon weight="bold" />
                   Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -574,7 +580,7 @@ function ArticleList({
 
 function DraftTag() {
   return (
-    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-2.5 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
+    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/6 px-2.5 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
       Draft
     </span>
   );
@@ -601,7 +607,7 @@ function ExportedTag() {
       title="Committed to git — content matches the latest snapshot."
       className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#0040ff]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]"
     >
-      <CheckCircle weight="fill" className="size-3" />
+      <CheckCircleIcon weight="fill" className="size-3" />
       In git
     </span>
   );
@@ -627,12 +633,10 @@ function EmptyAll({ filter, onNew }: { filter: FilterKey; onNew: () => void }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
       <div className="flex size-10 items-center justify-center rounded-full bg-[#0040ff]/10 text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]">
-        <FileText weight="regular" className="size-5" />
+        <FileTextIcon weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
-        <p className="text-base font-medium text-foreground">
-          {title}
-        </p>
+        <p className="text-base font-medium text-foreground">{title}</p>
         <p className="text-sm text-zinc-500 dark:text-zinc-500">
           {description}
         </p>
@@ -648,8 +652,8 @@ function EmptyAll({ filter, onNew }: { filter: FilterKey; onNew: () => void }) {
 function NoResults({ onClear }: { onClear: () => void }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/[0.04] text-zinc-500 dark:text-zinc-500">
-        <MagnifyingGlass weight="regular" className="size-5" />
+      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/4 text-zinc-500 dark:text-zinc-500">
+        <MagnifyingGlassIcon weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
         <p className="text-sm font-medium text-foreground">No matches</p>

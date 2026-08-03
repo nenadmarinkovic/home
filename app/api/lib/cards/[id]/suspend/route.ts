@@ -34,5 +34,8 @@ export async function POST(
   if (!updated) {
     return NextResponse.json({ error: "Card not found" }, { status: 404 });
   }
-  return NextResponse.json({ ok: true, card: { id: updated.id, suspended: updated.suspended } });
+  return NextResponse.json({
+    ok: true,
+    card: { id: updated.id, suspended: updated.suspended },
+  });
 }

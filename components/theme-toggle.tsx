@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Desktop, Moon, Sun } from "@phosphor-icons/react";
+import { DesktopIcon, MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 
 import { cn } from "@/lib/utils";
 
 const options = [
-  { value: "system", icon: Desktop, label: "System" },
-  { value: "light", icon: Sun, label: "Light" },
-  { value: "dark", icon: Moon, label: "Dark" },
+  { value: "system", icon: DesktopIcon, label: "System" },
+  { value: "light", icon: SunIcon, label: "Light" },
+  { value: "dark", icon: MoonIcon, label: "Dark" },
 ] as const;
 
 export function ThemeToggle({ className }: { className?: string }) {
@@ -17,7 +17,6 @@ export function ThemeToggle({ className }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -25,7 +24,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     return (
       <div
         className={cn(
-          "h-7 w-[80px] rounded-full bg-card border border-foreground/10",
+          "h-7 w-20 rounded-full bg-card border border-foreground/10",
           className,
         )}
       />

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { CheckCircle, GitCommit, WarningCircle } from "@phosphor-icons/react";
+import { CheckCircleIcon, GitCommitIcon, WarningCircleIcon } from "@phosphor-icons/react";
 
 import { Button } from "@/components/ui/button";
 
@@ -85,9 +85,9 @@ export function ExportButton({ pendingCount }: ExportButtonProps) {
           }
         >
           {status === "error" ? (
-            <WarningCircle weight="fill" className="size-3.5" />
+            <WarningCircleIcon weight="fill" className="size-3.5" />
           ) : (
-            <CheckCircle weight="fill" className="size-3.5" />
+            <CheckCircleIcon weight="fill" className="size-3.5" />
           )}
           {message}
         </span>
@@ -105,7 +105,7 @@ export function ExportButton({ pendingCount }: ExportButtonProps) {
         }
         className="text-xs uppercase tracking-wider text-zinc-600 dark:text-zinc-400"
       >
-        <GitCommit weight="bold" />
+        <GitCommitIcon weight="bold" />
         {label}
       </Button>
     </div>

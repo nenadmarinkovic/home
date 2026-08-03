@@ -16,7 +16,7 @@ export default function OfflinePage() {
         <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
           You&apos;re offline
         </h1>
-        <p className="mt-4 text-base italic leading-[1.5] text-balance text-foreground/70">
+        <p className="mt-4 text-base italic leading-normal text-balance text-foreground/70">
           Some things work, like your vocabulary review. Some need a connection,
           and they&apos;ll be here when you reconnect.
         </p>

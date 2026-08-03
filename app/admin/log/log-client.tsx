@@ -3,21 +3,21 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
-  ArrowsClockwise,
-  ArrowSquareOut,
-  CheckCircle,
-  CircleNotch,
-  Cloud,
-  Cube,
-  Database,
-  GitBranch,
-  GlobeHemisphereWest,
-  HardDrives,
-  Lightning,
-  Plug,
-  Pulse,
-  Stack,
-  WarningCircle,
+  ArrowsClockwiseIcon,
+  ArrowSquareOutIcon,
+  CheckCircleIcon,
+  CircleNotchIcon,
+  CloudIcon,
+  CubeIcon,
+  DatabaseIcon,
+  GitBranchIcon,
+  GlobeHemisphereWestIcon,
+  HardDrivesIcon,
+  LightningIcon,
+  PlugIcon,
+  PulseIcon,
+  StackIcon,
+  WarningCircleIcon,
 } from "@phosphor-icons/react";
 
 import {
@@ -226,7 +226,7 @@ export function LogClient({
               <>
                 <Bullet />
                 <span className="inline-flex items-center gap-1 text-destructive">
-                  <WarningCircle weight="fill" className="size-3.5" />
+                  <WarningCircleIcon weight="fill" className="size-3.5" />
                   <span className="tabular-nums">{totals.error}</span> error
                   {totals.error === 1 ? "" : "s"}
                 </span>
@@ -236,7 +236,7 @@ export function LogClient({
               <>
                 <Bullet />
                 <span className="inline-flex items-center gap-1 text-foreground">
-                  <CircleNotch
+                  <CircleNotchIcon
                     weight="bold"
                     className="size-3.5 animate-spin"
                   />
@@ -252,7 +252,7 @@ export function LogClient({
                   className="inline-flex items-center gap-1 text-[#0040ff] dark:text-[#ffff01]"
                   title="All services healthy."
                 >
-                  <CheckCircle weight="fill" className="size-3.5" />
+                  <CheckCircleIcon weight="fill" className="size-3.5" />
                   All healthy
                 </span>
               </>
@@ -275,7 +275,7 @@ export function LogClient({
             disabled={!configured || refreshing}
             className="h-9"
           >
-            <ArrowsClockwise
+            <ArrowsClockwiseIcon
               weight="bold"
               className={refreshing ? "animate-spin" : undefined}
             />
@@ -371,10 +371,10 @@ function OpenInDokployLink({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-foreground/10 bg-foreground/[0.02] px-2.5 py-1 font-sans text-[11px] font-medium uppercase tracking-wider text-zinc-600 transition-colors hover:border-foreground/20 hover:bg-foreground/[0.06] hover:text-foreground dark:text-zinc-400"
+      className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-foreground/10 bg-foreground/2 px-2.5 py-1 font-sans text-[11px] font-medium uppercase tracking-wider text-zinc-600 transition-colors hover:border-foreground/20 hover:bg-foreground/6 hover:text-foreground dark:text-zinc-400"
     >
       {children}
-      <ArrowSquareOut weight="bold" className="size-3" />
+      <ArrowSquareOutIcon weight="bold" className="size-3" />
     </a>
   );
 }
@@ -545,21 +545,21 @@ function MetaItem({ item }: { item: MetaEntry }) {
 function renderMetaIcon(icon: MetaIcon) {
   switch (icon) {
     case "source":
-      return <GitBranch weight="bold" className="size-3.5" />;
+      return <GitBranchIcon weight="bold" className="size-3.5" />;
     case "domain":
-      return <GlobeHemisphereWest weight="bold" className="size-3.5" />;
+      return <GlobeHemisphereWestIcon weight="bold" className="size-3.5" />;
     case "image":
-      return <Cube weight="bold" className="size-3.5" />;
+      return <CubeIcon weight="bold" className="size-3.5" />;
     case "build":
-      return <Lightning weight="bold" className="size-3.5" />;
+      return <LightningIcon weight="bold" className="size-3.5" />;
     case "port":
-      return <Plug weight="bold" className="size-3.5" />;
+      return <PlugIcon weight="bold" className="size-3.5" />;
     case "replicas":
-      return <Stack weight="bold" className="size-3.5" />;
+      return <StackIcon weight="bold" className="size-3.5" />;
     case "volume":
-      return <Database weight="bold" className="size-3.5" />;
+      return <DatabaseIcon weight="bold" className="size-3.5" />;
     case "container":
-      return <HardDrives weight="bold" className="size-3.5" />;
+      return <HardDrivesIcon weight="bold" className="size-3.5" />;
   }
 }
 
@@ -570,7 +570,7 @@ function StatusTag({ status }: { status: DokployStatus }) {
         title="Deployed and healthy."
         className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#0040ff]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]"
       >
-        <CheckCircle weight="fill" className="size-3" />
+        <CheckCircleIcon weight="fill" className="size-3" />
         Healthy
       </span>
     );
@@ -581,7 +581,7 @@ function StatusTag({ status }: { status: DokployStatus }) {
         title="Deploy or operation in progress."
         className="inline-flex shrink-0 items-center gap-1 rounded-full bg-foreground px-2.5 py-0.5 text-[11px] font-medium text-background"
       >
-        <CircleNotch weight="bold" className="size-3 animate-spin" />
+        <CircleNotchIcon weight="bold" className="size-3 animate-spin" />
         Deploying
       </span>
     );
@@ -592,7 +592,7 @@ function StatusTag({ status }: { status: DokployStatus }) {
         title="Last operation failed. Check Dokploy logs."
         className="inline-flex shrink-0 items-center gap-1 rounded-full bg-destructive/10 px-2.5 py-0.5 text-[11px] font-medium text-destructive"
       >
-        <WarningCircle weight="fill" className="size-3" />
+        <WarningCircleIcon weight="fill" className="size-3" />
         Error
       </span>
     );
@@ -600,9 +600,9 @@ function StatusTag({ status }: { status: DokployStatus }) {
   return (
     <span
       title="Never deployed or stopped."
-      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-foreground/[0.06] px-2.5 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300"
+      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-foreground/6 px-2.5 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300"
     >
-      <Pulse weight="bold" className="size-3" />
+      <PulseIcon weight="bold" className="size-3" />
       Idle
     </span>
   );
@@ -620,7 +620,7 @@ function EnvTag({ name }: { name: string }) {
   return (
     <span
       title={`Environment: ${name}`}
-      className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300"
+      className="inline-flex shrink-0 items-center rounded-full bg-foreground/6 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300"
     >
       {name}
     </span>
@@ -631,7 +631,7 @@ function EmptyAll() {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
       <div className="flex size-10 items-center justify-center rounded-full bg-[#0040ff]/10 text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]">
-        <Cloud weight="regular" className="size-5" />
+        <CloudIcon weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
         <p className="text-base font-medium text-foreground">
@@ -657,7 +657,7 @@ function ErrorPanel({
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-destructive/30 px-6 py-14 text-center">
       <div className="flex size-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
-        <WarningCircle weight="regular" className="size-5" />
+        <WarningCircleIcon weight="regular" className="size-5" />
       </div>
       <div className="flex max-w-prose flex-col gap-1">
         <p className="text-base font-medium text-foreground">
@@ -673,7 +673,7 @@ function ErrorPanel({
         disabled={retrying}
         className="mt-2"
       >
-        <ArrowsClockwise
+        <ArrowsClockwiseIcon
           weight="bold"
           className={retrying ? "animate-spin" : undefined}
         />
@@ -686,8 +686,8 @@ function ErrorPanel({
 function NotConfigured() {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/[0.04] text-zinc-500 dark:text-zinc-500">
-        <Cloud weight="regular" className="size-5" />
+      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/4 text-zinc-500 dark:text-zinc-500">
+        <CloudIcon weight="regular" className="size-5" />
       </div>
       <div className="flex max-w-prose flex-col gap-1">
         <p className="text-base font-medium text-foreground">

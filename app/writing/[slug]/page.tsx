@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeftIcon, ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 
 import { AdminActions } from "@/components/admin-actions";
 import { ArticleEmbeds } from "@/components/article-embeds";
@@ -120,7 +120,7 @@ export default async function ArticlePage({
                 className="group flex flex-col gap-1"
               >
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-foreground/70 transition-colors group-hover:text-foreground">
-                  <ArrowLeft
+                  <ArrowLeftIcon
                     weight="bold"
                     className="size-3 transition-transform duration-200 group-hover:-translate-x-0.5"
                   />
@@ -140,7 +140,7 @@ export default async function ArticlePage({
               >
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-foreground/70 transition-colors group-hover:text-foreground">
                   Newer
-                  <ArrowRight
+                  <ArrowRightIcon
                     weight="bold"
                     className="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
                   />

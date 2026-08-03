@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { CaretRight, DotsThree } from "@phosphor-icons/react/dist/ssr";
+import { CaretRightIcon, DotsThreeIcon } from "@phosphor-icons/react/dist/ssr";
 
 import { cn } from "@/lib/utils";
 
@@ -8,15 +8,12 @@ function Breadcrumb({ ...props }: React.ComponentProps<"nav">) {
   return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />;
 }
 
-function BreadcrumbList({
-  className,
-  ...props
-}: React.ComponentProps<"ol">) {
+function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
   return (
     <ol
       data-slot="breadcrumb-list"
       className={cn(
-        "flex flex-wrap items-center gap-1 break-words font-sans text-sm text-zinc-500 dark:text-zinc-500",
+        "flex flex-wrap items-center gap-1 wrap-break-word font-sans text-sm text-zinc-500 dark:text-zinc-500",
         className,
       )}
       {...props}
@@ -24,10 +21,7 @@ function BreadcrumbList({
   );
 }
 
-function BreadcrumbItem({
-  className,
-  ...props
-}: React.ComponentProps<"li">) {
+function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
   return (
     <li
       data-slot="breadcrumb-item"
@@ -48,19 +42,13 @@ function BreadcrumbLink({
   return (
     <Comp
       data-slot="breadcrumb-link"
-      className={cn(
-        "transition-colors hover:text-foreground",
-        className,
-      )}
+      className={cn("transition-colors hover:text-foreground", className)}
       {...props}
     />
   );
 }
 
-function BreadcrumbPage({
-  className,
-  ...props
-}: React.ComponentProps<"span">) {
+function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="breadcrumb-page"
@@ -86,7 +74,7 @@ function BreadcrumbSeparator({
       className={cn("[&>svg]:size-3.5 text-foreground/30", className)}
       {...props}
     >
-      {children ?? <CaretRight weight="bold" />}
+      {children ?? <CaretRightIcon weight="bold" />}
     </li>
   );
 }
@@ -103,7 +91,7 @@ function BreadcrumbEllipsis({
       className={cn("flex size-9 items-center justify-center", className)}
       {...props}
     >
-      <DotsThree weight="bold" className="size-4" />
+      <DotsThreeIcon weight="bold" className="size-4" />
       <span className="sr-only">More</span>
     </span>
   );

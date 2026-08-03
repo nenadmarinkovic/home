@@ -227,7 +227,7 @@ export function EntryChat({ slug, term }: Props) {
                       "max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2 font-sans text-sm leading-relaxed",
                       m.role === "user"
                         ? "bg-foreground text-background"
-                        : "bg-foreground/[0.06] text-foreground",
+                        : "bg-foreground/6 text-foreground",
                     )}
                   >
                     {m.content}
@@ -236,7 +236,7 @@ export function EntryChat({ slug, term }: Props) {
               ))}
               {pending && (
                 <li className="flex justify-start">
-                  <div className="flex items-center gap-2 rounded-2xl bg-foreground/[0.06] px-3.5 py-2 font-sans text-sm text-zinc-500">
+                  <div className="flex items-center gap-2 rounded-2xl bg-foreground/6 px-3.5 py-2 font-sans text-sm text-zinc-500">
                     <CircleNotchIcon
                       weight="bold"
                       className="size-3.5 animate-spin"

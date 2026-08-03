@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { DotsThreeVertical, PencilSimple, Trash } from "@phosphor-icons/react";
+import { DotsThreeVerticalIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react";
 
 import {
   AlertDialog,
@@ -92,19 +92,19 @@ export function AdminActions({ article, className }: Props) {
             aria-label={`Admin actions for ${article.title}`}
             className={cn("text-zinc-600 dark:text-zinc-400", className)}
           >
-            <DotsThreeVertical weight="bold" className="size-5" />
+            <DotsThreeVerticalIcon weight="bold" className="size-5" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => setEditorOpen(true)}>
-            <PencilSimple weight="bold" />
+            <PencilSimpleIcon weight="bold" />
             Edit
           </DropdownMenuItem>
           <DropdownMenuItem
             variant="destructive"
             onClick={() => setPendingDelete(true)}
           >
-            <Trash weight="bold" />
+            <TrashIcon weight="bold" />
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

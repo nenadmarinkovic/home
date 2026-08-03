@@ -33,7 +33,7 @@ function DropdownMenuContent({
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
         className={cn(
-          "z-50 min-w-[10rem] overflow-hidden rounded-lg border border-foreground/10 bg-popover p-1 font-sans text-sm text-foreground outline-none",
+          "z-50 min-w-40 overflow-hidden rounded-lg border border-foreground/10 bg-popover p-1 font-sans text-sm text-foreground outline-none",
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
           "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",
@@ -64,8 +64,8 @@ function DropdownMenuItem({
         "relative flex cursor-pointer select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium outline-none transition-colors",
         "text-zinc-700 dark:text-zinc-300",
         "focus:bg-foreground/5 focus:text-foreground",
-        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-        "data-[inset]:pl-8",
+        "data-disabled:pointer-events-none data-disabled:opacity-50",
+        "data-inset:pl-8",
         "data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
@@ -101,7 +101,7 @@ function DropdownMenuLabel({
       data-inset={inset}
       className={cn(
         "px-2 py-1.5 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500",
-        "data-[inset]:pl-8",
+        "data-inset:pl-8",
         className,
       )}
       {...props}

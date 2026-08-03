@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  BookOpen,
-  Paperclip,
-  PencilSimpleLine,
-  Pulse,
+  BookOpenIcon,
+  PaperclipIcon,
+  PencilSimpleLineIcon,
+  PulseIcon,
 } from "@phosphor-icons/react/dist/ssr";
 
 import { getArticles, getDraftArticles } from "@/app/writing/articles";
@@ -22,7 +22,7 @@ type Tool = {
   href: string;
   name: string;
   tagline: string;
-  Icon: typeof BookOpen;
+  Icon: typeof BookOpenIcon;
 };
 
 export default async function AdminPage() {
@@ -37,25 +37,25 @@ export default async function AdminPage() {
       href: "/admin/writing",
       name: "Writing",
       tagline: "Drafts, publishing, snapshots to git.",
-      Icon: PencilSimpleLine,
+      Icon: PencilSimpleLineIcon,
     },
     {
       href: "/admin/lib",
       name: "Lib",
       tagline: "German, learned with a quiet AI.",
-      Icon: BookOpen,
+      Icon: BookOpenIcon,
     },
     {
       href: "/admin/log",
       name: "Log",
       tagline: "Ops dashboard for the personal stack.",
-      Icon: Pulse,
+      Icon: PulseIcon,
     },
     {
       href: "/admin/links",
       name: "Links",
       tagline: "Saved reading and references.",
-      Icon: Paperclip,
+      Icon: PaperclipIcon,
     },
   ];
 
@@ -80,7 +80,7 @@ export default async function AdminPage() {
         <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
           Welcome back
         </h1>
-        <p className="mt-4 text-base italic leading-[1.5] text-balance text-foreground/70">
+        <p className="mt-4 text-base italic leading-normal text-balance text-foreground/70">
           Your admin tools, all in one place.
         </p>
       </hgroup>

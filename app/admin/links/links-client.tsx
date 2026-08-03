@@ -617,7 +617,7 @@ function PublicTag() {
 
 function PrivateTag() {
   return (
-    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-2.5 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
+    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/6 px-2.5 py-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
       Private
     </span>
   );
@@ -648,7 +648,7 @@ function EmptyAll({ onNew }: { onNew: () => void }) {
 function NoResults({ onClear }: { onClear: () => void }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/[0.04] text-zinc-500 dark:text-zinc-500">
+      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/4 text-zinc-500 dark:text-zinc-500">
         <MagnifyingGlassIcon weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
@@ -700,7 +700,7 @@ function TokenDialog({
             </DialogDescription>
           </DialogHeader>
           <DialogBody>
-            <div className="flex items-start gap-2 rounded bg-foreground/[0.04] px-3 py-2">
+            <div className="flex items-start gap-2 rounded bg-foreground/4 px-3 py-2">
               <code className="flex-1 break-all font-mono text-xs leading-relaxed text-foreground">
                 {token ?? "Not generated yet."}
               </code>
@@ -711,7 +711,7 @@ function TokenDialog({
                   size="icon-sm"
                   onClick={copy}
                   aria-label="Copy token"
-                  className="shrink-0 text-zinc-600 hover:bg-foreground/[0.04] dark:text-zinc-400"
+                  className="shrink-0 text-zinc-600 hover:bg-foreground/4 dark:text-zinc-400"
                 >
                   {copied ? (
                     <CheckIcon weight="bold" className="text-[#0040ff] dark:text-[#ffff01]" />

@@ -7,17 +7,17 @@ import { useEffect, useMemo, useState, useTransition } from "react";
 const DUE_TOOLTIP =
   "Each word becomes two flashcards — German→Serbian and Serbian→German. This counts how many of those are scheduled for review.";
 import {
-  ArrowRight,
+  ArrowRightIcon,
   ArrowsDownUpIcon,
-  BookOpen,
+  BookOpenIcon,
   CheckIcon,
-  DotsThreeVertical,
+  DotsThreeVerticalIcon,
   FunnelSimpleIcon,
-  MagnifyingGlass,
-  PencilSimple,
-  Plus,
-  Trash,
-  X as XIcon,
+  MagnifyingGlassIcon,
+  PencilSimpleIcon,
+  PlusIcon,
+  TrashIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 
 import {
@@ -405,9 +405,9 @@ export function LibClient({ initialEntries, initialStats }: Props) {
         <div className="hidden items-center gap-2 md:flex">
           <Button asChild variant="outline" className="h-9">
             <Link href="/admin/lib/review" className="group">
-              <BookOpen weight="bold" />
+              <BookOpenIcon weight="bold" />
               Review
-              <ArrowRight
+              <ArrowRightIcon
                 weight="bold"
                 className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
               />
@@ -581,16 +581,16 @@ function EntryRow({
             aria-label={`Actions for ${entry.term}`}
             className="text-zinc-600 dark:text-zinc-400"
           >
-            <DotsThreeVertical weight="bold" className="size-5" />
+            <DotsThreeVerticalIcon weight="bold" className="size-5" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={onEdit}>
-            <PencilSimple weight="bold" />
+            <PencilSimpleIcon weight="bold" />
             Edit
           </DropdownMenuItem>
           <DropdownMenuItem variant="destructive" onClick={onDelete}>
-            <Trash weight="bold" />
+            <TrashIcon weight="bold" />
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -601,7 +601,7 @@ function EntryRow({
 
 function PosTag({ pos }: { pos: string }) {
   return (
-    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/[0.06] px-1.5 py-px text-[10px] font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+    <span className="inline-flex shrink-0 items-center rounded-full bg-foreground/6 px-1.5 py-px text-[10px] font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
       {pos}
     </span>
   );
@@ -616,7 +616,7 @@ function SearchField({
 }) {
   return (
     <div className="relative flex-1">
-      <MagnifyingGlass
+      <MagnifyingGlassIcon
         weight="regular"
         className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-500"
       />
@@ -654,7 +654,7 @@ function Empty({
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
       <div className="flex size-10 items-center justify-center rounded-full bg-[#0040ff]/10 text-[#0040ff] dark:bg-[#ffff01]/10 dark:text-[#ffff01]">
-        <BookOpen weight="regular" className="size-5" />
+        <BookOpenIcon weight="regular" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">
         <p className="text-base font-medium text-foreground">
@@ -672,7 +672,7 @@ function Empty({
         </Button>
       ) : (
         <Button onClick={onNew} className="mt-2">
-          <Plus weight="bold" />
+          <PlusIcon weight="bold" />
           New entry
         </Button>
       )}

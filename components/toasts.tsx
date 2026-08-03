@@ -113,7 +113,7 @@ function Toaster({
 }) {
   if (toasts.length === 0) return null;
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-3 z-[60] flex flex-col items-center gap-2 px-3 lg:inset-x-auto lg:bottom-4 lg:right-4 lg:top-auto lg:flex-col-reverse lg:items-end lg:px-0">
+    <div className="pointer-events-none fixed inset-x-0 top-3 z-60 flex flex-col items-center gap-2 px-3 lg:inset-x-auto lg:bottom-4 lg:right-4 lg:top-auto lg:flex-col-reverse lg:items-end lg:px-0">
       {toasts.map((toast) => (
         <ToastItem
           key={toast.id}
@@ -172,7 +172,7 @@ function ToastItem({
         type="button"
         onClick={onDismiss}
         aria-label="Dismiss"
-        className="-mr-1 -mt-1 flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-zinc-400 transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+        className="-mr-1 -mt-1 flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-zinc-400 transition-colors hover:bg-foreground/6 hover:text-foreground"
       >
         <XIcon weight="bold" className="size-3.5" />
       </button>

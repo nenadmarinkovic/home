@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { CheckCircle, Sparkle, WarningCircle } from "@phosphor-icons/react";
+import { CheckCircleIcon, SparkleIcon, WarningCircleIcon } from "@phosphor-icons/react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -215,7 +215,7 @@ export function BulkAddDialog({ open, onClose, onCompleted }: Props) {
             onClick={() => void start()}
             disabled={running || text.trim().length === 0}
           >
-            <Sparkle weight="bold" />
+            <SparkleIcon weight="bold" />
             {running ? "Enriching…" : "Enrich and save"}
           </Button>
         </DialogFooter>
@@ -247,7 +247,7 @@ function RowStatusBadge({ row }: { row: Row }) {
     case "saved":
       return (
         <span className="inline-flex items-center gap-1 text-xs uppercase tracking-wider text-[#0040ff] dark:text-[#ffff01]">
-          <CheckCircle weight="fill" className="size-3.5" />
+          <CheckCircleIcon weight="fill" className="size-3.5" />
           Saved
         </span>
       );
@@ -257,7 +257,7 @@ function RowStatusBadge({ row }: { row: Row }) {
           className="inline-flex items-center gap-1 text-xs uppercase tracking-wider text-destructive"
           title={row.message}
         >
-          <WarningCircle weight="fill" className="size-3.5" />
+          <WarningCircleIcon weight="fill" className="size-3.5" />
           Error
         </span>
       );

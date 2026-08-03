@@ -88,7 +88,7 @@ export function MobileMenu() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
-        className="relative z-[60] -m-3 flex cursor-pointer touch-manipulation items-center justify-center p-3 text-foreground"
+        className="relative z-60 -m-3 flex cursor-pointer touch-manipulation items-center justify-center p-3 text-foreground"
       >
         <HamburgerIcon open={open} />
       </button>

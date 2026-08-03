@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr";
 
 export default function ArticleNotFound() {
   return (
@@ -11,7 +11,7 @@ export default function ArticleNotFound() {
         <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
           Article not found.
         </h1>
-        <p className="mt-4 text-base italic leading-[1.5] text-balance text-foreground/70">
+        <p className="mt-4 text-base italic leading-normal text-balance text-foreground/70">
           That essay isn’t here — it may have moved or never existed.
         </p>
       </hgroup>
@@ -20,7 +20,7 @@ export default function ArticleNotFound() {
           href="/writing"
           className="group inline-flex items-center gap-1.5 text-zinc-600 transition-opacity hover:opacity-70 dark:text-zinc-400"
         >
-          <ArrowLeft
+          <ArrowLeftIcon
             weight="bold"
             className="size-3.5 transition-transform duration-200 group-hover:-translate-x-0.5"
           />

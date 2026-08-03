@@ -3,9 +3,9 @@
 import { useState } from "react";
 import {
   ArrowRightIcon,
-  Plus,
-  Sparkle,
-  X as XIcon,
+  PlusIcon,
+  SparkleIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 
 import { TagChip } from "@/components/tag-chip";
@@ -320,7 +320,7 @@ export function EntryEditor({
                 onChange={(e) => onChange({ ...draft, notes: e.target.value })}
                 placeholder="Usage notes, false friends, register…"
                 rows={3}
-                className="resize-none [field-sizing:content]"
+                className="resize-none field-sizing-content"
               />
             </FieldRow>
           </aside>
@@ -338,7 +338,7 @@ export function EntryEditor({
                       onClick={() => void onGenerateExamples()}
                       disabled={generatingExamples || !draft.term.trim()}
                     >
-                      <Sparkle weight="bold" />
+                      <SparkleIcon weight="bold" />
                       {generatingExamples ? "Generating…" : "Generate"}
                     </Button>
                   )}
@@ -353,7 +353,7 @@ export function EntryEditor({
                       })
                     }
                   >
-                    <Plus weight="bold" />
+                    <PlusIcon weight="bold" />
                     Add
                   </Button>
                 </div>
@@ -407,7 +407,7 @@ export function EntryEditor({
                     onClick={commitNewTag}
                     disabled={!newTag.trim()}
                   >
-                    <Plus weight="bold" />
+                    <PlusIcon weight="bold" />
                     Add
                   </Button>
                 </div>
@@ -432,7 +432,7 @@ export function EntryEditor({
               onClick={() => void onEnrich()}
               disabled={enriching || !draft.term.trim()}
             >
-              <Sparkle weight="bold" />
+              <SparkleIcon weight="bold" />
               {enriching ? "Asking Mistral…" : "Enrich with AI"}
             </Button>
           ) : (
@@ -509,7 +509,7 @@ function ExamplesEditor({
         {examples.map((example, idx) => (
           <li
             key={idx}
-            className="group/example relative rounded-md border border-foreground/10 bg-foreground/[0.02] p-3"
+            className="group/example relative rounded-md border border-foreground/10 bg-foreground/2 p-3"
           >
             <div className="flex flex-col gap-2 pr-8">
               <div className="flex flex-col gap-1">
@@ -570,7 +570,7 @@ function ExamplesEditor({
             </AlertDialogDescription>
           </AlertDialogHeader>
           {pending && (
-            <div className="flex flex-col gap-2 rounded-md border border-foreground/10 bg-foreground/[0.03] px-4 py-3">
+            <div className="flex flex-col gap-2 rounded-md border border-foreground/10 bg-foreground/3 px-4 py-3">
               <p className="text-base leading-snug text-foreground">
                 {pending.de || "—"}
               </p>

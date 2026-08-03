@@ -22,7 +22,7 @@ export default async function WritingIndexPage() {
         <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
           Notes worth keeping
         </h1>
-        <p className="mt-4 text-base italic leading-[1.5] text-balance text-foreground/70">
+        <p className="mt-4 text-base italic leading-normal text-balance text-foreground/70">
           Notes I&rsquo;ve put down along the way — software, design, the web,
           and anything else worth thinking about.
         </p>

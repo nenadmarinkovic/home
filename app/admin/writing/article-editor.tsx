@@ -9,16 +9,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { format, parseISO } from "date-fns";
 import {
-  CalendarBlank,
-  Image as ImageIcon,
-  ListBullets,
-  Quotes,
-  TextB,
-  TextHOne,
-  TextHTwo,
-  TextItalic,
-  Trash,
-  Link as LinkIcon,
+  CalendarBlankIcon,
+  ImageIcon,
+  ListBulletsIcon,
+  QuotesIcon,
+  TextBIcon,
+  TextHOneIcon,
+  TextHTwoIcon,
+  TextItalicIcon,
+  TrashIcon,
+  LinkIcon,
 } from "@phosphor-icons/react";
 
 import { Logo } from "@/components/logo";
@@ -268,7 +268,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
                     variant="outline"
                     className="h-9 w-full justify-start gap-2 px-3 text-sm font-normal"
                   >
-                    <CalendarBlank
+                    <CalendarBlankIcon
                       weight="regular"
                       className="size-4 text-zinc-500"
                     />
@@ -344,7 +344,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
                     disabled={imageUploading}
                     onClick={() => setImage("")}
                   >
-                    <Trash weight="regular" className="size-4" />
+                    <TrashIcon weight="regular" className="size-4" />
                     Remove
                   </Button>
                 )}
@@ -550,37 +550,37 @@ function EditorToolbar({ editor }: { editor: Editor }) {
   }> = [
     {
       label: "H2",
-      icon: <TextHOne weight="bold" />,
+      icon: <TextHOneIcon weight="bold" />,
       isActive: editor.isActive("heading", { level: 2 }),
       run: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
     },
     {
       label: "H3",
-      icon: <TextHTwo weight="bold" />,
+      icon: <TextHTwoIcon weight="bold" />,
       isActive: editor.isActive("heading", { level: 3 }),
       run: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
     },
     {
       label: "Bold",
-      icon: <TextB weight="bold" />,
+      icon: <TextBIcon weight="bold" />,
       isActive: editor.isActive("bold"),
       run: () => editor.chain().focus().toggleBold().run(),
     },
     {
       label: "Italic",
-      icon: <TextItalic weight="bold" />,
+      icon: <TextItalicIcon weight="bold" />,
       isActive: editor.isActive("italic"),
       run: () => editor.chain().focus().toggleItalic().run(),
     },
     {
       label: "Quote",
-      icon: <Quotes weight="bold" />,
+      icon: <QuotesIcon weight="bold" />,
       isActive: editor.isActive("blockquote"),
       run: () => editor.chain().focus().toggleBlockquote().run(),
     },
     {
       label: "List",
-      icon: <ListBullets weight="bold" />,
+      icon: <ListBulletsIcon weight="bold" />,
       isActive: editor.isActive("bulletList"),
       run: () => editor.chain().focus().toggleBulletList().run(),
     },
@@ -609,7 +609,7 @@ function EditorToolbar({ editor }: { editor: Editor }) {
       ? [
           {
             label: "Remove image",
-            icon: <Trash weight="bold" />,
+            icon: <TrashIcon weight="bold" />,
             isActive: false,
             run: () => editor.chain().focus().deleteSelection().run(),
             tone: "danger" as const,

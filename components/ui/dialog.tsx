@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Dialog as DialogPrimitive } from "radix-ui";
-import { X as XIcon } from "@phosphor-icons/react";
+import { XIcon } from "@phosphor-icons/react";
 
 import { cn } from "@/lib/utils";
 
@@ -141,7 +141,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex flex-nowrap items-center justify-end gap-1.5 border-t border-foreground/10 bg-foreground/[0.015] px-5 py-3 sm:gap-2 sm:px-6 sm:py-4",
+        "flex flex-nowrap items-center justify-end gap-1.5 border-t border-foreground/10 bg-foreground/1.5 px-5 py-3 sm:gap-2 sm:px-6 sm:py-4",
         className,
       )}
       {...props}

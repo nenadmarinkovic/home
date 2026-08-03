@@ -41,7 +41,7 @@ export default function ContactPage() {
         <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
           Get in touch
         </h1>
-        <p className="mt-4 text-base italic leading-[1.5] text-balance text-foreground/70">
+        <p className="mt-4 text-base italic leading-normal text-balance text-foreground/70">
           Feel free to get in touch with me.
           <br />I will probably respond in less than 48h.
         </p>
@@ -55,7 +55,7 @@ export default function ContactPage() {
                 <dt className="font-sans text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
                   {l.label}
                 </dt>
-                <dd className="font-sans text-sm leading-[1.35] text-pretty break-words">
+                <dd className="font-sans text-sm leading-[1.35] text-pretty wrap-break-word">
                   <a
                     href={l.href}
                     target={l.href.startsWith("http") ? "_blank" : undefined}

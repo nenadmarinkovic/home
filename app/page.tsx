@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 
 import { AdminActions } from "@/components/admin-actions";
 import { AnimatedGreeting } from "@/components/animated-greeting";
@@ -55,7 +55,7 @@ export default async function Home() {
             className="group inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 transition-colors hover:text-foreground dark:text-zinc-400"
           >
             All writing
-            <ArrowRight
+            <ArrowRightIcon
               weight="bold"
               className="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
             />

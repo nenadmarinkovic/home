@@ -373,7 +373,7 @@ function CardView({
     <section className="flex flex-1 flex-col items-center gap-6 sm:gap-8">
       <article
         className={cn(
-          "flex w-full max-w-xl flex-col items-center gap-5 rounded-2xl border border-foreground/10 bg-foreground/[0.02] px-4 py-7 text-center sm:gap-6 sm:px-6 sm:py-12",
+          "flex w-full max-w-xl flex-col items-center gap-5 rounded-2xl border border-foreground/10 bg-foreground/2 px-4 py-7 text-center sm:gap-6 sm:px-6 sm:py-12",
           "animate-in fade-in-0 duration-150",
         )}
       >
@@ -495,9 +495,9 @@ function RatingButton({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "group/btn flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-foreground/15 bg-foreground/[0.03] px-3 font-sans text-sm font-semibold text-foreground transition-colors",
-        "hover:border-foreground/30 hover:bg-foreground/[0.06] active:scale-[0.98]",
-        "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-foreground/15 disabled:hover:bg-foreground/[0.03]",
+        "group/btn flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-foreground/15 bg-foreground/3 px-3 font-sans text-sm font-semibold text-foreground transition-colors",
+        "hover:border-foreground/30 hover:bg-foreground/6 active:scale-[0.98]",
+        "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-foreground/15 disabled:hover:bg-foreground/3",
       )}
     >
       <span
@@ -529,7 +529,7 @@ function Loading() {
 function NeedsDownload() {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/[0.06] text-foreground/70">
+      <div className="flex size-10 items-center justify-center rounded-full bg-foreground/6 text-foreground/70">
         <CloudSlashIcon weight="fill" className="size-5" />
       </div>
       <div className="flex flex-col gap-1">

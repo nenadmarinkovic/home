@@ -6,7 +6,7 @@ import { MobileMenu } from "@/components/mobile-menu";
 
 export function SiteHeader() {
   return (
-    <header className="flex items-center justify-between gap-6 pt-[27px] md:pt-12">
+    <header className="flex items-center justify-between gap-6 pt-6.75 md:pt-12">
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex items-center justify-between gap-6">
           <Link
@@ -14,7 +14,7 @@ export function SiteHeader() {
             aria-label="Nenad Marinković — home"
             className="flex items-center text-foreground"
           >
-            <Logo className="h-[18px] w-auto" />
+            <Logo className="h-4.5 w-auto" />
           </Link>
           <MobileMenu />
         </div>

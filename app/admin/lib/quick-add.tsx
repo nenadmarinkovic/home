@@ -512,7 +512,7 @@ export function QuickAdd({ className }: Props) {
           <div
             ref={overlayRef}
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 max-h-44 overflow-hidden whitespace-pre-wrap break-words px-4 pb-0.5 pt-2.5 text-base leading-normal md:px-3 md:py-2 md:text-sm md:leading-5"
+            className="pointer-events-none absolute inset-0 max-h-44 overflow-hidden whitespace-pre-wrap wrap-break-word px-4 pb-0.5 pt-2.5 text-base leading-normal md:px-3 md:py-2 md:text-sm md:leading-5"
           >
             {value ? <span>{value} </span> : null}
             <span className="italic text-foreground/40">{interim}</span>
@@ -550,7 +550,7 @@ export function QuickAdd({ className }: Props) {
             <span>{voiceLabel}</span>
           </button>
 
-          <div className="inline-flex items-center rounded-full bg-foreground/[0.06] p-0.5 text-[11px] font-semibold tabular-nums">
+          <div className="inline-flex items-center rounded-full bg-foreground/6 p-0.5 text-[11px] font-semibold tabular-nums">
             {(["de-DE", "sr-RS"] as const).map((lang) => {
               const active = previewLang === lang;
               const label = lang === "de-DE" ? "DE" : "SR";
