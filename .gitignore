@@ -53,3 +53,6 @@ next-env.d.ts
 
 # local uploaded images (mounted volume in prod)
 /uploads
+
+# sqlite pre-sync snapshot
+*.pre-sync

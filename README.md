@@ -160,6 +160,46 @@ The framed app must allow this origin to embed it — for bim that is
 send back a `controls` list that renders as pills under an `embed` figure. A
 `device` frame is deliberately non-interactive so it never steals touch scroll.
 
+## Syncing local and production
+
+The local database and the one on the server are both written to — articles from
+either admin area, links from the browser extensions, reviews from the phone.
+`npm run db:sync` merges them in both directions and writes the result to both
+sides, so either machine can be edited and they converge.
+
+```bash
+npm run db:sync -- --dry-run   # report the merge, write nothing
+npm run db:sync                # merge and write both sides
+```
+
+Rows are matched on natural keys, never on autoincrement ids, so the two
+databases are free to disagree about ids:
+
+| Table | Rule |
+| --- | --- |
+| `articles` | last write wins on `(slug, language)` by `updated_at` |
+| `links`, `tags`, `link_tags` | union by `url` / `slug`; last write wins |
+| `vocab_entries` | union by `(lemma, pos)`; slug collisions get suffixed |
+| `review_log` | union — append-only, identified by card and instant |
+| `srs_cards` | **recomputed** by replaying the merged log through `ts-fsrs` |
+| `settings` | production wins — it holds the links API token |
+
+Scheduling state is never merged field by field. `srs_cards` is a fold over
+`review_log`, so it is discarded and rebuilt from the merged log with the same
+scheduler the app uses, which is what makes reviewing on the phone and on the
+laptop safe to combine.
+
+It reaches production over SSH and runs inside the app container, using its
+`better-sqlite3` (the host has no `sqlite3` binary). Override
+`SYNC_SSH_HOST`, `SYNC_SERVICE`, or `SYNC_REMOTE_DB` if any of those change.
+The local database is snapshotted to `data/articles.db.pre-sync` first.
+
+`npm run db:sync:test` builds two divergent throwaway databases, merges them,
+and asserts the outcome — conflict resolution, id remapping, the FSRS replay,
+and idempotence. Run it after any schema change. The sync also refuses to run if
+a migration adds a column it does not know about, rather than silently dropping
+that data on both sides.
+
 ## Exporting the word library
 
 `npm run lib:export` dumps the whole vocab DB into the repo so it can be read
@@ -188,6 +228,8 @@ git add content/lib && git commit -m "Update vocab export"
 - `npm run db:studio` — Drizzle Studio
 - `npm run db:seed` — seed the DB from `content/`
 - `npm run db:export` — write articles from the DB back to `content/`
+- `npm run db:sync` — two-way merge between the local and production databases
+- `npm run db:sync:test` — self-test for the sync's merge rules
 - `npm run lib:export` — export the word library to `content/lib/`
 
 ## Deployment

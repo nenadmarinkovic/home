@@ -17,6 +17,8 @@
     "db:studio": "drizzle-kit studio",
     "db:seed": "node scripts/seed.mjs",
     "db:export": "tsx scripts/export-to-content.ts",
+    "db:sync": "tsx scripts/sync-db.ts",
+    "db:sync:test": "tsx scripts/sync-selftest.ts",
     "lib:export": "tsx scripts/export-lib.ts"
   },
   "dependencies": {
