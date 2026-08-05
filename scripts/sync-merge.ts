@@ -1,6 +1,3 @@
-// Merge rules for `npm run db:sync`. Kept separate from the transport so the
-// merge can be exercised without touching production.
-
 import { newCard, review } from "../lib/fsrs";
 import type { Rating } from "../db/schema";
 
@@ -26,45 +23,99 @@ export type MergeStat = {
   fromLive: number;
   fromLocal: number;
   added: number;
+  deleted: number;
+  resurrected: number;
 };
 
-// Keep whichever side touched the row last. `stamp` names the column that says
-// when that was; without one, the first side wins and the other is ignored.
+export type SyncState = {
+  version: 1;
+  syncedAt: number; // epoch seconds, matching the *_at columns
+  keys: Record<string, string[]>;
+};
+
+export type Ancestor = { keys: Set<string>; syncedAt: number } | null;
+
+export function ancestorFor(state: SyncState | null, table: string): Ancestor {
+  if (!state) return null;
+  return { keys: new Set(state.keys[table] ?? []), syncedAt: state.syncedAt };
+}
+
 export function mergeBy(
   local: Row[],
   live: Row[],
   keyOf: (row: Row) => string,
   stamp: string | null,
+  ancestor: Ancestor = null,
 ): MergeStat {
+  const localByKey = new Map<string, Row>();
+  for (const row of local) localByKey.set(keyOf(row), row);
+  const liveByKey = new Map<string, Row>();
+  for (const row of live) liveByKey.set(keyOf(row), row);
+
   const merged = new Map<string, Row>();
   let fromLive = 0;
   let fromLocal = 0;
   let added = 0;
+  let deleted = 0;
+  let resurrected = 0;
 
-  for (const row of local) merged.set(keyOf(row), row);
+  const editedSinceSync = (row: Row) =>
+    !!stamp && !!ancestor && num(row[stamp]) > ancestor.syncedAt;
 
-  for (const row of live) {
-    const k = keyOf(row);
-    const mine = merged.get(k);
-    if (!mine) {
-      merged.set(k, row);
-      added += 1;
+  for (const [k, mine] of localByKey) {
+    const theirs = liveByKey.get(k);
+
+    if (theirs) {
+      if (!stamp) {
+        merged.set(k, mine);
+      } else if (num(theirs[stamp]) > num(mine[stamp])) {
+        merged.set(k, theirs);
+        fromLive += 1;
+      } else {
+        merged.set(k, mine);
+        if (num(theirs[stamp]) < num(mine[stamp])) fromLocal += 1;
+      }
       continue;
     }
-    if (!stamp) continue;
-    if (num(row[stamp]) > num(mine[stamp])) {
-      merged.set(k, row);
-      fromLive += 1;
-    } else if (num(row[stamp]) < num(mine[stamp])) {
-      fromLocal += 1;
+
+    if (ancestor?.keys.has(k)) {
+      if (editedSinceSync(mine)) {
+        merged.set(k, mine);
+        resurrected += 1;
+      } else {
+        deleted += 1;
+      }
+      continue;
     }
+    merged.set(k, mine);
   }
 
-  return { rows: [...merged.values()], fromLive, fromLocal, added };
+  for (const [k, theirs] of liveByKey) {
+    if (localByKey.has(k)) continue;
+
+    if (ancestor?.keys.has(k)) {
+      if (editedSinceSync(theirs)) {
+        merged.set(k, theirs);
+        resurrected += 1;
+      } else {
+        deleted += 1;
+      }
+      continue;
+    }
+    merged.set(k, theirs);
+    added += 1;
+  }
+
+  return {
+    rows: [...merged.values()],
+    fromLive,
+    fromLocal,
+    added,
+    deleted,
+    resurrected,
+  };
 }
 
-// vocab_entries carries a unique slug alongside its unique (lemma, pos). Two
-// sides can independently mint the same slug for different words.
 export function dedupeSlugs(rows: Row[]): number {
   const seen = new Set<string>();
   let renamed = 0;
@@ -83,8 +134,6 @@ export function dedupeSlugs(rows: Row[]): number {
   return renamed;
 }
 
-// srs_cards is a fold over review_log, so it is never merged field by field —
-// it is recomputed by replaying the merged log through the app's scheduler.
 export function rebuildCards(cards: Row[], reviews: Row[]): number {
   const byCard = new Map<string, Row[]>();
   for (const log of reviews) {
@@ -102,7 +151,11 @@ export function rebuildCards(cards: Row[], reviews: Row[]): number {
     logs.sort((a, b) => num(a.review) - num(b.review));
     let state = newCard(new Date(num(logs[0].review)));
     for (const log of logs) {
-      state = review(state, log.rating as Rating, new Date(num(log.review))).card;
+      state = review(
+        state,
+        log.rating as Rating,
+        new Date(num(log.review)),
+      ).card;
     }
 
     card.due = state.due.getTime();
@@ -120,29 +173,54 @@ export function rebuildCards(cards: Row[], reviews: Row[]): number {
   return replayed;
 }
 
-export function merge(local: Dataset, live: Dataset) {
+export const ARTICLE_KEY = (r: Row) => key(r.slug, r.language);
+export const TAG_KEY = (r: Row) => key(r.slug);
+export const LINK_KEY = (r: Row) => key(r.url);
+export const VOCAB_KEY = (r: Row) => key(r.lemma, r.pos);
+export const CARD_KEY = (r: Row) => key(r.lemma, r.pos, r.direction);
+export const LINK_TAG_KEY = (r: Row) => key(r.link_url, r.tag_slug);
+
+export function merge(
+  local: Dataset,
+  live: Dataset,
+  state: SyncState | null = null,
+) {
   const articles = mergeBy(
     local.articles,
     live.articles,
-    (r) => key(r.slug, r.language),
+    ARTICLE_KEY,
     "updated_at",
+    ancestorFor(state, "articles"),
   );
-  const tags = mergeBy(local.tags, live.tags, (r) => key(r.slug), null);
-  const links = mergeBy(local.links, live.links, (r) => key(r.url), "updated_at");
+  const tags = mergeBy(
+    local.tags,
+    live.tags,
+    TAG_KEY,
+    "created_at",
+    ancestorFor(state, "tags"),
+  );
+  const links = mergeBy(
+    local.links,
+    live.links,
+    LINK_KEY,
+    "updated_at",
+    ancestorFor(state, "links"),
+  );
   const vocab = mergeBy(
     local.vocab,
     live.vocab,
-    (r) => key(r.lemma, r.pos),
+    VOCAB_KEY,
     "updated_at",
+    ancestorFor(state, "vocab"),
   );
   const cards = mergeBy(
     local.cards,
     live.cards,
-    (r) => key(r.lemma, r.pos, r.direction),
+    CARD_KEY,
     "updated_at",
+    ancestorFor(state, "cards"),
   );
 
-  // Append-only: a review is identified by its card and the instant it happened.
   const reviews = mergeBy(
     local.reviews,
     live.reviews,
@@ -150,22 +228,26 @@ export function merge(local: Dataset, live: Dataset) {
     null,
   );
 
-  // Production owns settings — the links API token lives here and the browser
-  // extensions authenticate against the live copy.
-  const settings = mergeBy(live.settings, local.settings, (r) => key(r.key), null);
+  const settings = mergeBy(
+    live.settings,
+    local.settings,
+    (r) => key(r.key),
+    null,
+  );
 
+  const linkTagsMerged = mergeBy(
+    local.linkTags,
+    live.linkTags,
+    LINK_TAG_KEY,
+    null,
+    ancestorFor(state, "linkTags"),
+  );
   const keptLinks = new Set(links.rows.map((r) => String(r.url)));
   const keptTags = new Set(tags.rows.map((r) => String(r.slug)));
-  const seenPairs = new Set<string>();
-  const linkTags: Row[] = [];
-  for (const row of [...local.linkTags, ...live.linkTags]) {
-    const k = key(row.link_url, row.tag_slug);
-    if (seenPairs.has(k)) continue;
-    if (!keptLinks.has(String(row.link_url))) continue;
-    if (!keptTags.has(String(row.tag_slug))) continue;
-    seenPairs.add(k);
-    linkTags.push(row);
-  }
+  const linkTags = linkTagsMerged.rows.filter(
+    (r) =>
+      keptLinks.has(String(r.link_url)) && keptTags.has(String(r.tag_slug)),
+  );
 
   const renamed = dedupeSlugs(vocab.rows);
   const replayed = rebuildCards(cards.rows, reviews.rows);
@@ -181,6 +263,10 @@ export function merge(local: Dataset, live: Dataset) {
     settings: settings.rows,
   };
 
+  const stats = [articles, tags, links, vocab, cards, linkTagsMerged];
+  const deleted = stats.reduce((n, s) => n + s.deleted, 0);
+  const resurrected = stats.reduce((n, s) => n + s.resurrected, 0);
+
   return {
     dataset,
     articles,
@@ -191,5 +277,22 @@ export function merge(local: Dataset, live: Dataset) {
     reviews,
     renamed,
     replayed,
+    deleted,
+    resurrected,
+  };
+}
+
+export function stateFrom(dataset: Dataset, syncedAt: number): SyncState {
+  return {
+    version: 1,
+    syncedAt,
+    keys: {
+      articles: dataset.articles.map(ARTICLE_KEY),
+      tags: dataset.tags.map(TAG_KEY),
+      links: dataset.links.map(LINK_KEY),
+      linkTags: dataset.linkTags.map(LINK_TAG_KEY),
+      vocab: dataset.vocab.map(VOCAB_KEY),
+      cards: dataset.cards.map(CARD_KEY),
+    },
   };
 }

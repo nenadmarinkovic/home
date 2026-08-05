@@ -1,122 +1,75 @@
 # nenadmarinkovic.com
 
-Personal site of Nenad Marinković — writing, a saved-links collection, a
-German–Serbian word library with spaced repetition, and a few small tools. Built
-with [Next.js](https://nextjs.org) (App Router) and SQLite via Drizzle,
-installable as a PWA, and deployable to a self-hosted server.
+My personal site. I write here about the projects I work on and about tech in
+general, keep the links worth holding onto as I come across them, and run a small
+German library that quizzes me with spaced repetition and lets me save new words
+on the go, by typing or by voice. It is also the admin tool I open every day to
+keep an eye on the services running on my Hetzner VPS through Dokploy.
 
-## Getting started
+Built with Next.js and SQLite. It runs on a small server I rent, and it installs
+on my phone as a PWA.
+
+## Running it locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open <http://localhost:3000>. The first run creates a local SQLite database under
-`data/` and applies migrations; `npm run db:seed` will load the Markdown articles
-in `content/` into it.
+Then open <http://localhost:3000>. The first run creates the SQLite file under
+`data/` and applies the migrations. There is no seed data in the repo, so the
+site starts empty and you fill it from the admin area.
 
-## Features
+## What is in here
 
-- **Writing** — articles written in a TipTap rich-text editor in the admin area
-  and rendered as Markdown. The editor is lazy-loaded so visitors never pay for
-  it. Articles can be exported back to `content/` so the source stays portable
-  and version-controlled.
-- **Word library** — a German↔Serbian vocabulary trainer with spaced repetition
-  (FSRS via `ts-fsrs`). Each entry generates two cards (de→sr, sr→de); reviews
-  are scheduled per direction. Mistral powers term enrichment (gender, plural,
-  conjugations), example sentences, translation, and audio transcription.
-- **Offline review** — the reviewable deck is mirrored into IndexedDB and the app
-  ships as a PWA with a service worker, so review runs offline on a phone and
-  syncs back when reconnected.
-- **Links** — a tagged bookmark collection with AI summaries, fed by companion
-  Chrome and Firefox extensions (`extensions/`).
-- **Ops log** — the admin **Log** is a live dashboard for the personal stack: it
-  pulls a Dokploy snapshot and shows projects, applications, databases, domains,
-  and deployment status at a glance.
-- **Pages** — home, writing, links, and contact, plus an RSS feed at `/rss.xml`.
-- **Admin** — a password-protected area (`/admin`) with four tools: **Writing**
-  (drafts, publishing, snapshots to git), **Lib** (the word library and reviews),
-  **Log** (the ops dashboard above), and **Links**. Landing page shows a live
-  wall clock alongside the date.
+**Writing.** I write posts in a rich text editor at `/admin/writing` and they
+render as Markdown. The editor loads only when I open it, so nobody visiting the
+site pays for it. Posts can be exported back to Markdown files and snapshotted to
+git when I want them somewhere portable.
 
-## Stack
+**Word library.** A German vocabulary trainer with spaced repetition, using FSRS.
+Every entry becomes two cards, one in each direction, and each direction is
+scheduled on its own. Mistral fills in the boring parts: gender, plural,
+conjugations, example sentences, translations, and transcription when I speak a
+word instead of typing it.
 
-- Next.js (App Router) with a service-worker PWA
-- Tailwind CSS v4 with shadcn/ui
-- SQLite + Drizzle ORM (`better-sqlite3`)
-- FSRS spaced repetition (`ts-fsrs`)
-- Mistral for enrichment, translation, transcription, and summaries
-- Dokploy API for the infrastructure page
-- Self-hosted fonts via `next/font/local`:
-  - **Google Sans Flex** (sans, variable) — subsetted to Latin + Latin Ext, axes trimmed to `wght` and `opsz`
-  - **Newsreader** (serif, variable, normal + italic) — subsetted to Latin + Latin Ext
+**Offline review.** The reviewable deck is mirrored into IndexedDB and the site
+ships a service worker, so I can review on my phone underground and it syncs when
+I get signal back.
 
-Font files live in `app/fonts/`.
+**Links.** A tagged collection of pages worth keeping, with summaries written by
+Mistral. I save them with the browser extensions in `extensions/`.
 
-## Project structure
+**Ops log.** `/admin/log` reads my Dokploy instance and shows what is running:
+projects, apps, databases, domains, and whether the last deploy went through.
 
-```
-app/                  Routes (App Router)
-  writing/            Articles index and per-article pages
-  links/              Public links collection
-  contact/            Contact page
-  offline/            PWA offline fallback
-  rss.xml/            RSS feed
-  admin/              Password-protected admin area
-    writing/          Drafts, publishing, snapshots to git
-    lib/              Word library + review (lib/review)
-    log/              Ops dashboard (Dokploy snapshot)
-    links/            Manage saved links
-  api/                Route handlers (articles, lib, links, dokploy, auth…)
-  fonts/              Self-hosted variable fonts
-components/           Shared UI (shadcn/ui + custom)
-lib/                  Domain logic: auth, DB access, FSRS, Mistral, exports, utils
-db/                   Drizzle schema and SQLite client
-drizzle/              Generated SQL migrations
-scripts/              Migrate, seed, and export scripts
-content/              Markdown articles (source of truth for writing)
-extensions/           Chrome and Firefox link-saver extensions
-public/               Static assets, manifest, and service worker
-```
+**The public side.** Home, writing, links, contact, an RSS feed at `/rss.xml`, a
+sitemap, and a robots file that keeps crawlers out of the admin area.
 
-## Authentication
+## Writing posts
 
-Access to `/admin` and mutating API routes is gated by a signed session cookie
-(see `proxy.ts` and `lib/auth.ts`). Sign in at `/login` with `ADMIN_PASSWORD`.
-Sessions slide forward on active use so a PWA stays signed in, up to a hard TTL;
-bumping `AUTH_VALID_AFTER` invalidates all existing sessions.
+Posts live in the database, not in files. `content/` is an export target, not the
+source, so editing a Markdown file there does nothing until you seed it back in,
+and the seed only inserts posts that do not already exist. It never updates one.
 
-## Environment variables
+Two things are worth knowing when poking at the database directly:
 
-Set these in `.env.local` for development (none are committed):
+Article reads go through `unstable_cache` with a one hour window, and the
+revalidation only fires when a post is saved through the app. Write a row by hand
+and the page keeps serving the old version for a while. Saving again in the admin
+area fixes it.
 
-| Variable | Purpose |
-| --- | --- |
-| `ADMIN_PASSWORD` | Password for the admin login |
-| `AUTH_SECRET` | Secret used to sign session cookies |
-| `AUTH_VALID_AFTER` | Optional cutoff; sessions issued before it are rejected |
-| `DATABASE_PATH` | SQLite file path (defaults to `data/articles.db`) |
-| `MISTRAL_API_KEY` | Mistral API key for AI features |
-| `MISTRAL_MODEL`, `MISTRAL_CHAT_MODEL`, `MISTRAL_TRANSLATE_MODEL`, `MISTRAL_SUMMARIZE_MODEL`, `MISTRAL_TRANSCRIBE_MODEL` | Optional per-task model overrides |
-| `DOKPLOY_URL`, `DOKPLOY_API_KEY` | Dokploy instance powering the infrastructure page and the admin Log dashboard |
-| `EMBED_APPS` | Comma-separated `name=origin` map of apps that may be framed in an article, e.g. `bim=http://localhost:3002`. Doubles as the `postMessage` allowlist |
-| `NEXT_PUBLIC_SITE_URL` | Canonical site origin; overrides the default in `lib/site.ts` |
-| `NEXT_PUBLIC_BUILD_ID` | Optional explicit build id (otherwise derived from the git SHA) |
+The seed runs on every deploy. If you delete a post from the database but leave
+its Markdown file in `content/`, the next deploy puts it back.
 
-## Content
+## Embedding my other apps
 
-Articles are plain Markdown in `content/en/`. They seed the database and can be
-re-exported from it, so the filesystem stays the portable source of truth — no
-external CMS.
+I sometimes want one of my other projects running inside a post rather than
+sitting behind a screenshot. Two fenced blocks do that, and both take an app name
+from `EMBED_APPS` instead of a URL, so a post survives moving between my laptop
+and the server.
 
-### Embedding apps and device mockups
-
-Two fenced blocks in an article body render live frames. Both take an `app` name
-from `EMBED_APPS` rather than a URL, so a post survives the move from dev to
-production.
-
-An `embed` fence is a wide, full-bleed figure — the app at desktop size:
+An `embed` block is the wide version, the app at desktop size:
 
 ````markdown
 ```embed
@@ -129,119 +82,196 @@ ratio: 3/2
 ```
 ````
 
-A `device` fence is the iPhone mockup. It frames the same apps by name, or an
-internal `/mockup/*` route, or a video or image:
+A `device` block puts it inside an iPhone. It can also frame one of the internal
+`/mockup` pages, or just a video or an image:
 
 ````markdown
 ```device
 app: bim
 path: /
 alt: bim running on a phone
-caption: The same map, pocket-sized.
+caption: The same map, pocket sized.
 visit: https://bim.nenadmarinkovic.com
 side: right
 ```
 ````
 
-| Field | Fence | Meaning |
-| --- | --- | --- |
-| `app` | both | Key from `EMBED_APPS`. Unknown names leave a visible code block |
-| `path` | both | Public path on that app; drives the `visit ↗` fallback link |
-| `frame` | both | Path actually framed, default `<path>/embed` |
-| `route` | `device` | An internal `/mockup/*` page instead of an app |
-| `video`, `image`, `poster` | `device` | Media instead of a frame |
-| `side` | `device` | `left` or `right` to float beside the text above 768px |
-| `ratio` | `embed` | `16/9` (default), `3/2`, `4/3`, `1/1` |
-| `title`, `link` | `embed` | Card heading and its open label |
-| `alt`, `caption`, `visit` | both | Frame title, caption text, and the "for the full experience" link |
+| Field                      | Block    | What it does                                                          |
+| -------------------------- | -------- | --------------------------------------------------------------------- |
+| `app`                      | both     | A name from `EMBED_APPS`. An unknown name leaves a visible code block |
+| `path`                     | both     | Public path on that app, used for the fallback link                   |
+| `frame`                    | both     | The path actually framed, `<path>/embed` by default                   |
+| `route`                    | `device` | An internal `/mockup` page instead of an app                          |
+| `video`, `image`, `poster` | `device` | Media instead of a frame                                              |
+| `side`                     | `device` | `left` or `right` to float it next to the text on wide screens        |
+| `ratio`                    | `embed`  | `16/9` by default, or `3/2`, `4/3`, `1/1`                             |
+| `title`, `link`            | `embed`  | The card heading and its open label                                   |
+| `alt`, `caption`, `visit`  | both     | Frame title, caption, and the "for the full experience" link          |
 
-The framed app must allow this origin to embed it — for bim that is
-`EMBED_PARENTS`. Theme changes are forwarded over `postMessage`, and an app can
-send back a `controls` list that renders as pills under an `embed` figure. A
-`device` frame is deliberately non-interactive so it never steals touch scroll.
+The app being framed has to allow it. For bim that is `EMBED_PARENTS`. Theme
+changes travel over `postMessage`, and an app can send back a list of controls
+that show up as pills under the figure. A `device` frame is not interactive on
+purpose, otherwise it swallows touch scrolling on a phone.
 
-## Syncing local and production
+## Keeping local and live in sync
 
-The local database and the one on the server are both written to — articles from
-either admin area, links from the browser extensions, reviews from the phone.
-`npm run db:sync` merges them in both directions and writes the result to both
-sides, so either machine can be edited and they converge.
-
-```bash
-npm run db:sync -- --dry-run   # report the merge, write nothing
-npm run db:sync                # merge and write both sides
-```
-
-Rows are matched on natural keys, never on autoincrement ids, so the two
-databases are free to disagree about ids:
-
-| Table | Rule |
-| --- | --- |
-| `articles` | last write wins on `(slug, language)` by `updated_at` |
-| `links`, `tags`, `link_tags` | union by `url` / `slug`; last write wins |
-| `vocab_entries` | union by `(lemma, pos)`; slug collisions get suffixed |
-| `review_log` | union — append-only, identified by card and instant |
-| `srs_cards` | **recomputed** by replaying the merged log through `ts-fsrs` |
-| `settings` | production wins — it holds the links API token |
-
-Scheduling state is never merged field by field. `srs_cards` is a fold over
-`review_log`, so it is discarded and rebuilt from the merged log with the same
-scheduler the app uses, which is what makes reviewing on the phone and on the
-laptop safe to combine.
-
-It reaches production over SSH and runs inside the app container, using its
-`better-sqlite3` (the host has no `sqlite3` binary). Override
-`SYNC_SSH_HOST`, `SYNC_SERVICE`, or `SYNC_REMOTE_DB` if any of those change.
-The local database is snapshotted to `data/articles.db.pre-sync` first.
-
-`npm run db:sync:test` builds two divergent throwaway databases, merges them,
-and asserts the outcome — conflict resolution, id remapping, the FSRS replay,
-and idempotence. Run it after any schema change. The sync also refuses to run if
-a migration adds a column it does not know about, rather than silently dropping
-that data on both sides.
-
-## Exporting the word library
-
-`npm run lib:export` dumps the whole vocab DB into the repo so it can be read
-anywhere — including the GitHub mobile app — and kept in version control:
-
-- `content/lib/vocab.md` — readable Markdown grouped by part of speech, with
-  gender/plural/level/tags, examples, and collapsible conjugation tables.
-- `content/lib/vocab.json` — a complete dump (entries, SRS cards, and review
-  log) for backups.
-
-Run it against the machine that holds the real DB, then commit the result:
+Both databases get written to. I write posts from either one, the extensions push
+links to the live one, and I review German on my phone, which is also the live
+one. `npm run db:sync` merges them in both directions and writes the result to
+both sides.
 
 ```bash
-npm run lib:export
-git add content/lib && git commit -m "Update vocab export"
+npm run db:sync -- --dry-run   # show what it would do
+npm run db:sync                # actually do it
 ```
+
+Rows are matched on real keys, never on database ids, so the two sides are free
+to disagree about ids.
+
+| Table                        | Rule                                                             |
+| ---------------------------- | ---------------------------------------------------------------- |
+| `articles`                   | most recently edited wins, matched on slug and language          |
+| `links`, `tags`, `link_tags` | merged by URL and slug, most recent wins                         |
+| `vocab_entries`              | merged on lemma and part of speech, duplicate slugs get a suffix |
+| `review_log`                 | merged, never deleted, since it only ever grows                  |
+| `srs_cards`                  | thrown away and recomputed from the merged review log            |
+| `settings`                   | live wins, because it holds the links API token                  |
+
+Scheduling state is never merged field by field. `srs_cards` is just a running
+total of everything in `review_log`, so the sync replays the merged log through
+the same scheduler the app uses and rebuilds the cards from scratch. That is what
+makes reviewing on my phone and on my laptop safe to combine.
+
+Deletions need one more thing. Given two databases and nothing else, a row that
+exists on one side only could equally be something I just created there or
+something I deleted on the other side. So the sync writes the merged key list to
+`data/.sync-state.json` after both sides accept the write, and compares against
+it next time. A key that was there before and is now missing on one side is a
+deletion, and it propagates. The very first run has nothing to compare against
+and says so.
+
+If a row was deleted on one side but edited on the other since the last sync, the
+edit wins and the sync tells you. Losing something I just wrote is worse than an
+extra delete.
+
+It reaches the server over SSH and runs inside the app container, because the
+host itself has no `sqlite3` binary. Set `SYNC_SSH_HOST`, `SYNC_SERVICE`, or
+`SYNC_REMOTE_DB` if any of that changes. The local database is copied to
+`data/articles.db.pre-sync` first.
+
+`npm run db:sync:test` builds two throwaway databases that disagree with each
+other, merges them, and checks the result: conflicts, id remapping, the card
+replay, deletions, and that running it twice changes nothing. Run it after any
+schema change. The sync also refuses to run if a migration added a column it does
+not know about, instead of quietly dropping that data on both sides.
+
+## Environment variables
+
+Put these in `.env.local`. None of them are committed.
+
+| Variable                         | What it is for                                                 |
+| -------------------------------- | -------------------------------------------------------------- |
+| `ADMIN_PASSWORD`                 | The admin login                                                |
+| `AUTH_SECRET`                    | Signs the session cookie                                       |
+| `AUTH_VALID_AFTER`               | Optional cutoff, sessions issued before it stop working        |
+| `DATABASE_PATH`                  | Where the SQLite file lives, `data/articles.db` by default     |
+| `MISTRAL_API_KEY`                | Mistral, for everything AI shaped                              |
+| `MISTRAL_MODEL` and friends      | Optional per task model overrides                              |
+| `ELEVENLABS_API_KEY`             | Audio                                                          |
+| `DOKPLOY_URL`, `DOKPLOY_API_KEY` | The instance behind the admin Log page                         |
+| `EMBED_APPS`                     | `name=origin` pairs of apps allowed in a post, comma separated |
+| `NEXT_PUBLIC_SITE_URL`           | Canonical origin, overrides the default in `lib/site.ts`       |
+| `NEXT_PUBLIC_BUILD_ID`           | Optional, otherwise taken from the git SHA                     |
+
+`EMBED_APPS` is both the name lookup for the embed blocks and the list of origins
+allowed to talk to the page. An app that is not in it simply does nothing.
+
+## Deploying
+
+It runs on a Hetzner VPS managed by Dokploy, the same instance the admin Log page
+reads from. Pushing to `main` builds and deploys it.
+
+The database and the uploaded images live on mounted volumes, `/app/data` and
+`/app/uploads`, so they survive a redeploy. `DATABASE_PATH` has to point at the
+first one. Migrations and the seed run before both `build` and `start`. The
+service worker is versioned by build id, so every deploy replaces the cached app
+shell.
+
+For a new domain: point the DNS at the server, add the domain to the app in
+Dokploy on port 3000 with a Let's Encrypt certificate, add `www` as well so the
+redirect can serve HTTPS, and set `NEXT_PUBLIC_SITE_URL` to match. Wait for DNS
+to actually resolve before adding the domain, otherwise the certificate request
+fails.
+
+Backups are a cron job on the server:
+
+```bash
+sqlite3 /path/to/volume/articles.db \
+  ".backup '/var/backups/www/articles-$(date +%F).db'"
+```
+
+Use `.backup` rather than `cp`. The database runs in WAL mode and a plain copy
+can catch a half written page.
+
+## Exporting
+
+`npm run db:export` writes the posts back out to `content/` as Markdown.
+
+`npm run lib:export` dumps the whole word library into `content/lib/`, both as
+readable Markdown grouped by part of speech and as a full JSON backup with the
+cards and review history. I run it on whichever machine holds the real database
+and commit the result, which means I can read my vocabulary from the GitHub app
+on my phone.
+
+## Layout
+
+```
+app/              Routes
+  writing/        Posts
+  links/          Saved links
+  contact/
+  admin/          Password protected: writing, lib, log, links
+  api/            Route handlers
+  mockup/         Screens used inside the device frames
+  fonts/
+components/       Shared UI
+lib/              Auth, database access, FSRS, Mistral, exports
+db/               Drizzle schema and the SQLite client
+drizzle/          Generated migrations
+scripts/          Migrate, seed, export, sync
+content/          Markdown export target
+extensions/       Chrome and Firefox link savers
+public/
+```
+
+## Stack
+
+Next.js with the App Router, Tailwind and shadcn/ui, SQLite through Drizzle and
+`better-sqlite3`, FSRS via `ts-fsrs`, TipTap for the editor, Mistral for the AI
+parts, and the Dokploy API for the infrastructure page. Fonts are self hosted:
+Google Sans Flex for the sans and Newsreader for the serif, both subset down to
+what I actually use.
 
 ## Scripts
 
-- `npm run dev` — dev server
-- `npm run build` — production build (runs migrations + seed first)
-- `npm run start` — production server
-- `npm run lint` — ESLint
-- `npm run db:generate` — generate a Drizzle migration from schema changes
-- `npm run db:migrate` — apply Drizzle migrations
-- `npm run db:studio` — Drizzle Studio
-- `npm run db:seed` — seed the DB from `content/`
-- `npm run db:export` — write articles from the DB back to `content/`
-- `npm run db:sync` — two-way merge between the local and production databases
-- `npm run db:sync:test` — self-test for the sync's merge rules
-- `npm run lib:export` — export the word library to `content/lib/`
+| Command                | What it does                                     |
+| ---------------------- | ------------------------------------------------ |
+| `npm run dev`          | Dev server                                       |
+| `npm run build`        | Production build, runs migrations and seed first |
+| `npm run start`        | Production server                                |
+| `npm run lint`         | ESLint                                           |
+| `npm run db:generate`  | New migration from a schema change               |
+| `npm run db:migrate`   | Apply migrations                                 |
+| `npm run db:studio`    | Drizzle Studio                                   |
+| `npm run db:seed`      | Load `content/` into the database                |
+| `npm run db:export`    | Write posts back out to `content/`               |
+| `npm run db:sync`      | Merge the local and live databases               |
+| `npm run db:sync:test` | Self test for the sync rules                     |
+| `npm run lib:export`   | Export the word library                          |
 
-## Deployment
+## Logging in
 
-The site is deployed on a [Hetzner](https://www.hetzner.com/) VPS, managed with
-[Dokploy](https://dokploy.com/) — the same instance the admin **Log** dashboard
-reads from. Pushing the branch triggers a Dokploy build and deploy.
-
-The database lives on a mounted volume in production (`data/` is git-ignored), so
-`DATABASE_PATH` must point at that persistent storage. `build` and `start` run
-migrations and the seed first. The service worker is versioned by build id, so
-each deploy supersedes the previously cached app shell.
-
-See [DEPLOY.md](DEPLOY.md) for the production checklist: DNS, Dokploy domains and
-redirects, production environment, volumes, and database backups.
+`/admin` and anything that writes are behind a signed session cookie. Sign in at
+`/login` with `ADMIN_PASSWORD`. Sessions extend themselves while I am using the
+site so the PWA stays logged in, up to a hard limit. Bumping `AUTH_VALID_AFTER`
+kicks out every existing session.

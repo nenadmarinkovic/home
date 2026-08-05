@@ -6,14 +6,13 @@ import assert from "node:assert";
 
 import Database from "better-sqlite3";
 
-import { merge, type Dataset } from "./sync-merge";
+import { merge, stateFrom, type Dataset, type SyncState } from "./sync-merge";
 import { newCard, review, type SchedulerCard } from "../lib/fsrs";
 import type { Rating } from "../db/schema";
 
 const ROOT = process.cwd();
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), "sync-selftest-"));
 const AGENT = path.join(ROOT, "scripts", "sync-agent.mjs");
-
 
 function makeDb(name: string) {
   const p = path.join(TMP, name);
@@ -52,7 +51,6 @@ const S = (t: number) => Math.floor(t / 1000);
 const T0 = Date.UTC(2026, 6, 1, 9, 0, 0);
 const DAY = 86400000;
 
-// ---- build two divergent databases -------------------------------------
 const localPath = makeDb("local.db");
 const livePath = makeDb("live.db");
 
@@ -107,7 +105,6 @@ function seed(
     ).run(v.slug, v.lemma, v.lemma, v.pos, v.tr, S(T0), S(v.updated));
   }
 
-  // create cards, then apply reviews exactly the way recordReview does
   const entries = db.prepare(`select id, lemma, pos from vocab_entries`).all() as {
     id: number;
     lemma: string;
@@ -173,7 +170,6 @@ function seed(
   db.close();
 }
 
-// LOCAL: article edited later, one local-only article, one link, reviews on day 1
 seed(localPath, {
   articleTitle: "Shared — edited locally (newer)",
   articleUpdated: T0 + 5 * DAY,
@@ -191,8 +187,6 @@ seed(localPath, {
   ],
 });
 
-// LIVE: article edited earlier, different extra article, extra link from the
-// extension, vocab translation edited later, reviews done on the phone later
 seed(livePath, {
   articleTitle: "Shared — edited live (older)",
   articleUpdated: T0 + 1 * DAY,
@@ -213,7 +207,6 @@ seed(livePath, {
   ],
 });
 
-// ---- run the merge ------------------------------------------------------
 const local: Dataset = JSON.parse(agent(localPath, "dump"));
 const live: Dataset = JSON.parse(agent(livePath, "dump"));
 const result = merge(local, live);
@@ -221,7 +214,6 @@ const payload = JSON.stringify(result.dataset);
 agent(localPath, "apply", payload);
 agent(livePath, "apply", payload);
 
-// ---- assertions ---------------------------------------------------------
 const after = (p: string) => JSON.parse(agent(p, "dump")) as Dataset;
 const A = after(localPath);
 const B = after(livePath);
@@ -356,5 +348,101 @@ check("running the sync twice changes nothing (idempotent)", () => {
   assert.strictEqual(sorted(after(localPath)), sorted(A));
   assert.strictEqual(sorted(after(livePath)), sorted(A));
 });
+
+const SYNCED_AT = Math.floor((T0 + 10 * DAY) / 1000);
+let state: SyncState = stateFrom(result.dataset, SYNCED_AT);
+
+function syncAgain(st: SyncState | null) {
+  const l = JSON.parse(agent(localPath, "dump")) as Dataset;
+  const v = JSON.parse(agent(livePath, "dump")) as Dataset;
+  const r = merge(l, v, st);
+  const p = JSON.stringify(r.dataset);
+  agent(localPath, "apply", p);
+  agent(livePath, "apply", p);
+  return r;
+}
+
+function exec(dbPath: string, sql: string) {
+  const db = new Database(dbPath);
+  db.pragma("foreign_keys = ON");
+  db.exec(sql);
+  db.close();
+}
+
+check("without a recorded sync, a deletion does not propagate (union)", () => {
+  exec(localPath, `delete from articles where slug='live-only'`);
+  const r = syncAgain(null);
+  assert.strictEqual(r.deleted, 0);
+  assert.ok(
+    after(localPath).articles.some((a) => a.slug === "live-only"),
+    "expected the row to come back without ancestor state",
+  );
+});
+
+check("with a recorded sync, deleting locally removes it from live too", () => {
+  state = stateFrom(after(localPath), SYNCED_AT);
+  exec(localPath, `delete from articles where slug='live-only'`);
+  const r = syncAgain(state);
+  assert.strictEqual(r.deleted, 1, `expected 1 deletion, got ${r.deleted}`);
+  assert.ok(!after(localPath).articles.some((a) => a.slug === "live-only"));
+  assert.ok(!after(livePath).articles.some((a) => a.slug === "live-only"));
+});
+
+check("deleting on live removes it locally too", () => {
+  state = stateFrom(after(localPath), SYNCED_AT);
+  exec(livePath, `delete from articles where slug='local-only'`);
+  const r = syncAgain(state);
+  assert.strictEqual(r.deleted, 1);
+  assert.ok(!after(localPath).articles.some((a) => a.slug === "local-only"));
+});
+
+check("a row deleted on one side but edited on the other survives", () => {
+  state = stateFrom(after(localPath), SYNCED_AT);
+  exec(
+    livePath,
+    `update articles set title='edited after the last sync', updated_at=${SYNCED_AT + 60} where slug='shared'`,
+  );
+  exec(localPath, `delete from articles where slug='shared'`);
+  const r = syncAgain(state);
+  assert.strictEqual(r.resurrected, 1, `expected 1 resurrection, got ${r.resurrected}`);
+  const kept = after(localPath).articles.find((a) => a.slug === "shared");
+  assert.ok(kept, "the edited row should have survived the delete");
+  assert.strictEqual(kept!.title, "edited after the last sync");
+});
+
+check("deleting a link removes its tag pairings", () => {
+  state = stateFrom(after(localPath), SYNCED_AT);
+  exec(localPath, `delete from links where url='https://b.example/2'`);
+  syncAgain(state);
+  const d = after(livePath);
+  assert.ok(!d.links.some((l) => l.url === "https://b.example/2"));
+  assert.ok(!d.linkTags.some((l) => l.link_url === "https://b.example/2"));
+});
+
+check("review history is never deleted, even when one side loses rows", () => {
+  state = stateFrom(after(localPath), SYNCED_AT);
+  const beforeCount = after(localPath).reviews.length;
+  exec(livePath, `delete from review_log`);
+  const r = syncAgain(state);
+  assert.strictEqual(
+    after(localPath).reviews.length,
+    beforeCount,
+    "reviews must survive a one-sided wipe",
+  );
+  assert.strictEqual(after(livePath).reviews.length, beforeCount);
+  assert.ok(r.replayed > 0, "cards should still rebuild from the restored log");
+});
+
+check("deleting a vocab entry removes its cards and reviews", () => {
+  state = stateFrom(after(localPath), SYNCED_AT);
+  exec(localPath, `delete from vocab_entries where lemma='haus'`);
+  syncAgain(state);
+  const d = after(livePath);
+  assert.ok(!d.vocab.some((v) => v.lemma === "haus"));
+  assert.ok(!d.cards.some((c) => c.lemma === "haus"));
+  assert.ok(!d.reviews.some((c) => c.lemma === "haus"));
+});
+
+fs.rmSync(TMP, { recursive: true, force: true });
 
 console.log(`\n${pass} passed${process.exitCode ? ", FAILURES ABOVE" : ""}`);

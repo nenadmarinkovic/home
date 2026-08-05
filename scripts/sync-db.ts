@@ -4,7 +4,7 @@ import path from "node:path";
 
 import Database from "better-sqlite3";
 
-import { merge, type Dataset } from "./sync-merge";
+import { merge, stateFrom, type Dataset, type SyncState } from "./sync-merge";
 
 const SSH_HOST = process.env.SYNC_SSH_HOST ?? "root@162.55.63.165";
 const SERVICE = process.env.SYNC_SERVICE ?? "home-nextjs-hv2sew";
@@ -13,7 +13,18 @@ const LOCAL_DB =
   process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "articles.db");
 
 const AGENT = path.join(process.cwd(), "scripts", "sync-agent.mjs");
+const STATE = path.join(path.dirname(LOCAL_DB), ".sync-state.json");
 const dryRun = process.argv.includes("--dry-run");
+
+function readState(): SyncState | null {
+  if (!fs.existsSync(STATE)) return null;
+  try {
+    const parsed = JSON.parse(fs.readFileSync(STATE, "utf8")) as SyncState;
+    return parsed.version === 1 ? parsed : null;
+  } catch {
+    return null;
+  }
+}
 
 function localAgent(mode: "dump" | "apply", input?: string): string {
   return execFileSync("node", [AGENT, mode], {
@@ -77,8 +88,16 @@ function main() {
     );
   }
 
-  const result = merge(local, live);
+  const state = readState();
+  const result = merge(local, live, state);
   console.log("");
+  if (!state) {
+    console.log(
+      "no previous sync recorded — merging as a union, so deletions on either\n" +
+        "side will not propagate this once. They will from the next run on.",
+    );
+    console.log("");
+  }
   console.log(
     `merged    articles ${result.dataset.articles.length}  ` +
       `links ${result.dataset.links.length}  ` +
@@ -93,6 +112,17 @@ function main() {
   console.log(
     `replayed  ${result.replayed} card(s) rebuilt from the review log`,
   );
+  if (result.deleted > 0) {
+    console.log(
+      `deleted   ${result.deleted} row(s) removed on one side since the last sync`,
+    );
+  }
+  if (result.resurrected > 0) {
+    console.log(
+      `kept      ${result.resurrected} row(s) deleted on one side but edited on ` +
+        `the other since the last sync — the edit won`,
+    );
+  }
   if (result.renamed > 0) {
     console.log(`renamed   ${result.renamed} vocab slug collision(s)`);
   }
@@ -110,6 +140,15 @@ function main() {
 
   const liveResult = JSON.parse(remoteAgent("apply", payload));
   console.log(`live   written  ${JSON.stringify(liveResult.counts)}`);
+
+  fs.writeFileSync(
+    STATE,
+    JSON.stringify(
+      stateFrom(result.dataset, Math.floor(Date.now() / 1000)),
+      null,
+      2,
+    ),
+  );
 
   console.log(
     "\nBoth sides now match. The live site caches article reads for up to an " +
