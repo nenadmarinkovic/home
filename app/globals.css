@@ -525,12 +525,14 @@ article .embed figcaption {
   color: color-mix(in oklab, var(--foreground) 58%, transparent);
 }
 
-article .embed .embed-visit {
+article .embed .embed-visit,
+article .device .embed-visit {
   display: block;
   margin-top: 0.125rem;
 }
 
-article .embed figcaption a {
+article .embed figcaption a,
+article .device figcaption a {
   font-weight: 500;
   white-space: nowrap;
   text-decoration: none;
@@ -610,6 +612,14 @@ article .device .device-screen {
   background: var(--background);
 }
 
+article .device .device-screen .embed-frame {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
 article .device .device-screen iframe {
   position: absolute;
   top: 0;
@@ -675,8 +685,7 @@ article .device figcaption {
   line-height: 1.5;
   text-align: center;
   text-wrap: balance;
-  color: var(--foreground);
-  opacity: 0.6;
+  color: color-mix(in oklab, var(--foreground) 60%, transparent);
 }
 
 article .device:has(figcaption) {

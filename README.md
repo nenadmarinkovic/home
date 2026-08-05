@@ -34,8 +34,7 @@ in `content/` into it.
 - **Ops log** — the admin **Log** is a live dashboard for the personal stack: it
   pulls a Dokploy snapshot and shows projects, applications, databases, domains,
   and deployment status at a glance.
-- **Pages** — home, tools, infrastructure, and contact, plus an RSS feed at
-  `/rss.xml`.
+- **Pages** — home, writing, links, and contact, plus an RSS feed at `/rss.xml`.
 - **Admin** — a password-protected area (`/admin`) with four tools: **Writing**
   (drafts, publishing, snapshots to git), **Lib** (the word library and reviews),
   **Log** (the ops dashboard above), and **Links**. Landing page shows a live
@@ -61,8 +60,6 @@ Font files live in `app/fonts/`.
 app/                  Routes (App Router)
   writing/            Articles index and per-article pages
   links/              Public links collection
-  tools/              Tools page
-  infrastructure/     How the site is built
   contact/            Contact page
   offline/            PWA offline fallback
   rss.xml/            RSS feed
@@ -103,6 +100,8 @@ Set these in `.env.local` for development (none are committed):
 | `MISTRAL_API_KEY` | Mistral API key for AI features |
 | `MISTRAL_MODEL`, `MISTRAL_CHAT_MODEL`, `MISTRAL_TRANSLATE_MODEL`, `MISTRAL_SUMMARIZE_MODEL`, `MISTRAL_TRANSCRIBE_MODEL` | Optional per-task model overrides |
 | `DOKPLOY_URL`, `DOKPLOY_API_KEY` | Dokploy instance powering the infrastructure page and the admin Log dashboard |
+| `EMBED_APPS` | Comma-separated `name=origin` map of apps that may be framed in an article, e.g. `bim=http://localhost:3002`. Doubles as the `postMessage` allowlist |
+| `NEXT_PUBLIC_SITE_URL` | Canonical site origin; overrides the default in `lib/site.ts` |
 | `NEXT_PUBLIC_BUILD_ID` | Optional explicit build id (otherwise derived from the git SHA) |
 
 ## Content
@@ -110,6 +109,56 @@ Set these in `.env.local` for development (none are committed):
 Articles are plain Markdown in `content/en/`. They seed the database and can be
 re-exported from it, so the filesystem stays the portable source of truth — no
 external CMS.
+
+### Embedding apps and device mockups
+
+Two fenced blocks in an article body render live frames. Both take an `app` name
+from `EMBED_APPS` rather than a URL, so a post survives the move from dev to
+production.
+
+An `embed` fence is a wide, full-bleed figure — the app at desktop size:
+
+````markdown
+```embed
+app: bim
+path: /
+title: bim
+caption: A map of what is being built around you.
+visit: https://bim.nenadmarinkovic.com
+ratio: 3/2
+```
+````
+
+A `device` fence is the iPhone mockup. It frames the same apps by name, or an
+internal `/mockup/*` route, or a video or image:
+
+````markdown
+```device
+app: bim
+path: /
+alt: bim running on a phone
+caption: The same map, pocket-sized.
+visit: https://bim.nenadmarinkovic.com
+side: right
+```
+````
+
+| Field | Fence | Meaning |
+| --- | --- | --- |
+| `app` | both | Key from `EMBED_APPS`. Unknown names leave a visible code block |
+| `path` | both | Public path on that app; drives the `visit ↗` fallback link |
+| `frame` | both | Path actually framed, default `<path>/embed` |
+| `route` | `device` | An internal `/mockup/*` page instead of an app |
+| `video`, `image`, `poster` | `device` | Media instead of a frame |
+| `side` | `device` | `left` or `right` to float beside the text above 768px |
+| `ratio` | `embed` | `16/9` (default), `3/2`, `4/3`, `1/1` |
+| `title`, `link` | `embed` | Card heading and its open label |
+| `alt`, `caption`, `visit` | both | Frame title, caption text, and the "for the full experience" link |
+
+The framed app must allow this origin to embed it — for bim that is
+`EMBED_PARENTS`. Theme changes are forwarded over `postMessage`, and an app can
+send back a `controls` list that renders as pills under an `embed` figure. A
+`device` frame is deliberately non-interactive so it never steals touch scroll.
 
 ## Exporting the word library
 
@@ -151,3 +200,6 @@ The database lives on a mounted volume in production (`data/` is git-ignored), s
 `DATABASE_PATH` must point at that persistent storage. `build` and `start` run
 migrations and the seed first. The service worker is versioned by build id, so
 each deploy supersedes the previously cached app shell.
+
+See [DEPLOY.md](DEPLOY.md) for the production checklist: DNS, Dokploy domains and
+redirects, production environment, volumes, and database backups.

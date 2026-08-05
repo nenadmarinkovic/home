@@ -27,34 +27,40 @@ export default async function WritingIndexPage() {
           and anything else worth thinking about.
         </p>
       </hgroup>
-      <ul className="flex w-full flex-col gap-12">
-        {list.map((a) => (
-          <li key={a.slug} className="flex items-start justify-between gap-3">
-            <Link
-              href={`/writing/${a.slug}`}
-              className="group flex flex-1 flex-col gap-2"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.06em] text-foreground/50">
-                {a.dateLabel}
-              </p>
-              <h2 className="text-xl font-medium text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
-                {a.title}
-              </h2>
-              {a.subtitle && (
-                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-                  {a.subtitle}
+      {list.length === 0 ? (
+        <p className="self-center text-base text-zinc-500 dark:text-zinc-500">
+          Nothing published yet.
+        </p>
+      ) : (
+        <ul className="flex w-full flex-col gap-12">
+          {list.map((a) => (
+            <li key={a.slug} className="flex items-start justify-between gap-3">
+              <Link
+                href={`/writing/${a.slug}`}
+                className="group flex flex-1 flex-col gap-2"
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.06em] text-foreground/50">
+                  {a.dateLabel}
                 </p>
-              )}
-              {a.description && (
-                <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-                  {a.description}
-                </p>
-              )}
-            </Link>
-            <AdminActions article={a} className="-mt-1" />
-          </li>
-        ))}
-      </ul>
+                <h2 className="text-xl font-medium text-balance text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
+                  {a.title}
+                </h2>
+                {a.subtitle && (
+                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                    {a.subtitle}
+                  </p>
+                )}
+                {a.description && (
+                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                    {a.description}
+                  </p>
+                )}
+              </Link>
+              <AdminActions article={a} className="-mt-1" />
+            </li>
+          ))}
+        </ul>
+      )}
     </main>
   );
 }

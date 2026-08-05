@@ -17,6 +17,8 @@ const VIDEO_EXT: Record<string, string> = {
 
 const MOCKUP_ROUTE = /^\/mockup\/[a-z0-9][a-z0-9-]{0,48}$/;
 
+const EMBED_PATH = /^\/[a-zA-Z0-9\-._~/]*$/;
+
 const STATUS_BAR_RE =
   /<span class="device-status" data-device-status="1"><\/span>/g;
 
@@ -75,6 +77,37 @@ function fenceFields(text: string): Record<string, string> {
   return fields;
 }
 
+type AppTarget = { href: string; frame: string };
+
+function appTarget(fields: Record<string, string>): AppTarget | null {
+  const origin = embedApps().get((fields.app ?? "").toLowerCase());
+  if (!origin) return null;
+
+  const path = fields.path ?? "/";
+  if (!EMBED_PATH.test(path)) return null;
+  const rest = path === "/" ? "" : path;
+
+  const frame = fields.frame ?? `${rest}/embed`;
+  if (!EMBED_PATH.test(frame)) return null;
+
+  return { href: `${origin}${rest}`, frame: `${origin}${frame}` };
+}
+
+function visitUrl(value: string | undefined): URL | null {
+  try {
+    const visit = new URL(value ?? "");
+    if (visit.protocol === "http:" || visit.protocol === "https:") return visit;
+  } catch {}
+  return null;
+}
+
+function visitLine(visit: URL): string {
+  return (
+    `<span class="embed-visit">For the full experience visit ` +
+    `<a href="${escapeAttr(visit.href)}">${escapeAttr(visit.host)}</a></span>`
+  );
+}
+
 function renderDeviceFence(text: string): string | null {
   const fields = fenceFields(text);
 
@@ -82,7 +115,16 @@ function renderDeviceFence(text: string): string | null {
   const poster = fields.poster ?? "";
   const alt = escapeAttr(fields.alt ?? "");
 
-  if (fields.route) {
+  if (fields.app) {
+    const app = appTarget(fields);
+    if (!app) return null;
+    parts.push(
+      `<div class="device-screen">` +
+        `<div class="embed-frame" data-embed-src="${escapeAttr(app.frame)}"` +
+        ` data-embed-title="${alt || escapeAttr(fields.app)}"></div>` +
+        `</div>`,
+    );
+  } else if (fields.route) {
     if (!MOCKUP_ROUTE.test(fields.route)) return null;
     parts.push(
       `<div class="device-screen" data-device-route="${escapeAttr(fields.route)}"` +
@@ -123,8 +165,12 @@ function renderDeviceFence(text: string): string | null {
     return null;
   }
 
-  if (fields.caption) {
-    parts.push(`<figcaption>${escapeAttr(fields.caption)}</figcaption>`);
+  const caption: string[] = [];
+  if (fields.caption) caption.push(escapeAttr(fields.caption));
+  const visit = fields.app ? visitUrl(fields.visit) : null;
+  if (visit) caption.push(visitLine(visit));
+  if (caption.length) {
+    parts.push(`<figcaption>${caption.join("")}</figcaption>`);
   }
 
   const side =
@@ -133,14 +179,13 @@ function renderDeviceFence(text: string): string | null {
 
   const chrome = `<span class="device-frame" data-device-frame="1"></span>`;
 
-  const status = fields.route
-    ? `<span class="device-status" data-device-status="1"></span>` +
+  const status =
+    fields.route || fields.app
+      ? `<span class="device-status" data-device-status="1"></span>` +
       `<span class="device-home" aria-hidden="true"></span>`
     : "";
   return `<figure class="${cls}">${parts.join("")}${status}${chrome}</figure>`;
 }
-
-const EMBED_PATH = /^\/[a-zA-Z0-9\-._~/]*$/;
 
 const EMBED_RATIOS: Record<string, string> = {
   "16/9": "embed-16x9",
@@ -151,47 +196,27 @@ const EMBED_RATIOS: Record<string, string> = {
 
 function renderEmbedFence(text: string): string | null {
   const fields = fenceFields(text);
-  const origin = embedApps().get((fields.app ?? "").toLowerCase());
-  if (!origin) return null;
-
-  const path = fields.path ?? "/";
-  if (!EMBED_PATH.test(path)) return null;
-
-  const href = `${origin}${path === "/" ? "" : path}`;
-
-  const frame = fields.frame ?? `${path === "/" ? "" : path}/embed`;
-  if (!EMBED_PATH.test(frame)) return null;
+  const app = appTarget(fields);
+  if (!app) return null;
 
   const title = escapeAttr(fields.title || fields.app);
   const ratio = EMBED_RATIOS[fields.ratio] ?? EMBED_RATIOS["16/9"];
   const label = escapeAttr(fields.link || "Open ↗");
 
-  let visit: URL | null = null;
-  try {
-    const parsed = new URL(fields.visit ?? "");
-    if (parsed.protocol === "http:" || parsed.protocol === "https:") {
-      visit = parsed;
-    }
-  } catch {}
-
   const parts = [];
   if (fields.caption) parts.push(escapeAttr(fields.caption));
-  if (visit) {
-    parts.push(
-      `<span class="embed-visit">For the full experience visit ` +
-        `<a href="${escapeAttr(visit.href)}">${escapeAttr(visit.host)}</a></span>`,
-    );
-  }
+  const visit = visitUrl(fields.visit);
+  if (visit) parts.push(visitLine(visit));
   const caption = parts.length
     ? `<figcaption>${parts.join("")}</figcaption>`
     : "";
 
   return (
     `<figure class="embed ${ratio}">` +
-    `<div class="embed-frame" data-embed-src="${escapeAttr(`${origin}${frame}`)}"` +
-    ` data-embed-full="${escapeAttr(href)}"` +
+    `<div class="embed-frame" data-embed-src="${escapeAttr(app.frame)}"` +
+    ` data-embed-full="${escapeAttr(app.href)}"` +
     ` data-embed-title="${title}">` +
-    `<a class="embed-card" href="${escapeAttr(visit?.href ?? href)}">` +
+    `<a class="embed-card" href="${escapeAttr(visit?.href ?? app.href)}">` +
     `<span class="embed-card-title">${title}</span>` +
     `<span class="embed-card-open">${label}</span>` +
     `</a>` +

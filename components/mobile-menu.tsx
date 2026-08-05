@@ -23,7 +23,7 @@ const ADMIN_TOOLS = [
 
 function HamburgerIcon({ open }: { open: boolean }) {
   return (
-    <span aria-hidden="true" className="relative block h-2.5 w-[18px]">
+    <span aria-hidden="true" className="relative block h-2.5 w-4.5">
       <span
         className={cn(
           "absolute left-0 block h-0.5 w-full rounded-full bg-current transition-all duration-200",
@@ -49,7 +49,6 @@ export function MobileMenu() {
   const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpen(false);
   }, [pathname]);
 
