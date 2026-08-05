@@ -65,9 +65,12 @@ its Markdown file in `content/`, the next deploy puts it back.
 ## Embedding my other apps
 
 I sometimes want one of my other projects running inside a post rather than
-sitting behind a screenshot. Two fenced blocks do that, and both take an app name
-from `EMBED_APPS` instead of a URL, so a post survives moving between my laptop
-and the server.
+sitting behind a screenshot. A live transit map makes the point better when it is
+actually moving. Two fenced blocks do that, and both take an app name from
+`EMBED_APPS` instead of a URL, so a post survives moving between my laptop and
+the server.
+
+The examples below use bim, my live transit map for Vienna.
 
 An `embed` block is the wide version, the app at desktop size:
 
@@ -76,7 +79,7 @@ An `embed` block is the wide version, the app at desktop size:
 app: bim
 path: /
 title: bim
-caption: A map of what is being built around you.
+caption: Every tram, bus and U-Bahn in Vienna, moving in real time.
 visit: https://bim.nenadmarinkovic.com
 ratio: 3/2
 ```
@@ -90,7 +93,7 @@ A `device` block puts it inside an iPhone. It can also frame one of the internal
 app: bim
 path: /
 alt: bim running on a phone
-caption: The same map, pocket sized.
+caption: The same map, pocket sized, which is where I actually use it.
 visit: https://bim.nenadmarinkovic.com
 side: right
 ```
@@ -110,8 +113,25 @@ side: right
 
 The app being framed has to allow it. For bim that is `EMBED_PARENTS`. Theme
 changes travel over `postMessage`, and an app can send back a list of controls
-that show up as pills under the figure. A `device` frame is not interactive on
-purpose, otherwise it swallows touch scrolling on a phone.
+that show up as pills under the figure, which is how bim's layer toggles for
+trams, buses and the U-Bahn end up rendered in my typography rather than its own.
+Adding a layer there makes it show up here for free. A `device` frame is not
+interactive on purpose, otherwise it swallows touch scrolling on a phone.
+
+## Saving links from the browser
+
+`extensions/` has the same small extension twice, one for Chrome and one for
+Firefox. Neither is published, so both load unpacked. In Chrome open
+`chrome://extensions`, turn on Developer mode, click Load unpacked and pick
+`extensions/chrome`. In Firefox open `about:debugging#/runtime/this-firefox`,
+click Load Temporary Add-on and pick the `manifest.json` inside
+`extensions/firefox`, which Firefox forgets again on restart unless you sign it.
+
+Then open its options and set the site URL and an API token, which you generate
+on `/admin/links`. After that you can right click any page to save it under a
+tag, or click the toolbar icon for the full form, where Summarize drafts a
+description from the page text. Only links tagged `public` show up on the public
+`/links` page. Each folder has its own README with the details.
 
 ## Keeping local and live in sync
 

@@ -22,16 +22,17 @@ export default async function Home() {
         </div>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
           Next year marks ten years since I started working on the web. I still
-          think it&rsquo;s the best platform we have for making things, and I
-          want to push it a little further.
+          think it&rsquo;s the best platform we have for making things. And the
+          most open one.
         </p>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-          Right now, that means building a German-learning platform and laying
-          the groundwork for my first studio — for educators and online creators
-          who need more than a template.
+          Right now, I&rsquo;m building a German-learning platform and starting
+          my first web studio for online creators who need more than a template.
+          I also enjoy experimenting: running small society simulations, or
+          getting to know the city I live in through data.
         </p>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-          This site is the hub for it all. I share my work, thoughts, and the
+          This site is where it all lives. I share my work, thoughts, and the
           links I find interesting.
         </p>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
