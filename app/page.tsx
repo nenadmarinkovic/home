@@ -21,15 +21,15 @@ export default async function Home() {
           </h1>
         </div>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-          Next year marks ten years since I started working on the web. I still
-          think it&rsquo;s the best platform we have for making things. And the
-          most open one.
+          Next year marks ten years since I started working on the web. It still
+          feels like a medium with so many opportunities. There&rsquo;s always
+          more to make, learn, and solve.
         </p>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
           Right now, I&rsquo;m building a German-learning platform and starting
-          my first web studio for online creators who need more than a template.
-          I also enjoy experimenting: running small society simulations, or
-          getting to know the city I live in through data.
+          my first web studio for educators and creators who need more than a
+          template. I also enjoy experimenting: running small society
+          simulations, or getting to know the city I live in through data.
         </p>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
           This site is where it all lives. I share my work, thoughts, and the
