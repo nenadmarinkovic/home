@@ -4,13 +4,11 @@
  *   npm run theme:test                       # logic + CSS drift checks
  *   npm run theme:test -- --url=http://…     # also assert the rendered HTML
  *
- * The `--url` pass is the important one for regressions that only show up in
- * the document: the theme-color metas have to be inside <head> and the
- * bootstrap script has to be a real inline <script> that follows them. If Next
- * ever hoists things differently, or someone reintroduces `next/script`
- * `beforeInteractive` (which is queued into `self.__next_s` and runs long
- * after first paint), this fails loudly instead of silently reintroducing the
- * flash.
+ * The `--url` pass is the important one: the theme-color meta has to be a
+ * single un-scoped tag inside <head>, and the bootstrap script has to be a real
+ * inline <script> that follows it. Reintroducing a media-scoped pair, or
+ * `next/script` `beforeInteractive` (queued into `self.__next_s`, so it runs
+ * long after first paint), brings the flash back — this fails loudly instead.
  */
 
 import { readFileSync } from "node:fs";
@@ -18,13 +16,10 @@ import { join } from "node:path";
 
 import {
   applyThemeColorMeta,
-  documentMatchesPreference,
   resolveTheme,
   THEME_COLORS,
-  THEME_COOKIE,
   THEME_INIT_SCRIPT,
   THEME_STORAGE_KEY,
-  themeColorMetas,
   type ResolvedTheme,
 } from "../lib/theme";
 
@@ -55,38 +50,25 @@ function equal(name: string, actual: unknown, expected: unknown) {
 /* ------------------------------------------------------------------ */
 
 type FakeMeta = {
-  media: string | null;
   content: string;
   getAttribute(name: string): string | null;
   setAttribute(name: string, value: string): void;
 };
 
-function makeMeta(media: string | null, content: string): FakeMeta {
+function makeMeta(content: string): FakeMeta {
   const meta: FakeMeta = {
-    media,
     content,
     getAttribute(name) {
-      if (name === "media") return meta.media;
-      if (name === "content") return meta.content;
-      return null;
+      return name === "content" ? meta.content : null;
     },
     setAttribute(name, value) {
-      if (name === "media") meta.media = value;
       if (name === "content") meta.content = value;
     },
   };
   return meta;
 }
 
-/** The two metas exactly as `app/layout.tsx` ships them. */
-function shippedMetas(): FakeMeta[] {
-  return [
-    makeMeta("(prefers-color-scheme: light)", THEME_COLORS.light),
-    makeMeta("(prefers-color-scheme: dark)", THEME_COLORS.dark),
-  ];
-}
-
-function makeEnv(stored: string | null, systemDark: boolean, metas: FakeMeta[]) {
+function makeEnv(stored: string | null, systemDark: boolean, meta: FakeMeta | null) {
   const classes = new Set<string>(["antialiased"]);
   const documentElement = {
     classList: {
@@ -97,8 +79,8 @@ function makeEnv(stored: string | null, systemDark: boolean, metas: FakeMeta[]) 
   };
   const doc = {
     documentElement,
-    querySelectorAll: (selector: string) =>
-      selector === 'meta[name="theme-color"]' ? metas : [],
+    querySelector: (selector: string) =>
+      selector === 'meta[name="theme-color"]' ? meta : null,
   };
   return {
     doc,
@@ -115,101 +97,40 @@ function makeEnv(stored: string | null, systemDark: boolean, metas: FakeMeta[]) 
   };
 }
 
-/**
- * Every combination of (stored preference) x (OS appearance), and what the
- * notch must end up as. `content` is what iOS reads out of whichever meta its
- * current appearance matches — so for an explicit choice both metas must carry
- * the chosen colour, and for "system" each meta keeps its own.
- */
+/** Every combination of (stored preference) x (OS appearance). */
 const MATRIX: Array<{
   stored: string | null;
   systemDark: boolean;
   resolved: ResolvedTheme;
-  metas: [string, string];
 }> = [
-  { stored: null, systemDark: false, resolved: "light", metas: [THEME_COLORS.light, THEME_COLORS.dark] },
-  { stored: null, systemDark: true, resolved: "dark", metas: [THEME_COLORS.light, THEME_COLORS.dark] },
-  { stored: "system", systemDark: false, resolved: "light", metas: [THEME_COLORS.light, THEME_COLORS.dark] },
-  { stored: "system", systemDark: true, resolved: "dark", metas: [THEME_COLORS.light, THEME_COLORS.dark] },
-  { stored: "light", systemDark: false, resolved: "light", metas: [THEME_COLORS.light, THEME_COLORS.light] },
-  { stored: "light", systemDark: true, resolved: "light", metas: [THEME_COLORS.light, THEME_COLORS.light] },
-  { stored: "dark", systemDark: false, resolved: "dark", metas: [THEME_COLORS.dark, THEME_COLORS.dark] },
-  { stored: "dark", systemDark: true, resolved: "dark", metas: [THEME_COLORS.dark, THEME_COLORS.dark] },
+  { stored: null, systemDark: false, resolved: "light" },
+  { stored: null, systemDark: true, resolved: "dark" },
+  { stored: "system", systemDark: false, resolved: "light" },
+  { stored: "system", systemDark: true, resolved: "dark" },
+  { stored: "light", systemDark: false, resolved: "light" },
+  { stored: "light", systemDark: true, resolved: "light" },
+  { stored: "dark", systemDark: false, resolved: "dark" },
+  { stored: "dark", systemDark: true, resolved: "dark" },
   // Garbage in storage must not wedge the page on the wrong theme.
-  { stored: "purple", systemDark: true, resolved: "dark", metas: [THEME_COLORS.light, THEME_COLORS.dark] },
+  { stored: "purple", systemDark: true, resolved: "dark" },
 ];
 
 console.log("\nbootstrap script (runs render-blocking in <head>)");
 for (const row of MATRIX) {
-  const metas = shippedMetas();
-  const env = makeEnv(row.stored, row.systemDark, metas);
+  const meta = makeMeta(THEME_COLORS.light);
+  const env = makeEnv(row.stored, row.systemDark, meta);
   const run = new Function("window", "document", "localStorage", THEME_INIT_SCRIPT);
   run(env.window, env.doc, env.localStorage);
 
   const label = `stored=${row.stored ?? "-"} systemDark=${row.systemDark}`;
   equal(`${label} → html class`, [...env.classes].sort(), ["antialiased", row.resolved].sort());
   equal(`${label} → color-scheme`, env.documentElement.style.colorScheme, row.resolved);
-  equal(`${label} → meta contents`, [metas[0].content, metas[1].content], row.metas);
-  equal(`${label} → media untouched`, [metas[0].media, metas[1].media], [
-    "(prefers-color-scheme: light)",
-    "(prefers-color-scheme: dark)",
-  ]);
-}
-
-console.log("\nbootstrap script re-stamps the preference cookie every load");
-{
-  // WebKit expires script-written cookies after seven days whatever `max-age`
-  // says, so this must happen unconditionally on load — not only on change.
-  for (const [stored, expected] of [
-    ["light", `${THEME_COOKIE}=light`],
-    ["dark", `${THEME_COOKIE}=dark`],
-    ["system", `${THEME_COOKIE}=;`],
-    [null, `${THEME_COOKIE}=;`],
-  ] as const) {
-    const env = makeEnv(stored, false, shippedMetas());
-    let written = "";
-    const doc = {
-      ...env.doc,
-      set cookie(v: string) {
-        written = v;
-      },
-      get cookie() {
-        return "";
-      },
-    };
-    const run = new Function("window", "document", "localStorage", THEME_INIT_SCRIPT);
-    run(env.window, doc, env.localStorage);
-    check(
-      `stored=${stored ?? "-"} → writes ${expected}`,
-      written.startsWith(expected),
-      written,
-    );
-    check(`stored=${stored ?? "-"} → scoped to the whole site`, written.includes("path=/"), written);
-  }
-}
-
-console.log("\ndocumentMatchesPreference (is the served shell stale?)");
-{
-  const twoMetas = { querySelectorAll: () => shippedMetas() } as unknown as Document;
-  const oneMeta = {
-    querySelectorAll: () => [makeMeta(null, THEME_COLORS.light)],
-  } as unknown as Document;
-  check("system + media-scoped pair → matches", documentMatchesPreference("system", twoMetas));
-  check("light + single un-scoped → matches", documentMatchesPreference("light", oneMeta));
-  check(
-    "light + media-scoped pair → mismatch (cache predates the cookie)",
-    !documentMatchesPreference("light", twoMetas),
-  );
-  check(
-    "system + single un-scoped → mismatch (cache predates clearing it)",
-    !documentMatchesPreference("system", oneMeta),
-  );
+  equal(`${label} → meta content`, meta.content, THEME_COLORS[row.resolved]);
 }
 
 console.log("\nbootstrap script survives a hostile environment");
 {
-  const metas = shippedMetas();
-  const env = makeEnv(null, true, metas);
+  const env = makeEnv(null, true, makeMeta(THEME_COLORS.light));
   const run = new Function("window", "document", "localStorage", THEME_INIT_SCRIPT);
   const throwingStorage = {
     getItem() {
@@ -226,68 +147,25 @@ console.log("\nbootstrap script survives a hostile environment");
   equal("still falls back to the OS appearance", env.documentElement.style.colorScheme, "dark");
 }
 {
-  // Nothing to correct yet (metas not parsed) must not abort class application.
-  const env = makeEnv("dark", false, []);
+  // Nothing to correct yet (meta not parsed) must not abort class application.
+  const env = makeEnv("dark", false, null);
   const run = new Function("window", "document", "localStorage", THEME_INIT_SCRIPT);
   run(env.window, env.doc, env.localStorage);
-  equal("applies the class even with no metas present", env.documentElement.style.colorScheme, "dark");
+  equal("applies the class even with no meta present", env.documentElement.style.colorScheme, "dark");
 }
 
-console.log("\napplyThemeColorMeta (runtime toggle + bfcache re-assert)");
+console.log("\napplyThemeColorMeta (runtime toggle)");
 for (const row of MATRIX) {
-  const metas = shippedMetas();
-  const label = `stored=${row.stored ?? "-"} systemDark=${row.systemDark}`;
-  applyThemeColorMeta(row.stored, row.resolved, {
-    querySelectorAll: () => metas,
+  const meta = makeMeta("#123456");
+  applyThemeColorMeta(row.resolved, {
+    querySelector: () => meta,
   } as unknown as Document);
-  equal(`${label} → meta contents`, [metas[0].content, metas[1].content], row.metas);
-}
-{
-  // The previous implementation disabled a meta with media="not all", which
-  // could not be undone by switching back to "system". Prove round-tripping.
-  const metas = shippedMetas();
-  const doc = { querySelectorAll: () => metas } as unknown as Document;
-  applyThemeColorMeta("dark", "dark", doc);
-  applyThemeColorMeta("light", "light", doc);
-  applyThemeColorMeta("system", "light", doc);
-  equal(
-    "dark → light → system restores per-media colours",
-    [metas[0].content, metas[1].content],
-    [THEME_COLORS.light, THEME_COLORS.dark],
-  );
-}
-{
-  const meta = makeMeta(null, "#123456");
-  applyThemeColorMeta("system", "dark", {
-    querySelectorAll: () => [meta],
-  } as unknown as Document);
-  equal("a meta with no media takes the resolved colour", meta.content, THEME_COLORS.dark);
+  equal(`resolved=${row.resolved} → meta content`, meta.content, THEME_COLORS[row.resolved]);
 }
 
 console.log("\nresolveTheme");
 equal("explicit light wins over OS", resolveTheme("light"), "light");
 equal("explicit dark wins over OS", resolveTheme("dark"), "dark");
-
-console.log("\nthemeColorMetas (what the server puts in the first byte)");
-equal("no cookie → both media-scoped metas", themeColorMetas(undefined), [
-  { media: "(prefers-color-scheme: light)", content: THEME_COLORS.light },
-  { media: "(prefers-color-scheme: dark)", content: THEME_COLORS.dark },
-]);
-equal("system → both media-scoped metas", themeColorMetas("system"), [
-  { media: "(prefers-color-scheme: light)", content: THEME_COLORS.light },
-  { media: "(prefers-color-scheme: dark)", content: THEME_COLORS.dark },
-]);
-equal("light → a single un-scoped light meta", themeColorMetas("light"), [
-  { content: THEME_COLORS.light },
-]);
-equal("dark → a single un-scoped dark meta", themeColorMetas("dark"), [
-  { content: THEME_COLORS.dark },
-]);
-check(
-  "an explicit choice ships no meta that could match the other appearance",
-  themeColorMetas("light").every((m) => m.media === undefined && m.content === THEME_COLORS.light),
-);
-equal("garbage cookie falls back to media-scoped", themeColorMetas("purple").length, 2);
 
 /* ------------------------------------------------------------------ */
 /* The colours must match the CSS, or the notch and the page disagree.  */
@@ -305,6 +183,13 @@ console.log("\nglobals.css stays in sync");
   check("html paints its own background", /html\s*\{[^}]*background-color:\s*var\(--background\)/s.test(css));
   check("color-scheme declared for light", /:root\s*\{[^}]*color-scheme:\s*light/s.test(css));
   check("color-scheme declared for dark", /\.dark\s*\{[^}]*color-scheme:\s*dark/s.test(css));
+}
+
+console.log("\nmanifest agrees with the light theme");
+{
+  const manifest = JSON.parse(readFileSync(join(root, "public/site.webmanifest"), "utf8"));
+  equal("theme_color", manifest.theme_color, THEME_COLORS.light);
+  equal("background_color", manifest.background_color, THEME_COLORS.light);
 }
 
 /* ------------------------------------------------------------------ */
@@ -334,21 +219,6 @@ console.log("\nservice worker serves the shell without waiting on the network");
 const urlArg = process.argv.find((a) => a.startsWith("--url="));
 
 async function checkRenderedDocument(url: string) {
-  // The case that matters most on iOS: an explicitly chosen theme that
-  // disagrees with the phone's appearance. The response must not contain a
-  // meta scoped to the *other* appearance for iOS to latch onto.
-  console.log(`\nrendered document at ${url} with an explicit preference`);
-  for (const pref of ["light", "dark"] as const) {
-    const html = await fetch(url, {
-      headers: { cookie: `${THEME_COOKIE}=${pref}` },
-    }).then((r) => r.text());
-    const head = html.slice(0, html.indexOf("</head>"));
-    const metas = [...head.matchAll(/<meta[^>]*name="theme-color"[^>]*>/g)].map((m) => m[0]);
-    equal(`${pref} · exactly one theme-color meta`, metas.length, 1);
-    check(`${pref} · it is not media-scoped`, !metas[0]?.includes("media="), metas[0]);
-    check(`${pref} · it carries the ${pref} background`, !!metas[0]?.includes(THEME_COLORS[pref]), metas[0]);
-  }
-
   console.log(`\nrendered document at ${url}`);
   const html = await fetch(url).then((r) => r.text());
   const headEnd = html.indexOf("</head>");
@@ -356,35 +226,28 @@ async function checkRenderedDocument(url: string) {
   const head = html.slice(0, headEnd);
 
   const metaMatches = [...head.matchAll(/<meta[^>]*name="theme-color"[^>]*>/g)];
-  equal("exactly two theme-color metas in <head>", metaMatches.length, 2);
+  equal("exactly one theme-color meta in <head>", metaMatches.length, 1);
+  check("it is not media-scoped", !metaMatches[0]?.[0].includes("media="), metaMatches[0]?.[0]);
   check(
-    "light meta carries the light background",
-    metaMatches.some(
-      (m) => m[0].includes("prefers-color-scheme: light") && m[0].includes(THEME_COLORS.light),
-    ),
-  );
-  check(
-    "dark meta carries the dark background",
-    metaMatches.some(
-      (m) => m[0].includes("prefers-color-scheme: dark") && m[0].includes(THEME_COLORS.dark),
-    ),
+    "it ships the light background",
+    !!metaMatches[0]?.[0].includes(THEME_COLORS.light),
+    metaMatches[0]?.[0],
   );
 
   const scriptIndex = head.indexOf("localStorage.getItem");
   check("bootstrap script is inline in <head>", scriptIndex > -1);
   check(
-    "bootstrap script runs after the metas",
+    "bootstrap script runs after the meta",
     scriptIndex > -1 && metaMatches.every((m) => (m.index ?? 0) < scriptIndex),
   );
   check(
     "bootstrap script is render-blocking, not queued via next/script",
-    !html.slice(0, scriptIndex > -1 ? scriptIndex : 0).includes("__next_s") &&
-      !head.includes("__next_s"),
+    !head.includes("__next_s"),
   );
   check("viewport-fit=cover is set", /name="viewport"[^>]*viewport-fit=cover/.test(head));
   check(
-    "the stale cookie from the previous implementation is not read",
-    !html.includes("theme-color=dark") && !html.includes("theme-color=light"),
+    "the server bakes no theme into the html element",
+    !/<html[^>]*class="[^"]*\bdark\b/.test(html),
   );
 }
 

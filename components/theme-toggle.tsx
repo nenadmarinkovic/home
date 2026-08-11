@@ -17,13 +17,10 @@ export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // iOS animates its own status bar tint whenever `theme-color` changes, so
-  // the earliest possible write is the one that feels most in sync with the
-  // page. Do it inside the tap's own task instead of waiting for React to
-  // re-render. The class on <html> is deliberately left to next-themes, which
-  // suppresses CSS transitions around the swap.
+  // iOS animates its status bar tint whenever `theme-color` changes, so write
+  // it inside the tap's own task rather than waiting for React to re-render.
   const select = (value: (typeof options)[number]["value"]) => {
-    applyThemeColorMeta(value, resolveTheme(value));
+    applyThemeColorMeta(resolveTheme(value));
     setTheme(value);
   };
 

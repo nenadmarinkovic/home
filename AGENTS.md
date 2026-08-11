@@ -14,27 +14,29 @@ rendered document. These rules keep the notch from flashing the wrong colour:
    `next/script` with `strategy="beforeInteractive"` looks equivalent but is
    serialised into `self.__next_s` and only runs once Next's async runtime
    chunk has executed — hundreds of milliseconds after iOS has already painted
-   the status bar. It must also stay *after* the `theme-color` metas.
-2. **An explicit theme ships exactly one un-scoped `theme-color` meta**, chosen
-   server-side from the `theme-pref` cookie (`themeColorMetas`). Shipping both
-   media-scoped metas is only correct for "system": on a dark phone running the
-   app in light, the dark-media meta *matches*, and during a standalone launch
-   the status bar is already on screen over the splash, so iOS can tint it
-   black before the bootstrap script gets to correct it. The cookie is free
-   here — the layout already reads cookies for auth.
-3. **The service worker answers shell navigations from cache first**, so a cold
+   the status bar. It must also stay *after* the `theme-color` meta.
+2. **The document ships exactly one `theme-color` meta, un-scoped, always the
+   light colour**, and the bootstrap script rewrites it. Never a media-scoped
+   pair: on a dark-appearance phone running the app in light, the dark-media
+   meta *matches*, and during a standalone launch the status bar is already on
+   screen over the splash, so iOS tints it black before the script can correct
+   it. Defaulting to light rather than dark also means the worst case is the
+   light tint held a frame too long, never a dark flash.
+3. **The server bakes no theme into the HTML.** Every response is identical
+   whatever the visitor prefers, which is what makes rule 4 safe. A previous
+   version chose the meta server-side from a `theme-pref` cookie and needed a
+   cookie re-stamp on every load plus a `refresh-shell` message to rebuild
+   cached copies; it is not worth it, and WebKit's seven-day cap on
+   script-written cookies made it fail open on exactly the wrong side.
+4. **The service worker answers shell navigations from cache first**, so a cold
    standalone launch does not wait on a round trip plus a dynamic render. This
-   is a launch-speed win, not a colour fix — but it interacts with rule 2, and
-   that part *is* a colour fix: the cached HTML carries whatever colour the
-   cookie had when it was cached, so a copy taken before the cookie existed
-   keeps shipping the wrong meta. `ThemeColorSync` compares the document it was
-   served against the preference and posts `refresh-shell` on a mismatch;
-   changing a theme does the same. If you change one side, change the other.
-4. **`--background` must be opaque on both `html` and `body`, with no
+   is a launch-speed win, not a colour fix, and it stays correct only as long as
+   rule 3 holds.
+5. **`--background` must be opaque on both `html` and `body`, with no
    transition.** Safari 26 dropped `theme-color` and samples the page instead
    (body, falling back to html), watching it live. A transition there makes the
    notch visibly lag the rest of the UI.
-5. **Careful with `position: fixed` / `sticky` elements at the top of the
+6. **Careful with `position: fixed` / `sticky` elements at the top of the
    viewport.** Safari 26 prefers them over `body` when picking the tint if they
    are within ~4px of the top, at least 80% of the viewport wide, and at least
    3px tall. Either give such an element `background-color: var(--background)`
@@ -51,21 +53,20 @@ the mechanism was assumed rather than checked. **Get the iOS version first** —
 it decides which of two unrelated systems you are debugging:
 
 - **iOS ≤ 18** (including 18.4.x): the notch is painted from `theme-color`, and
-  iOS *animates* the strip on every change. Rules 1-3 above are the live ones;
+  iOS *animates* the strip on every change. Rules 1-4 above are the live ones;
   the background chain is inert.
 - **iOS 26+**: Safari parses `theme-color` and ignores it, deriving the tint
-  from the page's own `background-color` instead. Rules 4-5 become the live
+  from the page's own `background-color` instead. Rules 5-6 become the live
   ones and every `theme-color` lever turns into a no-op at once.
 
-**Then get the phone's appearance**, because it decides whether the document
-can even be responsible. On iOS ≤ 18 the notch is whatever the first matching
-`theme-color` resolves to, and the only value here that is black is the *dark*
-one. On a **light**-appearance phone nothing on the page can resolve to it —
-the light-media meta is `#fafafa` and the cookie-driven single meta is
-`#fafafa` — so a black notch there is **not** coming from this repo, and no
-amount of meta or cookie work will touch it. On a dark-appearance phone it can:
-the dark-media meta matches during parse and iOS tints from it before the
-bootstrap script corrects it, which means the `theme-pref` cookie was missing.
+**Then get the phone's appearance.** On iOS ≤ 18 the notch is whatever
+`theme-color` resolves to. Since the document now ships a single un-scoped
+`#fafafa` meta, black can only ever appear *after* the bootstrap script has run
+and resolved to dark — i.e. only when the app itself is in dark mode. A black
+notch on a light app, on a phone of either appearance, is therefore **not**
+coming from the document, and no amount of meta work will touch it. That was not
+true before: the old media-scoped pair let a dark-appearance phone match the
+dark meta during parse.
 
 **Under `statusBarStyle: "default"` the page cannot paint the notch strip at
 all.** The web view starts below it and iOS draws it. That single fact bounds
@@ -102,20 +103,7 @@ cannot express "light app on a dark phone", and only helps if the flash is the
 launch screen rather than the hand-off to the web view. Confirm which before
 building it.
 
-Two failure modes that make the cookie vanish, both already guarded, both easy
-to reintroduce:
-
-- **Writing it only when the value changes.** WebKit caps script-written
-  cookies at seven days regardless of `max-age`, so a cookie that is not
-  re-stamped expires on its own and the server silently falls back to
-  media-scoped metas. It is re-stamped from the bootstrap script on every load
-  for exactly this reason.
-- **Serving a cached shell that predates it.** The HTML carries the cookie's
-  colour, so a copy the service worker cached before the cookie existed keeps
-  shipping the wrong meta. `ThemeColorSync` compares what it was served against
-  what the preference implies and rebuilds the cache on a mismatch.
-
-Also note that `#61` fixed this correctly and it appeared to regress weeks later
+Note that `#61` fixed this correctly and it appeared to regress weeks later
 with no commit to blame — the pipeline was byte-identical, comments aside. When
 nothing in the diff explains it, suspect the phone, not the repo.
 

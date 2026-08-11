@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { cookies } from "next/headers";
 import { Providers } from "./providers";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
 import { SiteFooter } from "@/components/site-footer";
@@ -7,7 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { ThemeColorSync } from "@/components/theme-color-sync";
 import { getAuthedFromCookie } from "@/lib/auth-server";
 import { site } from "@/lib/site";
-import { THEME_COOKIE, THEME_INIT_SCRIPT, themeColorMetas } from "@/lib/theme";
+import { THEME_COLORS, THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 // `viewport-fit=cover` is what makes `env(safe-area-inset-*)` resolve to real
@@ -86,25 +85,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const authed = await getAuthedFromCookie();
-  const themePreference = (await cookies()).get(THEME_COOKIE)?.value;
   return (
     <html lang="en" suppressHydrationWarning className="antialiased">
       <head>
         {/*
-          One un-scoped meta when the visitor has chosen a theme, two
-          media-scoped ones when they are following the system. The bootstrap
-          script below is still the backstop — for a first load before the
-          cookie exists, for a shell served from the service worker cache, and
-          for anyone whose cookies are blocked.
+          One un-scoped meta, always light, rewritten by the script below before
+          first paint. Deliberately not media-scoped: a dark-media meta matches
+          on a dark-appearance phone even when the app is in light mode, and iOS
+          tints the notch from it mid-parse.
         */}
-        {themeColorMetas(themePreference).map((meta) => (
-          <meta
-            key={meta.media ?? "any"}
-            name="theme-color"
-            media={meta.media}
-            content={meta.content}
-          />
-        ))}
+        <meta name="theme-color" content={THEME_COLORS.light} />
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <link
           rel="preload"

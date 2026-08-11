@@ -121,9 +121,10 @@ async function handleNavigate(request) {
  * have one ready: answer from cache in a millisecond, refresh in the background
  * for the next launch.
  *
- * Safe now that the HTML carries no theme of its own — the render-blocking
+ * Safe because the HTML carries no theme of its own — the render-blocking
  * bootstrap in <head> resolves the theme from localStorage, so a cached page
- * and a fresh one paint the same colours.
+ * and a fresh one paint the same colours. Keep it that way: bake a theme into
+ * the server render and every cached copy goes stale the moment it changes.
  */
 function handleShellNavigate(event, request, pathname) {
   const revalidate = (async () => {
@@ -145,31 +146,6 @@ function handleShellNavigate(event, request, pathname) {
     return (await revalidate) ?? offlineFallback();
   })();
 }
-
-// The shell HTML carries a `theme-color` meta chosen from the preference
-// cookie, so a cached copy goes stale the moment the visitor switches themes.
-// The page tells us; re-fetch so the next standalone launch is already right.
-self.addEventListener("message", (event) => {
-  if (event.data?.type !== "refresh-shell") return;
-  event.waitUntil(
-    (async () => {
-      const cache = await caches.open(RUNTIME);
-      const cached = await cache.keys();
-      await Promise.all(
-        cached.map(async (request) => {
-          const pathname = new URL(request.url).pathname;
-          try {
-            await cacheNavigation(
-              pathname,
-              await fetch(pathname, { cache: "reload" }),
-            );
-          } catch {
-          }
-        }),
-      );
-    })(),
-  );
-});
 
 self.addEventListener("fetch", (event) => {
   const request = event.request;
