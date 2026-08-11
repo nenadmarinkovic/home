@@ -67,17 +67,40 @@ amount of meta or cookie work will touch it. On a dark-appearance phone it can:
 the dark-media meta matches during parse and iOS tints from it before the
 bootstrap script corrects it, which means the `theme-pref` cookie was missing.
 
+**Under `statusBarStyle: "default"` the page cannot paint the notch strip at
+all.** The web view starts below it and iOS draws it. That single fact bounds
+what any amount of CSS or meta work can achieve: the page controls that strip
+only *after* iOS has read a colour out of the document, never before. The one
+style that would hand the strip to the page is `black-translucent`, and it
+forces white status-bar glyphs, so it is unusable for a theme that can be
+light. Do not "fix" a launch flash by reaching for it.
+
 An open case, recorded so the next person does not re-derive it: light phone,
-light app, iOS 18.4.1, black notch for about a second on standalone launch
-only. Eliminated by inspection — `theme-color` (no meta resolves to black under
-a light appearance), the manifest (`theme_color` and `background_color` have
-been `#fafafa` since the file was created), Safari 26 sampling (not on 18.x),
-and a Next upgrade swapping the capability meta (pinned to 16.2.4 throughout).
-What is *not* eliminated is iOS's install-time cache: a home-screen web app
-keeps the manifest and status-bar style captured when it was added, so an app
-installed while `statusBarStyle` was briefly `black-translucent` (it was, for
-part of 2026-07-17) launches with that forever. Removing and re-adding the app
-is the cheap test, and no deploy can substitute for it.
+light app, iOS 18.4.1, black notch strip on standalone launch only — down from
+about a second to roughly one frame once shell navigations became cache-first,
+which is the shape you would expect if the remaining window is iOS drawing the
+strip before any document exists. Eliminated by inspection: `theme-color` (no
+meta resolves to black under a light appearance), the manifest (`theme_color`
+and `background_color` have been `#fafafa` since the file was created), Safari
+26 sampling (not on 18.x), a Next upgrade swapping the capability meta (pinned
+to 16.2.4 throughout), and anything black in the page itself (no `bg-foreground`
+or equivalent near the top; the fixed/sticky audit comes back empty).
+
+What is left is iOS's install-time cache. A home-screen web app keeps the
+manifest and status-bar style captured when it was added and never re-reads
+them, so an app added before `theme_color` existed in the manifest (2026-07-01)
+— or while `statusBarStyle` was briefly `black-translucent`, as it was for part
+of 2026-07-17 — launches with those values forever. That is consistent with
+every constraint here: strip only, one frame, standalone only, and immune to
+deploys. Removing and re-adding the app is the test, and no deploy substitutes
+for it.
+
+The only remaining lever after that is `apple-touch-startup-image`, which
+replaces the generated launch screen with images that cover the strip. It costs
+a matrix of exact-size PNGs per device, keys off `prefers-color-scheme` so it
+cannot express "light app on a dark phone", and only helps if the flash is the
+launch screen rather than the hand-off to the web view. Confirm which before
+building it.
 
 Two failure modes that make the cookie vanish, both already guarded, both easy
 to reintroduce:
