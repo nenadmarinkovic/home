@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { cookies } from "next/headers";
-import Script from "next/script";
 import { Providers } from "./providers";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
 import { SiteFooter } from "@/components/site-footer";
@@ -8,44 +7,18 @@ import { SiteHeader } from "@/components/site-header";
 import { ThemeColorSync } from "@/components/theme-color-sync";
 import { getAuthedFromCookie } from "@/lib/auth-server";
 import { site } from "@/lib/site";
+import { THEME_COOKIE, THEME_INIT_SCRIPT, themeColorMetas } from "@/lib/theme";
 import "./globals.css";
 
-export async function generateViewport(): Promise<Viewport> {
-  const pref = (await cookies()).get("theme-color")?.value;
-  const base: Viewport = {
-    viewportFit: "cover",
-  };
-  if (pref === "dark") return { ...base, themeColor: "#000000" };
-  if (pref === "light") return { ...base, themeColor: "#fafafa" };
-  return {
-    ...base,
-    themeColor: [
-      { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-      { media: "(prefers-color-scheme: dark)", color: "#000000" },
-    ],
-  };
-}
-
-const THEME_COLOR_SCRIPT = `(function(){function a(){try{
-var metas=document.querySelectorAll('meta[name="theme-color"]');
-if(!metas.length)return false;
-var s=localStorage.getItem("theme");
-var pick=s==="dark"||s==="light";
-var t=pick?s:(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
-var color=t==="dark"?"#000000":"#fafafa";
-var active=null;
-for(var i=0;i<metas.length;i++){
-var m=metas[i].getAttribute("media");
-if(!m||window.matchMedia(m).matches){active=metas[i];break;}
-}
-if(!active)return true;
-if(active.getAttribute("content")!==color)active.setAttribute("content",color);
-if(pick){for(var j=0;j<metas.length;j++){
-if(metas[j]!==active&&metas[j].getAttribute("media")!=="not all")metas[j].setAttribute("media","not all");
-}}
-return true;
-}catch(e){return true;}}
-if(!a())document.addEventListener("DOMContentLoaded",a);})();`;
+// `viewport-fit=cover` is what makes `env(safe-area-inset-*)` resolve to real
+// values and what lets iOS tint the area behind the notch and home indicator.
+// Note there is deliberately no `themeColor` here: the metas are written by
+// hand below so that they are guaranteed to precede the bootstrap script.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -63,6 +36,12 @@ export const metadata: Metadata = {
   },
   formatDetection: {
     telephone: false,
+  },
+  other: {
+    // Next emits the standardised `mobile-web-app-capable`, which Safari only
+    // learned in 17.4. Apple documents `apple-mobile-web-app-status-bar-style`
+    // as having no effect without this legacy tag, so ship both.
+    "apple-mobile-web-app-capable": "yes",
   },
   openGraph: {
     type: "website",
@@ -107,9 +86,26 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const authed = await getAuthedFromCookie();
+  const themePreference = (await cookies()).get(THEME_COOKIE)?.value;
   return (
     <html lang="en" suppressHydrationWarning className="antialiased">
       <head>
+        {/*
+          One un-scoped meta when the visitor has chosen a theme, two
+          media-scoped ones when they are following the system. The bootstrap
+          script below is still the backstop — for a first load before the
+          cookie exists, for a shell served from the service worker cache, and
+          for anyone whose cookies are blocked.
+        */}
+        {themeColorMetas(themePreference).map((meta) => (
+          <meta
+            key={meta.media ?? "any"}
+            name="theme-color"
+            media={meta.media}
+            content={meta.content}
+          />
+        ))}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <link
           rel="preload"
           href="/fonts/HankenGrotesk-Variable.woff2"
@@ -119,16 +115,11 @@ export default async function RootLayout({
         />
       </head>
       <body>
-        <Script
-          id="theme-color-init"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: THEME_COLOR_SCRIPT }}
-        />
         <Providers authed={authed}>
           <ThemeColorSync />
           <ServiceWorkerRegister />
           <div className="flex min-h-screen flex-col">
-            <div className="flex flex-col flex-1 items-center justify-start bg-background px-6">
+            <div className="flex flex-col flex-1 items-center justify-start bg-background pt-(--safe-top) pr-(--safe-x-right) pl-(--safe-x-left)">
               <div className="flex w-full max-w-3xl flex-1 flex-col bg-background">
                 <SiteHeader />
                 {children}

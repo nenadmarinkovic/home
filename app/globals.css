@@ -185,6 +185,13 @@
 :root {
   --unit-lg: 1.125rem;
   --safe-bottom: max(env(safe-area-inset-bottom), 0.75rem);
+  /* Zero on every device that has no notch/island, so these are a no-op on
+     desktop and in portrait Safari, and only kick in when iOS actually hands
+     the page the area behind the status bar or a landscape sensor housing. */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-x-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  --safe-x-right: max(1.5rem, env(safe-area-inset-right, 0px));
+  color-scheme: light;
   --background: #fafafa;
   --foreground: #000000;
   --card: #fbf9f7;
@@ -221,6 +228,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --background: #000000;
   --foreground: #ffffff;
   --card: oklch(0.18 0.012 234);
@@ -262,16 +270,13 @@
   html {
     @apply font-sans;
     overflow-y: scroll;
-    /*
-     * In an iOS standalone web app, the safe-area canvas can be visible before
-     * the body has been laid out. Paint it at the document level so the area
-     * behind the notch always matches the active theme during launch.
-     */
+    /* Safari 26 dropped `theme-color` and derives the status bar / toolbar
+       tint from the page instead: the body's background-color, falling back
+       to the html element's. Both are set explicitly and identically so the
+       notch matches whatever the theme is, including while the page is
+       rubber-band overscrolled past the body box. Neither may ever get a
+       transition, or the tint would lag behind the rest of the UI. */
     background-color: var(--background);
-    color-scheme: light;
-  }
-  html.dark {
-    color-scheme: dark;
   }
   body {
     @apply bg-background text-foreground;
