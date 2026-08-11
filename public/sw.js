@@ -146,6 +146,31 @@ function handleShellNavigate(event, request, pathname) {
   })();
 }
 
+// The shell HTML carries a `theme-color` meta chosen from the preference
+// cookie, so a cached copy goes stale the moment the visitor switches themes.
+// The page tells us; re-fetch so the next standalone launch is already right.
+self.addEventListener("message", (event) => {
+  if (event.data?.type !== "refresh-shell") return;
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(RUNTIME);
+      const cached = await cache.keys();
+      await Promise.all(
+        cached.map(async (request) => {
+          const pathname = new URL(request.url).pathname;
+          try {
+            await cacheNavigation(
+              pathname,
+              await fetch(pathname, { cache: "reload" }),
+            );
+          } catch {
+          }
+        }),
+      );
+    })(),
+  );
+});
+
 self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET") return;

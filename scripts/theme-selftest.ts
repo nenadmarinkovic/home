@@ -20,8 +20,10 @@ import {
   applyThemeColorMeta,
   resolveTheme,
   THEME_COLORS,
+  THEME_COOKIE,
   THEME_INIT_SCRIPT,
   THEME_STORAGE_KEY,
+  themeColorMetas,
   type ResolvedTheme,
 } from "../lib/theme";
 
@@ -215,6 +217,27 @@ console.log("\nresolveTheme");
 equal("explicit light wins over OS", resolveTheme("light"), "light");
 equal("explicit dark wins over OS", resolveTheme("dark"), "dark");
 
+console.log("\nthemeColorMetas (what the server puts in the first byte)");
+equal("no cookie → both media-scoped metas", themeColorMetas(undefined), [
+  { media: "(prefers-color-scheme: light)", content: THEME_COLORS.light },
+  { media: "(prefers-color-scheme: dark)", content: THEME_COLORS.dark },
+]);
+equal("system → both media-scoped metas", themeColorMetas("system"), [
+  { media: "(prefers-color-scheme: light)", content: THEME_COLORS.light },
+  { media: "(prefers-color-scheme: dark)", content: THEME_COLORS.dark },
+]);
+equal("light → a single un-scoped light meta", themeColorMetas("light"), [
+  { content: THEME_COLORS.light },
+]);
+equal("dark → a single un-scoped dark meta", themeColorMetas("dark"), [
+  { content: THEME_COLORS.dark },
+]);
+check(
+  "an explicit choice ships no meta that could match the other appearance",
+  themeColorMetas("light").every((m) => m.media === undefined && m.content === THEME_COLORS.light),
+);
+equal("garbage cookie falls back to media-scoped", themeColorMetas("purple").length, 2);
+
 /* ------------------------------------------------------------------ */
 /* The colours must match the CSS, or the notch and the page disagree.  */
 /* ------------------------------------------------------------------ */
@@ -260,6 +283,21 @@ console.log("\nservice worker serves the shell without waiting on the network");
 const urlArg = process.argv.find((a) => a.startsWith("--url="));
 
 async function checkRenderedDocument(url: string) {
+  // The case that matters most on iOS: an explicitly chosen theme that
+  // disagrees with the phone's appearance. The response must not contain a
+  // meta scoped to the *other* appearance for iOS to latch onto.
+  console.log(`\nrendered document at ${url} with an explicit preference`);
+  for (const pref of ["light", "dark"] as const) {
+    const html = await fetch(url, {
+      headers: { cookie: `${THEME_COOKIE}=${pref}` },
+    }).then((r) => r.text());
+    const head = html.slice(0, html.indexOf("</head>"));
+    const metas = [...head.matchAll(/<meta[^>]*name="theme-color"[^>]*>/g)].map((m) => m[0]);
+    equal(`${pref} · exactly one theme-color meta`, metas.length, 1);
+    check(`${pref} · it is not media-scoped`, !metas[0]?.includes("media="), metas[0]);
+    check(`${pref} · it carries the ${pref} background`, !!metas[0]?.includes(THEME_COLORS[pref]), metas[0]);
+  }
+
   console.log(`\nrendered document at ${url}`);
   const html = await fetch(url).then((r) => r.text());
   const headEnd = html.indexOf("</head>");
@@ -294,7 +332,7 @@ async function checkRenderedDocument(url: string) {
   );
   check("viewport-fit=cover is set", /name="viewport"[^>]*viewport-fit=cover/.test(head));
   check(
-    "no cookie-driven theme colour leaks into the response",
+    "the stale cookie from the previous implementation is not read",
     !html.includes("theme-color=dark") && !html.includes("theme-color=light"),
   );
 }

@@ -5,6 +5,7 @@ import { useEffect, useLayoutEffect } from "react";
 
 import {
   applyThemeColorMeta,
+  persistThemePreference,
   resolveTheme,
   THEME_STORAGE_KEY,
 } from "@/lib/theme";
@@ -22,9 +23,14 @@ export function ThemeColorSync() {
     applyThemeColorMeta(theme, resolvedTheme);
   }, [theme, resolvedTheme]);
 
+  // Deliberately not in the layout effect above: this only needs to be right
+  // before the *next* load, and it can kick off a fetch.
   useEffect(() => {
-    // The old cookie-driven `generateViewport` is gone; drop its leftovers so
-    // they stop riding along on every request.
+    persistThemePreference(theme);
+  }, [theme]);
+
+  useEffect(() => {
+    // Leftovers from the previous cookie-driven `generateViewport`.
     document.cookie = "theme-color=; path=/; max-age=0; samesite=lax";
 
     // Restoring from the back/forward cache, or resuming a backgrounded
