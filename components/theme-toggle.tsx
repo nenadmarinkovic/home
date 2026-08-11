@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { DesktopIcon, MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 
+import { applyThemeColorMeta, resolveTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 const options = [
@@ -15,6 +16,16 @@ const options = [
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+
+  // iOS animates its own status bar tint whenever `theme-color` changes, so
+  // the earliest possible write is the one that feels most in sync with the
+  // page. Do it inside the tap's own task instead of waiting for React to
+  // re-render. The class on <html> is deliberately left to next-themes, which
+  // suppresses CSS transitions around the swap.
+  const select = (value: (typeof options)[number]["value"]) => {
+    applyThemeColorMeta(value, resolveTheme(value));
+    setTheme(value);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -50,7 +61,7 @@ export function ThemeToggle({ className }: { className?: string }) {
             aria-checked={active}
             aria-label={label}
             title={label}
-            onClick={() => setTheme(value)}
+            onClick={() => select(value)}
             className={cn(
               "relative flex size-6 items-center justify-center rounded-full cursor-pointer",
               active
