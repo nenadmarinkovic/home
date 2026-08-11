@@ -18,6 +18,7 @@ import { join } from "node:path";
 
 import {
   applyThemeColorMeta,
+  documentMatchesPreference,
   resolveTheme,
   THEME_COLORS,
   THEME_COOKIE,
@@ -153,6 +154,56 @@ for (const row of MATRIX) {
     "(prefers-color-scheme: light)",
     "(prefers-color-scheme: dark)",
   ]);
+}
+
+console.log("\nbootstrap script re-stamps the preference cookie every load");
+{
+  // WebKit expires script-written cookies after seven days whatever `max-age`
+  // says, so this must happen unconditionally on load — not only on change.
+  for (const [stored, expected] of [
+    ["light", `${THEME_COOKIE}=light`],
+    ["dark", `${THEME_COOKIE}=dark`],
+    ["system", `${THEME_COOKIE}=;`],
+    [null, `${THEME_COOKIE}=;`],
+  ] as const) {
+    const env = makeEnv(stored, false, shippedMetas());
+    let written = "";
+    const doc = {
+      ...env.doc,
+      set cookie(v: string) {
+        written = v;
+      },
+      get cookie() {
+        return "";
+      },
+    };
+    const run = new Function("window", "document", "localStorage", THEME_INIT_SCRIPT);
+    run(env.window, doc, env.localStorage);
+    check(
+      `stored=${stored ?? "-"} → writes ${expected}`,
+      written.startsWith(expected),
+      written,
+    );
+    check(`stored=${stored ?? "-"} → scoped to the whole site`, written.includes("path=/"), written);
+  }
+}
+
+console.log("\ndocumentMatchesPreference (is the served shell stale?)");
+{
+  const twoMetas = { querySelectorAll: () => shippedMetas() } as unknown as Document;
+  const oneMeta = {
+    querySelectorAll: () => [makeMeta(null, THEME_COLORS.light)],
+  } as unknown as Document;
+  check("system + media-scoped pair → matches", documentMatchesPreference("system", twoMetas));
+  check("light + single un-scoped → matches", documentMatchesPreference("light", oneMeta));
+  check(
+    "light + media-scoped pair → mismatch (cache predates the cookie)",
+    !documentMatchesPreference("light", twoMetas),
+  );
+  check(
+    "system + single un-scoped → mismatch (cache predates clearing it)",
+    !documentMatchesPreference("system", oneMeta),
+  );
 }
 
 console.log("\nbootstrap script survives a hostile environment");
