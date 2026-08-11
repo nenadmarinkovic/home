@@ -15,6 +15,12 @@
 
 export const THEME_STORAGE_KEY = "theme";
 
+/**
+ * Mirrors `THEME_STORAGE_KEY` so the server can emit the right meta on the
+ * first byte. See `themeColorMetas` for why that matters.
+ */
+export const THEME_COOKIE = "theme-pref";
+
 export const DARK_MEDIA_QUERY = "(prefers-color-scheme: dark)";
 
 /**
@@ -32,6 +38,53 @@ export type ThemePreference = ResolvedTheme | "system";
 
 function isResolved(value: unknown): value is ResolvedTheme {
   return value === "light" || value === "dark";
+}
+
+/**
+ * The `theme-color` metas to render, given the preference cookie.
+ *
+ * For "system" (and for a first-ever visit) two media-scoped metas are exactly
+ * right, and need no JavaScript at all. For an explicit choice they are not:
+ * on a dark phone running the app in light mode, the dark-media meta *matches*,
+ * and during a standalone launch the status bar is already on screen over the
+ * splash — so iOS can tint it black the moment it parses that meta, well before
+ * the bootstrap script at the end of <head> gets to correct it. Emitting a
+ * single un-scoped meta means there is never a wrong value in the document to
+ * be caught by.
+ *
+ * This costs nothing: the root layout already reads cookies for auth, so every
+ * route renders per-request regardless.
+ */
+export function themeColorMetas(
+  preference: string | null | undefined,
+): Array<{ media?: string; content: string }> {
+  if (isResolved(preference)) return [{ content: THEME_COLORS[preference] }];
+  return [
+    { media: "(prefers-color-scheme: light)", content: THEME_COLORS.light },
+    { media: DARK_MEDIA_QUERY, content: THEME_COLORS.dark },
+  ];
+}
+
+/**
+ * Keep the cookie in step with localStorage, and refresh the cached shell so
+ * the next standalone launch is served HTML that already carries the new
+ * colour rather than the previous one.
+ */
+export function persistThemePreference(preference: string | null | undefined): void {
+  if (typeof document === "undefined") return;
+
+  const value = isResolved(preference) ? preference : "";
+  const current = document.cookie
+    .split("; ")
+    .find((c) => c.startsWith(`${THEME_COOKIE}=`))
+    ?.slice(THEME_COOKIE.length + 1);
+  if ((current ?? "") === value) return;
+
+  document.cookie = value
+    ? `${THEME_COOKIE}=${value}; path=/; max-age=31536000; samesite=lax`
+    : `${THEME_COOKIE}=; path=/; max-age=0; samesite=lax`;
+
+  navigator.serviceWorker?.controller?.postMessage({ type: "refresh-shell" });
 }
 
 /** Turn a stored preference (possibly absent or garbage) into a real theme. */

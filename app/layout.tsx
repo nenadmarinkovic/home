@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
 import { Providers } from "./providers";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
 import { SiteFooter } from "@/components/site-footer";
@@ -6,7 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import { ThemeColorSync } from "@/components/theme-color-sync";
 import { getAuthedFromCookie } from "@/lib/auth-server";
 import { site } from "@/lib/site";
-import { THEME_COLORS, THEME_INIT_SCRIPT } from "@/lib/theme";
+import { THEME_COOKIE, THEME_INIT_SCRIPT, themeColorMetas } from "@/lib/theme";
 import "./globals.css";
 
 // `viewport-fit=cover` is what makes `env(safe-area-inset-*)` resolve to real
@@ -35,6 +36,12 @@ export const metadata: Metadata = {
   },
   formatDetection: {
     telephone: false,
+  },
+  other: {
+    // Next emits the standardised `mobile-web-app-capable`, which Safari only
+    // learned in 17.4. Apple documents `apple-mobile-web-app-status-bar-style`
+    // as having no effect without this legacy tag, so ship both.
+    "apple-mobile-web-app-capable": "yes",
   },
   openGraph: {
     type: "website",
@@ -79,25 +86,25 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const authed = await getAuthedFromCookie();
+  const themePreference = (await cookies()).get(THEME_COOKIE)?.value;
   return (
     <html lang="en" suppressHydrationWarning className="antialiased">
       <head>
         {/*
-          Order matters. These two metas cover a JS-free load and the common
-          "follow the system" case with zero scripting, and they must be in the
-          DOM before the bootstrap script below runs so it can correct them for
-          an explicitly chosen theme before the first paint.
+          One un-scoped meta when the visitor has chosen a theme, two
+          media-scoped ones when they are following the system. The bootstrap
+          script below is still the backstop — for a first load before the
+          cookie exists, for a shell served from the service worker cache, and
+          for anyone whose cookies are blocked.
         */}
-        <meta
-          name="theme-color"
-          media="(prefers-color-scheme: light)"
-          content={THEME_COLORS.light}
-        />
-        <meta
-          name="theme-color"
-          media="(prefers-color-scheme: dark)"
-          content={THEME_COLORS.dark}
-        />
+        {themeColorMetas(themePreference).map((meta) => (
+          <meta
+            key={meta.media ?? "any"}
+            name="theme-color"
+            media={meta.media}
+            content={meta.content}
+          />
+        ))}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <link
           rel="preload"
