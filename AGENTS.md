@@ -22,12 +22,14 @@ rendered document. These rules keep the notch from flashing the wrong colour:
    the status bar is already on screen over the splash, so iOS can tint it
    black before the bootstrap script gets to correct it. The cookie is free
    here — the layout already reads cookies for auth.
-3. **The service worker answers shell navigations from cache first.** A cold
-   standalone launch used to wait on a round trip plus a dynamic render, and
-   iOS fills the status bar from the *system appearance* while the web view is
-   blank. Since the cached HTML carries the cookie's colour, `ThemeToggle` →
-   `persistThemePreference` posts `refresh-shell` so the cache is re-fetched
-   with the new cookie. If you change one side, change the other.
+3. **The service worker answers shell navigations from cache first**, so a cold
+   standalone launch does not wait on a round trip plus a dynamic render. This
+   is a launch-speed win, not a colour fix — but it interacts with rule 2, and
+   that part *is* a colour fix: the cached HTML carries whatever colour the
+   cookie had when it was cached, so a copy taken before the cookie existed
+   keeps shipping the wrong meta. `ThemeColorSync` compares the document it was
+   served against the preference and posts `refresh-shell` on a mismatch;
+   changing a theme does the same. If you change one side, change the other.
 4. **`--background` must be opaque on both `html` and `body`, with no
    transition.** Safari 26 dropped `theme-color` and samples the page instead
    (body, falling back to html), watching it live. A transition there makes the
@@ -42,38 +44,51 @@ rendered document. These rules keep the notch from flashing the wrong colour:
 Also keep `THEME_COLORS` in `lib/theme.ts` identical to `--background` in
 `app/globals.css`; the self-test fails if they drift.
 
-## Why this regressed once, and how to not chase it again
+## Reading a notch report
 
-This was fixed properly in #61 and came back weeks later with **no commit to
-blame** — the pipeline was byte-identical, comments aside. What changed was the
-phone, not the repo.
+This has now been "fixed" three times, and twice the diagnosis was wrong because
+the mechanism was assumed rather than checked. **Get the iOS version first** —
+it decides which of two unrelated systems you are debugging:
 
-#61 was built for iOS ≤ 18, where the notch is painted from `theme-color` and
-iOS *animates* the strip on every change. Its whole strategy was to write that
-meta as few times as possible. Safari 26 then stopped using `theme-color`
-altogether — it still parses the tag and ignores the value, deriving the tint
-from the page's own `background-color` instead. Every lever #61 tuned became a
-no-op at once, and the notch fell through to a mechanism nothing had addressed.
+- **iOS ≤ 18** (including 18.4.x): the notch is painted from `theme-color`, and
+  iOS *animates* the strip on every change. Rules 1-3 above are the live ones;
+  the background chain is inert.
+- **iOS 26+**: Safari parses `theme-color` and ignores it, deriving the tint
+  from the page's own `background-color` instead. Rules 4-5 become the live
+  ones and every `theme-color` lever turns into a no-op at once.
 
-So when the notch misbehaves, check in this order and resist the pull of the
-`theme-color` code — on any current iPhone it is not what you are looking at:
+Then read the colour off the symptom. `#000000` and `#fafafa` are *ours* — a
+black notch on a light app is not a system default or a splash artifact, it
+means a `theme-color` meta carrying the dark colour was active. On iOS ≤ 18
+that has one cause: the document shipped both media-scoped metas while the
+phone was in dark appearance, so the dark one matched during parse and iOS
+tinted from it before the bootstrap script corrected it. Which means the
+`theme-pref` cookie was missing — see rule 2.
 
-1. **The background chain** (rules 4 and 5 above). This is the live mechanism on
-   iOS 26+. `theme-color` now only serves iOS ≤ 18 and Android Chrome.
-2. **The pre-document window.** On a cold standalone launch the app spends most
-   of its first second with no document, and iOS fills the status bar from the
-   *system appearance* meanwhile. Nothing in the HTML can colour a window with
-   no HTML in it — which is why shell navigations are cache-first (rule 3).
-   Measured with the document request stalled: 8190 ms → ~75 ms to first paint.
-3. **Only then the metas.**
+Two failure modes that make the cookie vanish, both already guarded, both easy
+to reintroduce:
 
-Two things that are not bugs and cannot be fixed from here: if the phone is in
-Dark appearance and the app is forced to Light, the OS-drawn launch artifacts
-follow the system and no API reaches them (`apple-touch-startup-image` keys off
+- **Writing it only when the value changes.** WebKit caps script-written
+  cookies at seven days regardless of `max-age`, so a cookie that is not
+  re-stamped expires on its own and the server silently falls back to
+  media-scoped metas. It is re-stamped from the bootstrap script on every load
+  for exactly this reason.
+- **Serving a cached shell that predates it.** The HTML carries the cookie's
+  colour, so a copy the service worker cached before the cookie existed keeps
+  shipping the wrong meta. `ThemeColorSync` compares what it was served against
+  what the preference implies and rebuilds the cache on a mismatch.
+
+Also note that `#61` fixed this correctly and it appeared to regress weeks later
+with no commit to blame — the pipeline was byte-identical, comments aside. When
+nothing in the diff explains it, suspect the phone, not the repo.
+
+Two things that cannot be fixed from here: if the phone is in Dark appearance
+and the app is forced to Light, the OS-drawn launch artifacts follow the system
+and no API reaches them (`apple-touch-startup-image` keys off
 `prefers-color-scheme`, so it would be dark in exactly that case); and a new
 build starts with empty caches, so the *first* launch after a deploy still goes
 to the network. Always relaunch twice before judging a change.
 
-Note that `npm run theme:test` and the browser checks behind it run on Chromium,
-which implements none of Safari 26's sampling. They verify the mechanism the
-rules describe, not the rules themselves. Real verification needs an iPhone.
+`npm run theme:test` and the browser checks behind it run on Chromium, which
+paints no status bar and implements none of Safari 26's sampling. They verify
+the mechanism, never the platform. Real verification needs an iPhone.

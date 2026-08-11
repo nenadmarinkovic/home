@@ -66,24 +66,61 @@ export function themeColorMetas(
 }
 
 /**
- * Keep the cookie in step with localStorage, and refresh the cached shell so
- * the next standalone launch is served HTML that already carries the new
- * colour rather than the previous one.
+ * Re-stamp the cookie. Unconditionally, on every load — never "only when it
+ * changed".
+ *
+ * WebKit's tracking prevention caps the lifetime of any cookie written from
+ * script at seven days, whatever `max-age` says. A cookie that is only written
+ * when the value changes therefore disappears on its own, and the server
+ * quietly goes back to emitting media-scoped metas — which is precisely the
+ * state that paints a black notch on a light app. Re-stamping on every load
+ * keeps the clock reset for anyone who opens the app at least weekly.
+ *
+ * Returns whether the value actually changed, which is a separate question from
+ * whether the cookie was written.
  */
-export function persistThemePreference(preference: string | null | undefined): void {
-  if (typeof document === "undefined") return;
+export function persistThemePreference(preference: string | null | undefined): boolean {
+  if (typeof document === "undefined") return false;
 
   const value = isResolved(preference) ? preference : "";
-  const current = document.cookie
-    .split("; ")
-    .find((c) => c.startsWith(`${THEME_COOKIE}=`))
-    ?.slice(THEME_COOKIE.length + 1);
-  if ((current ?? "") === value) return;
+  const current =
+    document.cookie
+      .split("; ")
+      .find((c) => c.startsWith(`${THEME_COOKIE}=`))
+      ?.slice(THEME_COOKIE.length + 1) ?? "";
 
   document.cookie = value
     ? `${THEME_COOKIE}=${value}; path=/; max-age=31536000; samesite=lax`
     : `${THEME_COOKIE}=; path=/; max-age=0; samesite=lax`;
 
+  return current !== value;
+}
+
+/**
+ * Does the document we were actually served already carry the metas the server
+ * would emit for this preference?
+ *
+ * Only the media *shape* is compared — contents get rewritten in place by the
+ * bootstrap script, so they always agree; what matters is whether a meta scoped
+ * to the opposite appearance exists at all for iOS to latch onto mid-parse.
+ * A mismatch means the HTML predates the cookie (a first visit, or a shell the
+ * service worker cached before one existed), so the cached copy needs redoing
+ * before the next launch.
+ */
+export function documentMatchesPreference(
+  preference: string | null | undefined,
+  doc: Document = document,
+): boolean {
+  const metas = Array.from(doc.querySelectorAll('meta[name="theme-color"]'));
+  const expected = themeColorMetas(preference);
+  if (metas.length !== expected.length) return false;
+  return expected.every(
+    (want, i) => (metas[i].getAttribute("media") ?? undefined) === want.media,
+  );
+}
+
+export function refreshCachedShell(): void {
+  if (typeof navigator === "undefined") return;
   navigator.serviceWorker?.controller?.postMessage({ type: "refresh-shell" });
 }
 
@@ -144,6 +181,12 @@ export function applyThemeClass(resolved: ResolvedTheme, doc: Document = documen
  * status bar has already been painted from the un-corrected meta — which is
  * exactly the black-notch-on-light-theme flash.
  *
+ * It also re-stamps the preference cookie, which is what lets the *next* load
+ * ship a single correct meta rather than a pair the wrong half of which can
+ * match. Doing it here rather than from React means it happens on every load,
+ * before hydration, so WebKit's seven-day cap on script-written cookies never
+ * gets a chance to expire it.
+ *
  * Kept dependency-free and ES5-ish so it costs nothing to parse and cannot
  * throw its way out of setting the class.
  */
@@ -153,6 +196,7 @@ try{s=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)})}catch(e){}
 var x=s==="light"||s==="dark",
 r=x?s:(window.matchMedia(${JSON.stringify(DARK_MEDIA_QUERY)}).matches?"dark":"light");
 d.classList.remove("light","dark");d.classList.add(r);d.style.colorScheme=r;
+try{document.cookie=(x?${JSON.stringify(THEME_COOKIE)}+"="+r+"; max-age=31536000":${JSON.stringify(THEME_COOKIE)}+"=; max-age=0")+"; path=/; samesite=lax"}catch(e){}
 var m=document.querySelectorAll('meta[name="theme-color"]'),i,q,t,c;
 for(i=0;i<m.length;i++){q=m[i].getAttribute("media");
 t=x||!q?r:(q.indexOf("dark")>-1?"dark":"light");

@@ -5,7 +5,9 @@ import { useEffect, useLayoutEffect } from "react";
 
 import {
   applyThemeColorMeta,
+  documentMatchesPreference,
   persistThemePreference,
+  refreshCachedShell,
   resolveTheme,
   THEME_STORAGE_KEY,
 } from "@/lib/theme";
@@ -25,8 +27,20 @@ export function ThemeColorSync() {
 
   // Deliberately not in the layout effect above: this only needs to be right
   // before the *next* load, and it can kick off a fetch.
+  //
+  // The bootstrap script already stamps the cookie on every load; repeating it
+  // here is what catches a theme change made after the page was parsed. If the
+  // document we were served disagrees with the preference — a first visit, or a
+  // shell the service worker cached before the cookie existed — the cached copy
+  // is rebuilt now so the next launch does not ship a meta scoped to the
+  // opposite appearance.
   useEffect(() => {
-    persistThemePreference(theme);
+    // Both triggers are needed. `documentMatchesPreference` looks at the live
+    // DOM, which reflects the document *as it was served* — so switching back
+    // to a preference the served document happened to match would otherwise
+    // leave the cached shell stale with nothing to notice it.
+    const changed = persistThemePreference(theme);
+    if (changed || !documentMatchesPreference(theme)) refreshCachedShell();
   }, [theme]);
 
   useEffect(() => {
