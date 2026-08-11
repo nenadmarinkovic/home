@@ -57,13 +57,27 @@ it decides which of two unrelated systems you are debugging:
   from the page's own `background-color` instead. Rules 4-5 become the live
   ones and every `theme-color` lever turns into a no-op at once.
 
-Then read the colour off the symptom. `#000000` and `#fafafa` are *ours* — a
-black notch on a light app is not a system default or a splash artifact, it
-means a `theme-color` meta carrying the dark colour was active. On iOS ≤ 18
-that has one cause: the document shipped both media-scoped metas while the
-phone was in dark appearance, so the dark one matched during parse and iOS
-tinted from it before the bootstrap script corrected it. Which means the
-`theme-pref` cookie was missing — see rule 2.
+**Then get the phone's appearance**, because it decides whether the document
+can even be responsible. On iOS ≤ 18 the notch is whatever the first matching
+`theme-color` resolves to, and the only value here that is black is the *dark*
+one. On a **light**-appearance phone nothing on the page can resolve to it —
+the light-media meta is `#fafafa` and the cookie-driven single meta is
+`#fafafa` — so a black notch there is **not** coming from this repo, and no
+amount of meta or cookie work will touch it. On a dark-appearance phone it can:
+the dark-media meta matches during parse and iOS tints from it before the
+bootstrap script corrects it, which means the `theme-pref` cookie was missing.
+
+An open case, recorded so the next person does not re-derive it: light phone,
+light app, iOS 18.4.1, black notch for about a second on standalone launch
+only. Eliminated by inspection — `theme-color` (no meta resolves to black under
+a light appearance), the manifest (`theme_color` and `background_color` have
+been `#fafafa` since the file was created), Safari 26 sampling (not on 18.x),
+and a Next upgrade swapping the capability meta (pinned to 16.2.4 throughout).
+What is *not* eliminated is iOS's install-time cache: a home-screen web app
+keeps the manifest and status-bar style captured when it was added, so an app
+installed while `statusBarStyle` was briefly `black-translucent` (it was, for
+part of 2026-07-17) launches with that forever. Removing and re-adding the app
+is the cheap test, and no deploy can substitute for it.
 
 Two failure modes that make the cookie vanish, both already guarded, both easy
 to reintroduce:
@@ -82,12 +96,14 @@ Also note that `#61` fixed this correctly and it appeared to regress weeks later
 with no commit to blame — the pipeline was byte-identical, comments aside. When
 nothing in the diff explains it, suspect the phone, not the repo.
 
-Two things that cannot be fixed from here: if the phone is in Dark appearance
-and the app is forced to Light, the OS-drawn launch artifacts follow the system
-and no API reaches them (`apple-touch-startup-image` keys off
-`prefers-color-scheme`, so it would be dark in exactly that case); and a new
-build starts with empty caches, so the *first* launch after a deploy still goes
-to the network. Always relaunch twice before judging a change.
+Three things that cannot be fixed from here: whatever iOS captured when the app
+was added to the Home Screen (only a reinstall clears it); OS-drawn launch
+artifacts, which follow the system appearance rather than the app's theme
+(`apple-touch-startup-image` keys off `prefers-color-scheme`, so it cannot
+express "the app is light on a dark phone"); and a new build starting with
+empty caches, so the *first* launch after a deploy still goes to the network.
+Always relaunch twice before judging a change, and reinstall before concluding
+a deploy did not work.
 
 `npm run theme:test` and the browser checks behind it run on Chromium, which
 paints no status bar and implements none of Safari 26's sampling. They verify
