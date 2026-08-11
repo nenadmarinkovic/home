@@ -234,8 +234,28 @@ console.log("\nglobals.css stays in sync");
 }
 
 /* ------------------------------------------------------------------ */
-/* Optional: assert the actually rendered document.                     */
+/* The launch path: nothing in the document can colour a window in      */
+/* which there is no document yet.                                      */
 /* ------------------------------------------------------------------ */
+
+console.log("\nservice worker serves the shell without waiting on the network");
+{
+  // Source-level guards. The behaviour itself needs a browser with a stalled
+  // network to observe; these catch the two ways it silently regresses.
+  const sw = readFileSync(join(root, "public/sw.js"), "utf8");
+  const shell = sw.slice(sw.indexOf("function handleShellNavigate"));
+  check("navigations have a cache-first shell path", shell.length > 0);
+  check(
+    "the cached copy is read before the network is awaited",
+    shell.indexOf("cache.match(pathname)") > -1 &&
+      shell.indexOf("cache.match(pathname)") < shell.indexOf("await revalidate"),
+  );
+  check("revalidation is kept alive past the response", shell.includes("event.waitUntil(revalidate)"));
+  check(
+    "per-session routes stay network-first",
+    /isShellPath[\s\S]{0,200}admin\|login\|api/.test(sw),
+  );
+}
 
 const urlArg = process.argv.find((a) => a.startsWith("--url="));
 

@@ -79,6 +79,22 @@ async function handleStatic(request) {
   return response;
 }
 
+async function offlineFallback() {
+  const precache = await caches.open(PRECACHE);
+  const offline = await precache.match(OFFLINE_URL);
+  if (offline) return offline;
+  return new Response("Offline", {
+    status: 503,
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+
+// Anything that renders per-session state stays network-first — a cached copy
+// of these would show the wrong nav until it revalidated.
+function isShellPath(pathname) {
+  return !/^\/(admin|login|api)(\/|$)/.test(pathname);
+}
+
 async function handleNavigate(request) {
   const pathname = new URL(request.url).pathname;
   try {
@@ -89,14 +105,45 @@ async function handleNavigate(request) {
     const cache = await caches.open(RUNTIME);
     const cached = await cache.match(pathname);
     if (cached) return cached;
-    const precache = await caches.open(PRECACHE);
-    const offline = await precache.match(OFFLINE_URL);
-    if (offline) return offline;
-    return new Response("Offline", {
-      status: 503,
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    });
+    return offlineFallback();
   }
+}
+
+/**
+ * Stale-while-revalidate for the public shell.
+ *
+ * A standalone launch used to wait on a full network round trip plus a dynamic
+ * server render before the first byte of HTML existed. Until that HTML lands
+ * the web view has nothing to paint, and iOS fills the status bar area from the
+ * system appearance — which is why a light-themed app could still flash a black
+ * notch for the best part of a second on a dark-appearance phone. Nothing in
+ * the document can fix a window in which there is no document, so the fix is to
+ * have one ready: answer from cache in a millisecond, refresh in the background
+ * for the next launch.
+ *
+ * Safe now that the HTML carries no theme of its own — the render-blocking
+ * bootstrap in <head> resolves the theme from localStorage, so a cached page
+ * and a fresh one paint the same colours.
+ */
+function handleShellNavigate(event, request, pathname) {
+  const revalidate = (async () => {
+    try {
+      const response = await fetch(request);
+      await cacheNavigation(pathname, response);
+      return response;
+    } catch {
+      return null;
+    }
+  })();
+
+  event.waitUntil(revalidate);
+
+  return (async () => {
+    const cache = await caches.open(RUNTIME);
+    const cached = await cache.match(pathname);
+    if (cached) return cached;
+    return (await revalidate) ?? offlineFallback();
+  })();
 }
 
 self.addEventListener("fetch", (event) => {
@@ -112,6 +159,11 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (request.mode === "navigate") {
-    event.respondWith(handleNavigate(request));
+    const pathname = url.pathname;
+    event.respondWith(
+      isShellPath(pathname)
+        ? handleShellNavigate(event, request, pathname)
+        : handleNavigate(request),
+    );
   }
 });

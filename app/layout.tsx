@@ -36,6 +36,12 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+  other: {
+    // Next emits the standardised `mobile-web-app-capable`, which Safari only
+    // learned in 17.4. Apple documents `apple-mobile-web-app-status-bar-style`
+    // as having no effect without this legacy tag, so ship both.
+    "apple-mobile-web-app-capable": "yes",
+  },
   openGraph: {
     type: "website",
     siteName: site.title,
