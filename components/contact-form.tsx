@@ -118,7 +118,7 @@ export function ContactForm() {
           className={`font-sans text-sm ${status === "error" ? "text-red-600 dark:text-red-400" : "text-foreground/70"}`}
         >
           {status === "sent"
-            ? "Thanks — your message is on its way."
+            ? "Thanks! Your message is on its way."
             : status === "error"
               ? error
               : ""}
