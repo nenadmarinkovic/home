@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState, useTransition } from "react";
 
 import {
   baseNavItems,
@@ -42,10 +42,12 @@ function HamburgerIcon({ open }: { open: boolean }) {
 
 export function MobileMenu() {
   const pathname = usePathname();
+  const router = useRouter();
   const authed = useAuthed();
   const authItem = getAuthNavItem(authed);
   const authActive = authItem ? isNavActive(pathname, authItem.href) : false;
   const [open, setOpen] = useState(false);
+  const [pending, startTransition] = useTransition();
   const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -77,6 +79,16 @@ export function MobileMenu() {
   }, [open]);
 
   const close = () => setOpen(false);
+
+  async function logout() {
+    close();
+    await fetch("/api/logout", { method: "POST" });
+    startTransition(() => {
+      router.push("/login");
+      router.refresh();
+    });
+  }
+
   const linkClass =
     "flex min-h-11 w-full cursor-pointer touch-manipulation items-center leading-none transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground focus-visible:rounded-sm";
 
@@ -154,6 +166,20 @@ export function MobileMenu() {
                   );
                 })}
               </nav>
+            )}
+
+            {authed && (
+              <button
+                type="button"
+                onClick={logout}
+                disabled={pending}
+                className={cn(
+                  linkClass,
+                  "font-sans text-lg font-normal tracking-tight text-zinc-600 disabled:opacity-50 dark:text-zinc-400",
+                )}
+              >
+                {pending ? "Signing out…" : "Sign out"}
+              </button>
             )}
 
             <div className="mt-auto flex flex-col gap-8 pt-8">
