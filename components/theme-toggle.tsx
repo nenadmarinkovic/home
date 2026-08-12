@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { DesktopIcon, MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 
@@ -16,8 +17,27 @@ const options = [
   { value: "dark", icon: MoonIcon, label: "Dark" },
 ] as const;
 
+function subscribe(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme-pref"],
+  });
+  return () => observer.disconnect();
+}
+
+function getSnapshot() {
+  return document.documentElement.getAttribute("data-theme-pref");
+}
+
+function getServerSnapshot() {
+  return null;
+}
+
 export function ThemeToggle({ className }: { className?: string }) {
-  const { theme, setTheme } = useTheme();
+  const { setTheme } = useTheme();
+  const pref = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
   const select = (value: (typeof options)[number]["value"]) => {
     applyThemeColorMeta(resolveTheme(value));
     applyThemePrefAttribute(value);
@@ -38,7 +58,7 @@ export function ThemeToggle({ className }: { className?: string }) {
           key={value}
           type="button"
           role="radio"
-          aria-checked={theme === value}
+          aria-checked={pref === value}
           aria-label={label}
           title={label}
           data-theme-option={value}

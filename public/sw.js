@@ -86,10 +86,17 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+
+function isForcedRefresh(request) {
+  return request.cache === "reload" || request.cache === "no-store";
+}
+
 async function handleStatic(request) {
   const cache = await caches.open(STATIC);
-  const cached = await cache.match(request);
-  if (cached) return cached;
+  if (!isForcedRefresh(request)) {
+    const cached = await cache.match(request);
+    if (cached) return cached;
+  }
   const response = await fetch(request);
   if (response.ok) cache.put(request, response.clone());
   return response;
@@ -125,6 +132,8 @@ async function handleNavigate(request) {
 }
 
 function handleShellNavigate(event, request, pathname) {
+  if (isForcedRefresh(request)) return handleNavigate(request);
+
   const revalidate = (async () => {
     try {
       const response = await fetch(request);

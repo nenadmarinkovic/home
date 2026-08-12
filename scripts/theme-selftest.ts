@@ -315,6 +315,20 @@ async function checkRenderedDocument(url: string) {
     "the server bakes no theme into the html element",
     !/<html[^>]*class="[^"]*\bdark\b/.test(html),
   );
+
+  const options = [
+    ...html.matchAll(/<button[^>]*data-theme-option="[a-z]+"[^>]*>/g),
+  ].map((m) => m[0]);
+  check(
+    "the theme toggle renders every option server-side",
+    options.length >= 3,
+    `found ${options.length}`,
+  );
+  equal(
+    "no option is marked checked before hydration",
+    options.filter((o) => o.includes('aria-checked="true"')).length,
+    0,
+  );
 }
 
 async function main() {

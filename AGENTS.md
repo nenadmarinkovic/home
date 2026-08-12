@@ -140,6 +140,28 @@ its ~100ms block period on screen instead of behind a web view that had nothing
 to paint yet. Nothing about the fonts changed; the thing they were racing got a
 thousand times faster. Apply the same reasoning to any asset added later.
 
+## Never run `next start` on the dev port
+
+`ServiceWorkerRegister` bails out unless `NODE_ENV === "production"`, so `npm run
+dev` never registers a worker — but service workers are scoped to an *origin*,
+not to a server. One `npm run start` on `localhost:3000` installs a real worker
+there, and it keeps intercepting when you go back to `npm run dev` on the same
+port, serving the production build's HTML and `/_next/static/` chunks over your
+dev server. The symptom is an error that will not change no matter what you
+edit — classically a hydration mismatch whose stack line numbers point at a
+version of the file that no longer exists.
+
+Verify a production build on a different port (`next start -p 3001`), or clear
+it afterwards: DevTools → Application → Storage → Clear site data, or
+
+```js
+navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister()));
+caches.keys().then(ks => ks.forEach(k => caches.delete(k)));
+```
+
+A hard reload now bypasses every cache in `sw.js` (`isForcedRefresh`), so it is
+an escape hatch rather than a re-serve of the same stale bytes.
+
 Fonts are served cache-first and never revalidated, like `/_next/static/`.
 Their filenames are not content-hashed, but `next.config.ts` already serves
 `/fonts/:path*` as `immutable, max-age=31536000`, so renaming the file was
