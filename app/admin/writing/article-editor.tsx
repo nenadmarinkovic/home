@@ -14,7 +14,7 @@ import {
   ListBulletsIcon,
   QuotesIcon,
   TextBIcon,
-  TextHOneIcon,
+  TextHThreeIcon,
   TextHTwoIcon,
   TextItalicIcon,
   TrashIcon,
@@ -550,13 +550,13 @@ function EditorToolbar({ editor }: { editor: Editor }) {
   }> = [
     {
       label: "H2",
-      icon: <TextHOneIcon weight="bold" />,
+      icon: <TextHTwoIcon weight="bold" />,
       isActive: editor.isActive("heading", { level: 2 }),
       run: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
     },
     {
       label: "H3",
-      icon: <TextHTwoIcon weight="bold" />,
+      icon: <TextHThreeIcon weight="bold" />,
       isActive: editor.isActive("heading", { level: 3 }),
       run: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
     },

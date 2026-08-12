@@ -467,7 +467,7 @@ function FilterMenu({
           <span className="hidden sm:inline">{FILTER_LABELS[filter]}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[10rem]">
+      <DropdownMenuContent align="end" className="min-w-40">
         {(Object.keys(FILTER_LABELS) as FilterKey[]).map((key) => (
           <DropdownMenuItem
             key={key}
@@ -476,7 +476,10 @@ function FilterMenu({
           >
             <span>{FILTER_LABELS[key]}</span>
             {filter === key && (
-              <CheckIcon weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
+              <CheckIcon
+                weight="bold"
+                className="size-3.5 text-[#0040ff] dark:text-[#ffff01]"
+              />
             )}
           </DropdownMenuItem>
         ))}
@@ -505,7 +508,7 @@ function SortMenu({
           <span className="hidden sm:inline">{SORT_LABELS[sort]}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[10rem]">
+      <DropdownMenuContent align="end" className="min-w-40">
         {(Object.keys(SORT_LABELS) as SortKey[]).map((key) => (
           <DropdownMenuItem
             key={key}
@@ -514,7 +517,10 @@ function SortMenu({
           >
             <span>{SORT_LABELS[key]}</span>
             {sort === key && (
-              <CheckIcon weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
+              <CheckIcon
+                weight="bold"
+                className="size-3.5 text-[#0040ff] dark:text-[#ffff01]"
+              />
             )}
           </DropdownMenuItem>
         ))}
@@ -684,8 +690,7 @@ function TokenDialog({
       await navigator.clipboard.writeText(token);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-    } catch {
-    }
+    } catch {}
   }
 
   return (
@@ -714,7 +719,10 @@ function TokenDialog({
                   className="shrink-0 text-zinc-600 hover:bg-foreground/4 dark:text-zinc-400"
                 >
                   {copied ? (
-                    <CheckIcon weight="bold" className="text-[#0040ff] dark:text-[#ffff01]" />
+                    <CheckIcon
+                      weight="bold"
+                      className="text-[#0040ff] dark:text-[#ffff01]"
+                    />
                   ) : (
                     <CopyIcon weight="bold" />
                   )}

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeftIcon, ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 
 import { AdminActions } from "@/components/admin-actions";
+import { ArticleCode } from "@/components/article-code";
 import { ArticleEmbeds } from "@/components/article-embeds";
 import { embedOrigins } from "@/lib/embeds";
 import { renderMarkdown } from "@/lib/markdown";
@@ -89,7 +90,7 @@ export default async function ArticlePage({
             {article.title}
           </h1>
           {article.subtitle && (
-            <p className="mt-4 text-base leading-normal text-balance text-foreground/70">
+            <p className="mt-5 text-md italic leading-snug text-balance text-foreground/60">
               {article.subtitle}
             </p>
           )}
@@ -99,7 +100,7 @@ export default async function ArticlePage({
         </div>
       </div>
       <article
-        className="w-full space-y-6 text-base leading-normal text-pretty text-foreground/70 oldstyle-nums"
+        className="w-full text-md text-pretty text-foreground/90 oldstyle-nums"
         dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }}
       />
       <noscript
@@ -107,11 +108,12 @@ export default async function ArticlePage({
           __html: "<style>article .embed-card{display:flex}</style>",
         }}
       />
+      <ArticleCode />
       <ArticleEmbeds origins={embedOrigins()} />
       {(prev || next) && (
         <nav
           aria-label="More writing"
-          className="grid w-full grid-cols-2 gap-8 pt-8 font-sans text-sm"
+          className="grid w-full grid-cols-2 gap-8 border-t border-border pt-8 font-sans text-sm"
         >
           <div className="flex flex-col gap-1">
             {prev && (
@@ -119,14 +121,14 @@ export default async function ArticlePage({
                 href={`/writing/${prev.slug}`}
                 className="group flex flex-col gap-1"
               >
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-zinc-500 transition-colors group-hover:text-[#0040ff] dark:text-zinc-500 dark:group-hover:text-[#ffff01]">
                   <ArrowLeftIcon
                     weight="bold"
                     className="size-3 transition-transform duration-200 group-hover:-translate-x-0.5"
                   />
                   Older
                 </span>
-                <span className="text-base font-normal leading-tight text-pretty text-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="text-base font-normal leading-tight text-pretty text-foreground/80 transition-colors group-hover:text-foreground">
                   {prev.title}
                 </span>
               </Link>
@@ -138,14 +140,14 @@ export default async function ArticlePage({
                 href={`/writing/${next.slug}`}
                 className="group flex flex-col items-end gap-1"
               >
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-zinc-500 transition-colors group-hover:text-[#0040ff] dark:text-zinc-500 dark:group-hover:text-[#ffff01]">
                   Newer
                   <ArrowRightIcon
                     weight="bold"
                     className="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
                   />
                 </span>
-                <span className="text-base font-normal leading-tight text-pretty text-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="text-base font-normal leading-tight text-pretty text-foreground/80 transition-colors group-hover:text-foreground">
                   {next.title}
                 </span>
               </Link>

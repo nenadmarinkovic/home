@@ -227,6 +227,42 @@ function renderEmbedFence(text: string): string | null {
   );
 }
 
+const CODE_LANG = /^[a-z0-9+#._-]{1,24}$/;
+
+const CODE_LABELS: Record<string, string> = {
+  cjs: "javascript",
+  dockerfile: "docker",
+  js: "javascript",
+  jsx: "javascript",
+  md: "markdown",
+  mjs: "javascript",
+  py: "python",
+  rb: "ruby",
+  rs: "rust",
+  sh: "shell",
+  ts: "typescript",
+  tsx: "typescript",
+  yml: "yaml",
+};
+
+function renderCodeFence(token: Tokens.Code): string {
+  const word = (token.lang ?? "").trim().split(/\s+/)[0].toLowerCase();
+  const lang = CODE_LANG.test(word) ? word : "";
+  const label = lang ? (CODE_LABELS[lang] ?? lang) : "";
+  const body = token.text.replace(/\n+$/, "");
+  const code = token.escaped ? body : escapeAttr(body);
+
+  return (
+    `<figure class="code">` +
+    `<figcaption class="code-lang">` +
+    `<span class="code-lang-name">${label}</span>` +
+    `<span class="code-actions"></span>` +
+    `</figcaption>` +
+    `<pre><code${lang ? ` class="language-${lang}"` : ""}>${code}</code></pre>` +
+    `</figure>`
+  );
+}
+
 marked.use({
   renderer: {
     code(token: Tokens.Code) {
@@ -239,7 +275,7 @@ marked.use({
         if (html) return html;
       }
 
-      return false as unknown as string;
+      return renderCodeFence(token);
     },
   },
 });

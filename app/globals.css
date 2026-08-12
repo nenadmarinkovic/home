@@ -111,6 +111,8 @@
   --text-sm--line-height: 1.5;
   --text-base: 1rem;
   --text-base--line-height: 1.55;
+  --text-md: 1.0625rem;
+  --text-md--line-height: 1.55;
   --text-lg: 1.125rem;
   --text-lg--line-height: 1.4;
   --text-xl: 1.375rem;
@@ -352,10 +354,14 @@ article a:hover {
 }
 
 article blockquote {
-  margin: 2.5rem 0;
   padding-left: 1.5rem;
-  border-left: 2px solid var(--foreground);
+  border-left: 2px solid color-mix(in oklab, var(--foreground) 22%, transparent);
   color: var(--foreground);
+}
+
+article > blockquote,
+article > blockquote + * {
+  margin-top: 2.5rem;
 }
 
 article blockquote p + p {
@@ -377,24 +383,79 @@ article {
   display: flow-root;
 }
 
+/* One rule owns the gap between top-level blocks; everything below only widens
+   or tightens it. A heading sits far from the section above and close to the
+   text it introduces, so the two read as one unit instead of a flat stack. */
+article > * + * {
+  margin-top: 1.75rem;
+}
+
+article > :is(h2, h3, h4) {
+  margin-top: 3.5rem;
+}
+
+article > :is(h2, h3, h4) + * {
+  margin-top: 0.75rem;
+}
+
 article h2,
 article h3,
 article h4 {
   clear: both;
   font-weight: 300;
   line-height: 1.2;
-  margin: 2rem 0 0.75rem;
+  letter-spacing: -0.015em;
   color: var(--foreground);
 }
 article h2 {
-  font-size: 1.5rem;
+  font-size: 1.625rem;
+  font-weight: 500;
 }
 article h3 {
-  font-size: 1.25rem;
+  font-size: 1.3125rem;
 }
 article h4 {
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   font-weight: 500;
+  letter-spacing: 0;
+}
+
+article ul,
+article ol {
+  padding-left: 1.5rem;
+}
+
+article ul {
+  list-style: disc;
+}
+
+article ol {
+  list-style: decimal;
+}
+
+article ul ul {
+  list-style: circle;
+}
+
+article li {
+  padding-left: 0.25rem;
+}
+
+article li + li {
+  margin-top: 0.5rem;
+}
+
+article li::marker {
+  color: color-mix(in oklab, var(--foreground) 45%, transparent);
+}
+
+article li > p + p {
+  margin-top: 0.75rem;
+}
+
+article li > ul,
+article li > ol {
+  margin: 0.5rem 0 0;
 }
 
 article img {
@@ -403,6 +464,98 @@ article img {
   height: auto;
   margin: 2rem auto;
   border-radius: 0.5rem;
+}
+
+article .code {
+  margin: 2rem 0;
+  /* Same panel as the admin dashboard tiles: rounded-xl, border-foreground/10,
+     bg-white / dark:bg-zinc-900, with their zinc-500 eyebrow as the marker. */
+  border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
+  border-radius: 0.875rem;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.dark article .code {
+  background: var(--color-zinc-900);
+}
+
+article .code-lang {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.3125rem 0.5rem 0.3125rem 1rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-zinc-500);
+}
+
+article .code-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  min-height: 1.75rem;
+}
+
+article .code-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.375rem;
+  color: var(--color-zinc-500);
+  cursor: pointer;
+  transition:
+    background-color 150ms,
+    color 150ms;
+}
+
+article .code-copy:hover {
+  background: color-mix(in oklab, var(--foreground) 6%, transparent);
+  color: var(--foreground);
+}
+
+article .code-copy[data-copied] {
+  color: #0040ff;
+}
+
+.dark article .code-copy[data-copied] {
+  color: #ffff01;
+}
+
+article .code-copy-icon {
+  width: 0.9375rem;
+  height: 0.9375rem;
+}
+
+article .code pre {
+  margin: 0;
+  padding: 0.875rem 1rem;
+  overflow-x: auto;
+}
+
+article pre,
+article code {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--foreground);
+  font-variant-numeric: normal;
+}
+
+article :not(pre) > code {
+  padding: 0.15em 0.4em;
+  border-radius: 0.375rem;
+  background: color-mix(in oklab, var(--foreground) 6%, transparent);
+  font-size: 0.875em;
+  overflow-wrap: break-word;
 }
 
 article .embed {
@@ -809,9 +962,23 @@ article .device .device-still {
 .dark .ProseMirror a {
   color: #ffff01;
 }
-.ProseMirror code {
+.ProseMirror :not(pre) > code {
   border-radius: 4px;
   background: rgba(127, 127, 127, 0.15);
   padding: 0.1em 0.35em;
   font-size: 0.9em;
+}
+.ProseMirror pre {
+  margin: 0.75rem 0;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: rgba(127, 127, 127, 0.08);
+  overflow-x: auto;
+}
+.ProseMirror pre,
+.ProseMirror code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
 }
