@@ -7,23 +7,48 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-const RECIPIENT = "nenadmarinkovic@protonmail.com";
+type Status = "idle" | "sending" | "sent" | "error";
 
 export function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [website, setWebsite] = useState("");
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const subject = encodeURIComponent(
-      name ? `Hello from ${name}` : "Hello from your site",
-    );
-    const body = encodeURIComponent(
-      `${message}\n\n— ${name || "Anonymous"}${email ? `\n${email}` : ""}`,
-    );
-    window.location.href = `mailto:${RECIPIENT}?subject=${subject}&body=${body}`;
+    if (status === "sending") return;
+
+    setStatus("sending");
+    setError("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name, email, message, website }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+
+      if (!res.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+        setStatus("error");
+        return;
+      }
+
+      setName("");
+      setEmail("");
+      setMessage("");
+      setStatus("sent");
+    } catch {
+      setError("Network error. Please try again.");
+      setStatus("error");
+    }
   }
+
+  const sending = status === "sending";
 
   return (
     <form
@@ -40,6 +65,7 @@ export function ContactForm() {
             autoComplete="name"
             placeholder="Your name"
             required
+            disabled={sending}
             value={name}
             onChange={(event) => setName(event.target.value)}
             className="text-sm md:text-sm"
@@ -54,6 +80,7 @@ export function ContactForm() {
             autoComplete="email"
             placeholder="you@example.com"
             required
+            disabled={sending}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             className="text-sm md:text-sm"
@@ -67,14 +94,39 @@ export function ContactForm() {
           name="message"
           placeholder="What's on your mind?"
           required
+          disabled={sending}
           value={message}
           onChange={(event) => setMessage(event.target.value)}
           className="min-h-40 resize-y text-sm md:text-sm"
         />
       </div>
-      <Button type="submit" size="lg" className="self-end">
-        Send message
-      </Button>
+      <div aria-hidden className="hidden">
+        <Label htmlFor="contact-website">Website</Label>
+        <Input
+          id="contact-website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={website}
+          onChange={(event) => setWebsite(event.target.value)}
+        />
+      </div>
+      <div className="flex items-center justify-end gap-4">
+        <p
+          aria-live="polite"
+          className={`font-sans text-sm ${status === "error" ? "text-red-600 dark:text-red-400" : "text-foreground/70"}`}
+        >
+          {status === "sent"
+            ? "Thanks — your message is on its way."
+            : status === "error"
+              ? error
+              : ""}
+        </p>
+        <Button type="submit" size="lg" disabled={sending}>
+          {sending ? "Sending…" : "Send message"}
+        </Button>
+      </div>
     </form>
   );
 }

@@ -200,11 +200,24 @@ Put these in `.env.local`. None of them are committed.
 | `ELEVENLABS_API_KEY`             | Audio                                                          |
 | `DOKPLOY_URL`, `DOKPLOY_API_KEY` | The instance behind the admin Log page                         |
 | `EMBED_APPS`                     | `name=origin` pairs of apps allowed in a post, comma separated |
+| `BREVO_API_KEY`                  | Brevo, for the contact form                                    |
+| `BREVO_SENDER_EMAIL`             | The from address, must be verified in Brevo                    |
+| `BREVO_SENDER_NAME`              | Optional display name, defaults to the site name               |
+| `CONTACT_RECIPIENT_EMAIL`        | Where contact form mail lands, defaults to `site.author.email` |
 | `NEXT_PUBLIC_SITE_URL`           | Canonical origin, overrides the default in `lib/site.ts`       |
 | `NEXT_PUBLIC_BUILD_ID`           | Optional, otherwise taken from the git SHA                     |
 
 `EMBED_APPS` is both the name lookup for the embed blocks and the list of origins
 allowed to talk to the page. An app that is not in it simply does nothing.
+
+## Contact form
+
+`app/api/contact/route.ts` validates the submission, rate limits by IP (three per
+ten minutes), drops anything that filled the hidden `website` honeypot, and hands
+the rest to `lib/brevo.ts`, which posts to Brevo's transactional endpoint. The
+reply-to is the sender's address, so replying from the inbox goes straight back
+to them. `BREVO_SENDER_EMAIL` has to be a sender or domain you authenticated in
+Brevo — a raw `@protonmail.com` from address will be rejected.
 
 ## Deploying
 
