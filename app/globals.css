@@ -385,7 +385,7 @@ article {
 }
 
 article > * + * {
-  margin-top: 1.75rem;
+  margin-top: 1rem;
 }
 
 article > :is(h2, h3, h4) {
