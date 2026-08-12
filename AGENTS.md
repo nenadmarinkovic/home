@@ -68,53 +68,51 @@ coming from the document, and no amount of meta work will touch it. That was not
 true before: the old media-scoped pair let a dark-appearance phone match the
 dark meta during parse.
 
-**Under `statusBarStyle: "default"` the page cannot paint the notch strip at
-all.** The web view starts below it and iOS draws it. That single fact bounds
-what any amount of CSS or meta work can achieve: the page controls that strip
-only *after* iOS has read a colour out of the document, never before. The one
-style that would hand the strip to the page is `black-translucent`, and it
-forces white status-bar glyphs, so it is unusable for a theme that can be
-light. Do not "fix" a launch flash by reaching for it.
+## Why `statusBarStyle` is `black-translucent`
 
-An open case, recorded so the next person does not re-derive it: light phone,
-light app, iOS 18.4.1, black notch strip on standalone launch only — down from
-about a second to roughly one frame once shell navigations became cache-first,
-which is the shape you would expect if the remaining window is iOS drawing the
-strip before any document exists. Eliminated by inspection: `theme-color` (no
-meta resolves to black under a light appearance), the manifest (`theme_color`
-and `background_color` have been `#fafafa` since the file was created), Safari
-26 sampling (not on 18.x), a Next upgrade swapping the capability meta (pinned
-to 16.2.4 throughout), and anything black in the page itself (no `bg-foreground`
-or equivalent near the top; the fixed/sticky audit comes back empty).
+**Under `default` the page cannot paint the notch strip at all.** The web view
+starts below it and iOS draws it, from the *system* appearance, during the
+launch window when no document exists yet. That bounds what any meta or CSS
+work can achieve, and it is what every earlier fix ran into: cache-first shell
+navigations took the flash from about a second to roughly one frame, but could
+not close it, because you cannot colour a window that has no document in it.
 
-What is left is iOS's install-time cache. A home-screen web app keeps the
-manifest and status-bar style captured when it was added and never re-reads
-them, so an app added before `theme_color` existed in the manifest (2026-07-01)
-— or while `statusBarStyle` was briefly `black-translucent`, as it was for part
-of 2026-07-17 — launches with those values forever. That is consistent with
-every constraint here: strip only, one frame, standalone only, and immune to
-deploys. Removing and re-adding the app is the test, and no deploy substitutes
-for it.
+`black-translucent` is the only style that hands the strip to the page. The web
+view then runs to the top of the screen: the launch screen's `background_color`
+covers the strip, and after hand-off the fixed mask in `app/layout.tsx` does,
+in `var(--background)`. The strip follows the *app's* theme rather than the
+OS's, which is the whole point.
 
-The only remaining lever after that is `apple-touch-startup-image`, which
-replaces the generated launch screen with images that cover the strip. It costs
-a matrix of exact-size PNGs per device, keys off `prefers-color-scheme` so it
-cannot express "light app on a dark phone", and only helps if the flash is the
-launch screen rather than the hand-off to the web view. Confirm which before
-building it.
+Its cost is real and is the reason it was reverted within hours on 2026-07-17:
+it makes the status-bar glyphs white, which on `#fafafa` is unreadable. Whether
+they are *forced* white or follow the appearance varies by iOS version — check
+on a device before assuming either. If they come out white, the honest options
+are reverting to `default` (and accepting the launch strip) or
+`apple-touch-startup-image`, which replaces the generated launch screen with
+exact-size PNGs per device; it keys off `prefers-color-scheme`, so it cannot
+express "light app on a dark phone", and it only helps if the flash is the
+launch screen rather than the hand-off to the web view.
+
+**Do not re-derive the install-cache theory.** A home-screen web app does keep
+the manifest and status-bar style captured at add time and never re-reads them,
+so a reinstall is always step one when judging a deploy. But for the standing
+case — light app, black strip on standalone launch only — a reinstall was
+performed on 2026-08-12 and **the flash survived it**. That eliminates the
+install-time cache, along with (by inspection) `theme-color` (no meta resolves
+to black once the document ships a single `#fafafa` one), the manifest
+(`theme_color` and `background_color` `#fafafa` since the file was created),
+Safari 26 sampling (not on 18.x), a Next upgrade swapping the capability meta
+(pinned to 16.2.4 throughout), and anything black in the page itself.
 
 Note that `#61` fixed this correctly and it appeared to regress weeks later
 with no commit to blame — the pipeline was byte-identical, comments aside. When
 nothing in the diff explains it, suspect the phone, not the repo.
 
-Three things that cannot be fixed from here: whatever iOS captured when the app
-was added to the Home Screen (only a reinstall clears it); OS-drawn launch
-artifacts, which follow the system appearance rather than the app's theme
-(`apple-touch-startup-image` keys off `prefers-color-scheme`, so it cannot
-express "the app is light on a dark phone"); and a new build starting with
-empty caches, so the *first* launch after a deploy still goes to the network.
-Always relaunch twice before judging a change, and reinstall before concluding
-a deploy did not work.
+Two things still cannot be fixed from here: whatever iOS captured when the app
+was added to the Home Screen (only a reinstall clears it), and a new build
+starting with empty caches, so the *first* launch after a deploy still goes to
+the network. Always relaunch twice before judging a change, and reinstall
+before concluding a deploy did not work.
 
 `npm run theme:test` and the browser checks behind it run on Chromium, which
 paints no status bar and implements none of Safari 26's sampling. They verify

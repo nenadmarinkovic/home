@@ -31,7 +31,13 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: site.name,
-    statusBarStyle: "default",
+    // `default` leaves the status bar strip to iOS, which draws it from the
+    // system appearance during a standalone launch — a black strip on a light
+    // app, unreachable from the page because there is no document yet.
+    // `black-translucent` extends the web view under it so the strip is ours:
+    // the launch screen's `background_color` covers it, then `--background`
+    // does (see the mask in <body>). The cost is white status-bar glyphs.
+    statusBarStyle: "black-translucent",
   },
   formatDetection: {
     telephone: false,
@@ -108,6 +114,16 @@ export default async function RootLayout({
         <Providers authed={authed}>
           <ThemeColorSync />
           <ServiceWorkerRegister />
+          {/*
+            Under `black-translucent` the web view runs to the top of the
+            screen, so scrolled content would pass behind the clock. This masks
+            the strip in the app's own colour. Zero height off iOS, and on
+            Safari 26 it is exactly what the tint gets sampled from.
+          */}
+          <div
+            aria-hidden
+            className="pointer-events-none fixed inset-x-0 top-0 z-50 h-(--safe-top) bg-background"
+          />
           <div className="flex min-h-screen flex-col">
             <div className="flex flex-col flex-1 items-center justify-start bg-background pt-(--safe-top) pr-(--safe-x-right) pl-(--safe-x-left)">
               <div className="flex w-full max-w-3xl flex-1 flex-col bg-background">
