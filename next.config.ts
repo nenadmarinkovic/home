@@ -21,6 +21,10 @@ function resolveBuildId(): string {
 
 const buildId = resolveBuildId();
 
+const canonicalHost = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://nenadmarinkovic.com",
+).host;
+
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
@@ -44,6 +48,24 @@ const nextConfig: NextConfig = {
     inlineCss: true,
   },
   poweredByHeader: false,
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: `www.${canonicalHost}` }],
+        destination: `https://${canonicalHost}/:path*`,
+        permanent: true,
+      },
+      { source: "/blog", destination: "/writing", permanent: true },
+      {
+        source: "/blog/:slug*",
+        destination: "/writing/:slug*",
+        permanent: true,
+      },
+      { source: "/feed", destination: "/rss.xml", permanent: true },
+      { source: "/about", destination: "/", permanent: true },
+    ];
+  },
   async rewrites() {
     return [
       { source: "/apple-touch-icon.png", destination: "/apple-icon" },
