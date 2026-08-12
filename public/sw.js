@@ -9,6 +9,13 @@ const STATIC = "static-assets";
 
 const PRECACHE_PAGES = ["/", "/admin/lib", "/admin/lib/review"];
 
+const PRECACHE_FONTS = [
+  "/fonts/HankenGrotesk-Variable.woff2",
+  "/fonts/HankenGrotesk-Italic-Variable.woff2",
+  "/fonts/HankenGrotesk-LatinExt-Variable.woff2",
+  "/fonts/HankenGrotesk-Italic-LatinExt-Variable.woff2",
+];
+
 async function cacheNavigation(pathname, response) {
   if (!response || !response.ok || response.redirected) return;
   if (response.type !== "basic") return;
@@ -41,8 +48,17 @@ self.addEventListener("install", (event) => {
         await precache.add(new Request(OFFLINE_URL, { cache: "reload" }));
       } catch {
       }
-      await Promise.all(
-        PRECACHE_PAGES.map(async (path) => {
+      const fonts = await caches.open(STATIC);
+      await Promise.all([
+        ...PRECACHE_FONTS.map(async (path) => {
+          try {
+            if (await fonts.match(path)) return;
+            const response = await fetch(new Request(path, { cache: "reload" }));
+            if (response.ok) await fonts.put(path, response.clone());
+          } catch {
+          }
+        }),
+        ...PRECACHE_PAGES.map(async (path) => {
           try {
             const response = await fetch(new Request(path, { cache: "reload" }));
             if (!response.ok || response.redirected) return;
@@ -51,7 +67,7 @@ self.addEventListener("install", (event) => {
           } catch {
           }
         }),
-      );
+      ]);
       await self.skipWaiting();
     })(),
   );
@@ -89,8 +105,7 @@ async function offlineFallback() {
   });
 }
 
-// Anything that renders per-session state stays network-first — a cached copy
-// of these would show the wrong nav until it revalidated.
+
 function isShellPath(pathname) {
   return !/^\/(admin|login|api)(\/|$)/.test(pathname);
 }
@@ -109,23 +124,6 @@ async function handleNavigate(request) {
   }
 }
 
-/**
- * Stale-while-revalidate for the public shell.
- *
- * A standalone launch used to wait on a full network round trip plus a dynamic
- * server render before the first byte of HTML existed. Until that HTML lands
- * the web view has nothing to paint, and iOS fills the status bar area from the
- * system appearance — which is why a light-themed app could still flash a black
- * notch for the best part of a second on a dark-appearance phone. Nothing in
- * the document can fix a window in which there is no document, so the fix is to
- * have one ready: answer from cache in a millisecond, refresh in the background
- * for the next launch.
- *
- * Safe because the HTML carries no theme of its own — the render-blocking
- * bootstrap in <head> resolves the theme from localStorage, so a cached page
- * and a fresh one paint the same colours. Keep it that way: bake a theme into
- * the server render and every cached copy goes stale the moment it changes.
- */
 function handleShellNavigate(event, request, pathname) {
   const revalidate = (async () => {
     try {
@@ -154,7 +152,10 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (url.pathname.startsWith("/_next/static/")) {
+  if (
+    url.pathname.startsWith("/_next/static/") ||
+    url.pathname.startsWith("/fonts/")
+  ) {
     event.respondWith(handleStatic(request));
     return;
   }

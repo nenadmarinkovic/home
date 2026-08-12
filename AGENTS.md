@@ -117,3 +117,30 @@ before concluding a deploy did not work.
 `npm run theme:test` and the browser checks behind it run on Chromium, which
 paints no status bar and implements none of Safari 26's sampling. They verify
 the mechanism, never the platform. Real verification needs an iPhone.
+
+# Fonts and first paint
+
+Two rules, both enforced by `npm run theme:test`:
+
+1. **Every `@font-face` stays `font-display: optional`.** `swap` on any one of
+   them lets that face land after first paint and reflow the text. The copy uses
+   `text-balance` and `text-pretty`, so a reflow does not nudge a word — it
+   recomputes line breaks and shifts whole paragraphs. `optional` never swaps:
+   the font is used if it is ready at first paint, otherwise the fallback holds
+   for that load.
+2. **Every face is in `PRECACHE_FONTS` in `public/sw.js`.** `optional` is only
+   pleasant if "ready at first paint" is the normal case.
+
+Rule 2 is the one that is easy to get wrong, and it is a general trap rather
+than a font one: **the service worker answers shell navigations from cache in
+about a millisecond, so anything first paint depends on has to come from cache
+too.** Fonts were left on the network path when that landed, which turned a race
+they had always won by default into one they started losing — `optional` spent
+its ~100ms block period on screen instead of behind a web view that had nothing
+to paint yet. Nothing about the fonts changed; the thing they were racing got a
+thousand times faster. Apply the same reasoning to any asset added later.
+
+Fonts are served cache-first and never revalidated, like `/_next/static/`.
+Their filenames are not content-hashed, but `next.config.ts` already serves
+`/fonts/:path*` as `immutable, max-age=31536000`, so renaming the file was
+always the only way to ship a different font.

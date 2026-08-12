@@ -4,6 +4,9 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Every face stays `optional`. `swap` on any one of them lets it land after
+   first paint and reflow the text, which `text-balance` / `text-pretty` turn
+   into whole paragraphs re-wrapping. `theme:test` enforces it. */
 @font-face {
   font-family: "Hanken Grotesk";
   font-style: normal;
@@ -19,7 +22,7 @@
   font-family: "Hanken Grotesk";
   font-style: italic;
   font-weight: 100 900;
-  font-display: swap;
+  font-display: optional;
   src: url("/fonts/HankenGrotesk-Italic-Variable.woff2") format("woff2");
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -31,7 +34,7 @@
   font-family: "Hanken Grotesk";
   font-style: normal;
   font-weight: 100 900;
-  font-display: swap;
+  font-display: optional;
   src: url("/fonts/HankenGrotesk-LatinExt-Variable.woff2") format("woff2");
   unicode-range:
     U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
@@ -42,7 +45,7 @@
   font-family: "Hanken Grotesk";
   font-style: italic;
   font-weight: 100 900;
-  font-display: swap;
+  font-display: optional;
   src: url("/fonts/HankenGrotesk-Italic-LatinExt-Variable.woff2")
     format("woff2");
   unicode-range:
@@ -185,9 +188,6 @@
 :root {
   --unit-lg: 1.125rem;
   --safe-bottom: max(env(safe-area-inset-bottom), 0.75rem);
-  /* Zero on every device that has no notch/island, so these are a no-op on
-     desktop and in portrait Safari, and only kick in when iOS actually hands
-     the page the area behind the status bar or a landscape sensor housing. */
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-x-left: max(1.5rem, env(safe-area-inset-left, 0px));
   --safe-x-right: max(1.5rem, env(safe-area-inset-right, 0px));
@@ -270,12 +270,6 @@
   html {
     @apply font-sans;
     overflow-y: scroll;
-    /* Safari 26 dropped `theme-color` and derives the status bar / toolbar
-       tint from the page instead: the body's background-color, falling back
-       to the html element's. Both are set explicitly and identically so the
-       notch matches whatever the theme is, including while the page is
-       rubber-band overscrolled past the body box. Neither may ever get a
-       transition, or the tint would lag behind the rest of the UI. */
     background-color: var(--background);
   }
   body {
@@ -296,6 +290,14 @@ html body[data-rs-scroll-lock] {
 
 body:has([data-slot="dialog-overlay"][data-state="open"]) [data-mobile-menu] {
   display: none;
+}
+
+html[data-theme-pref="system"] .theme-option[data-theme-option="system"],
+html[data-theme-pref="light"] .theme-option[data-theme-option="light"],
+html[data-theme-pref="dark"] .theme-option[data-theme-option="dark"] {
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid color-mix(in oklab, var(--foreground) 20%, transparent);
 }
 
 ::selection {

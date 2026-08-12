@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { DesktopIcon, MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 
-import { applyThemeColorMeta, resolveTheme } from "@/lib/theme";
+import {
+  applyThemeColorMeta,
+  applyThemePrefAttribute,
+  resolveTheme,
+} from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 const options = [
@@ -15,29 +18,11 @@ const options = [
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // iOS animates its status bar tint whenever `theme-color` changes, so write
-  // it inside the tap's own task rather than waiting for React to re-render.
   const select = (value: (typeof options)[number]["value"]) => {
     applyThemeColorMeta(resolveTheme(value));
+    applyThemePrefAttribute(value);
     setTheme(value);
   };
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <div
-        className={cn(
-          "h-7 w-20 rounded-full bg-card border border-foreground/10",
-          className,
-        )}
-      />
-    );
-  }
 
   return (
     <div
@@ -48,28 +33,21 @@ export function ThemeToggle({ className }: { className?: string }) {
         className,
       )}
     >
-      {options.map(({ value, icon: Icon, label }) => {
-        const active = theme === value;
-        return (
-          <button
-            key={value}
-            type="button"
-            role="radio"
-            aria-checked={active}
-            aria-label={label}
-            title={label}
-            onClick={() => select(value)}
-            className={cn(
-              "relative flex size-6 items-center justify-center rounded-full cursor-pointer",
-              active
-                ? "bg-background text-foreground border border-foreground/20"
-                : "text-foreground/55 hover:text-foreground",
-            )}
-          >
-            <Icon size={12} weight="regular" />
-          </button>
-        );
-      })}
+      {options.map(({ value, icon: Icon, label }) => (
+        <button
+          key={value}
+          type="button"
+          role="radio"
+          aria-checked={theme === value}
+          aria-label={label}
+          title={label}
+          data-theme-option={value}
+          onClick={() => select(value)}
+          className="theme-option relative flex size-6 items-center justify-center rounded-full cursor-pointer text-foreground/55 hover:text-foreground"
+        >
+          <Icon size={12} weight="regular" />
+        </button>
+      ))}
     </div>
   );
 }
