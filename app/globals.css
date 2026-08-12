@@ -4,9 +4,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Every face stays `optional`. `swap` on any one of them lets it land after
-   first paint and reflow the text, which `text-balance` / `text-pretty` turn
-   into whole paragraphs re-wrapping. `theme:test` enforces it. */
 @font-face {
   font-family: "Hanken Grotesk";
   font-style: normal;
@@ -345,6 +342,10 @@ article a {
   transition: opacity 150ms;
 }
 
+article a:not(.embed-card) {
+  font-weight: 500;
+}
+
 .dark article a {
   color: #ffff01;
 }
@@ -383,9 +384,6 @@ article {
   display: flow-root;
 }
 
-/* One rule owns the gap between top-level blocks; everything below only widens
-   or tightens it. A heading sits far from the section above and close to the
-   text it introduces, so the two read as one unit instead of a flat stack. */
 article > * + * {
   margin-top: 1.75rem;
 }
@@ -468,8 +466,6 @@ article img {
 
 article .code {
   margin: 2rem 0;
-  /* Same panel as the admin dashboard tiles: rounded-xl, border-foreground/10,
-     bg-white / dark:bg-zinc-900, with their zinc-500 eyebrow as the marker. */
   border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
   border-radius: 0.875rem;
   background: #ffffff;
@@ -486,7 +482,8 @@ article .code-lang {
   justify-content: space-between;
   gap: 1rem;
   padding: 0.3125rem 0.5rem 0.3125rem 1rem;
-  border-bottom: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+  border-bottom: 1px solid
+    color-mix(in oklab, var(--foreground) 8%, transparent);
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 500;
@@ -737,6 +734,10 @@ article .device {
   max-width: calc(var(--device-w) * 1px);
   aspect-ratio: 1350 / 2760;
   margin: 2.5rem auto;
+}
+
+article .device:not(.device-left, .device-right) {
+  --device-w: 225;
 }
 
 article .device .device-frame {
