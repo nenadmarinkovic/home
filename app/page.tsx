@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon, HammerIcon } from "@phosphor-icons/react/dist/ssr";
 
 import { AdminActions } from "@/components/admin-actions";
 import { AnimatedGreeting } from "@/components/animated-greeting";
@@ -45,55 +45,61 @@ export default async function Home() {
           </Link>{" "}
           page.
         </p>
+        <p className="flex items-center gap-2 text-base leading-[1.55] text-pretty text-foreground/70">
+          <HammerIcon weight="duotone" className="size-4 shrink-0" />
+          This website is a work in progress, so expect things to shift around.
+        </p>
       </section>
-      <section className="w-full space-y-8">
-        <div className="flex items-baseline justify-between">
-          <p className="font-sans text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
-            Recent
-          </p>
-          <Link
-            href="/writing"
-            className="group inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 transition-colors hover:text-foreground dark:text-zinc-400"
-          >
-            All writing
-            <ArrowRightIcon
-              weight="bold"
-              className="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
-            />
-          </Link>
-        </div>
-        <ul>
-          {latest.map((a) => (
-            <li
-              key={a.slug}
-              className="flex items-start justify-between gap-3 py-8 first:pt-0 last:pb-0"
+      {latest.length > 0 && (
+        <section className="w-full space-y-8">
+          <div className="flex items-baseline justify-between">
+            <p className="font-sans text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
+              Recent
+            </p>
+            <Link
+              href="/writing"
+              className="group inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 transition-colors hover:text-foreground dark:text-zinc-400"
             >
-              <Link
-                href={`/writing/${a.slug}`}
-                className="group flex flex-1 flex-col gap-3"
+              All writing
+              <ArrowRightIcon
+                weight="bold"
+                className="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
+              />
+            </Link>
+          </div>
+          <ul>
+            {latest.map((a) => (
+              <li
+                key={a.slug}
+                className="flex items-start justify-between gap-3 py-8 first:pt-0 last:pb-0"
               >
-                <p className="font-sans text-xs font-semibold uppercase tracking-[0.06em] text-foreground/50">
-                  {a.dateLabel}
-                </p>
-                <h2 className="text-xl font-medium text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
-                  {a.title}
-                </h2>
-                {a.subtitle && (
-                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-                    {a.subtitle}
+                <Link
+                  href={`/writing/${a.slug}`}
+                  className="group flex flex-1 flex-col gap-3"
+                >
+                  <p className="font-sans text-xs font-semibold uppercase tracking-[0.06em] text-foreground/50">
+                    {a.dateLabel}
                   </p>
-                )}
-                {a.description && (
-                  <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-                    {a.description}
-                  </p>
-                )}
-              </Link>
-              <AdminActions article={a} className="-mt-1" />
-            </li>
-          ))}
-        </ul>
-      </section>
+                  <h2 className="text-xl font-medium text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
+                    {a.title}
+                  </h2>
+                  {a.subtitle && (
+                    <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                      {a.subtitle}
+                    </p>
+                  )}
+                  {a.description && (
+                    <p className="text-base leading-[1.55] text-pretty text-foreground/70">
+                      {a.description}
+                    </p>
+                  )}
+                </Link>
+                <AdminActions article={a} className="-mt-1" />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }
