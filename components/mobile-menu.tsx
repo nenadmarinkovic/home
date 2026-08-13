@@ -21,6 +21,8 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { useAuthed } from "@/lib/use-authed";
 import { cn } from "@/lib/utils";
 
+const CONTACT_HREF = "/contact";
+
 const ADMIN_TOOLS = [
   { href: "/admin/writing", name: "Writing" },
   { href: "/admin/lib", name: "Lib" },
@@ -53,6 +55,10 @@ export function MobileMenu() {
   const authed = useAuthed();
   const authItem = getAuthNavItem(authed);
   const authActive = authItem ? isNavActive(pathname, authItem.href) : false;
+  const contactItem = baseNavItems.find((item) => item.href === CONTACT_HREF);
+  const inlineNavItems = baseNavItems.filter(
+    (item) => item.href !== CONTACT_HREF,
+  );
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const popupRef = useRef<HTMLDivElement>(null);
@@ -130,7 +136,7 @@ export function MobileMenu() {
               >
                 Home
               </Link>
-              {baseNavItems.map((item) => {
+              {inlineNavItems.map((item) => {
                 const active = isNavActive(pathname, item.href);
                 return (
                   <Link
@@ -196,21 +202,42 @@ export function MobileMenu() {
               )}
             </nav>
 
-            {authed && (
-              <button
-                type="button"
-                onClick={logout}
-                disabled={pending}
-                className={cn(
-                  linkClass,
-                  "font-sans text-md font-normal tracking-tight text-zinc-600 disabled:opacity-50 dark:text-zinc-400",
-                )}
-              >
-                {pending ? "Signing out…" : "Sign out"}
-              </button>
-            )}
-
             <div className="mt-auto flex flex-col gap-8 pt-8">
+              <div className="flex flex-col gap-2">
+                {contactItem && (
+                  <Link
+                    href={contactItem.href}
+                    onClick={close}
+                    aria-current={
+                      isNavActive(pathname, contactItem.href)
+                        ? "page"
+                        : undefined
+                    }
+                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md border border-foreground/20 font-sans text-xs font-medium uppercase tracking-[0.06em] text-foreground transition-colors duration-150 hover:border-foreground/40 active:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  >
+                    {contactItem.label}
+                  </Link>
+                )}
+                {!authed && (
+                  <Link
+                    href="/login"
+                    onClick={close}
+                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md bg-foreground font-sans text-xs font-medium uppercase tracking-[0.06em] text-background transition-opacity duration-150 hover:opacity-90 active:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  >
+                    Log in
+                  </Link>
+                )}
+                {authed && (
+                  <button
+                    type="button"
+                    onClick={logout}
+                    disabled={pending}
+                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md bg-foreground font-sans text-xs font-medium uppercase tracking-[0.06em] text-background transition-opacity duration-150 hover:opacity-90 active:opacity-80 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  >
+                    {pending ? "Logging out…" : "Log out"}
+                  </button>
+                )}
+              </div>
               <div className="flex flex-col gap-3">
                 <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                   Elsewhere

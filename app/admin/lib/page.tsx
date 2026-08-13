@@ -6,12 +6,6 @@ import { LibClient } from "./lib-client";
 export const metadata: Metadata = {
   title: "Lib · Admin",
   robots: { index: false, follow: false },
-  manifest: "/lib.webmanifest",
-  appleWebApp: {
-    capable: true,
-    title: "Lib",
-    statusBarStyle: "black-translucent",
-  },
 };
 
 export const dynamic = "force-dynamic";
