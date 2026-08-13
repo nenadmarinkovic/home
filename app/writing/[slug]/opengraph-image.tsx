@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { extname, join } from "node:path";
 
+import { getAuthedFromCookie } from "@/lib/auth-server";
 import { LOGO_ASPECT, logoDataUri } from "@/lib/logo";
 import { contentTypeFor, resolveUploadPath } from "@/lib/uploads";
 import { getArticle } from "../articles";
@@ -12,6 +13,10 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const RASTERISABLE = new Set(["image/png", "image/jpeg"]);
+
+function missing(): Response {
+  return new Response("Not found", { status: 404 });
+}
 
 async function loadCover(url: string): Promise<string | null> {
   if (!url.startsWith("/writing/img/")) return null;
@@ -34,9 +39,9 @@ export default async function Image({
 }) {
   const { slug } = await params;
   const article = await getArticle(slug);
-  if (!article) {
-    return new ImageResponse(<div>Not found</div>, size);
-  }
+  if (!article) return missing();
+
+  if (article.draft && !(await getAuthedFromCookie())) return missing();
 
   const fontsDir = join(process.cwd(), "public", "fonts");
   const [sansRegular, sansSemibold, sansItalic, cover] = await Promise.all([
