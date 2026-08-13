@@ -181,6 +181,10 @@ export type UpsertLinkInput = {
 export function upsertLinkByUrl(input: UpsertLinkInput): LinkWithTags {
   const url = normalizeUrl(input.url);
   if (!url) throw new Error("URL is required");
+  const scheme = url.match(/^([a-z][a-z0-9+.-]*):/i)?.[1].toLowerCase();
+  if (scheme && scheme !== "http" && scheme !== "https") {
+    throw new Error("Only http(s) URLs can be saved");
+  }
   const type = input.type ?? deriveType(url);
   const title = (input.title ?? "").trim();
   const note = (input.note ?? "").trim();

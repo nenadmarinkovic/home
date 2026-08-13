@@ -114,7 +114,11 @@ async function offlineFallback() {
 
 
 function isShellPath(pathname) {
-  return !/^\/(admin|login|api)(\/|$)/.test(pathname);
+  return !/^\/(admin|login|api|save)(\/|$)/.test(pathname);
+}
+
+function isQueryScopedPath(pathname) {
+  return /^\/save(\/|$)/.test(pathname);
 }
 
 async function handleNavigate(request) {
@@ -171,6 +175,7 @@ self.addEventListener("fetch", (event) => {
 
   if (request.mode === "navigate") {
     const pathname = url.pathname;
+    if (isQueryScopedPath(pathname)) return;
     event.respondWith(
       isShellPath(pathname)
         ? handleShellNavigate(event, request, pathname)

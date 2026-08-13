@@ -2,7 +2,9 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { LINK_TYPES, type LinkType } from "@/db/schema";
 import { readBearerToken, verifyApiToken } from "@/lib/api-token";
+import { getAuthedFromCookie } from "@/lib/auth-server";
 import { listLinks, upsertLinkByUrl } from "@/lib/links-db";
+import { isSameOriginRequest } from "@/lib/same-origin";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -42,8 +44,13 @@ export function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const token = readBearerToken(req.headers.get("authorization"));
-  if (!verifyApiToken(token)) {
+  const bearerOk = verifyApiToken(
+    readBearerToken(req.headers.get("authorization")),
+  );
+  const cookieOk =
+    bearerOk ||
+    (isSameOriginRequest(req.headers) && (await getAuthedFromCookie()));
+  if (!bearerOk && !cookieOk) {
     return NextResponse.json(
       { error: "unauthorized" },
       { status: 401, headers: CORS_HEADERS },
