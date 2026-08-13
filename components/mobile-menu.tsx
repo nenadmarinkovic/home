@@ -113,7 +113,7 @@ export function MobileMenu() {
           className="w-full max-w-none border-0 bg-background p-0 shadow-none outline-none sm:max-w-none"
         >
           <SheetTitle className="sr-only">Menu</SheetTitle>
-          <div className="flex h-full flex-col pt-[calc(var(--safe-top)+3.5rem)] pr-(--safe-x-right) pb-[calc(var(--safe-bottom)+1.25rem)] pl-(--safe-x-left)">
+          <div className="flex h-full flex-col overflow-y-auto overscroll-contain pt-[calc(var(--safe-top)+3.5rem)] pr-(--safe-x-right) pb-[calc(var(--safe-bottom)+1.25rem)] pl-(--safe-x-left)">
             <nav className="flex flex-col items-start gap-0 font-sans text-lg font-normal tracking-tight text-zinc-600 dark:text-zinc-400">
               <Link
                 href="/"

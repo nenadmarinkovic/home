@@ -226,6 +226,12 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+@media (display-mode: standalone) and (min-height: 700px) {
+  :root {
+    --safe-top: max(env(safe-area-inset-top, 0px), 44px);
+  }
+}
+
 .dark {
   color-scheme: dark;
   --background: #000000;
