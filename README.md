@@ -38,7 +38,8 @@ ships a service worker, so I can review on my phone underground and it syncs whe
 I get signal back.
 
 **Links.** A tagged collection of pages worth keeping, with summaries written by
-Mistral. I save them with the browser extensions in `extensions/`.
+Mistral. I save them with the browser extensions in `extensions/`, or from my
+phone through the share sheet.
 
 **Ops log.** `/admin/log` reads my Dokploy instance and shows what is running:
 projects, apps, databases, domains, and whether the last deploy went through.
@@ -132,6 +133,22 @@ on `/admin/links`. After that you can right click any page to save it under a
 tag, or click the toolbar icon for the full form, where Summarize drafts a
 description from the page text. Only links tagged `public` show up on the public
 `/links` page. Each folder has its own README with the details.
+
+## Saving links from a phone
+
+iOS is the awkward case: Chrome there cannot run extensions at all, and a Safari
+extension has to ship inside a signed native app. The share sheet covers it
+instead, through a Shortcut that either posts to `/api/links` directly or opens
+`/save`, a small authenticated form that takes a URL, title, note, tags and the
+public toggle, and can call Summarize the way the extensions do. It is prefilled
+from the query string — `/save?url=…&title=…` — which also makes it a working
+bookmarklet target on any browser without an extension. `extensions/ios/README.md`
+has the Shortcut recipes.
+
+`/save` sits behind the same session cookie as `/admin`, so the phone flow needs
+no token; the extensions keep using their bearer token. The service worker skips
+`/save` deliberately: it caches navigations under their pathname alone, and this
+page means nothing without its query string.
 
 ## Keeping local and live in sync
 
@@ -273,7 +290,7 @@ db/               Drizzle schema and the SQLite client
 drizzle/          Generated migrations
 scripts/          Migrate, seed, export, sync
 content/          Markdown export target
-extensions/       Chrome and Firefox link savers
+extensions/       Chrome and Firefox link savers, iOS share-sheet recipes
 public/
 ```
 

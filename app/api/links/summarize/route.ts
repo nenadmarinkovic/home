@@ -4,6 +4,7 @@ import { readBearerToken, verifyApiToken } from "@/lib/api-token";
 import { getAuthedFromCookie } from "@/lib/auth-server";
 import { summarize } from "@/lib/mistral";
 import { fetchPageText } from "@/lib/page-text";
+import { isSameOriginRequest } from "@/lib/same-origin";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -19,7 +20,9 @@ export async function POST(req: NextRequest) {
   const bearerOk = verifyApiToken(
     readBearerToken(req.headers.get("authorization")),
   );
-  const cookieOk = bearerOk ? true : await getAuthedFromCookie();
+  const cookieOk =
+    bearerOk ||
+    (isSameOriginRequest(req.headers) && (await getAuthedFromCookie()));
   if (!bearerOk && !cookieOk) {
     return NextResponse.json(
       { error: "unauthorized" },

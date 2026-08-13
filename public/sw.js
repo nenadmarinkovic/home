@@ -114,7 +114,15 @@ async function offlineFallback() {
 
 
 function isShellPath(pathname) {
-  return !/^\/(admin|login|api)(\/|$)/.test(pathname);
+  return !/^\/(admin|login|api|save)(\/|$)/.test(pathname);
+}
+
+// Navigations are cached under their pathname alone, so a page whose content
+// comes entirely from its query string cannot go through this worker at all:
+// /save?url=A would be answered from the copy stored for /save?url=B and quietly
+// save the wrong link. Let these hit the network directly.
+function isQueryScopedPath(pathname) {
+  return /^\/save(\/|$)/.test(pathname);
 }
 
 async function handleNavigate(request) {
@@ -171,6 +179,7 @@ self.addEventListener("fetch", (event) => {
 
   if (request.mode === "navigate") {
     const pathname = url.pathname;
+    if (isQueryScopedPath(pathname)) return;
     event.respondWith(
       isShellPath(pathname)
         ? handleShellNavigate(event, request, pathname)

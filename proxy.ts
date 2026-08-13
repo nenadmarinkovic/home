@@ -5,23 +5,9 @@ import {
   SESSION_COOKIE_NAME,
   shouldRefreshSessionCookie,
 } from "@/lib/auth";
+import { isSameOriginRequest } from "@/lib/same-origin";
 
 const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
-
-function isSameOrigin(request: NextRequest): boolean {
-  const origin = request.headers.get("origin");
-  const referer = request.headers.get("referer");
-  const host = request.headers.get("host");
-  if (!host) return false;
-  const candidate = origin ?? referer;
-  if (!candidate) return false;
-  try {
-    const url = new URL(candidate);
-    return url.host === host;
-  } catch {
-    return false;
-  }
-}
 
 export async function proxy(request: NextRequest) {
   const cookie = request.cookies.get(SESSION_COOKIE_NAME)?.value;
@@ -32,11 +18,19 @@ export async function proxy(request: NextRequest) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("from", request.nextUrl.pathname);
+    // Keep the query string: /save carries the shared URL there, so dropping it
+    // would land a freshly logged-in share-sheet hand-off on an empty form.
+    loginUrl.searchParams.set(
+      "from",
+      `${request.nextUrl.pathname}${request.nextUrl.search}`,
+    );
     return NextResponse.redirect(loginUrl);
   }
 
-  if (!SAFE_METHODS.has(request.method) && !isSameOrigin(request)) {
+  if (
+    !SAFE_METHODS.has(request.method) &&
+    !isSameOriginRequest(request.headers)
+  ) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
@@ -60,6 +54,7 @@ export const config = {
     "/api/lib/:path*",
     "/api/logout/:path*",
     "/api/preview/:path*",
+    "/save",
     "/writing/preview",
   ],
 };
