@@ -203,41 +203,6 @@ export function MobileMenu() {
             </nav>
 
             <div className="mt-auto flex flex-col gap-8 pt-8">
-              <div className="flex flex-col gap-2">
-                {contactItem && (
-                  <Link
-                    href={contactItem.href}
-                    onClick={close}
-                    aria-current={
-                      isNavActive(pathname, contactItem.href)
-                        ? "page"
-                        : undefined
-                    }
-                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md border border-foreground/20 font-sans text-xs font-medium uppercase tracking-[0.06em] text-foreground transition-colors duration-150 hover:border-foreground/40 active:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                  >
-                    {contactItem.label}
-                  </Link>
-                )}
-                {!authed && (
-                  <Link
-                    href="/login"
-                    onClick={close}
-                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md bg-foreground font-sans text-xs font-medium uppercase tracking-[0.06em] text-background transition-opacity duration-150 hover:opacity-90 active:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                  >
-                    Log in
-                  </Link>
-                )}
-                {authed && (
-                  <button
-                    type="button"
-                    onClick={logout}
-                    disabled={pending}
-                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md bg-foreground font-sans text-xs font-medium uppercase tracking-[0.06em] text-background transition-opacity duration-150 hover:opacity-90 active:opacity-80 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                  >
-                    {pending ? "Logging out…" : "Log out"}
-                  </button>
-                )}
-              </div>
               <div className="flex flex-col gap-3">
                 <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                   Elsewhere
@@ -278,6 +243,41 @@ export function MobileMenu() {
                   Theme
                 </span>
                 <ThemeToggle />
+              </div>
+              <div className="flex flex-col gap-2">
+                {contactItem && (
+                  <Link
+                    href={contactItem.href}
+                    onClick={close}
+                    aria-current={
+                      isNavActive(pathname, contactItem.href)
+                        ? "page"
+                        : undefined
+                    }
+                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md border border-foreground/20 font-sans text-xs font-medium uppercase tracking-[0.06em] text-foreground transition-colors duration-150 hover:border-foreground/40 active:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  >
+                    {contactItem.label}
+                  </Link>
+                )}
+                {!authed && (
+                  <Link
+                    href="/login"
+                    onClick={close}
+                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md bg-foreground font-sans text-xs font-medium uppercase tracking-[0.06em] text-background transition-opacity duration-150 hover:opacity-90 active:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  >
+                    Log in
+                  </Link>
+                )}
+                {authed && (
+                  <button
+                    type="button"
+                    onClick={logout}
+                    disabled={pending}
+                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md bg-foreground font-sans text-xs font-medium uppercase tracking-[0.06em] text-background transition-opacity duration-150 hover:opacity-90 active:opacity-80 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  >
+                    {pending ? "Logging out…" : "Log out"}
+                  </button>
+                )}
               </div>
               <p className="font-sans text-xs text-zinc-600 dark:text-zinc-400">
                 © {new Date().getFullYear()} Nenad Marinković
