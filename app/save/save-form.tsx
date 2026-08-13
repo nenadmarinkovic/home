@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowSquareOutIcon,
   CheckCircleIcon,
@@ -23,11 +23,6 @@ type Props = {
   tags: SaveFormTag[];
 };
 
-const PUBLIC_TAG_SLUG = "public";
-
-const LABEL_CLASS =
-  "text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400";
-
 export function SaveForm({
   initialUrl,
   initialTitle,
@@ -37,21 +32,41 @@ export function SaveForm({
   const [url, setUrl] = useState(initialUrl);
   const [title, setTitle] = useState(initialTitle);
   const [note, setNote] = useState(initialNote);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [isPublic, setIsPublic] = useState(false);
+  const [selected, setSelected] = useState<string[]>([]);
 
   const [saving, setSaving] = useState(false);
   const [summarizing, setSummarizing] = useState(false);
+  const [fetchingTitle, setFetchingTitle] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [savedUrl, setSavedUrl] = useState<string | null>(null);
 
+  const titleTouched = useRef(initialTitle.length > 0);
+
+  useEffect(() => {
+    if (titleTouched.current || !initialUrl) return;
+    let cancelled = false;
+    setFetchingTitle(true);
+    fetch(`/api/links/title?url=${encodeURIComponent(initialUrl)}`, {
+      credentials: "same-origin",
+    })
+      .then((res) => res.json())
+      .then((data: { title?: string }) => {
+        if (cancelled || titleTouched.current) return;
+        if (typeof data.title === "string" && data.title) setTitle(data.title);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setFetchingTitle(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [initialUrl]);
+
   function toggleTag(slug: string) {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(slug)) next.delete(slug);
-      else next.add(slug);
-      return next;
-    });
+    setSelected((prev) =>
+      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug],
+    );
   }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -61,10 +76,6 @@ export function SaveForm({
 
     setSaving(true);
     setError(null);
-
-    const tagSlugs = Array.from(selected);
-    if (isPublic) tagSlugs.push(PUBLIC_TAG_SLUG);
-
     try {
       const res = await fetch("/api/links", {
         method: "POST",
@@ -74,7 +85,7 @@ export function SaveForm({
           url: trimmed,
           title: title.trim(),
           note: note.trim(),
-          tags: tagSlugs,
+          tags: selected,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -127,27 +138,27 @@ export function SaveForm({
     setUrl("");
     setTitle("");
     setNote("");
-    setSelected(new Set());
-    setIsPublic(false);
+    setSelected([]);
+    titleTouched.current = true;
   }
 
   if (savedUrl) {
     return (
       <section className="flex w-full max-w-xl flex-col gap-5 self-center rounded-2xl border border-foreground/10 bg-card/60 p-6 font-sans sm:p-7">
-        <p className="flex items-center gap-2 text-sm font-medium text-foreground">
-          <CheckCircleIcon weight="fill" className="size-5 text-[#16a34a]" />
-          Saved.
+        <p className="flex items-center gap-2 text-sm font-medium">
+          <CheckCircleIcon weight="fill" className="size-5" />
+          Saved
         </p>
-        <p className="text-sm leading-relaxed wrap-break-word text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm leading-relaxed wrap-break-word text-foreground/70">
           {title.trim() || savedUrl}
         </p>
         <div className="flex flex-wrap gap-2">
-          <Button type="button" size="lg" variant="outline" onClick={reset}>
+          <Button type="button" size="lg" onClick={reset}>
             Save another
           </Button>
           <Button asChild size="lg" variant="outline">
             <Link href="/admin/links">
-              Open links
+              All links
               <ArrowSquareOutIcon data-icon="inline-end" />
             </Link>
           </Button>
@@ -161,10 +172,8 @@ export function SaveForm({
       onSubmit={onSubmit}
       className="flex w-full max-w-xl flex-col gap-5 self-center rounded-2xl border border-foreground/10 bg-card/60 p-6 font-sans sm:p-7"
     >
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="save-url" className={LABEL_CLASS}>
-          URL
-        </Label>
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="save-url">URL</Label>
         <Input
           id="save-url"
           name="url"
@@ -174,38 +183,39 @@ export function SaveForm({
           autoCorrect="off"
           spellCheck={false}
           required
+          disabled={saving}
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://"
-          className="h-11 text-base"
+          className="text-sm md:text-sm"
         />
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="save-title" className={LABEL_CLASS}>
-          Title
-        </Label>
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="save-title">Title</Label>
         <Input
           id="save-title"
           name="title"
+          disabled={saving}
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Optional"
-          className="h-11 text-base"
+          onChange={(e) => {
+            titleTouched.current = true;
+            setTitle(e.target.value);
+          }}
+          placeholder={fetchingTitle ? "Reading the page…" : "Optional"}
+          className="text-sm md:text-sm"
         />
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between gap-3">
-          <Label htmlFor="save-note" className={LABEL_CLASS}>
-            Note
-          </Label>
+          <Label htmlFor="save-note">Note</Label>
           <Button
             type="button"
             size="sm"
             variant="ghost"
             onClick={onSummarize}
-            disabled={summarizing || url.trim().length === 0}
+            disabled={summarizing || saving || url.trim().length === 0}
           >
             <MagicWandIcon data-icon="inline-start" />
             {summarizing ? "Summarizing…" : "Summarize"}
@@ -214,18 +224,18 @@ export function SaveForm({
         <Textarea
           id="save-note"
           name="note"
-          rows={4}
+          disabled={saving}
           value={note}
           onChange={(e) => setNote(e.target.value)}
           placeholder="Optional"
-          className="text-base"
+          className="min-h-24 resize-y text-sm md:text-sm"
         />
       </div>
 
-      <div className="flex flex-col gap-2.5">
-        <span className={LABEL_CLASS}>Tags</span>
+      <div className="flex flex-col gap-1.5">
+        <Label>Tags</Label>
         {tags.length === 0 ? (
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-foreground/70">
             No tags yet — create them on the{" "}
             <Link href="/admin/links" className="underline underline-offset-4">
               links admin
@@ -237,7 +247,7 @@ export function SaveForm({
             {tags.map((tag) => (
               <TagChip
                 key={tag.slug}
-                active={selected.has(tag.slug)}
+                active={selected.includes(tag.slug)}
                 onClick={() => toggleTag(tag.slug)}
               >
                 {tag.name}
@@ -247,24 +257,7 @@ export function SaveForm({
         )}
       </div>
 
-      <label className="flex items-center gap-2.5 text-sm text-zinc-600 dark:text-zinc-400">
-        <input
-          type="checkbox"
-          checked={isPublic}
-          onChange={(e) => setIsPublic(e.target.checked)}
-          className="size-4 accent-foreground"
-        />
-        Show on the public links page
-      </label>
-
-      {error && (
-        <p
-          role="alert"
-          className="rounded-md bg-[#F25022]/10 px-3 py-2 text-sm text-[#F25022]"
-        >
-          {error}
-        </p>
-      )}
+      {error && <p className="font-sans text-xs text-destructive">{error}</p>}
 
       <Button
         type="submit"

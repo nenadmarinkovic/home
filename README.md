@@ -139,11 +139,12 @@ description from the page text. Only links tagged `public` show up on the public
 iOS is the awkward case: Chrome there cannot run extensions at all, and a Safari
 extension has to ship inside a signed native app. The share sheet covers it
 instead, through a Shortcut that either posts to `/api/links` directly or opens
-`/save`, a small authenticated form that takes a URL, title, note, tags and the
-public toggle, and can call Summarize the way the extensions do. It is prefilled
-from the query string — `/save?url=…&title=…` — which also makes it a working
-bookmarklet target on any browser without an extension. `extensions/ios/README.md`
-has the Shortcut recipes.
+`/save`, a small authenticated form that takes a URL, title, note and tags, and
+can call Summarize the way the extensions do. It is prefilled from the query
+string — `/save?url=…&title=…` — which also makes it a working bookmarklet target
+on any browser without an extension. Since a share sheet rarely passes a title,
+the form fetches the page's `og:title` in the background once it has rendered.
+`extensions/ios/README.md` has the Shortcut recipes.
 
 `/save` sits behind the same session cookie as `/admin`, so the phone flow needs
 no token; the extensions keep using their bearer token. The service worker skips

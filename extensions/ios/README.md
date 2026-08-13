@@ -119,12 +119,21 @@ Shortcut is better on a phone. On desktop it is a decent fallback in any browser
 that is not Chrome or Firefox, where the real extensions in `../chrome` and
 `../firefox` do more.
 
+## Titles
+
+iOS share sheets usually hand over only a URL, so nothing on the phone knows the
+page's title. `/save` fills it in itself: the form renders immediately, then
+`GET /api/links/title?url=…` fetches the page server-side and reads its
+`og:title` or `<title>`. The field shows "Reading the page…" while that is in
+flight, and anything typed there wins — the fetch never overwrites your own
+words. If the page cannot be reached the field is simply left empty.
+
+Shortcut B posts straight to `/api/links` and so gets no title. Either accept
+untitled saves and fix them later in `/admin/links`, or add a
+**Get Contents of URL** step against `/api/links/title` before the save and pass
+the result through as `title`.
+
 ## Known gaps
 
-- **No title unless the app provides one.** iOS share sheets usually pass only a
-  URL, so a save from B, or from A outside Safari, lands with an empty title.
-  Fixing it properly means fetching the page server-side for its `<title>` /
-  `og:title` — `lib/page-text.ts` already has a redirect-following, SSRF-guarded
-  fetcher to build on.
 - **Summarize is browser-only.** It lives on the `/save` form, so Shortcut B
   cannot reach it.

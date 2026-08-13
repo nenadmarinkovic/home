@@ -4,7 +4,9 @@ import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
 
 const MAX_CHARS = 16_000;
+const MAX_TITLE = 300;
 const FETCH_TIMEOUT_MS = 12_000;
+const TITLE_TIMEOUT_MS = 6_000;
 const MAX_REDIRECTS = 5;
 
 function ipv4IsPrivate(ip: string): boolean {
@@ -100,7 +102,7 @@ function extractText(html: string): string {
   return text.replace(/\s+/g, " ").trim();
 }
 
-export async function fetchPageText(url: string): Promise<string> {
+async function fetchHtml(url: string, timeoutMs: number): Promise<string> {
   let parsed: URL;
   try {
     parsed = new URL(url);
@@ -112,7 +114,7 @@ export async function fetchPageText(url: string): Promise<string> {
   }
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
     let current = parsed;
     for (let hop = 0; ; hop++) {
@@ -148,10 +150,31 @@ export async function fetchPageText(url: string): Promise<string> {
       if (!res.ok) {
         throw new Error(`Source responded HTTP ${res.status}`);
       }
-      const html = await res.text();
-      return extractText(html).slice(0, MAX_CHARS);
+      return res.text();
     }
   } finally {
     clearTimeout(timeout);
   }
+}
+
+export async function fetchPageText(url: string): Promise<string> {
+  const html = await fetchHtml(url, FETCH_TIMEOUT_MS);
+  return extractText(html).slice(0, MAX_CHARS);
+}
+
+function extractTitle(html: string): string {
+  const head = html.slice(0, 100_000);
+  const og = head.match(
+    /<meta[^>]+(?:property|name)=["']og:title["'][^>]*content=["']([^"']+)["']/i,
+  );
+  const reversed = head.match(
+    /<meta[^>]+content=["']([^"']+)["'][^>]*(?:property|name)=["']og:title["']/i,
+  );
+  const tag = head.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  const raw = og?.[1] ?? reversed?.[1] ?? tag?.[1] ?? "";
+  return decodeEntities(raw).replace(/\s+/g, " ").trim().slice(0, MAX_TITLE);
+}
+
+export async function fetchPageTitle(url: string): Promise<string> {
+  return extractTitle(await fetchHtml(url, TITLE_TIMEOUT_MS));
 }
