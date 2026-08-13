@@ -114,7 +114,7 @@ export function MobileMenu() {
         >
           <SheetTitle className="sr-only">Menu</SheetTitle>
           <div className="flex h-full flex-col overflow-y-auto overscroll-contain pt-[calc(var(--safe-top)+3.5rem)] pr-(--safe-x-right) pb-[calc(var(--safe-bottom)+1.25rem)] pl-(--safe-x-left)">
-            <nav className="flex flex-col items-start gap-0 font-sans text-lg font-normal tracking-tight text-zinc-600 dark:text-zinc-400">
+            <nav className="flex flex-col items-start gap-0 font-sans text-md font-normal tracking-tight text-zinc-600 dark:text-zinc-400">
               <Link
                 href="/"
                 onClick={close}
@@ -150,7 +150,7 @@ export function MobileMenu() {
             </nav>
 
             {authed && (
-              <nav className="mt-1 flex flex-col items-start gap-0 pl-4 font-sans text-lg font-normal tracking-tight text-zinc-500 dark:text-zinc-500">
+              <nav className="mt-1 flex flex-col items-start gap-0 pl-4 font-sans text-md font-normal tracking-tight text-zinc-500 dark:text-zinc-500">
                 {ADMIN_TOOLS.map((tool) => {
                   const active = isNavActive(pathname, tool.href);
                   return (
@@ -175,7 +175,7 @@ export function MobileMenu() {
                 disabled={pending}
                 className={cn(
                   linkClass,
-                  "font-sans text-lg font-normal tracking-tight text-zinc-600 disabled:opacity-50 dark:text-zinc-400",
+                  "font-sans text-md font-normal tracking-tight text-zinc-600 disabled:opacity-50 dark:text-zinc-400",
                 )}
               >
                 {pending ? "Signing out…" : "Sign out"}
