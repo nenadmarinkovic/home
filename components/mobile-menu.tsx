@@ -5,6 +5,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 import {
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   baseNavItems,
   getAuthNavItem,
   isNavActive,
@@ -138,35 +145,56 @@ export function MobileMenu() {
                 );
               })}
               {authItem && (
-                <Link
-                  href={authItem.href}
-                  onClick={close}
-                  aria-current={authActive ? "page" : undefined}
-                  className={cn(linkClass, authActive && "text-foreground")}
+                <Accordion
+                  type="single"
+                  collapsible
+                  defaultValue={authActive ? "admin" : undefined}
+                  className="w-full"
                 >
-                  {authItem.label}
-                </Link>
+                  <AccordionItem value="admin" className="border-b-0">
+                    <AccordionHeader className="justify-between">
+                      <Link
+                        href={authItem.href}
+                        onClick={close}
+                        aria-current={authActive ? "page" : undefined}
+                        className={cn(
+                          linkClass,
+                          "min-w-0 flex-1",
+                          authActive && "text-foreground",
+                        )}
+                      >
+                        {authItem.label}
+                      </Link>
+                      <AccordionTrigger
+                        aria-label="Show admin tools"
+                        className="min-h-11 flex-none justify-center px-2 py-0"
+                      />
+                    </AccordionHeader>
+                    <AccordionContent className="pb-0 pl-4 pr-0 pt-0">
+                      <div className="flex flex-col items-start gap-0 font-sans text-md font-normal tracking-tight text-zinc-500 dark:text-zinc-500">
+                        {ADMIN_TOOLS.map((tool) => {
+                          const active = isNavActive(pathname, tool.href);
+                          return (
+                            <Link
+                              key={tool.href}
+                              href={tool.href}
+                              onClick={close}
+                              aria-current={active ? "page" : undefined}
+                              className={cn(
+                                linkClass,
+                                active && "text-foreground",
+                              )}
+                            >
+                              {tool.name}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               )}
             </nav>
-
-            {authed && (
-              <nav className="mt-1 flex flex-col items-start gap-0 pl-4 font-sans text-md font-normal tracking-tight text-zinc-500 dark:text-zinc-500">
-                {ADMIN_TOOLS.map((tool) => {
-                  const active = isNavActive(pathname, tool.href);
-                  return (
-                    <Link
-                      key={tool.href}
-                      href={tool.href}
-                      onClick={close}
-                      aria-current={active ? "page" : undefined}
-                      className={cn(linkClass, active && "text-foreground")}
-                    >
-                      {tool.name}
-                    </Link>
-                  );
-                })}
-              </nav>
-            )}
 
             {authed && (
               <button

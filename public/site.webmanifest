@@ -21,5 +21,31 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quick add",
+      "short_name": "Quick add",
+      "description": "Save something to the library",
+      "url": "/admin/lib"
+    },
+    {
+      "name": "Writing",
+      "short_name": "Writing",
+      "description": "Drafts and published posts",
+      "url": "/admin/writing"
+    },
+    {
+      "name": "Log",
+      "short_name": "Log",
+      "description": "Dokploy service status",
+      "url": "/admin/log"
+    },
+    {
+      "name": "Admin",
+      "short_name": "Admin",
+      "description": "All admin tools",
+      "url": "/admin"
+    }
   ]
 }
