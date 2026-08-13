@@ -482,7 +482,6 @@ function SharePreview({
   subtitle: string;
 }) {
   const ink = image ? "#ffffff" : "#000000";
-  const muted = image ? "rgba(255,255,255,0.78)" : "rgba(0,0,0,0.56)";
 
   return (
     <div
@@ -499,7 +498,6 @@ function SharePreview({
         }}
       >
         {image && (
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={image}
             alt=""
@@ -511,7 +509,7 @@ function SharePreview({
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 32%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.9) 100%)",
+                "linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.12) 24%, rgba(0,0,0,0) 46%)",
             }}
           />
         )}
@@ -519,30 +517,34 @@ function SharePreview({
           className="relative w-auto self-start"
           style={{ height: "2.33cqw" }}
         />
-        <div className="relative flex flex-col" style={{ gap: "1.67cqw" }}>
-          <div
-            style={{
-              fontSize: "5cqw",
-              fontWeight: 600,
-              lineHeight: 1.08,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            {title}
-          </div>
-          {subtitle && (
+        {!image && (
+          <div className="relative flex flex-col" style={{ gap: "1.67cqw" }}>
             <div
+              className="line-clamp-3"
               style={{
-                fontSize: "2.5cqw",
-                fontStyle: "italic",
-                lineHeight: 1.25,
-                color: muted,
+                fontSize: "5cqw",
+                fontWeight: 600,
+                lineHeight: 1.08,
+                letterSpacing: "-0.02em",
               }}
             >
-              {subtitle}
+              {title}
             </div>
-          )}
-        </div>
+            {subtitle && (
+              <div
+                className="line-clamp-2"
+                style={{
+                  fontSize: "2.5cqw",
+                  fontStyle: "italic",
+                  lineHeight: 1.25,
+                  color: "rgba(0,0,0,0.56)",
+                }}
+              >
+                {subtitle}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

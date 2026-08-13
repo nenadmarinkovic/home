@@ -52,8 +52,14 @@ export default async function Image({
   ]);
 
   const ink = cover ? "#ffffff" : "#000000";
-  const muted = cover ? "rgba(255,255,255,0.78)" : "rgba(0,0,0,0.56)";
   const LOGO_H = 28;
+  const clamp = (lines: number) => ({
+    display: "-webkit-box",
+    WebkitLineClamp: lines,
+    WebkitBoxOrient: "vertical" as const,
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+  });
 
   return new ImageResponse(
     <div
@@ -95,7 +101,7 @@ export default async function Image({
             width: size.width,
             height: size.height,
             background:
-              "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 32%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.9) 100%)",
+              "linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.12) 24%, rgba(0,0,0,0) 46%)",
           }}
         />
       )}
@@ -109,28 +115,34 @@ export default async function Image({
           height: LOGO_H,
         }}
       />
-      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        <div
-          style={{
-            fontSize: 60,
-            fontWeight: 600,
-            lineHeight: 1.08,
-            letterSpacing: "-0.02em",
-          }}
-        >
-          {article.title}
+      {!cover && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <div
+            style={{
+              fontSize: 60,
+              fontWeight: 600,
+              lineHeight: 1.08,
+              letterSpacing: "-0.02em",
+              ...clamp(3),
+            }}
+          >
+            {article.title}
+          </div>
+          {article.subtitle && (
+            <div
+              style={{
+                fontSize: 30,
+                fontStyle: "italic",
+                lineHeight: 1.25,
+                color: "rgba(0,0,0,0.56)",
+                ...clamp(2),
+              }}
+            >
+              {article.subtitle}
+            </div>
+          )}
         </div>
-        <div
-          style={{
-            fontSize: 30,
-            fontStyle: "italic",
-            lineHeight: 1.25,
-            color: muted,
-          }}
-        >
-          {article.subtitle}
-        </div>
-      </div>
+      )}
     </div>,
     {
       ...size,
