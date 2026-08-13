@@ -279,9 +279,6 @@ export function MobileMenu() {
                   </button>
                 )}
               </div>
-              <p className="font-sans text-xs text-zinc-600 dark:text-zinc-400">
-                © {new Date().getFullYear()} Nenad Marinković
-              </p>
             </div>
           </div>
         </SheetContent>
