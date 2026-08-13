@@ -40,6 +40,14 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -117,6 +125,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [filter, setFilter] = useState<FilterKey>("all");
   const [sort, setSort] = useState<SortKey>("newest");
+  const [addOpen, setAddOpen] = useState(false);
 
   const [draft, setDraft] = useState<DraftEntry | null>(null);
   const [editorError, setEditorError] = useState<string | null>(null);
@@ -413,10 +422,27 @@ export function LibClient({ initialEntries, initialStats }: Props) {
               />
             </Link>
           </Button>
+          <Button className="h-9" onClick={() => setAddOpen(true)}>
+            <PlusIcon weight="bold" />
+            Add new
+          </Button>
         </div>
       </header>
 
-      <QuickAdd className="hidden md:flex" />
+      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+        <DialogContent className="sm:w-[min(92vw,32rem)]">
+          <DialogHeader>
+            <DialogTitle>Add a word or sentence</DialogTitle>
+            <DialogDescription>
+              One per line. Dictate with the mic, or type and press Enter.
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogBody>
+            <QuickAdd expanded onSubmitted={() => setAddOpen(false)} />
+          </DialogBody>
+        </DialogContent>
+      </Dialog>
 
       <section className="flex flex-col gap-5">
         <div className="flex items-center gap-2">
@@ -526,7 +552,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
         </AlertDialogContent>
       </AlertDialog>
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-3 pb-(--safe-bottom) pt-6 md:hidden">
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 bg-linear-to-t from-background via-background/90 to-transparent px-3 pb-(--safe-bottom) pt-6 md:hidden">
         <div className="pointer-events-auto mx-auto max-w-2xl">
           <QuickAdd />
         </div>
@@ -700,7 +726,7 @@ function FilterMenu({
           <span className="hidden sm:inline">{FILTER_LABELS[filter]}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[10rem]">
+      <DropdownMenuContent align="end" className="min-w-40">
         {(Object.keys(FILTER_LABELS) as FilterKey[]).map((key) => (
           <DropdownMenuItem
             key={key}
@@ -709,7 +735,10 @@ function FilterMenu({
           >
             <span>{FILTER_LABELS[key]}</span>
             {filter === key && (
-              <CheckIcon weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
+              <CheckIcon
+                weight="bold"
+                className="size-3.5 text-[#0040ff] dark:text-[#ffff01]"
+              />
             )}
           </DropdownMenuItem>
         ))}
@@ -738,7 +767,7 @@ function SortMenu({
           <span className="hidden sm:inline">{SORT_LABELS[sort]}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[10rem]">
+      <DropdownMenuContent align="end" className="min-w-40">
         {(Object.keys(SORT_LABELS) as SortKey[]).map((key) => (
           <DropdownMenuItem
             key={key}
@@ -747,7 +776,10 @@ function SortMenu({
           >
             <span>{SORT_LABELS[key]}</span>
             {sort === key && (
-              <CheckIcon weight="bold" className="size-3.5 text-[#0040ff] dark:text-[#ffff01]" />
+              <CheckIcon
+                weight="bold"
+                className="size-3.5 text-[#0040ff] dark:text-[#ffff01]"
+              />
             )}
           </DropdownMenuItem>
         ))}

@@ -15,9 +15,11 @@ import { cn } from "@/lib/utils";
 
 type Props = {
   className?: string;
+  onSubmitted?: () => void;
+  expanded?: boolean;
 };
 
-const MAX_HEIGHT_PX = 180; // matches max-h-44 area
+const MAX_HEIGHT_PX = 180;
 
 type PreviewLang = "sr-RS" | "de-DE";
 
@@ -67,7 +69,8 @@ function extForMimeType(mimeType: string): string {
   return "webm";
 }
 
-export function QuickAdd({ className }: Props) {
+export function QuickAdd({ className, onSubmitted, expanded }: Props) {
+  const bar = !expanded;
   const [value, setValue] = useState("");
   const [busy, setBusy] = useState(false);
   const [recording, setRecording] = useState(false);
@@ -132,8 +135,7 @@ export function QuickAdd({ className }: Props) {
         rec.onresult = rec.onerror = rec.onend = null;
         try {
           rec.stop();
-        } catch {
-        }
+        } catch {}
       }
     };
   }, []);
@@ -176,8 +178,7 @@ export function QuickAdd({ className }: Props) {
     rec.onresult = rec.onerror = rec.onend = null;
     try {
       rec.stop();
-    } catch {
-    }
+    } catch {}
     recognitionRef.current = null;
   }
 
@@ -290,6 +291,7 @@ export function QuickAdd({ className }: Props) {
     setBusy(true);
     try {
       await submitLines(lines);
+      onSubmitted?.();
     } finally {
       setBusy(false);
     }
@@ -323,7 +325,6 @@ export function QuickAdd({ className }: Props) {
       setInterim("");
       return;
     }
-
 
     const lang = previewLangRef.current;
     const liveTranscript = interimRef.current.trim();
@@ -484,12 +485,15 @@ export function QuickAdd({ className }: Props) {
       ref={formRef}
       onSubmit={onSubmit}
       className={cn(
-        "group/quick relative flex w-full flex-col rounded-[1.75rem] border border-foreground/15 bg-field shadow-sm shadow-foreground/5 transition-[color,box-shadow,border-color] md:min-h-9 md:flex-row md:items-end md:rounded-md md:shadow-none",
+        "group/quick relative flex w-full flex-col rounded-[1.75rem] border border-foreground/15 bg-field shadow-sm shadow-foreground/5 transition-[color,box-shadow,border-color]",
+        bar &&
+          "md:min-h-9 md:flex-row md:items-end md:rounded-md md:shadow-none",
+        expanded && "rounded-xl",
         "focus-within:border-foreground/40 focus-within:ring-2 focus-within:ring-foreground/10",
         className,
       )}
     >
-      <div className="relative md:flex-1">
+      <div className={cn("relative", bar && "md:flex-1")}>
         <Textarea
           ref={textareaRef}
           value={displayValue}
@@ -501,7 +505,9 @@ export function QuickAdd({ className }: Props) {
           rows={1}
           placeholder="Add a word or sentence…"
           className={cn(
-            "block max-h-44 min-h-12 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0 md:min-h-9 md:px-3 md:py-2 md:text-sm md:leading-5",
+            "block max-h-44 min-h-12 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0",
+            bar && "md:min-h-9 md:px-3 md:py-2 md:text-sm md:leading-5",
+            expanded && "min-h-24",
             previewActive && "text-transparent caret-transparent",
           )}
           autoCapitalize="off"
@@ -512,15 +518,23 @@ export function QuickAdd({ className }: Props) {
           <div
             ref={overlayRef}
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 max-h-44 overflow-hidden whitespace-pre-wrap wrap-break-word px-4 pb-0.5 pt-2.5 text-base leading-normal md:px-3 md:py-2 md:text-sm md:leading-5"
+            className={cn(
+              "pointer-events-none absolute inset-0 max-h-44 overflow-hidden whitespace-pre-wrap wrap-break-word px-4 pb-0.5 pt-2.5 text-base leading-normal",
+              bar && "md:px-3 md:py-2 md:text-sm md:leading-5",
+            )}
           >
             {value ? <span>{value} </span> : null}
             <span className="italic text-foreground/40">{interim}</span>
           </div>
         )}
       </div>
-      <div className="flex items-center justify-between gap-2 px-2.5 pb-2 md:pb-1 md:pl-0 md:pr-1">
-        <div className="flex items-center gap-1.5 md:hidden">
+      <div
+        className={cn(
+          "flex items-center justify-between gap-2 px-2.5 pb-2",
+          bar && "md:pb-1 md:pl-0 md:pr-1",
+        )}
+      >
+        <div className={cn("flex items-center gap-1.5", bar && "md:hidden")}>
           <button
             type="button"
             onMouseDown={(e) => e.preventDefault()}
@@ -543,7 +557,7 @@ export function QuickAdd({ className }: Props) {
             {transcribing ? (
               <CircleNotchIcon weight="bold" className="size-4 animate-spin" />
             ) : recording ? (
-              <span className="size-2.5 rounded-[2px] bg-red-500 motion-safe:animate-pulse" />
+              <span className="size-2.5 rounded-xs bg-red-500 motion-safe:animate-pulse" />
             ) : (
               <MicrophoneIcon weight="fill" className="size-4" />
             )}
@@ -602,7 +616,8 @@ export function QuickAdd({ className }: Props) {
             aria-label="Add"
             disabled={!canSend}
             className={cn(
-              "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors md:size-6",
+              "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors",
+              bar && "md:size-6",
               canSend
                 ? "bg-foreground text-background hover:bg-foreground/85"
                 : "bg-foreground/10 text-zinc-400",
