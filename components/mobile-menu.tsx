@@ -203,12 +203,6 @@ export function MobileMenu() {
             </nav>
 
             <div className="mt-auto flex flex-col gap-8 pt-8">
-              <div className="flex items-center justify-between gap-4">
-                <span className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
-                  Theme
-                </span>
-                <ThemeToggle />
-              </div>
               <div className="flex flex-col gap-3">
                 <p className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                   Elsewhere
@@ -243,6 +237,12 @@ export function MobileMenu() {
                     RSS
                   </a>
                 </nav>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+                  Theme
+                </span>
+                <ThemeToggle />
               </div>
               <div className="flex flex-col gap-2">
                 {contactItem && (
