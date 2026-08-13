@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { ACCESS_TAG_SLUGS, listTags } from "@/lib/links-db";
+import { listTags } from "@/lib/links-db";
 
 import { SaveForm, type SaveFormTag } from "./save-form";
 
@@ -40,9 +40,10 @@ export default async function SavePage({
   const note =
     first(params.note).trim() || (text.trim() === url ? "" : text.trim());
 
-  const tags: SaveFormTag[] = listTags()
-    .filter((t) => !ACCESS_TAG_SLUGS.has(t.slug))
-    .map((t) => ({ slug: t.slug, name: t.name }));
+  const tags: SaveFormTag[] = listTags().map((t) => ({
+    slug: t.slug,
+    name: t.name,
+  }));
 
   return (
     <main className="flex flex-1 flex-col items-start gap-10 pb-20 pt-12 md:pt-16">
