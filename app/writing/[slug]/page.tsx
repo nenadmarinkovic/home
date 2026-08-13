@@ -1,11 +1,14 @@
+import { createHash } from "node:crypto";
+
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeftIcon, ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 
 import { AdminActions } from "@/components/admin-actions";
-import { ArticleCode } from "@/components/article-code";
-import { ArticleEmbeds } from "@/components/article-embeds";
+import { ArticleNotice } from "@/components/article-notice";
+import { ArticleView } from "@/components/article-view";
+import { getAuthedFromCookie } from "@/lib/auth-server";
 import { embedOrigins } from "@/lib/embeds";
 import { renderMarkdown } from "@/lib/markdown";
 import { site } from "@/lib/site";
@@ -20,21 +23,38 @@ export async function generateMetadata({
   const article = await getArticle(slug);
   if (!article) return {};
   const url = `${site.url}/writing/${article.slug}`;
+
+  const version = createHash("sha1")
+    .update(`${article.title}\n${article.subtitle}\n${article.image}`)
+    .digest("hex")
+    .slice(0, 12);
+  const ogImage = {
+    url: `${url}/opengraph-image?v=${version}`,
+    width: 1200,
+    height: 630,
+    alt: article.title,
+  };
   return {
     title: article.title,
     description: article.description,
     alternates: { canonical: url },
+    ...(article.draft ? { robots: { index: false, follow: false } } : {}),
+
     openGraph: {
       type: "article",
+      siteName: site.title,
       title: article.title,
       description: article.description,
       url,
       publishedTime: article.date,
       authors: [site.author.name],
+      images: [ogImage],
     },
     twitter: {
+      card: "summary_large_image",
       title: article.title,
       description: article.description,
+      images: [ogImage],
     },
   };
 }
@@ -47,6 +67,9 @@ export default async function ArticlePage({
   const { slug } = await params;
   const article = await getArticle(slug);
   if (!article) notFound();
+
+  const authed = await getAuthedFromCookie();
+  if (article.draft && !authed) notFound();
 
   const { prev, next } = await getAdjacent(slug);
 
@@ -74,42 +97,23 @@ export default async function ArticlePage({
   };
 
   return (
-    <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
-        }}
-      />
-      <div className="relative w-full max-w-prose self-center">
-        <hgroup className="text-center">
-          <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] text-foreground/50">
-            {article.dateLabel}
-          </p>
-          <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
-            {article.title}
-          </h1>
-          {article.subtitle && (
-            <p className="mt-5 text-md italic leading-snug text-balance text-foreground/60">
-              {article.subtitle}
-            </p>
-          )}
-        </hgroup>
-        <div className="absolute right-0 top-0">
-          <AdminActions article={article} />
-        </div>
-      </div>
-      <article
-        className="w-full text-md text-pretty text-foreground/90 oldstyle-nums"
-        dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }}
-      />
-      <noscript
-        dangerouslySetInnerHTML={{
-          __html: "<style>article .embed-card{display:flex}</style>",
-        }}
-      />
-      <ArticleCode />
-      <ArticleEmbeds origins={embedOrigins()} />
+    <ArticleView
+      title={article.title}
+      subtitle={article.subtitle}
+      dateLabel={article.dateLabel}
+      html={renderMarkdown(article.body)}
+      embedOrigins={embedOrigins()}
+      actions={<AdminActions article={article} />}
+      banner={article.draft ? <DraftBanner slug={article.slug} /> : undefined}
+    >
+      {!article.draft && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
+      )}
       {(prev || next) && (
         <nav
           aria-label="More writing"
@@ -155,6 +159,20 @@ export default async function ArticlePage({
           </div>
         </nav>
       )}
-    </main>
+    </ArticleView>
+  );
+}
+
+function DraftBanner({ slug }: { slug: string }) {
+  return (
+    <ArticleNotice label="Draft" slug={slug}>
+      <span className="hidden sm:inline">Visible only to you</span>
+      <Link
+        href="/admin/writing"
+        className="transition-colors hover:text-foreground"
+      >
+        Admin
+      </Link>
+    </ArticleNotice>
   );
 }

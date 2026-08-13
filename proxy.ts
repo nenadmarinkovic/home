@@ -59,5 +59,7 @@ export const config = {
     "/api/export/:path*",
     "/api/lib/:path*",
     "/api/logout/:path*",
+    "/api/preview/:path*",
+    "/writing/preview",
   ],
 };

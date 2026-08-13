@@ -6,10 +6,11 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
 import { Markdown } from "tiptap-markdown";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { format, parseISO } from "date-fns";
 import {
   CalendarBlankIcon,
+  EyeIcon,
   ImageIcon,
   ListBulletsIcon,
   QuotesIcon,
@@ -41,6 +42,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
+import { PREVIEW_WINDOW, writePreview } from "@/lib/preview";
 import { cn } from "@/lib/utils";
 
 export type EditorInitial = {
@@ -62,6 +64,12 @@ type Props = {
 
 function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
+}
+
+function bodyMarkdown(editor: Editor): string {
+  return (
+    editor.storage as unknown as { markdown: { getMarkdown: () => string } }
+  ).markdown.getMarkdown();
 }
 
 function slugify(input: string): string {
@@ -88,6 +96,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
   const [pendingMode, setPendingMode] = useState<"draft" | "publish" | null>(
     null,
   );
+  const [previewing, setPreviewing] = useState(false);
   const [, startTransition] = useTransition();
 
   const editor = useEditor({
@@ -124,11 +133,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
       setError("Title required");
       return;
     }
-    const body = (
-      editor.storage as unknown as {
-        markdown: { getMarkdown: () => string };
-      }
-    ).markdown.getMarkdown();
+    const body = bodyMarkdown(editor);
     if (!body.trim()) {
       setError("Body required");
       return;
@@ -156,7 +161,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
         return;
       }
       startTransition(() => {
-        onClose();
+        dismiss();
         router.refresh();
       });
     } finally {
@@ -194,6 +199,44 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
       : slugify(title.trim())
     : "";
 
+  const pushPreview = useCallback(() => {
+    if (!editor) return;
+    writePreview({
+      slug,
+      title: title.trim(),
+      subtitle: subtitle.trim(),
+      date,
+      body: bodyMarkdown(editor),
+      draft: initial?.draft ?? true,
+    });
+  }, [editor, slug, title, subtitle, date, initial?.draft]);
+
+  useEffect(() => {
+    if (!previewing || !editor) return;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const schedule = () => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(pushPreview, 400);
+    };
+    schedule();
+    editor.on("update", schedule);
+    return () => {
+      editor.off("update", schedule);
+      if (timer) clearTimeout(timer);
+    };
+  }, [previewing, editor, pushPreview]);
+
+  function dismiss() {
+    setPreviewing(false);
+    onClose();
+  }
+
+  function openPreview() {
+    pushPreview();
+    setPreviewing(true);
+    window.open("/writing/preview", PREVIEW_WINDOW);
+  }
+
   const pending = pendingMode !== null;
   const isPublishedEdit = isEditing && initial && !initial.draft;
   const dialogTitle = isEditing
@@ -212,7 +255,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
   const publishPending = isPublishedEdit ? "Saving…" : "Publishing…";
 
   return (
-    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+    <Dialog open={open} onOpenChange={(v) => !v && dismiss()}>
       <DialogContent className="w-[calc(100vw-1.5rem)] max-h-[calc(100dvh-1.5rem)] sm:w-[min(95vw,72rem)] sm:max-h-[92vh]">
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
@@ -296,7 +339,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
                 onChange={(e) => setDescription(e.target.value)}
                 rows={4}
                 placeholder="Why the most lasting tools are the ones that disappear into the work…"
-                className="resize-none [field-sizing:content]"
+                className="resize-none field-sizing-content"
               />
               <p className="font-sans text-xs text-zinc-500 dark:text-zinc-500">
                 Used in metadata, RSS, and the OG image.
@@ -377,8 +420,17 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
         )}
 
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} disabled={pending}>
+          <Button variant="outline" onClick={dismiss} disabled={pending}>
             Cancel
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={openPreview}
+            disabled={!editor}
+            title="Open this article in a new tab, exactly as the page renders it"
+          >
+            <EyeIcon weight="bold" />
+            {previewing ? "Preview open" : "Preview"}
           </Button>
           <Button
             variant="ghost"

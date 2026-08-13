@@ -3,7 +3,11 @@ import { revalidateTag } from "next/cache";
 
 import { db } from "@/db/client";
 import { articles, type ArticleRow, type Language } from "@/db/schema";
-import { ARTICLES_TAG, type Article } from "@/app/writing/articles";
+import {
+  ARTICLES_TAG,
+  dateLabelFor,
+  type Article,
+} from "@/app/writing/articles";
 import { deleteImageByUrl, extractImageUrls } from "@/lib/uploads";
 
 export type WriteArticleInput = {
@@ -17,14 +21,6 @@ export type WriteArticleInput = {
   body: string;
   draft: boolean;
 };
-
-function dateLabelFor(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
 
 function rowToArticle(row: ArticleRow): Article {
   return {

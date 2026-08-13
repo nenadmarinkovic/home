@@ -20,7 +20,7 @@ export type Article = {
 const DEFAULT_LANG: Language = "en";
 export const ARTICLES_TAG = "articles";
 
-function dateLabelFor(iso: string): string {
+export function dateLabelFor(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
