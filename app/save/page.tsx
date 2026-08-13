@@ -20,15 +20,6 @@ function first(value: string | string[] | undefined): string {
 
 const URL_IN_TEXT = /https?:\/\/[^\s<>"']+/;
 
-/**
- * Share sheets are inconsistent about what they hand over: some apps pass a
- * clean URL, others a blob of text with the URL buried in it, and a few pass
- * only text. Take the explicit `url` when it is one, otherwise dig it out.
- *
- * Anything that is not http(s) is dropped rather than prefilled — the query
- * string here is attacker-reachable, and a form arriving pre-loaded with a
- * `javascript:` URL is one careless tap from being stored as a link href.
- */
 function pickUrl(explicit: string, text: string): string {
   const trimmed = explicit.trim();
   if (/^https?:\/\//i.test(trimmed)) return trimmed;
@@ -46,7 +37,6 @@ export default async function SavePage({
   const text = first(params.text);
   const url = pickUrl(first(params.url) || first(params.u), text);
   const title = (first(params.title) || first(params.name)).trim();
-  // When the text was only a carrier for the URL, it is not a note.
   const note =
     first(params.note).trim() || (text.trim() === url ? "" : text.trim());
 

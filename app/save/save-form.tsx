@@ -23,8 +23,6 @@ type Props = {
   tags: SaveFormTag[];
 };
 
-// Kept as a literal rather than imported from lib/links-db, which pulls in the
-// SQLite driver. app/admin/links/links-client.tsx does the same.
 const PUBLIC_TAG_SLUG = "public";
 
 const LABEL_CLASS =

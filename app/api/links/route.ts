@@ -44,9 +44,6 @@ export function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  // Bearer token for the browser extensions and iOS Shortcuts; session cookie
-  // for the /save page, which has no token to present. The cookie path is
-  // restricted to same-origin requests so it cannot be driven from other sites.
   const bearerOk = verifyApiToken(
     readBearerToken(req.headers.get("authorization")),
   );

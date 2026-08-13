@@ -18,8 +18,6 @@ export async function proxy(request: NextRequest) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const loginUrl = new URL("/login", request.url);
-    // Keep the query string: /save carries the shared URL there, so dropping it
-    // would land a freshly logged-in share-sheet hand-off on an empty form.
     loginUrl.searchParams.set(
       "from",
       `${request.nextUrl.pathname}${request.nextUrl.search}`,
