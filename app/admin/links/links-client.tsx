@@ -48,6 +48,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogFooterActions,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -738,7 +739,6 @@ function TokenDialog({
           <DialogFooter>
             <Button
               variant="outline"
-              className="h-9"
               onClick={() => (token ? setConfirming(true) : onRotate())}
             >
               <ArrowsClockwiseIcon weight="bold" />
@@ -1104,24 +1104,19 @@ function SaveLinkDialog({
             )}
           </DialogBody>
           <DialogFooter>
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            <DialogFooterActions>
               <Button
                 type="button"
-                variant="ghost"
-                className="h-9"
+                variant="outline"
                 onClick={() => onOpenChange(false)}
               >
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                className="h-9"
-                disabled={busy || !url.trim()}
-              >
+              <Button type="submit" disabled={busy || !url.trim()}>
                 <PlusIcon weight="bold" />
                 {busy ? "Saving…" : "Save link"}
               </Button>
-            </div>
+            </DialogFooterActions>
           </DialogFooter>
         </form>
       </DialogContent>
@@ -1253,24 +1248,14 @@ function EditLinkDialog({
           </div>
         </DialogBody>
         <DialogFooter>
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <Button
-              type="button"
-              variant="ghost"
-              className="h-9"
-              onClick={onClose}
-            >
+          <DialogFooterActions>
+            <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button
-              type="button"
-              className="h-9"
-              onClick={save}
-              disabled={busy}
-            >
+            <Button type="button" onClick={save} disabled={busy}>
               {busy ? "Saving…" : "Save"}
             </Button>
-          </div>
+          </DialogFooterActions>
         </DialogFooter>
       </DialogContent>
     </Dialog>

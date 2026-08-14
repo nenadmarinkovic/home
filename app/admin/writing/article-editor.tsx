@@ -31,6 +31,8 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogFooterActions,
+  DialogFooterStart,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -419,10 +421,11 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
           </div>
         )}
 
-        <DialogFooter className="justify-between sm:justify-between">
-          <div className="flex items-center gap-1.5 sm:gap-2">
+        <DialogFooter>
+          <DialogFooterStart>
             <Button
-              variant="ghost"
+              type="button"
+              variant="outline"
               onClick={openPreview}
               disabled={!editor}
               title="Open this article in a new tab, exactly as the page renders it"
@@ -431,25 +434,25 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
               {previewing ? "Preview open" : "Preview"}
             </Button>
             <Button
-              variant="ghost"
+              type="button"
+              variant="outline"
               onClick={() => save("draft")}
               disabled={pending || !title.trim()}
             >
               {pendingMode === "draft" ? draftPending : draftLabel}
             </Button>
-          </div>
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          </DialogFooterStart>
+          <DialogFooterActions>
             <Button variant="outline" onClick={dismiss} disabled={pending}>
               Cancel
             </Button>
             <Button
-              size="lg"
               onClick={() => save("publish")}
               disabled={pending || !title.trim()}
             >
               {pendingMode === "publish" ? publishPending : publishLabel}
             </Button>
-          </div>
+          </DialogFooterActions>
         </DialogFooter>
       </DialogContent>
     </Dialog>
