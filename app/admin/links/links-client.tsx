@@ -545,18 +545,23 @@ function LinkList({
         return (
           <li
             key={link.id}
-            className="group/row flex items-center gap-4 py-3.5 transition-colors"
+            className="group/row flex items-start gap-2 py-3.5 transition-colors"
           >
             <button
               type="button"
               onClick={() => onEdit(link)}
               className="-mx-2 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-2 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
             >
-              <div className="flex items-start gap-2 sm:items-center">
-                <p className="min-w-0 break-words text-lg font-medium leading-tight text-foreground transition-opacity group-hover/row:opacity-70 sm:truncate">
+              <p className="mb-1 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
+                {dateLabelFor(link.createdAt)}
+              </p>
+              <div className="flex items-center gap-2">
+                <p className="wrap-break-word text-lg font-medium leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
                   {link.title || link.url}
                 </p>
-                {isPublic ? <PublicTag /> : <PrivateTag />}
+                <span className="hidden sm:contents">
+                  {isPublic ? <PublicTag /> : <PrivateTag />}
+                </span>
               </div>
               {link.note && (
                 <p className="mt-1 line-clamp-2 text-sm leading-snug text-zinc-600 dark:text-zinc-400">
@@ -566,10 +571,10 @@ function LinkList({
               <p className="mt-1 truncate font-sans text-xs text-zinc-500 dark:text-zinc-500">
                 {hostnameOf(link.url)}
               </p>
+              <div className="mt-2 flex flex-wrap items-center gap-2 sm:hidden">
+                {isPublic ? <PublicTag /> : <PrivateTag />}
+              </div>
             </button>
-            <span className="shrink-0 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
-              {dateLabelFor(link.createdAt)}
-            </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -1099,22 +1104,24 @@ function SaveLinkDialog({
             )}
           </DialogBody>
           <DialogFooter>
-            <Button
-              type="button"
-              variant="ghost"
-              className="h-9"
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              className="h-9"
-              disabled={busy || !url.trim()}
-            >
-              <PlusIcon weight="bold" />
-              {busy ? "Saving…" : "Save link"}
-            </Button>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <Button
+                type="button"
+                variant="ghost"
+                className="h-9"
+                onClick={() => onOpenChange(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="h-9"
+                disabled={busy || !url.trim()}
+              >
+                <PlusIcon weight="bold" />
+                {busy ? "Saving…" : "Save link"}
+              </Button>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>
@@ -1246,17 +1253,24 @@ function EditLinkDialog({
           </div>
         </DialogBody>
         <DialogFooter>
-          <Button
-            type="button"
-            variant="ghost"
-            className="h-9"
-            onClick={onClose}
-          >
-            Cancel
-          </Button>
-          <Button type="button" className="h-9" onClick={save} disabled={busy}>
-            {busy ? "Saving…" : "Save"}
-          </Button>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-9"
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              className="h-9"
+              onClick={save}
+              disabled={busy}
+            >
+              {busy ? "Saving…" : "Save"}
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

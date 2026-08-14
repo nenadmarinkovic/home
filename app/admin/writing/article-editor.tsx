@@ -419,33 +419,37 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
           </div>
         )}
 
-        <DialogFooter>
-          <Button variant="outline" onClick={dismiss} disabled={pending}>
-            Cancel
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={openPreview}
-            disabled={!editor}
-            title="Open this article in a new tab, exactly as the page renders it"
-          >
-            <EyeIcon weight="bold" />
-            {previewing ? "Preview open" : "Preview"}
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => save("draft")}
-            disabled={pending || !title.trim()}
-          >
-            {pendingMode === "draft" ? draftPending : draftLabel}
-          </Button>
-          <Button
-            size="lg"
-            onClick={() => save("publish")}
-            disabled={pending || !title.trim()}
-          >
-            {pendingMode === "publish" ? publishPending : publishLabel}
-          </Button>
+        <DialogFooter className="justify-between sm:justify-between">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Button
+              variant="ghost"
+              onClick={openPreview}
+              disabled={!editor}
+              title="Open this article in a new tab, exactly as the page renders it"
+            >
+              <EyeIcon weight="bold" />
+              {previewing ? "Preview open" : "Preview"}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => save("draft")}
+              disabled={pending || !title.trim()}
+            >
+              {pendingMode === "draft" ? draftPending : draftLabel}
+            </Button>
+          </div>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Button variant="outline" onClick={dismiss} disabled={pending}>
+              Cancel
+            </Button>
+            <Button
+              size="lg"
+              onClick={() => save("publish")}
+              disabled={pending || !title.trim()}
+            >
+              {pendingMode === "publish" ? publishPending : publishLabel}
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

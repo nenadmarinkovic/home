@@ -502,28 +502,35 @@ function ArticleList({
         return (
           <li
             key={a.slug}
-            className="group/row flex items-center gap-4 py-3.5 transition-colors"
+            className="group/row flex items-start gap-2 py-3.5 transition-colors"
           >
             <button
               type="button"
               onClick={() => onEdit(a)}
               className="-mx-2 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-2 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
             >
-              <div className="flex items-start gap-2 sm:items-center">
-                <p className="min-w-0 break-words text-base font-medium leading-tight text-foreground transition-opacity group-hover/row:opacity-70 sm:truncate">
+              <p className="mb-1 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
+                {a.dateLabel}
+              </p>
+              <div className="flex items-center gap-2">
+                <p className="wrap-break-word text-base font-medium leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
                   {a.title}
                 </p>
-                {a.draft && <DraftTag />}
-                {showUnexported && <UnexportedTag />}
-                {isExported && <ExportedTag />}
+                <span className="hidden sm:contents">
+                  {a.draft && <DraftTag />}
+                  {showUnexported && <UnexportedTag />}
+                  {isExported && <ExportedTag />}
+                </span>
               </div>
               <p className="mt-1 truncate font-sans text-xs text-zinc-500 dark:text-zinc-500">
                 /writing/{a.slug}
               </p>
+              <div className="mt-2 flex flex-wrap items-center gap-2 sm:hidden">
+                {a.draft && <DraftTag />}
+                {showUnexported && <UnexportedTag />}
+                {isExported && <ExportedTag />}
+              </div>
             </button>
-            <span className="shrink-0 font-sans text-xs font-medium uppercase tracking-wider tabular-nums text-zinc-500 dark:text-zinc-500">
-              {a.dateLabel}
-            </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
