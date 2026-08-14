@@ -149,6 +149,45 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
+/**
+ * Secondary footer actions, pinned to the leading edge. `mr-auto` keeps the
+ * primary actions on the trailing edge without the footer having to switch to
+ * `justify-between`, so when the footer wraps on narrow screens this group
+ * takes its own row and the primary actions stay right-aligned below it.
+ */
+function DialogFooterStart({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="dialog-footer-start"
+      className={cn(
+        "mr-auto flex flex-wrap items-center gap-1.5 sm:gap-2",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+/** Primary footer actions (cancel + confirm), pinned to the trailing edge. */
+function DialogFooterActions({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="dialog-footer-actions"
+      className={cn(
+        "flex items-center justify-end gap-1.5 sm:gap-2",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
 export {
   Dialog,
   DialogBody,
@@ -156,6 +195,8 @@ export {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogFooterActions,
+  DialogFooterStart,
   DialogHeader,
   DialogPortal,
   DialogTitle,

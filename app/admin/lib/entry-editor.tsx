@@ -16,6 +16,8 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogFooterActions,
+  DialogFooterStart,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -424,28 +426,28 @@ export function EntryEditor({
           </div>
         )}
 
-        <DialogFooter className="justify-between sm:justify-between">
-          {onEnrich ? (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => void onEnrich()}
-              disabled={enriching || !draft.term.trim()}
-            >
-              <SparkleIcon weight="bold" />
-              {enriching ? "Asking Mistral…" : "Enrich with AI"}
-            </Button>
-          ) : (
-            <span />
+        <DialogFooter>
+          {onEnrich && (
+            <DialogFooterStart>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => void onEnrich()}
+                disabled={enriching || !draft.term.trim()}
+              >
+                <SparkleIcon weight="bold" />
+                {enriching ? "Asking Mistral…" : "Enrich with AI"}
+              </Button>
+            </DialogFooterStart>
           )}
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <DialogFooterActions>
             <Button variant="outline" onClick={onClose} disabled={saving}>
               Cancel
             </Button>
             <Button onClick={() => void onSave()} disabled={!canSave}>
               {saving ? "Saving…" : draft.id ? "Save" : "Create entry"}
             </Button>
-          </div>
+          </DialogFooterActions>
         </DialogFooter>
       </DialogContent>
     </Dialog>

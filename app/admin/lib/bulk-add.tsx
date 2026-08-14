@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogFooterActions,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -196,28 +197,30 @@ export function BulkAddDialog({ open, onClose, onCompleted }: Props) {
           )}
         </DialogBody>
         <DialogFooter>
-          {running ? (
-            <Button variant="outline" onClick={cancel}>
-              Stop
-            </Button>
-          ) : (
+          <DialogFooterActions>
+            {running ? (
+              <Button variant="outline" onClick={cancel}>
+                Stop
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  reset();
+                  onClose();
+                }}
+              >
+                Close
+              </Button>
+            )}
             <Button
-              variant="outline"
-              onClick={() => {
-                reset();
-                onClose();
-              }}
+              onClick={() => void start()}
+              disabled={running || text.trim().length === 0}
             >
-              Close
+              <SparkleIcon weight="bold" />
+              {running ? "Enriching…" : "Enrich and save"}
             </Button>
-          )}
-          <Button
-            onClick={() => void start()}
-            disabled={running || text.trim().length === 0}
-          >
-            <SparkleIcon weight="bold" />
-            {running ? "Enriching…" : "Enrich and save"}
-          </Button>
+          </DialogFooterActions>
         </DialogFooter>
       </DialogContent>
     </Dialog>
