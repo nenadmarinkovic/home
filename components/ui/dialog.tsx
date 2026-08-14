@@ -58,7 +58,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed left-1/2 top-1/2 z-50 flex max-h-[calc(100dvh-1.5rem)] w-[calc(100vw-1.5rem)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card font-sans text-foreground outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 sm:max-h-[92vh] sm:w-[min(92vw,42rem)]",
+          "fixed left-1/2 top-1/2 z-50 flex max-h-[calc(100dvh-var(--inset-top)-var(--inset-bottom)-2rem)] w-[calc(100vw-1.5rem)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card font-sans text-foreground outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 sm:max-h-[92vh] sm:w-[min(92vw,42rem)]",
           className,
         )}
         {...props}
@@ -141,7 +141,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex flex-nowrap items-center justify-end gap-1.5 border-t border-foreground/10 bg-foreground/1.5 px-5 py-3 sm:gap-2 sm:px-6 sm:py-4",
+        "flex flex-wrap items-center justify-end gap-1.5 border-t border-foreground/10 bg-foreground/1.5 px-5 py-3 pb-[max(0.75rem,var(--inset-bottom))] sm:flex-nowrap sm:gap-2 sm:px-6 sm:py-4",
         className,
       )}
       {...props}

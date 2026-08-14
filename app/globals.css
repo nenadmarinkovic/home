@@ -190,6 +190,8 @@
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-x-left: max(1.5rem, env(safe-area-inset-left, 0px));
   --safe-x-right: max(1.5rem, env(safe-area-inset-right, 0px));
+  --inset-top: env(safe-area-inset-top, 0px);
+  --inset-bottom: env(safe-area-inset-bottom, 0px);
   color-scheme: light;
   --background: #fafafa;
   --foreground: #000000;

@@ -509,8 +509,8 @@ function ArticleList({
               onClick={() => onEdit(a)}
               className="-mx-2 -my-1 min-w-0 flex-1 cursor-pointer rounded-md px-2 py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
             >
-              <div className="flex items-center gap-2">
-                <p className="truncate text-base font-medium leading-tight text-foreground transition-opacity group-hover/row:opacity-70">
+              <div className="flex items-start gap-2 sm:items-center">
+                <p className="min-w-0 break-words text-base font-medium leading-tight text-foreground transition-opacity group-hover/row:opacity-70 sm:truncate">
                   {a.title}
                 </p>
                 {a.draft && <DraftTag />}

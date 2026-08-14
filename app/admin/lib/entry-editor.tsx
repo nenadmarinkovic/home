@@ -125,7 +125,7 @@ export function EntryEditor({
 
   return (
     <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
-      <DialogContent className="w-[calc(100vw-1.5rem)] max-h-[calc(100dvh-1.5rem)] sm:w-[min(95vw,72rem)] sm:max-h-[92vh]">
+      <DialogContent className="w-[calc(100vw-1.5rem)] max-h-[calc(100dvh-var(--inset-top)-var(--inset-bottom)-2rem)] sm:w-[min(95vw,72rem)] sm:max-h-[92vh]">
         <DialogHeader>
           <DialogTitle>{draft.id ? "Edit entry" : "New entry"}</DialogTitle>
           <DialogDescription className="flex flex-col gap-1.5">

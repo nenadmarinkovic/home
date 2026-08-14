@@ -256,7 +256,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && dismiss()}>
-      <DialogContent className="w-[calc(100vw-1.5rem)] max-h-[calc(100dvh-1.5rem)] sm:w-[min(95vw,72rem)] sm:max-h-[92vh]">
+      <DialogContent className="w-[calc(100vw-1.5rem)] max-h-[calc(100dvh-var(--inset-top)-var(--inset-bottom)-2rem)] sm:w-[min(95vw,72rem)] sm:max-h-[92vh]">
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>

@@ -90,6 +90,16 @@ export function MobileMenu() {
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const mq = window.matchMedia("(min-width: 48rem)");
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [open]);
+
   const close = () => setOpen(false);
 
   async function logout() {
