@@ -435,7 +435,6 @@ export function EntryEditor({
                 onClick={() => void onEnrich()}
                 disabled={enriching || !draft.term.trim()}
               >
-                <SparkleIcon weight="bold" />
                 {enriching ? "Asking Mistral…" : "Enrich with AI"}
               </Button>
             </DialogFooterStart>

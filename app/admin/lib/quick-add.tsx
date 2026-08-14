@@ -22,7 +22,7 @@ type Props = {
 // Keep these in sync with the `max-h-*` classes on the textarea, otherwise the
 // overflow toggle below fires at a height the element can never reach.
 const MAX_HEIGHT_PX = 200;
-const EXPANDED_MAX_HEIGHT_PX = 320;
+const EXPANDED_MAX_HEIGHT_PX = 160;
 
 type PreviewLang = "sr-RS" | "de-DE";
 
@@ -518,7 +518,7 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
           className={cn(
             "block max-h-50 min-h-14 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0",
             bar && "md:min-h-9 md:px-3 md:py-2 md:text-sm md:leading-5",
-            expanded && "max-h-80 min-h-24",
+            expanded && "max-h-40 min-h-15",
             previewActive && "text-transparent caret-transparent",
           )}
           autoCapitalize="off"
@@ -532,7 +532,7 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
             className={cn(
               "pointer-events-none absolute inset-0 max-h-50 overflow-hidden whitespace-pre-wrap wrap-break-word px-4 pb-0.5 pt-2.5 text-base leading-normal",
               bar && "md:px-3 md:py-2 md:text-sm md:leading-5",
-              expanded && "max-h-80",
+              expanded && "max-h-40",
             )}
           >
             {value ? <span>{value} </span> : null}
