@@ -10,7 +10,6 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { format, parseISO } from "date-fns";
 import {
   CalendarBlankIcon,
-  EyeIcon,
   ImageIcon,
   ListBulletsIcon,
   QuotesIcon,
@@ -247,7 +246,7 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
       : "Edit article"
     : "New article";
 
-  const draftLabel = isPublishedEdit ? "Move to drafts" : "Save as draft";
+  const draftLabel = isPublishedEdit ? "Move to drafts" : "Save draft";
   const draftPending = isPublishedEdit ? "Moving…" : "Saving…";
   const publishLabel = isPublishedEdit
     ? "Save changes"
@@ -430,7 +429,6 @@ export function ArticleEditor({ open, initial, onClose }: Props) {
               disabled={!editor}
               title="Open this article in a new tab, exactly as the page renders it"
             >
-              <EyeIcon weight="bold" />
               {previewing ? "Preview open" : "Preview"}
             </Button>
             <Button
