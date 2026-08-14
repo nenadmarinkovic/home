@@ -6,7 +6,6 @@ import {
   ArrowUpIcon,
   CircleNotchIcon,
   MicrophoneIcon,
-  PlusIcon,
   XIcon,
 } from "@phosphor-icons/react";
 
@@ -22,7 +21,7 @@ type Props = {
 
 // Keep these in sync with the `max-h-*` classes on the textarea, otherwise the
 // overflow toggle below fires at a height the element can never reach.
-const MAX_HEIGHT_PX = 160;
+const MAX_HEIGHT_PX = 200;
 const EXPANDED_MAX_HEIGHT_PX = 320;
 
 type PreviewLang = "sr-RS" | "de-DE";
@@ -303,31 +302,13 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
     }
   }
 
+  // Return starts a new row (the textarea's own behaviour, so a soft keyboard
+  // needs no Shift key); ⌘/Ctrl+Return submits without reaching for the arrow.
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       formRef.current?.requestSubmit();
     }
-  }
-
-  // Enter submits, so a soft keyboard with no Shift key has no way to start a
-  // second line. This inserts one at the caret and puts the caret after it.
-  function insertNewRow() {
-    const el = textareaRef.current;
-    if (!el) {
-      setValue((prev) => prev + "\n");
-      return;
-    }
-    const start = el.selectionStart ?? el.value.length;
-    const end = el.selectionEnd ?? el.value.length;
-    const next = el.value.slice(0, start) + "\n" + el.value.slice(end);
-    // Move the caret on the DOM node before the re-render rather than after it:
-    // React skips writing `value` back when it already matches, so the caret
-    // survives, and nothing races with characters typed in the same frame.
-    el.focus();
-    el.value = next;
-    el.setSelectionRange(start + 1, start + 1);
-    setValue(next);
   }
 
   function releaseStream() {
@@ -535,7 +516,7 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
           rows={1}
           placeholder="Add a word or sentence…"
           className={cn(
-            "block max-h-40 min-h-10 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0",
+            "block max-h-50 min-h-14 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0",
             bar && "md:min-h-9 md:px-3 md:py-2 md:text-sm md:leading-5",
             expanded && "max-h-80 min-h-24",
             previewActive && "text-transparent caret-transparent",
@@ -549,7 +530,7 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
             ref={overlayRef}
             aria-hidden="true"
             className={cn(
-              "pointer-events-none absolute inset-0 max-h-44 overflow-hidden whitespace-pre-wrap wrap-break-word px-4 pb-0.5 pt-2.5 text-base leading-normal",
+              "pointer-events-none absolute inset-0 max-h-50 overflow-hidden whitespace-pre-wrap wrap-break-word px-4 pb-0.5 pt-2.5 text-base leading-normal",
               bar && "md:px-3 md:py-2 md:text-sm md:leading-5",
               expanded && "max-h-80",
             )}
@@ -624,41 +605,23 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
         </div>
         <div className="ml-auto flex items-center gap-1.5">
           {hasText && (
-            <>
-              <button
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={insertNewRow}
-                aria-label="New row"
-                className={cn(
-                  "inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium transition-colors",
-                  "cursor-pointer text-zinc-500 hover:bg-foreground/5 hover:text-foreground",
-                )}
-              >
-                <PlusIcon weight="bold" className="size-3" />
-                {/* Icon only on the narrowest phones, where the label wraps. */}
-                <span className="whitespace-nowrap max-[360px]:sr-only">
-                  New row
-                </span>
-              </button>
-              <button
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => {
-                  setValue("");
-                  setInterim("");
-                  requestAnimationFrame(() => textareaRef.current?.focus());
-                }}
-                aria-label="Clear text"
-                className={cn(
-                  "inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium transition-colors",
-                  "cursor-pointer text-zinc-500 hover:bg-foreground/5 hover:text-foreground",
-                )}
-              >
-                <XIcon weight="bold" className="size-3" />
-                <span>Clear</span>
-              </button>
-            </>
+            <button
+              type="button"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                setValue("");
+                setInterim("");
+                requestAnimationFrame(() => textareaRef.current?.focus());
+              }}
+              aria-label="Clear text"
+              className={cn(
+                "inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium transition-colors",
+                "cursor-pointer text-zinc-500 hover:bg-foreground/5 hover:text-foreground",
+              )}
+            >
+              <XIcon weight="bold" className="size-3" />
+              <span>Clear</span>
+            </button>
           )}
           <button
             type="submit"

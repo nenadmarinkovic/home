@@ -434,7 +434,8 @@ export function LibClient({ initialEntries, initialStats }: Props) {
           <DialogHeader>
             <DialogTitle>Add a word or sentence</DialogTitle>
             <DialogDescription>
-              One per line. Dictate with the mic, or type and press Enter.
+              One per line — Return starts the next one. Dictate with the mic,
+              then send with the arrow.
             </DialogDescription>
           </DialogHeader>
 
