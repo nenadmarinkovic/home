@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowUpIcon,
@@ -71,6 +71,7 @@ function extForMimeType(mimeType: string): string {
 
 export function QuickAdd({ className, onSubmitted, expanded }: Props) {
   const bar = !expanded;
+  const fieldId = useId();
   const [value, setValue] = useState("");
   const [busy, setBusy] = useState(false);
   const [recording, setRecording] = useState(false);
@@ -496,6 +497,9 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
       <div className={cn("relative", bar && "md:flex-1")}>
         <Textarea
           ref={textareaRef}
+          id={fieldId}
+          name="term"
+          aria-label="Add a word or sentence"
           value={displayValue}
           readOnly={previewActive}
           onChange={(e) => {
@@ -505,9 +509,9 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
           rows={1}
           placeholder="Add a word or sentence…"
           className={cn(
-            "block max-h-44 min-h-12 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0",
+            "block max-h-40 min-h-10 w-full resize-none overflow-y-hidden border-0 bg-transparent px-4 pb-0.5 pt-2.5 text-base leading-normal shadow-none focus-visible:border-transparent focus-visible:ring-0",
             bar && "md:min-h-9 md:px-3 md:py-2 md:text-sm md:leading-5",
-            expanded && "min-h-24",
+            expanded && "min-h-15",
             previewActive && "text-transparent caret-transparent",
           )}
           autoCapitalize="off"

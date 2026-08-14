@@ -3,14 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
-
 import {
-  Accordion,
-  AccordionContent,
-  AccordionHeader,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  BookOpenIcon,
+  PaperclipIcon,
+  PencilSimpleLineIcon,
+  PulseIcon,
+} from "@phosphor-icons/react";
+
 import {
   baseNavItems,
   getAuthNavItem,
@@ -24,10 +23,10 @@ import { cn } from "@/lib/utils";
 const CONTACT_HREF = "/contact";
 
 const ADMIN_TOOLS = [
-  { href: "/admin/writing", name: "Writing" },
-  { href: "/admin/lib", name: "Lib" },
-  { href: "/admin/log", name: "Log" },
-  { href: "/admin/links", name: "Links" },
+  { href: "/admin/writing", name: "Writing", Icon: PencilSimpleLineIcon },
+  { href: "/admin/lib", name: "Lib", Icon: BookOpenIcon },
+  { href: "/admin/log", name: "Log", Icon: PulseIcon },
+  { href: "/admin/links", name: "Links", Icon: PaperclipIcon },
 ] as const;
 
 function HamburgerIcon({ open }: { open: boolean }) {
@@ -151,54 +150,40 @@ export function MobileMenu() {
                 );
               })}
               {authItem && (
-                <Accordion
-                  type="single"
-                  collapsible
-                  defaultValue={authActive ? "admin" : undefined}
-                  className="w-full"
-                >
-                  <AccordionItem value="admin" className="border-b-0">
-                    <AccordionHeader className="justify-between">
-                      <Link
-                        href={authItem.href}
-                        onClick={close}
-                        aria-current={authActive ? "page" : undefined}
-                        className={cn(
-                          linkClass,
-                          "min-w-0 flex-1",
-                          authActive && "text-foreground",
-                        )}
-                      >
-                        {authItem.label}
-                      </Link>
-                      <AccordionTrigger
-                        aria-label="Show admin tools"
-                        className="min-h-11 flex-none justify-center px-2 py-0"
-                      />
-                    </AccordionHeader>
-                    <AccordionContent className="pb-0 pl-4 pr-0 pt-0">
-                      <div className="flex flex-col items-start gap-0 font-sans text-md font-normal tracking-tight text-zinc-500 dark:text-zinc-500">
-                        {ADMIN_TOOLS.map((tool) => {
-                          const active = isNavActive(pathname, tool.href);
-                          return (
-                            <Link
-                              key={tool.href}
-                              href={tool.href}
-                              onClick={close}
-                              aria-current={active ? "page" : undefined}
-                              className={cn(
-                                linkClass,
-                                active && "text-foreground",
-                              )}
-                            >
-                              {tool.name}
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <div className="w-full">
+                  <Link
+                    href={authItem.href}
+                    onClick={close}
+                    aria-current={authActive ? "page" : undefined}
+                    className={cn(linkClass, authActive && "text-foreground")}
+                  >
+                    {authItem.label}
+                  </Link>
+                  <div className="flex flex-col items-start gap-0 pb-1 pl-4 font-sans text-sm font-normal tracking-tight text-zinc-500 dark:text-zinc-500">
+                    {ADMIN_TOOLS.map((tool) => {
+                      const active = isNavActive(pathname, tool.href);
+                      return (
+                        <Link
+                          key={tool.href}
+                          href={tool.href}
+                          onClick={close}
+                          aria-current={active ? "page" : undefined}
+                          className={cn(
+                            "flex min-h-10 w-full cursor-pointer touch-manipulation items-center gap-2.5 leading-none transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground",
+                            active && "text-foreground",
+                          )}
+                        >
+                          <tool.Icon
+                            weight="regular"
+                            aria-hidden
+                            className="size-4 shrink-0"
+                          />
+                          {tool.name}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
               )}
             </nav>
 
@@ -254,7 +239,7 @@ export function MobileMenu() {
                         ? "page"
                         : undefined
                     }
-                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md border border-foreground/20 font-sans text-xs font-medium uppercase tracking-[0.06em] text-foreground transition-colors duration-150 hover:border-foreground/40 active:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md bg-foreground font-sans text-xs font-medium uppercase tracking-[0.06em] text-background transition-opacity duration-150 hover:opacity-90 active:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                   >
                     {contactItem.label}
                   </Link>
@@ -263,7 +248,7 @@ export function MobileMenu() {
                   <Link
                     href="/login"
                     onClick={close}
-                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md bg-foreground font-sans text-xs font-medium uppercase tracking-[0.06em] text-background transition-opacity duration-150 hover:opacity-90 active:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md border border-foreground/20 font-sans text-xs font-medium uppercase tracking-[0.06em] text-foreground transition-colors duration-150 hover:border-foreground/40 active:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                   >
                     Log in
                   </Link>
@@ -273,7 +258,7 @@ export function MobileMenu() {
                     type="button"
                     onClick={logout}
                     disabled={pending}
-                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md bg-foreground font-sans text-xs font-medium uppercase tracking-[0.06em] text-background transition-opacity duration-150 hover:opacity-90 active:opacity-80 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                    className="flex h-9 w-full cursor-pointer touch-manipulation items-center justify-center rounded-md border border-foreground/20 font-sans text-xs font-medium uppercase tracking-[0.06em] text-foreground transition-colors duration-150 hover:border-foreground/40 active:bg-foreground/5 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                   >
                     {pending ? "Logging out…" : "Log out"}
                   </button>
