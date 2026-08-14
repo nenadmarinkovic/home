@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PaperPlaneTiltIcon } from "@phosphor-icons/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -124,6 +125,7 @@ export function ContactForm() {
               : ""}
         </p>
         <Button type="submit" size="lg" disabled={sending}>
+          <PaperPlaneTiltIcon weight="bold" />
           {sending ? "Sending…" : "Send message"}
         </Button>
       </div>
