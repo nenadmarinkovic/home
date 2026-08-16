@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRightIcon, HammerIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 
 import { AdminActions } from "@/components/admin-actions";
 import { AnimatedGreeting } from "@/components/animated-greeting";
