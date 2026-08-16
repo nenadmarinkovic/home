@@ -8,7 +8,7 @@ import { getArticles } from "./articles";
 export const metadata: Metadata = {
   title: "Writing",
   description:
-    "Notes I’ve put down along the way — software, design, the web, and anything else worth thinking about.",
+    "Notes on software, design, the web, and whatever else I keep coming back to.",
 };
 
 export default async function WritingIndexPage() {
@@ -20,11 +20,11 @@ export default async function WritingIndexPage() {
           Writing
         </p>
         <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
-          Notes worth keeping
+          Notes and essays
         </h1>
-        <p className="mt-4 text-base italic leading-normal text-balance text-foreground/70">
-          Notes I&rsquo;ve put down along the way — software, design, the web,
-          and anything else worth thinking about.
+        <p className="mt-4 mx-auto max-w-sm text-base italic leading-normal text-balance text-foreground/70">
+          I sometimes write about topics I find interesting or about projects
+          I&rsquo;m working on.
         </p>
       </hgroup>
       {list.length === 0 ? (
