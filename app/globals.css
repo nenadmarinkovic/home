@@ -472,6 +472,41 @@ article img {
   border-radius: 0.5rem;
 }
 
+article .footnotes {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: color-mix(in oklab, var(--foreground) 62%, transparent);
+}
+
+article .footnotes ol {
+  padding-left: 1.25rem;
+}
+
+article .footnotes li + li {
+  margin-top: 0.625rem;
+}
+
+article .footnotes li > p {
+  margin: 0;
+}
+
+article .footnotes li > p + p {
+  margin-top: 0.5rem;
+}
+
+article [data-footnote-ref] {
+  padding-left: 0.0625rem;
+  text-decoration: none;
+}
+
+article [data-footnote-backref] {
+  margin-left: 0.25rem;
+  text-decoration: none;
+}
+
 article .code {
   margin: 2rem 0;
   border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);

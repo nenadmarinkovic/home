@@ -63,6 +63,25 @@ area fixes it.
 The seed runs on every deploy. If you delete a post from the database but leave
 its Markdown file in `content/`, the next deploy puts it back.
 
+### Footnotes
+
+`[^1]` in the prose, `[^1]: the note` on its own line anywhere in the body — the
+label can be any word, and the rendered numbering follows the order the
+references appear, not the labels. Notes are collected into a section at the
+end of the post with a link back up to the reference.
+
+```
+So far so good.[^scale]
+
+[^scale]: Better, but not complete — which is the whole argument.
+```
+
+The rich text editor has no footnote node, so the markers sit in the prose as
+plain text while you edit. That is the intended behaviour; `bodyMarkdown` in
+the article editor undoes the bracket escaping on save so they survive a round
+trip. A marker with no matching note renders as literal `[^1]`, so a broken one
+is visible in the post; a note with no matching marker is dropped silently.
+
 ## Embedding my other apps
 
 I sometimes want one of my other projects running inside a post rather than

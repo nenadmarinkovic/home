@@ -1,13 +1,16 @@
 import DOMPurify from "isomorphic-dompurify";
 import { marked, type Tokens } from "marked";
+import markedFootnote from "marked-footnote";
 
 import { embedApps } from "./embeds";
 
+marked.use(markedFootnote());
+
 DOMPurify.addHook("afterSanitizeAttributes", (node) => {
-  if (node.tagName === "A") {
-    node.setAttribute("target", "_blank");
-    node.setAttribute("rel", "noopener noreferrer");
-  }
+  if (node.tagName !== "A") return;
+  if (node.getAttribute("href")?.startsWith("#")) return;
+  node.setAttribute("target", "_blank");
+  node.setAttribute("rel", "noopener noreferrer");
 });
 
 const VIDEO_EXT: Record<string, string> = {
@@ -182,8 +185,8 @@ function renderDeviceFence(text: string): string | null {
   const status =
     fields.route || fields.app
       ? `<span class="device-status" data-device-status="1"></span>` +
-      `<span class="device-home" aria-hidden="true"></span>`
-    : "";
+        `<span class="device-home" aria-hidden="true"></span>`
+      : "";
   return `<figure class="${cls}">${parts.join("")}${status}${chrome}</figure>`;
 }
 

@@ -67,10 +67,13 @@ function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
+const ESCAPED_FOOTNOTE = /\\\[\^([^\]\s]+)\\\]/g;
+
 function bodyMarkdown(editor: Editor): string {
-  return (
+  const markdown = (
     editor.storage as unknown as { markdown: { getMarkdown: () => string } }
   ).markdown.getMarkdown();
+  return markdown.replace(ESCAPED_FOOTNOTE, "[^$1]");
 }
 
 function slugify(input: string): string {
