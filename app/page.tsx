@@ -78,11 +78,6 @@ export default async function Home() {
                   <h2 className="text-xl font-medium text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
                     {a.title}
                   </h2>
-                  {a.subtitle && (
-                    <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-                      {a.subtitle}
-                    </p>
-                  )}
                   {a.description && (
                     <p className="text-base leading-[1.55] text-pretty text-foreground/70">
                       {a.description}
