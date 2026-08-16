@@ -21,22 +21,21 @@ export default async function Home() {
           </h1>
         </div>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-          Next year marks ten years since I started working on the web. It still
-          feels like a medium with so many opportunities. There&rsquo;s always
-          more to make, learn, and solve.
+          Next year marks ten years since I started working professionally on
+          the web. I&rsquo;ve built products people use daily, with small teams
+          and large ones. It still feels like the best place to learn, connect,
+          and solve real problems.
         </p>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-          Right now, I&rsquo;m building a German-learning platform and starting
-          my first web studio for educators and creators who need more than a
-          template. I also enjoy experimenting: running small society
-          simulations, or getting to know the city I live in through data.
+          Right now I&rsquo;m developing a German-learning platform and laying
+          the groundwork for my first software studio. I also enjoy
+          experimenting: running small society simulations, or getting to know
+          the city I live in through data.
         </p>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-          This site is where it all lives. I share my work, thoughts, and the
-          links I find interesting.
-        </p>
-        <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-          Have a look around, and if you&rsquo;d like to say hi, there&rsquo;s a{" "}
+          This website is where it all lives. I share my work, thoughts, and the
+          links I find interesting. Have a look around, and if you&rsquo;d like
+          to say hi, there&rsquo;s a{" "}
           <Link
             href="/contact"
             className="font-semibold text-[#0040ff] transition-opacity hover:opacity-70 dark:text-[#ffff01]"
@@ -44,10 +43,6 @@ export default async function Home() {
             contact
           </Link>{" "}
           page.
-        </p>
-        <p className="flex items-center gap-2 text-base leading-[1.55] text-pretty text-foreground/70">
-          <HammerIcon weight="duotone" className="size-4 shrink-0" />
-          This website is a work in progress, so expect things to shift around.
         </p>
       </section>
       {latest.length > 0 && (
