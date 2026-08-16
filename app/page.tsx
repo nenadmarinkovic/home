@@ -23,8 +23,8 @@ export default async function Home() {
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
           Next year marks ten years since I started working professionally on
           the web. I&rsquo;ve built products people use daily, with small teams
-          and large ones. It still feels like the best place to learn, connect,
-          and solve real problems.
+          and large ones. It still feels like the best and most open medium for
+          creativity, connection, and real problem-solving.
         </p>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
           Right now I&rsquo;m developing a German-learning platform and laying
