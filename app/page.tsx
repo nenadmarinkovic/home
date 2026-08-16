@@ -33,7 +33,7 @@ export default async function Home() {
           the city I live in through data.
         </p>
         <p className="text-base leading-[1.55] text-pretty text-foreground/70">
-          This website is where it all lives. I share my work, thoughts, and the
+          This site is where it all lives. I share my work, thoughts, and the
           links I find interesting. Have a look around, and if you&rsquo;d like
           to say hi, there&rsquo;s a{" "}
           <Link
