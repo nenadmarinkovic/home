@@ -63,7 +63,7 @@ function seed(
     links: { url: string; title: string; updated: number }[];
     tags: string[];
     linkTags: [string, string][];
-    vocab: { lemma: string; pos: string; slug: string; tr: string; updated: number }[];
+    vocabulary: { lemma: string; pos: string; slug: string; tr: string; updated: number }[];
     reviews: { lemma: string; pos: string; dir: string; at: number; rating: number }[];
   },
 ) {
@@ -98,7 +98,7 @@ function seed(
     }
   }
 
-  for (const v of opts.vocab) {
+  for (const v of opts.vocabulary) {
     db.prepare(
       `insert into vocab_entries (slug, term, lemma, pos, translation_sr, examples, conjugations, notes, tags, source, created_at, updated_at)
        values (?,?,?,?,?,'[]','{}','','','manual',?,?)`,
@@ -177,7 +177,7 @@ seed(localPath, {
   links: [{ url: "https://a.example/1", title: "A", updated: T0 }],
   tags: ["ai"],
   linkTags: [["https://a.example/1", "ai"]],
-  vocab: [
+  vocabulary: [
     { lemma: "haus", pos: "noun", slug: "haus", tr: "kuća (local)", updated: T0 + DAY },
     { lemma: "lokalwort", pos: "noun", slug: "wort", tr: "samo lokalno", updated: T0 },
   ],
@@ -197,7 +197,7 @@ seed(livePath, {
   ],
   tags: ["ai", "web"],
   linkTags: [["https://b.example/2", "web"]],
-  vocab: [
+  vocabulary: [
     { lemma: "haus", pos: "noun", slug: "haus", tr: "kuća, dom (live, newer)", updated: T0 + 4 * DAY },
     { lemma: "livewort", pos: "noun", slug: "wort", tr: "samo live", updated: T0 },
   ],
@@ -223,7 +223,7 @@ function sorted(d: Dataset) {
     articles: [...d.articles].sort((a, b) => String(a.slug).localeCompare(String(b.slug))),
     links: [...d.links].sort((a, b) => String(a.url).localeCompare(String(b.url))),
     linkTags: [...d.linkTags].sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
-    vocab: [...d.vocab].sort((a, b) => String(a.lemma).localeCompare(String(b.lemma))),
+    vocabulary: [...d.vocabulary].sort((a, b) => String(a.lemma).localeCompare(String(b.lemma))),
     cards: [...d.cards].sort((a, b) => JSON.stringify([a.lemma, a.direction]).localeCompare(JSON.stringify([b.lemma, b.direction]))),
     reviews: [...d.reviews].sort((a, b) => JSON.stringify([a.lemma, a.direction, a.review]).localeCompare(JSON.stringify([b.lemma, b.direction, b.review]))),
   });
@@ -272,15 +272,15 @@ check("link/tag pairs survive id remapping on both sides", () => {
   assert.ok(A.linkTags.some((r) => r.link_url === "https://b.example/2" && r.tag_slug === "web"));
 });
 
-check("newer vocab translation wins", () => {
-  const v = A.vocab.find((r) => r.lemma === "haus")!;
+check("newer vocabulary translation wins", () => {
+  const v = A.vocabulary.find((r) => r.lemma === "haus")!;
   assert.strictEqual(v.translation_sr, "kuća, dom (live, newer)");
 });
 
-check("vocab slug collision is renamed, both entries kept", () => {
-  const lemmas = A.vocab.map((r) => r.lemma).sort();
+check("vocabulary slug collision is renamed, both entries kept", () => {
+  const lemmas = A.vocabulary.map((r) => r.lemma).sort();
   assert.deepStrictEqual(lemmas, ["haus", "livewort", "lokalwort"]);
-  const slugs = A.vocab.map((r) => r.slug);
+  const slugs = A.vocabulary.map((r) => r.slug);
   assert.strictEqual(new Set(slugs).size, slugs.length, `slugs not unique: ${slugs}`);
 });
 
@@ -433,12 +433,12 @@ check("review history is never deleted, even when one side loses rows", () => {
   assert.ok(r.replayed > 0, "cards should still rebuild from the restored log");
 });
 
-check("deleting a vocab entry removes its cards and reviews", () => {
+check("deleting a vocabulary entry removes its cards and reviews", () => {
   state = stateFrom(after(localPath), SYNCED_AT);
   exec(localPath, `delete from vocab_entries where lemma='haus'`);
   syncAgain(state);
   const d = after(livePath);
-  assert.ok(!d.vocab.some((v) => v.lemma === "haus"));
+  assert.ok(!d.vocabulary.some((v) => v.lemma === "haus"));
   assert.ok(!d.cards.some((c) => c.lemma === "haus"));
   assert.ok(!d.reviews.some((c) => c.lemma === "haus"));
 });

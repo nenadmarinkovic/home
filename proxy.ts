@@ -49,7 +49,7 @@ export const config = {
     "/api/articles/:path*",
     "/api/dokploy/:path*",
     "/api/export/:path*",
-    "/api/lib/:path*",
+    "/api/vocabulary/:path*",
     "/api/logout/:path*",
     "/api/preview/:path*",
     "/save",

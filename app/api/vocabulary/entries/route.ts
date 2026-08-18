@@ -7,7 +7,7 @@ import {
   GENDER_VALUES,
   POS_VALUES,
 } from "@/db/schema";
-import { saveEntry } from "@/lib/lib-db";
+import { saveEntry } from "@/lib/vocabulary-db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

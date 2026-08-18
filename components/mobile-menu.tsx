@@ -24,7 +24,7 @@ const CONTACT_HREF = "/contact";
 
 const ADMIN_TOOLS = [
   { href: "/admin/writing", name: "Writing", Icon: PencilSimpleLineIcon },
-  { href: "/admin/lib", name: "Lib", Icon: BookOpenIcon },
+  { href: "/admin/vocabulary", name: "Vocabulary", Icon: BookOpenIcon },
   { href: "/admin/log", name: "Log", Icon: PulseIcon },
   { href: "/admin/links", name: "Links", Icon: PaperclipIcon },
 ] as const;

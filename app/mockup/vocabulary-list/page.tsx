@@ -1,5 +1,5 @@
-import { LibClient } from "@/app/admin/lib/lib-client";
-import type { ClientEntry } from "@/app/admin/lib/types";
+import { VocabularyClient } from "@/app/admin/vocabulary/vocabulary-client";
+import type { ClientEntry } from "@/app/admin/vocabulary/types";
 
 export const dynamic = "force-dynamic";
 
@@ -62,6 +62,6 @@ const stats = {
   total: entries.length * 2,
 };
 
-export default function LibListMockup() {
-  return <LibClient initialEntries={entries} initialStats={stats} />;
+export default function VocabularyListMockup() {
+  return <VocabularyClient initialEntries={entries} initialStats={stats} />;
 }

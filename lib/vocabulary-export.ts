@@ -5,21 +5,21 @@ import {
   POS_VALUES,
   reviewLog,
   srsCards,
-  vocabEntries,
+  vocabularyEntries,
   type Pos,
   type ReviewLogRow,
   type SrsCardRow,
-  type VocabEntryRow,
+  type VocabularyEntryRow,
 } from "@/db/schema";
 
 export type Example = { de: string; sr: string };
 
-export type ExportEntry = Omit<VocabEntryRow, "examples" | "conjugations"> & {
+export type ExportEntry = Omit<VocabularyEntryRow, "examples" | "conjugations"> & {
   examples: Example[];
   conjugations: Record<string, unknown>;
 };
 
-export type LibExport = {
+export type VocabularyExport = {
   exportedAt: string;
   counts: { entries: number; cards: number; reviewLog: number };
   entries: ExportEntry[];
@@ -40,7 +40,7 @@ function safeJSON<T>(raw: string, fallback: T): T {
   }
 }
 
-function rowToEntry(row: VocabEntryRow): ExportEntry {
+function rowToEntry(row: VocabularyEntryRow): ExportEntry {
   return {
     ...row,
     examples: safeJSON<Example[]>(row.examples, []),
@@ -48,11 +48,11 @@ function rowToEntry(row: VocabEntryRow): ExportEntry {
   };
 }
 
-export function buildLibExport(at: Date = new Date()): LibExport {
+export function buildVocabularyExport(at: Date = new Date()): VocabularyExport {
   const entryRows = db
     .select()
-    .from(vocabEntries)
-    .orderBy(asc(vocabEntries.lemma), asc(vocabEntries.pos))
+    .from(vocabularyEntries)
+    .orderBy(asc(vocabularyEntries.lemma), asc(vocabularyEntries.pos))
     .all();
   const cardRows = db
     .select()
@@ -131,7 +131,7 @@ function renderEntry(entry: ExportEntry): string[] {
   return lines;
 }
 
-export function buildLibMarkdown(data: LibExport): string {
+export function buildVocabularyMarkdown(data: VocabularyExport): string {
   const date = data.exportedAt.slice(0, 10);
   const lines = [
     "# German–Serbian Vocabulary",
@@ -167,12 +167,12 @@ export function buildLibMarkdown(data: LibExport): string {
   return `${lines.join("\n").trimEnd()}\n`;
 }
 
-export function buildLibExportFiles(at: Date = new Date()): ExportFile[] {
-  const data = buildLibExport(at);
+export function buildVocabularyExportFiles(at: Date = new Date()): ExportFile[] {
+  const data = buildVocabularyExport(at);
   return [
-    { path: "content/lib/vocab.md", content: buildLibMarkdown(data) },
+    { path: "content/vocabulary/entries.md", content: buildVocabularyMarkdown(data) },
     {
-      path: "content/lib/vocab.json",
+      path: "content/vocabulary/entries.json",
       content: `${JSON.stringify(data, null, 2)}\n`,
     },
   ];

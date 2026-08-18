@@ -78,7 +78,7 @@ function main() {
   for (const table of [
     "articles",
     "links",
-    "vocab",
+    "vocabulary",
     "cards",
     "reviews",
   ] as const) {
@@ -101,13 +101,13 @@ function main() {
   console.log(
     `merged    articles ${result.dataset.articles.length}  ` +
       `links ${result.dataset.links.length}  ` +
-      `vocab ${result.dataset.vocab.length}  ` +
+      `vocabulary ${result.dataset.vocabulary.length}  ` +
       `cards ${result.dataset.cards.length}  ` +
       `reviews ${result.dataset.reviews.length}`,
   );
   console.log(
-    `resolved  ${result.articles.fromLive + result.links.fromLive + result.vocab.fromLive} row(s) taken from live, ` +
-      `${result.articles.fromLocal + result.links.fromLocal + result.vocab.fromLocal} kept from local`,
+    `resolved  ${result.articles.fromLive + result.links.fromLive + result.vocabulary.fromLive} row(s) taken from live, ` +
+      `${result.articles.fromLocal + result.links.fromLocal + result.vocabulary.fromLocal} kept from local`,
   );
   console.log(
     `replayed  ${result.replayed} card(s) rebuilt from the review log`,
@@ -124,7 +124,7 @@ function main() {
     );
   }
   if (result.renamed > 0) {
-    console.log(`renamed   ${result.renamed} vocab slug collision(s)`);
+    console.log(`renamed   ${result.renamed} vocabulary slug collision(s)`);
   }
 
   if (dryRun) {

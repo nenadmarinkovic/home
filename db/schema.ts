@@ -71,7 +71,7 @@ export const articles = sqliteTable(
 export type ArticleRow = typeof articles.$inferSelect;
 export type NewArticleRow = typeof articles.$inferInsert;
 
-export const vocabEntries = sqliteTable(
+export const vocabularyEntries = sqliteTable(
   "vocab_entries",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
@@ -104,8 +104,8 @@ export const vocabEntries = sqliteTable(
   ],
 );
 
-export type VocabEntryRow = typeof vocabEntries.$inferSelect;
-export type NewVocabEntryRow = typeof vocabEntries.$inferInsert;
+export type VocabularyEntryRow = typeof vocabularyEntries.$inferSelect;
+export type NewVocabularyEntryRow = typeof vocabularyEntries.$inferInsert;
 
 export const srsCards = sqliteTable(
   "srs_cards",
@@ -113,7 +113,7 @@ export const srsCards = sqliteTable(
     id: integer("id").primaryKey({ autoIncrement: true }),
     entryId: integer("entry_id")
       .notNull()
-      .references(() => vocabEntries.id, { onDelete: "cascade" }),
+      .references(() => vocabularyEntries.id, { onDelete: "cascade" }),
     direction: text("direction").notNull(),
     due: integer("due", { mode: "timestamp_ms" }).notNull(),
     stability: real("stability").notNull().default(0),

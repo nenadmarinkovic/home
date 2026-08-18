@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { buildLibExportFiles } from "../lib/lib-export";
+import { buildVocabularyExportFiles } from "../lib/vocabulary-export";
 
 function main() {
-  const files = buildLibExportFiles();
+  const files = buildVocabularyExportFiles();
   const root = process.cwd();
   for (const file of files) {
     const abs = path.join(root, file.path);
@@ -12,7 +12,7 @@ function main() {
     fs.writeFileSync(abs, file.content, "utf8");
     console.log(`wrote ${file.path}`);
   }
-  console.log(`Exported vocab DB to ${files.length} files.`);
+  console.log(`Exported vocabulary DB to ${files.length} files.`);
 }
 
 main();

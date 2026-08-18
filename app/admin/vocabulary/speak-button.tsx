@@ -64,7 +64,7 @@ export function SpeakButton({
       setStatus("loading");
       try {
         const res = await fetch(
-          `/api/lib/speak?text=${encodeURIComponent(trimmed)}`,
+          `/api/vocabulary/speak?text=${encodeURIComponent(trimmed)}`,
         );
         if (!res.ok) {
           const data = (await res.json().catch(() => ({}))) as {

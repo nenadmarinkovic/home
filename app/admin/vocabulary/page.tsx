@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 
-import { getDueStats, listEntries } from "@/lib/lib-db";
-import { LibClient } from "./lib-client";
+import { getDueStats, listEntries } from "@/lib/vocabulary-db";
+import { VocabularyClient } from "./vocabulary-client";
 
 export const metadata: Metadata = {
-  title: "Lib · Admin",
+  title: "Vocabulary · Admin",
   robots: { index: false, follow: false },
 };
 
 export const dynamic = "force-dynamic";
 
-export default function LibPage() {
+export default function VocabularyPage() {
   const entries = listEntries({ limit: 500 });
   const stats = getDueStats();
-  return <LibClient initialEntries={entries} initialStats={stats} />;
+  return <VocabularyClient initialEntries={entries} initialStats={stats} />;
 }

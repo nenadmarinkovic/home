@@ -111,7 +111,7 @@ function matchesFilter(pos: string, filter: FilterKey): boolean {
   return true;
 }
 
-export function LibClient({ initialEntries, initialStats }: Props) {
+export function VocabularyClient({ initialEntries, initialStats }: Props) {
   const router = useRouter();
   const [, startTransition] = useTransition();
 
@@ -244,7 +244,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
     setEnriching(true);
     setEditorError(null);
     try {
-      const res = await fetch("/api/lib/enrich", {
+      const res = await fetch("/api/vocabulary/enrich", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ term }),
@@ -287,7 +287,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
     setGeneratingExamples(true);
     setEditorError(null);
     try {
-      const res = await fetch("/api/lib/examples", {
+      const res = await fetch("/api/vocabulary/examples", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ term }),
@@ -319,7 +319,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
     setSaving(true);
     setEditorError(null);
     try {
-      const res = await fetch("/api/lib/entries", {
+      const res = await fetch("/api/vocabulary/entries", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(draft),
@@ -345,7 +345,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
     if (!pendingDelete) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/lib/entries/${pendingDelete.id}`, {
+      const res = await fetch(`/api/vocabulary/entries/${pendingDelete.id}`, {
         method: "DELETE",
       });
       if (!res.ok) {
@@ -373,7 +373,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Lib</BreadcrumbPage>
+            <BreadcrumbPage>Vocabulary</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -381,7 +381,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-1.5">
           <h1 className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
-            Lib
+            Vocabulary
           </h1>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
             <span>
@@ -398,7 +398,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
             </span>
             {stats.due > 0 ? (
               <Link
-                href="/admin/lib/review"
+                href="/admin/vocabulary/review"
                 title={DUE_TOOLTIP}
                 className="text-[#0040ff] transition-opacity hover:underline hover:opacity-80 dark:text-[#ffff01]"
               >
@@ -413,7 +413,7 @@ export function LibClient({ initialEntries, initialStats }: Props) {
         </div>
         <div className="hidden items-center gap-2 md:flex">
           <Button asChild variant="outline" className="h-9">
-            <Link href="/admin/lib/review" className="group">
+            <Link href="/admin/vocabulary/review" className="group">
               <BookOpenIcon weight="bold" />
               Review
               <ArrowRightIcon
@@ -576,7 +576,7 @@ function EntryRow({
   return (
     <li className="group/row flex items-center gap-4 py-3.5">
       <Link
-        href={`/admin/lib/${entry.slug}`}
+        href={`/admin/vocabulary/${entry.slug}`}
         className="-mx-2 -my-1 min-w-0 flex-1 rounded-md px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
       >
         <div className="flex items-center gap-2">

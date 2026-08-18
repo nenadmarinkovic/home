@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { getDueStats, listReviewDeck, recordReview } from "@/lib/lib-db";
+import { getDueStats, listReviewDeck, recordReview } from "@/lib/vocabulary-db";
 import type { Rating } from "@/db/schema";
 
 export const runtime = "nodejs";

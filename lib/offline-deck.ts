@@ -1,6 +1,6 @@
 import { cardFromRow, previewIntervals, review } from "@/lib/fsrs";
 import type { CardDirection, Rating } from "@/db/schema";
-import type { EntryListItem, VocabEntry } from "@/lib/lib-db";
+import type { EntryListItem, VocabularyEntry } from "@/lib/vocabulary-db";
 
 export type OfflineCard = {
   id: number;
@@ -17,7 +17,7 @@ export type OfflineCard = {
   learningSteps: number;
   lastReview: number | null; // epoch ms
   suspended: boolean;
-  entry: VocabEntry;
+  entry: VocabularyEntry;
 };
 
 export type QueuedReview = {
@@ -156,7 +156,7 @@ export async function clearQueue(qids: number[]): Promise<void> {
   }
 }
 
-const SYNC_URL = "/api/lib/review/sync";
+const SYNC_URL = "/api/vocabulary/review/sync";
 
 export async function refreshDeck(): Promise<OfflineCard[] | null> {
   if (!hasIndexedDb()) return null;

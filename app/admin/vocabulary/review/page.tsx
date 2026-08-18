@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ReviewClient } from "./review-client";
 
 export const metadata: Metadata = {
-  title: "Review · Lib · Admin",
+  title: "Review · Vocabulary · Admin",
   robots: { index: false, follow: false },
 };
 

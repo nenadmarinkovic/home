@@ -43,7 +43,7 @@ import {
 } from "@/lib/offline-deck";
 
 import type { Rating } from "@/db/schema";
-import type { VocabEntry } from "@/lib/lib-db";
+import type { VocabularyEntry } from "@/lib/vocabulary-db";
 
 type Props = {
   initialStats: DeckStats;
@@ -63,7 +63,7 @@ const RATING_BUTTONS: RatingButton[] = [
   { rating: 4, label: "Easy", key: "4", dotClass: "bg-[#0040ff] dark:bg-[#ffff01]" },
 ];
 
-const SYNC_URL = "/api/lib/review/sync";
+const SYNC_URL = "/api/vocabulary/review/sync";
 
 function subscribeOnline(callback: () => void) {
   window.addEventListener("online", callback);
@@ -226,7 +226,7 @@ export function ReviewClient({ initialStats }: Props) {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/admin/lib">Lib</Link>
+              <Link href="/admin/vocabulary">Vocabulary</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -271,12 +271,12 @@ export function ReviewClient({ initialStats }: Props) {
           </p>
         </div>
         <Button asChild variant="outline" className="h-9">
-          <Link href="/admin/lib" className="group">
+          <Link href="/admin/vocabulary" className="group">
             <ArrowLeftIcon
               weight="bold"
               className="transition-transform duration-200 group-hover:-translate-x-0.5"
             />
-            Back to lib
+            Back to vocabulary
           </Link>
         </Button>
       </header>
@@ -563,13 +563,13 @@ function Done({ stats }: { stats: DeckStats }) {
         </p>
       </div>
       <Button asChild variant="outline" className="mt-2">
-        <Link href="/admin/lib">Back to lib</Link>
+        <Link href="/admin/vocabulary">Back to vocabulary</Link>
       </Button>
     </div>
   );
 }
 
-function formatGerman(entry: VocabEntry): string {
+function formatGerman(entry: VocabularyEntry): string {
   if (entry.pos === "noun" && entry.gender) {
     return `${entry.gender} ${entry.term}`;
   }

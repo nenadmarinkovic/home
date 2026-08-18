@@ -8,7 +8,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 
 import { getArticles, getDraftArticles } from "@/app/writing/articles";
-import { getDueStats } from "@/lib/lib-db";
+import { getDueStats } from "@/lib/vocabulary-db";
 import { LiveClock } from "./live-clock";
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ type Tool = {
 };
 
 export default async function AdminPage() {
-  const [published, drafts, libStats] = await Promise.all([
+  const [published, drafts, vocabularyStats] = await Promise.all([
     getArticles(),
     getDraftArticles(),
     Promise.resolve(getDueStats()),
@@ -40,8 +40,8 @@ export default async function AdminPage() {
       Icon: PencilSimpleLineIcon,
     },
     {
-      href: "/admin/lib",
-      name: "Lib",
+      href: "/admin/vocabulary",
+      name: "Vocabulary",
       tagline: "German, learned with a quiet AI.",
       Icon: BookOpenIcon,
     },
@@ -61,7 +61,7 @@ export default async function AdminPage() {
 
   const stats: Record<string, string> = {
     "/admin/writing": `${published.length} published · ${drafts.length} draft${drafts.length === 1 ? "" : "s"}`,
-    "/admin/lib": `${libStats.total} cards · ${libStats.due} due`,
+    "/admin/vocabulary": `${vocabularyStats.total} cards · ${vocabularyStats.due} due`,
     "/admin/log": "Live",
   };
 

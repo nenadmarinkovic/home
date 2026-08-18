@@ -135,7 +135,7 @@ export function EntryChat({ slug, term }: Props) {
 
     try {
       const outbound = next.filter((m) => m !== INTRO);
-      const res = await fetch("/api/lib/chat", {
+      const res = await fetch("/api/vocabulary/chat", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ slug, messages: outbound }),

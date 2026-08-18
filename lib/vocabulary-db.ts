@@ -6,18 +6,18 @@ import {
   CARD_DIRECTIONS,
   reviewLog,
   srsCards,
-  vocabEntries,
+  vocabularyEntries,
   type CardDirection,
-  type NewVocabEntryRow,
+  type NewVocabularyEntryRow,
   type Rating,
   type SrsCardRow,
-  type VocabEntryRow,
+  type VocabularyEntryRow,
 } from "@/db/schema";
 import { cardFromRow, newCard, review } from "@/lib/fsrs";
 
 export type Example = { de: string; sr: string };
 
-export type VocabEntry = Omit<VocabEntryRow, "examples" | "conjugations"> & {
+export type VocabularyEntry = Omit<VocabularyEntryRow, "examples" | "conjugations"> & {
   examples: Example[];
   conjugations: Record<string, unknown>;
 };
@@ -31,9 +31,9 @@ function nextSlug(): string {
   for (let i = 0; i < 5; i++) {
     const candidate = generateSlug();
     const existing = db
-      .select({ id: vocabEntries.id })
-      .from(vocabEntries)
-      .where(eq(vocabEntries.slug, candidate))
+      .select({ id: vocabularyEntries.id })
+      .from(vocabularyEntries)
+      .where(eq(vocabularyEntries.slug, candidate))
       .get();
     if (!existing) return candidate;
   }
@@ -61,7 +61,7 @@ function safeJSON<T>(raw: string, fallback: T): T {
   }
 }
 
-function rowToEntry(row: VocabEntryRow): VocabEntry {
+function rowToEntry(row: VocabularyEntryRow): VocabularyEntry {
   return {
     ...row,
     examples: safeJSON<Example[]>(row.examples, []),
@@ -87,7 +87,7 @@ export type WriteEntryInput = {
 };
 
 export type UpsertEntryResult = {
-  entry: VocabEntry;
+  entry: VocabularyEntry;
   created: boolean;
 };
 
@@ -97,7 +97,7 @@ export function saveEntry(input: WriteEntryInput): UpsertEntryResult {
   const examplesJson = JSON.stringify(input.examples ?? []);
   const conjugationsJson = JSON.stringify(input.conjugations ?? {});
 
-  const values: NewVocabEntryRow = {
+  const values: NewVocabularyEntryRow = {
     slug: nextSlug(),
     term: input.term.trim(),
     lemma,
@@ -117,12 +117,12 @@ export function saveEntry(input: WriteEntryInput): UpsertEntryResult {
     updatedAt: now,
   };
 
-  let row: VocabEntryRow;
+  let row: VocabularyEntryRow;
   let created = false;
 
   if (input.id !== undefined) {
     row = db
-      .update(vocabEntries)
+      .update(vocabularyEntries)
       .set({
         term: values.term,
         lemma: values.lemma,
@@ -140,15 +140,15 @@ export function saveEntry(input: WriteEntryInput): UpsertEntryResult {
         source: values.source,
         updatedAt: now,
       })
-      .where(eq(vocabEntries.id, input.id))
+      .where(eq(vocabularyEntries.id, input.id))
       .returning()
       .get();
   } else {
     const inserted = db
-      .insert(vocabEntries)
+      .insert(vocabularyEntries)
       .values(values)
       .onConflictDoUpdate({
-        target: [vocabEntries.lemma, vocabEntries.pos],
+        target: [vocabularyEntries.lemma, vocabularyEntries.pos],
         set: {
           term: values.term,
           gender: values.gender,
@@ -204,29 +204,29 @@ function ensureCards(entryId: number, now: Date) {
 }
 
 export function deleteEntry(id: number): boolean {
-  const res = db.delete(vocabEntries).where(eq(vocabEntries.id, id)).run();
+  const res = db.delete(vocabularyEntries).where(eq(vocabularyEntries.id, id)).run();
   return res.changes > 0;
 }
 
-export function getEntryById(id: number): VocabEntry | null {
+export function getEntryById(id: number): VocabularyEntry | null {
   const row = db
     .select()
-    .from(vocabEntries)
-    .where(eq(vocabEntries.id, id))
+    .from(vocabularyEntries)
+    .where(eq(vocabularyEntries.id, id))
     .get();
   return row ? rowToEntry(row) : null;
 }
 
-export function getEntryBySlug(slug: string): VocabEntry | null {
+export function getEntryBySlug(slug: string): VocabularyEntry | null {
   const row = db
     .select()
-    .from(vocabEntries)
-    .where(eq(vocabEntries.slug, slug))
+    .from(vocabularyEntries)
+    .where(eq(vocabularyEntries.slug, slug))
     .get();
   return row ? rowToEntry(row) : null;
 }
 
-export type EntryListItem = VocabEntry & {
+export type EntryListItem = VocabularyEntry & {
   due: number;
   reviewed: number;
 };
@@ -240,21 +240,21 @@ export function listEntries(options?: {
   const baseRows = q
     ? db
         .select()
-        .from(vocabEntries)
+        .from(vocabularyEntries)
         .where(
           or(
-            sql`lower(${vocabEntries.term}) like ${`%${q}%`}`,
-            sql`lower(${vocabEntries.translationSr}) like ${`%${q}%`}`,
-            sql`lower(${vocabEntries.tags}) like ${`%${q}%`}`,
+            sql`lower(${vocabularyEntries.term}) like ${`%${q}%`}`,
+            sql`lower(${vocabularyEntries.translationSr}) like ${`%${q}%`}`,
+            sql`lower(${vocabularyEntries.tags}) like ${`%${q}%`}`,
           ),
         )
-        .orderBy(desc(vocabEntries.createdAt))
+        .orderBy(desc(vocabularyEntries.createdAt))
         .limit(limit)
         .all()
     : db
         .select()
-        .from(vocabEntries)
-        .orderBy(desc(vocabEntries.createdAt))
+        .from(vocabularyEntries)
+        .orderBy(desc(vocabularyEntries.createdAt))
         .limit(limit)
         .all();
 
@@ -313,7 +313,7 @@ export function listEntries(options?: {
 
 export type DueCard = {
   card: SrsCardRow;
-  entry: VocabEntry;
+  entry: VocabularyEntry;
 };
 
 export type DueStats = {
@@ -375,8 +375,8 @@ export function getNextDueCard(now: Date = new Date()): DueCard | null {
   if (!card) return null;
   const entryRow = db
     .select()
-    .from(vocabEntries)
-    .where(eq(vocabEntries.id, card.entryId))
+    .from(vocabularyEntries)
+    .where(eq(vocabularyEntries.id, card.entryId))
     .get();
   if (!entryRow) return null;
   return { card, entry: rowToEntry(entryRow) };
@@ -390,7 +390,7 @@ export function listReviewDeck(): DueCard[] {
     .all();
   if (cardRows.length === 0) return [];
 
-  const entryRows = db.select().from(vocabEntries).all();
+  const entryRows = db.select().from(vocabularyEntries).all();
   const entryById = new Map(entryRows.map((row) => [row.id, rowToEntry(row)]));
 
   const deck: DueCard[] = [];

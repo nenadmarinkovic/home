@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { getEntryBySlug, listCardsForEntry } from "@/lib/lib-db";
+import { getEntryBySlug, listCardsForEntry } from "@/lib/vocabulary-db";
 import { EntryDetailClient } from "./entry-detail-client";
 
 export const dynamic = "force-dynamic";
@@ -14,9 +14,9 @@ export async function generateMetadata({
   const { slug } = await params;
   const entry = getEntryBySlug(slug);
   if (!entry)
-    return { title: "Lib · Admin", robots: { index: false, follow: false } };
+    return { title: "Vocabulary · Admin", robots: { index: false, follow: false } };
   return {
-    title: `${entry.term} · Lib · Admin`,
+    title: `${entry.term} · Vocabulary · Admin`,
     robots: { index: false, follow: false },
   };
 }

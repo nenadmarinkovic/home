@@ -1,12 +1,12 @@
-import { EntryDetailClient } from "@/app/admin/lib/[slug]/entry-detail-client";
+import { EntryDetailClient } from "@/app/admin/vocabulary/[slug]/entry-detail-client";
 import type { SrsCardRow } from "@/db/schema";
-import type { VocabEntry } from "@/lib/lib-db";
+import type { VocabularyEntry } from "@/lib/vocabulary-db";
 
 export const dynamic = "force-dynamic";
 
 const NOW = new Date("2026-07-25T09:00:00Z");
 
-const entry: VocabEntry = {
+const entry: VocabularyEntry = {
   id: 1,
   slug: "mockup",
   term: "Verbindung",

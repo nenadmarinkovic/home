@@ -45,7 +45,7 @@ import {
 import { TagChip } from "@/components/tag-chip";
 
 import type { SrsCardRow } from "@/db/schema";
-import type { VocabEntry } from "@/lib/lib-db";
+import type { VocabularyEntry } from "@/lib/vocabulary-db";
 
 import { EntryEditor } from "../entry-editor";
 import { SpeakButton } from "../speak-button";
@@ -53,7 +53,7 @@ import { entryToDraft, type DraftEntry } from "../types";
 import { EntryChat } from "./entry-chat";
 
 type Props = {
-  entry: VocabEntry;
+  entry: VocabularyEntry;
   cards: SrsCardRow[];
 };
 
@@ -175,7 +175,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
     setEnriching(true);
     setEditorError(null);
     try {
-      const res = await fetch("/api/lib/enrich", {
+      const res = await fetch("/api/vocabulary/enrich", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ term }),
@@ -218,7 +218,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
     setGeneratingExamples(true);
     setEditorError(null);
     try {
-      const res = await fetch("/api/lib/examples", {
+      const res = await fetch("/api/vocabulary/examples", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ term }),
@@ -250,7 +250,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
     setSaving(true);
     setEditorError(null);
     try {
-      const res = await fetch("/api/lib/entries", {
+      const res = await fetch("/api/vocabulary/entries", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(draft),
@@ -272,7 +272,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
   async function toggleSuspend(cardId: number, next: boolean) {
     setTogglingCardId(cardId);
     try {
-      const res = await fetch(`/api/lib/cards/${cardId}/suspend`, {
+      const res = await fetch(`/api/vocabulary/cards/${cardId}/suspend`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ suspended: next }),
@@ -293,7 +293,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
   async function confirmDelete() {
     setDeleting(true);
     try {
-      const res = await fetch(`/api/lib/entries/${entry.id}`, {
+      const res = await fetch(`/api/vocabulary/entries/${entry.id}`, {
         method: "DELETE",
       });
       if (!res.ok) {
@@ -301,7 +301,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
         window.alert(data.error ?? `Delete failed (${res.status})`);
         return;
       }
-      router.push("/admin/lib");
+      router.push("/admin/vocabulary");
     } finally {
       setDeleting(false);
     }
@@ -323,7 +323,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="/admin/lib">Lib</Link>
+                <Link href="/admin/vocabulary">Vocabulary</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />

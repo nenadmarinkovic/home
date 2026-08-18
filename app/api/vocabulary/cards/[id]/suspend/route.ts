@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { setCardSuspended } from "@/lib/lib-db";
+import { setCardSuspended } from "@/lib/vocabulary-db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,7 +10,7 @@ const BodySchema = z.object({ suspended: z.boolean() });
 
 export async function POST(
   request: Request,
-  context: RouteContext<"/api/lib/cards/[id]/suspend">,
+  context: RouteContext<"/api/vocabulary/cards/[id]/suspend">,
 ) {
   const { id: idParam } = await context.params;
   const id = Number.parseInt(idParam, 10);

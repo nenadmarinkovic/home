@@ -76,7 +76,7 @@ export function BulkAddDialog({ open, onClose, onCompleted }: Props) {
       );
 
       try {
-        const enrichRes = await fetch("/api/lib/enrich", {
+        const enrichRes = await fetch("/api/vocabulary/enrich", {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ term: row.term }),
@@ -99,7 +99,7 @@ export function BulkAddDialog({ open, onClose, onCompleted }: Props) {
           ),
         );
 
-        const saveRes = await fetch("/api/lib/entries", {
+        const saveRes = await fetch("/api/vocabulary/entries", {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({

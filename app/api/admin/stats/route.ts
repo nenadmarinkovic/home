@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getArticles, getDraftArticles } from "@/app/writing/articles";
 import { getAuthedFromCookie } from "@/lib/auth-server";
-import { getDueStats } from "@/lib/lib-db";
+import { getDueStats } from "@/lib/vocabulary-db";
 
 export const dynamic = "force-dynamic";
 
@@ -14,9 +14,9 @@ export async function GET() {
     getArticles(),
     getDraftArticles(),
   ]);
-  const libStats = getDueStats();
+  const vocabularyStats = getDueStats();
   return NextResponse.json({
     writing: { published: published.length, drafts: drafts.length },
-    lib: { total: libStats.total, due: libStats.due },
+    vocabulary: { total: vocabularyStats.total, due: vocabularyStats.due },
   });
 }

@@ -1,7 +1,7 @@
-import type { EntryListItem, VocabEntry } from "@/lib/lib-db";
+import type { EntryListItem, VocabularyEntry } from "@/lib/vocabulary-db";
 
 export type ClientEntry = EntryListItem;
-export type ClientVocabEntry = VocabEntry;
+export type ClientVocabularyEntry = VocabularyEntry;
 
 export type Example = { de: string; sr: string };
 
@@ -22,7 +22,7 @@ export type DraftEntry = {
   source: string;
 };
 
-export function entryToDraft(entry: ClientVocabEntry): DraftEntry {
+export function entryToDraft(entry: ClientVocabularyEntry): DraftEntry {
   return {
     id: entry.id,
     term: entry.term,

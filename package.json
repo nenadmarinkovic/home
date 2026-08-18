@@ -20,7 +20,7 @@
     "db:sync": "tsx scripts/sync-db.ts",
     "db:sync:test": "tsx scripts/sync-selftest.ts",
     "theme:test": "tsx scripts/theme-selftest.ts",
-    "lib:export": "tsx scripts/export-lib.ts"
+    "vocabulary:export": "tsx scripts/export-vocabulary.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

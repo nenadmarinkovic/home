@@ -287,7 +287,7 @@ can catch a half written page.
 
 `npm run db:export` writes the posts back out to `content/` as Markdown.
 
-`npm run lib:export` dumps the whole word library into `content/lib/`, both as
+`npm run vocabulary:export` dumps the whole word library into `content/vocabulary/`, both as
 readable Markdown grouped by part of speech and as a full JSON backup with the
 cards and review history. I run it on whichever machine holds the real database
 and commit the result, which means I can read my vocabulary from the GitHub app
@@ -300,7 +300,7 @@ app/              Routes
   writing/        Posts
   links/          Saved links
   contact/
-  admin/          Password protected: writing, lib, log, links
+  admin/          Password protected: writing, vocabulary, log, links
   api/            Route handlers
   mockup/         Screens used inside the device frames
   fonts/
@@ -337,7 +337,7 @@ what I actually use.
 | `npm run db:export`    | Write posts back out to `content/`               |
 | `npm run db:sync`      | Merge the local and live databases               |
 | `npm run db:sync:test` | Self test for the sync rules                     |
-| `npm run lib:export`   | Export the word library                          |
+| `npm run vocabulary:export` | Export the word library                          |
 
 ## Logging in
 

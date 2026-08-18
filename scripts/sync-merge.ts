@@ -8,7 +8,7 @@ export type Dataset = {
   tags: Row[];
   links: Row[];
   linkTags: Row[];
-  vocab: Row[];
+  vocabulary: Row[];
   cards: Row[];
   reviews: Row[];
   settings: Row[];
@@ -176,7 +176,7 @@ export function rebuildCards(cards: Row[], reviews: Row[]): number {
 export const ARTICLE_KEY = (r: Row) => key(r.slug, r.language);
 export const TAG_KEY = (r: Row) => key(r.slug);
 export const LINK_KEY = (r: Row) => key(r.url);
-export const VOCAB_KEY = (r: Row) => key(r.lemma, r.pos);
+export const VOCABULARY_KEY = (r: Row) => key(r.lemma, r.pos);
 export const CARD_KEY = (r: Row) => key(r.lemma, r.pos, r.direction);
 export const LINK_TAG_KEY = (r: Row) => key(r.link_url, r.tag_slug);
 
@@ -206,12 +206,12 @@ export function merge(
     "updated_at",
     ancestorFor(state, "links"),
   );
-  const vocab = mergeBy(
-    local.vocab,
-    live.vocab,
-    VOCAB_KEY,
+  const vocabulary = mergeBy(
+    local.vocabulary,
+    live.vocabulary,
+    VOCABULARY_KEY,
     "updated_at",
-    ancestorFor(state, "vocab"),
+    ancestorFor(state, "vocabulary"),
   );
   const cards = mergeBy(
     local.cards,
@@ -249,7 +249,7 @@ export function merge(
       keptLinks.has(String(r.link_url)) && keptTags.has(String(r.tag_slug)),
   );
 
-  const renamed = dedupeSlugs(vocab.rows);
+  const renamed = dedupeSlugs(vocabulary.rows);
   const replayed = rebuildCards(cards.rows, reviews.rows);
 
   const dataset: Dataset = {
@@ -257,13 +257,13 @@ export function merge(
     tags: tags.rows,
     links: links.rows,
     linkTags,
-    vocab: vocab.rows,
+    vocabulary: vocabulary.rows,
     cards: cards.rows,
     reviews: reviews.rows,
     settings: settings.rows,
   };
 
-  const stats = [articles, tags, links, vocab, cards, linkTagsMerged];
+  const stats = [articles, tags, links, vocabulary, cards, linkTagsMerged];
   const deleted = stats.reduce((n, s) => n + s.deleted, 0);
   const resurrected = stats.reduce((n, s) => n + s.resurrected, 0);
 
@@ -272,7 +272,7 @@ export function merge(
     articles,
     tags,
     links,
-    vocab,
+    vocabulary,
     cards,
     reviews,
     renamed,
@@ -291,7 +291,7 @@ export function stateFrom(dataset: Dataset, syncedAt: number): SyncState {
       tags: dataset.tags.map(TAG_KEY),
       links: dataset.links.map(LINK_KEY),
       linkTags: dataset.linkTags.map(LINK_TAG_KEY),
-      vocab: dataset.vocab.map(VOCAB_KEY),
+      vocabulary: dataset.vocabulary.map(VOCABULARY_KEY),
       cards: dataset.cards.map(CARD_KEY),
     },
   };

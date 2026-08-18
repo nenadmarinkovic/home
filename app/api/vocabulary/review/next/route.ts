@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getDueStats, getNextDueCard } from "@/lib/lib-db";
+import { getDueStats, getNextDueCard } from "@/lib/vocabulary-db";
 import { cardFromRow, previewIntervals } from "@/lib/fsrs";
 
 export const runtime = "nodejs";

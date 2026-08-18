@@ -199,7 +199,7 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
     const id = push({ title: `Adding "${short}"`, message: "Generating…" });
 
     try {
-      const enrichRes = await fetch("/api/lib/enrich", {
+      const enrichRes = await fetch("/api/vocabulary/enrich", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ term: input }),
@@ -231,7 +231,7 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
         message: "Storing entry and queueing cards…",
       });
 
-      const saveRes = await fetch("/api/lib/entries", {
+      const saveRes = await fetch("/api/vocabulary/entries", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
@@ -361,7 +361,7 @@ export function QuickAdd({ className, onSubmitted, expanded }: Props) {
       const fd = new FormData();
       fd.append("audio", blob, `recording.${extForMimeType(type)}`);
       fd.append("language", voxtralLangCode(lang));
-      const res = await fetch("/api/lib/transcribe", {
+      const res = await fetch("/api/vocabulary/transcribe", {
         method: "POST",
         body: fd,
       });

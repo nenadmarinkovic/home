@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { getEntryBySlug } from "@/lib/lib-db";
+import { getEntryBySlug } from "@/lib/vocabulary-db";
 import { chatAboutEntry } from "@/lib/mistral";
 
 export const runtime = "nodejs";

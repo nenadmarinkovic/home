@@ -25,7 +25,7 @@ function apiKey(): string {
   const key = process.env.MISTRAL_API_KEY?.trim();
   if (!key) {
     throw new Error(
-      "MISTRAL_API_KEY is not set. Add it to .env.local before using the lib feature.",
+      "MISTRAL_API_KEY is not set. Add it to .env.local before using the vocabulary feature.",
     );
   }
   return key;
