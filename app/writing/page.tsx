@@ -16,7 +16,7 @@ export default async function WritingIndexPage() {
   return (
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] text-foreground/50">
+        <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] text-foreground/70">
           Writing
         </p>
         <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
@@ -39,7 +39,7 @@ export default async function WritingIndexPage() {
                 href={`/writing/${a.slug}`}
                 className="group flex flex-1 flex-col gap-2"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.06em] text-foreground/50">
+                <p className="text-xs font-semibold uppercase tracking-[0.06em] text-foreground/70">
                   {a.dateLabel}
                 </p>
                 <h2 className="text-xl font-medium text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">

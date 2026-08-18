@@ -29,7 +29,7 @@ export function ArticleView({
       {banner}
       <div className="relative w-full max-w-prose self-center">
         <hgroup className="text-center">
-          <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] text-foreground/50">
+          <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] text-foreground/70">
             {dateLabel}
           </p>
           <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">

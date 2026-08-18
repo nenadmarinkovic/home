@@ -72,7 +72,7 @@ export default async function Home() {
                   href={`/writing/${a.slug}`}
                   className="group flex flex-1 flex-col gap-3"
                 >
-                  <p className="font-sans text-xs font-semibold uppercase tracking-[0.06em] text-foreground/50">
+                  <p className="font-sans text-xs font-semibold uppercase tracking-[0.06em] text-foreground/70">
                     {a.dateLabel}
                   </p>
                   <h2 className="text-xl font-medium text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">

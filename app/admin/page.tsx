@@ -107,7 +107,7 @@ function ToolRow({ tool, stat }: { tool: Tool; stat?: string }) {
               {tool.name}
             </p>
             {stat && (
-              <p className="shrink-0 text-[10px] font-medium uppercase tracking-[0.2em] tabular-nums text-foreground/50">
+              <p className="shrink-0 text-[10px] font-medium uppercase tracking-[0.2em] tabular-nums text-foreground/70">
                 {stat}
               </p>
             )}

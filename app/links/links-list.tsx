@@ -112,7 +112,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 rel="noopener noreferrer"
                 className="group flex flex-col gap-2"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.06em] text-foreground/50">
+                <p className="text-xs font-semibold uppercase tracking-[0.06em] text-foreground/70">
                   {link.dateLabel}
                 </p>
                 <h2 className="text-xl font-medium text-foreground transition-opacity group-hover:opacity-70 sm:text-2xl">
@@ -131,7 +131,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                     {link.tags.map((t) => (
                       <span
                         key={t.slug}
-                        className="font-sans text-xs text-foreground/50"
+                        className="font-sans text-xs text-foreground/70"
                       >
                         #{t.slug}
                       </span>

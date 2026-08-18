@@ -46,7 +46,7 @@ export function LiveClock({ fallback }: { fallback: string }) {
   const now = minute === null ? null : new Date();
 
   return (
-    <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] tabular-nums text-foreground/50">
+    <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] tabular-nums text-foreground/70">
       {now ? formatDate(now) : fallback}
     </p>
   );

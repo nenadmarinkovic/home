@@ -14,7 +14,7 @@ export default function LoginPage() {
   return (
     <main className="flex flex-1 flex-col items-start gap-12 pb-20 pt-12 md:pt-20">
       <hgroup className="max-w-prose self-center text-center">
-        <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] text-foreground/50">
+        <p className="font-sans text-xs font-medium uppercase tracking-[0.08em] text-foreground/70">
           Sign in
         </p>
         <h1 className="mt-2 text-3xl font-normal tracking-tight text-balance text-foreground sm:text-4xl">
