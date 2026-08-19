@@ -56,3 +56,6 @@ next-env.d.ts
 
 # sqlite pre-sync snapshot
 *.pre-sync
+
+# Vocabulary export (personal study data, keep local)
+/content/vocabulary

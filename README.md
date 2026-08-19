@@ -289,9 +289,9 @@ can catch a half written page.
 
 `npm run vocabulary:export` dumps the whole word library into `content/vocabulary/`, both as
 readable Markdown grouped by part of speech and as a full JSON backup with the
-cards and review history. I run it on whichever machine holds the real database
-and commit the result, which means I can read my vocabulary from the GitHub app
-on my phone.
+cards and review history. This one stays out of git: the repo is public and the
+words I am learning, along with the review log behind them, are not. I run it on
+whichever machine holds the real database and keep the result locally.
 
 ## Layout
 
