@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 
-import {
-  ACCESS_TAG_SLUGS,
-  listLinks,
-  listTagsWithCounts,
-} from "@/lib/links-db";
+import { ACCESS_TAG_SLUGS, listLinks } from "@/lib/links-db";
 import { hostnameOf } from "@/lib/url-utils";
 
 import { LinksList, type ClientLink, type ClientTag } from "./links-list";
@@ -45,10 +41,6 @@ export default async function LinksPage({
   const params = await searchParams;
   const initialActiveTags = parseActiveTags(params.tags);
 
-  const tags: ClientTag[] = listTagsWithCounts()
-    .filter((t) => !ACCESS_TAG_SLUGS.has(t.slug))
-    .map((t) => ({ slug: t.slug, name: t.name, count: t.count }));
-
   const links: ClientLink[] = listLinks({ publicOnly: true, limit: 500 }).map(
     (l) => ({
       id: l.id,
@@ -61,6 +53,18 @@ export default async function LinksPage({
         .filter((t) => !ACCESS_TAG_SLUGS.has(t.slug))
         .map((t) => ({ slug: t.slug, name: t.name })),
     }),
+  );
+
+  const tagCounts = new Map<string, ClientTag>();
+  for (const link of links) {
+    for (const tag of link.tags) {
+      const entry = tagCounts.get(tag.slug);
+      if (entry) entry.count += 1;
+      else tagCounts.set(tag.slug, { slug: tag.slug, name: tag.name, count: 1 });
+    }
+  }
+  const tags: ClientTag[] = Array.from(tagCounts.values()).sort((a, b) =>
+    a.name.localeCompare(b.name),
   );
 
   return (
