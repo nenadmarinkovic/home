@@ -39,7 +39,7 @@ function remoteAgent(mode: "dump" | "apply", input?: string): string {
   const encoded = fs.readFileSync(AGENT).toString("base64");
   const script = `
 set -e
-C=$(docker ps -q -f name=${SERVICE} | head -1)
+C=$(docker ps -q -f label=com.docker.swarm.service.name=${SERVICE} | head -1)
 if [ -z "$C" ]; then echo "no running container for ${SERVICE}" >&2; exit 1; fi
 printf %s '${encoded}' | base64 -d > /tmp/sync-agent.mjs
 docker cp /tmp/sync-agent.mjs "$C":/app/sync-agent.mjs >/dev/null
