@@ -44,6 +44,8 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
     });
   }, [links, activeTags]);
 
+  const enterKey = activeTags.join(",");
+
   function toggle(slug: string) {
     setActiveTags((prev) =>
       prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug],
@@ -63,7 +65,7 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
                 onClick={() => toggle(tag.slug)}
                 aria-pressed={active}
                 className={cn(
-                  "inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 font-sans text-[10px] font-semibold uppercase tracking-wider transition-colors",
+                  "inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 font-sans text-[10px] font-semibold uppercase tracking-wider transition-[color,background-color,border-color,transform] duration-200 active:scale-[0.97]",
                   active
                     ? "border-[#0040ff] bg-[#0040ff] text-white dark:border-[#ffff01] dark:bg-[#ffff01] dark:text-black"
                     : "border-foreground/15 text-zinc-600 hover:border-foreground/30 hover:text-foreground dark:text-zinc-400",
@@ -97,15 +99,22 @@ export function LinksList({ tags, links, initialActiveTags }: Props) {
       )}
 
       {filtered.length === 0 ? (
-        <p className="self-center text-base text-zinc-500 dark:text-zinc-500">
+        <p
+          key={enterKey}
+          className="animate-list-enter self-center text-base text-zinc-500 dark:text-zinc-500"
+        >
           {activeTags.length > 0
             ? "Nothing here for that combination yet."
             : "No links saved yet."}
         </p>
       ) : (
-        <ul className="flex w-full flex-col gap-12">
-          {filtered.map((link) => (
-            <li key={link.id}>
+        <ul key={enterKey} className="flex w-full flex-col gap-12">
+          {filtered.map((link, index) => (
+            <li
+              key={link.id}
+              className="animate-list-enter"
+              style={{ animationDelay: `${Math.min(index, 12) * 90}ms` }}
+            >
               <a
                 href={link.url}
                 target="_blank"

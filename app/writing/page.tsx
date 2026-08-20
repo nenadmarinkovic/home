@@ -33,8 +33,12 @@ export default async function WritingIndexPage() {
         </p>
       ) : (
         <ul className="flex w-full flex-col gap-12">
-          {list.map((a) => (
-            <li key={a.slug} className="flex items-start justify-between gap-3">
+          {list.map((a, index) => (
+            <li
+              key={a.slug}
+              className="animate-list-enter flex items-start justify-between gap-3"
+              style={{ animationDelay: `${Math.min(index, 12) * 90}ms` }}
+            >
               <Link
                 href={`/writing/${a.slug}`}
                 className="group flex flex-1 flex-col gap-2"
