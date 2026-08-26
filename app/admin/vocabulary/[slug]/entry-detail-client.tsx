@@ -363,10 +363,18 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
       </div>
 
       <header className="flex min-w-0 flex-col gap-3">
-        <h1 className="text-2xl font-normal text-balance text-foreground sm:text-4xl">
-          <span className="text-foreground/40">{article}</span>
-          {entry.term}
-        </h1>
+        <div className="flex min-w-0 items-start gap-2">
+          <h1 className="text-2xl font-normal text-balance text-foreground sm:text-4xl">
+            <span className="text-foreground/40">{article}</span>
+            {entry.term}
+          </h1>
+          <SpeakButton
+            text={`${article}${entry.term}`}
+            label="Listen to the German"
+            size="icon"
+            className="mt-0.5 shrink-0 sm:mt-1.5"
+          />
+        </div>
         <p className="text-sm italic leading-[1.55] text-balance text-foreground/70 sm:text-base">
           {entry.translationSr || "—"}
         </p>

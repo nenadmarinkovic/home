@@ -20,6 +20,11 @@ function apiKey(): string {
       "ELEVENLABS_API_KEY is not set. Add it to .env.local before using listening.",
     );
   }
+  if (!key.startsWith("sk_")) {
+    throw new Error(
+      'ELEVENLABS_API_KEY looks like a key ID, not a key. Real keys start with "sk_" and are shown only when created or rotated.',
+    );
+  }
   return key;
 }
 
@@ -100,8 +105,8 @@ export async function synthesizeGerman(
 
   if (!res.ok) {
     const detail = await res.text().catch(() => "");
-    if (res.status === 401) {
-      throw new Error("ElevenLabs rejected the API key (401)");
+    if (res.status === 401 || detail.includes("authentication_error")) {
+      throw new Error(`ElevenLabs rejected the API key (${res.status})`);
     }
     if (res.status === 402) {
       throw new Error(
