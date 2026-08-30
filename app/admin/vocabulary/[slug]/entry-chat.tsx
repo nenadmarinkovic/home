@@ -17,8 +17,10 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -42,6 +44,19 @@ const INTRO: Message = {
 };
 
 const NARROW_QUERY = "(max-width: 639px)";
+
+/**
+ * Gaps the mobile chat sheet leaves against the viewport edges. `--safe-top` is
+ * what the app itself pads by (and the height of the opaque status-bar mask in
+ * `app/layout.tsx`), so anything smaller puts the header under the notch — the
+ * standalone PWA is where that bites, since the web view runs to the top of the
+ * screen under `black-translucent`. The bottom gap clears the home indicator,
+ * except while the keyboard is up: the composer should sit on the keyboard, not
+ * float above an indicator the keyboard is already covering.
+ */
+const TOP_GAP = "calc(var(--safe-top) + 0.75rem)";
+const BOTTOM_GAP = "max(var(--inset-bottom), 0.75rem)";
+const KEYBOARD_BOTTOM_GAP = "0.75rem";
 
 function subscribeNarrow(cb: () => void) {
   const mq = window.matchMedia(NARROW_QUERY);
@@ -83,12 +98,16 @@ export function EntryChat({ slug, term }: Props) {
     textareaRef.current?.focus({ preventScroll: true });
   }
 
+  // On phones the dialog fills the safe area rather than being centred, and
+  // tracks the visual viewport so the composer stays above the keyboard. The
+  // class list below expresses the same box in pure CSS as the fallback.
+  const bottomGap = vv?.keyboardOpen ? KEYBOARD_BOTTOM_GAP : BOTTOM_GAP;
   const contentStyle: React.CSSProperties | undefined =
     isNarrow && vv
       ? {
-          top: `${vv.offsetTop + 12}px`,
-          height: `${vv.height - 24}px`,
-          maxHeight: `${vv.height - 24}px`,
+          top: `calc(${vv.offsetTop}px + ${TOP_GAP})`,
+          height: `calc(${vv.height}px - ${TOP_GAP} - ${bottomGap})`,
+          maxHeight: `calc(${vv.height}px - ${TOP_GAP} - ${bottomGap})`,
           translate: "-50% 0",
         }
       : undefined;
@@ -198,21 +217,16 @@ export function EntryChat({ slug, term }: Props) {
           onOpenAutoFocus={(e) => {
             e.preventDefault();
           }}
-          className="flex h-[calc(100dvh-1.5rem)] w-[calc(100vw-1.5rem)] flex-col gap-0 p-0 sm:h-[min(80vh,40rem)] sm:w-[min(95vw,32rem)]"
+          className="top-[calc(var(--safe-top)+0.75rem)] h-[calc(100dvh-var(--safe-top)-max(var(--inset-bottom),0.75rem)-0.75rem)] max-h-[calc(100dvh-var(--safe-top)-max(var(--inset-bottom),0.75rem)-0.75rem)] w-[calc(100vw-1.5rem)] translate-y-0 sm:top-1/2 sm:h-[min(80vh,40rem)] sm:max-h-[92vh] sm:w-[min(95vw,32rem)] sm:-translate-y-1/2"
         >
-          <DialogHeader className="border-b border-foreground/10 px-5 py-3 sm:px-6 sm:py-4">
-            <DialogTitle className="text-lg leading-tight tracking-tight">
-              {term}
-            </DialogTitle>
-            <DialogDescription className="font-sans text-xs">
+          <DialogHeader>
+            <DialogTitle>{term}</DialogTitle>
+            <DialogDescription>
               Razgovaraj sa AI tutorom o ovoj odrednici.
             </DialogDescription>
           </DialogHeader>
 
-          <div
-            ref={scrollerRef}
-            className="scrollbar-thin flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6"
-          >
+          <DialogBody ref={scrollerRef} className="scrollbar-thin">
             <ul className="flex flex-col gap-3">
               {messages.map((m, i) => (
                 <li
@@ -253,9 +267,9 @@ export function EntryChat({ slug, term }: Props) {
                 </li>
               )}
             </ul>
-          </div>
+          </DialogBody>
 
-          <div className="border-t border-foreground/10 p-3 sm:p-4">
+          <DialogFooter className="flex-col items-stretch justify-start gap-0">
             <div className="relative">
               <Textarea
                 ref={textareaRef}
@@ -290,7 +304,7 @@ export function EntryChat({ slug, term }: Props) {
                 );
               })()}
             </div>
-          </div>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>
