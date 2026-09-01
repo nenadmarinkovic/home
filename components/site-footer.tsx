@@ -2,7 +2,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 export function SiteFooter() {
   return (
-    <footer className="flex flex-col items-start gap-6 pt-26 pb-8 font-sans text-sm text-zinc-600 sm:flex-row sm:items-center sm:justify-between dark:text-zinc-400">
+    <footer className="flex flex-col items-center gap-6 pt-26 pb-8 text-center font-sans text-sm text-zinc-600 md:flex-row md:items-center md:justify-between md:text-left dark:text-zinc-400">
       <p>© {new Date().getFullYear()} Nenad Marinković</p>
       <nav className="hidden flex-wrap items-center gap-x-4 gap-y-2 text-xs uppercase tracking-wider sm:flex">
         <a

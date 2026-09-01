@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, lte, or, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, lte, or, sql } from "drizzle-orm";
 import { customAlphabet } from "nanoid";
 
 import { db } from "@/db/client";
@@ -13,6 +13,7 @@ import {
   type SrsCardRow,
   type VocabularyEntryRow,
 } from "@/db/schema";
+import { CALENDAR_WEEKS, type Activity } from "@/lib/daily";
 import { cardFromRow, newCard, review } from "@/lib/fsrs";
 
 export type Example = { de: string; sr: string };
@@ -342,6 +343,24 @@ export function getDueStats(now: Date = new Date()): DueStats {
     due: Number(dueRow?.n ?? 0),
     newCards: Number(newRow?.n ?? 0),
     total: Number(totalRow?.n ?? 0),
+  };
+}
+
+export function getActivity(now: Date = new Date()): Activity {
+  const since = new Date(now.getTime() - (CALENDAR_WEEKS * 7 + 7) * 86_400_000);
+  const added = db
+    .select({ at: vocabularyEntries.createdAt })
+    .from(vocabularyEntries)
+    .where(gte(vocabularyEntries.createdAt, since))
+    .all();
+  const reviewed = db
+    .select({ at: reviewLog.review })
+    .from(reviewLog)
+    .where(gte(reviewLog.review, since))
+    .all();
+  return {
+    addedAt: added.map((row) => row.at.getTime()),
+    reviewedAt: reviewed.map((row) => row.at.getTime()),
   };
 }
 

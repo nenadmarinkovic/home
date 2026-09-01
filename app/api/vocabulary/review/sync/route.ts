@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { getDueStats, listReviewDeck, recordReview } from "@/lib/vocabulary-db";
+import {
+  getActivity,
+  getDueStats,
+  listReviewDeck,
+  recordReview,
+} from "@/lib/vocabulary-db";
 import type { Rating } from "@/db/schema";
 
 export const runtime = "nodejs";
@@ -25,7 +30,12 @@ function serializeState() {
     suspended: card.suspended,
     entry,
   }));
-  return { deck, stats: getDueStats(), serverTime: Date.now() };
+  return {
+    deck,
+    stats: getDueStats(),
+    activity: getActivity(),
+    serverTime: Date.now(),
+  };
 }
 
 export async function GET() {

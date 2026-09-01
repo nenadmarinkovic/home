@@ -15,6 +15,7 @@ import {
   CheckCircleIcon,
   CloudSlashIcon,
   EyeIcon,
+  TrophyIcon,
 } from "@phosphor-icons/react";
 
 import {
@@ -26,7 +27,10 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { countToday, DAILY_GOAL, type Activity } from "@/lib/daily";
 import { cn } from "@/lib/utils";
+
+import { StreakDialog } from "../streak-dialog";
 import {
   applyReview,
   clearQueue,
@@ -41,6 +45,8 @@ import {
   type DeckStats,
   type OfflineCard,
 } from "@/lib/offline-deck";
+
+import { SpeakButton } from "../speak-button";
 
 import type { Rating } from "@/db/schema";
 import type { VocabularyEntry } from "@/lib/vocabulary-db";
@@ -78,6 +84,7 @@ type SyncResponse = {
   ok?: boolean;
   deck?: OfflineCard[];
   stats?: DeckStats;
+  activity?: Activity;
   error?: string;
 };
 
@@ -91,6 +98,26 @@ export function ReviewClient({ initialStats }: Props) {
   const [needsDownload, setNeedsDownload] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [activity, setActivity] = useState<Activity>({
+    addedAt: [],
+    reviewedAt: [],
+  });
+  const [pendingAt, setPendingAt] = useState<number[]>([]);
+  const [extending, setExtending] = useState(false);
+
+  const doneToday = useMemo(() => {
+    const now = new Date();
+    return countToday(activity.reviewedAt, now) + countToday(pendingAt, now);
+  }, [activity, pendingAt]);
+  const challengeDone = doneToday >= DAILY_GOAL;
+
+  const calendarActivity = useMemo<Activity>(
+    () => ({
+      addedAt: activity.addedAt,
+      reviewedAt: [...activity.reviewedAt, ...pendingAt],
+    }),
+    [activity, pendingAt],
+  );
 
   const offline = useSyncExternalStore(
     subscribeOnline,
@@ -135,6 +162,8 @@ export function ReviewClient({ initialStats }: Props) {
       }
       await replaceDeck(data.deck);
       deckRef.current = data.deck;
+      setActivity(data.activity ?? { addedAt: [], reviewedAt: [] });
+      setPendingAt((await getQueue()).map((q) => q.reviewedAt));
       return data.deck;
     } finally {
       flushingRef.current = false;
@@ -144,6 +173,10 @@ export function ReviewClient({ initialStats }: Props) {
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      const queued = await getQueue();
+      if (cancelled) return;
+      if (queued.length > 0) setPendingAt(queued.map((q) => q.reviewedAt));
+
       const local = await getDeck();
       if (cancelled) return;
       if (local.length > 0) {
@@ -195,6 +228,7 @@ export function ReviewClient({ initialStats }: Props) {
           durationMs,
           reviewedAt: now.getTime(),
         });
+        setPendingAt((prev) => [...prev, now.getTime()]);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Couldn't save review locally",
@@ -270,16 +304,35 @@ export function ReviewClient({ initialStats }: Props) {
             )}
           </p>
         </div>
-        <Button asChild variant="outline" className="h-9">
-          <Link href="/admin/vocabulary" className="group">
-            <ArrowLeftIcon
-              weight="bold"
-              className="transition-transform duration-200 group-hover:-translate-x-0.5"
-            />
-            Back to vocabulary
-          </Link>
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <StreakDialog activity={calendarActivity} />
+          <Button asChild variant="outline" className="h-9">
+            <Link href="/admin/vocabulary" className="group">
+              <ArrowLeftIcon
+                weight="bold"
+                className="transition-transform duration-200 group-hover:-translate-x-0.5"
+              />
+              Back to vocabulary
+            </Link>
+          </Button>
+        </div>
       </header>
+
+      <div
+        role="progressbar"
+        aria-label="Daily challenge"
+        aria-valuemin={0}
+        aria-valuemax={DAILY_GOAL}
+        aria-valuenow={Math.min(doneToday, DAILY_GOAL)}
+        className="h-0.5 w-full overflow-hidden rounded-full bg-foreground/8"
+      >
+        <div
+          className="h-full rounded-full bg-[#0040ff]/60 transition-[width] duration-300 dark:bg-[#ffff01]/60"
+          style={{
+            width: `${Math.min(100, (doneToday / DAILY_GOAL) * 100)}%`,
+          }}
+        />
+      </div>
 
       {error && (
         <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -291,6 +344,8 @@ export function ReviewClient({ initialStats }: Props) {
         <Loading />
       ) : needsDownload ? (
         <NeedsDownload />
+      ) : challengeDone && !extending ? (
+        <ChallengeDone done={doneToday} onContinue={() => setExtending(true)} />
       ) : !current || !previews ? (
         <Done stats={stats} />
       ) : (
@@ -339,6 +394,7 @@ function CardView({
       if (e.target instanceof HTMLElement) {
         const tag = e.target.tagName;
         if (tag === "INPUT" || tag === "TEXTAREA") return;
+        if (e.target.closest("[data-speak-button]")) return;
       }
       if (!revealed) {
         if (e.key === " " || e.key === "Enter") {
@@ -397,9 +453,21 @@ function CardView({
           <span className="tabular-nums">rep {card.reps}</span>
         </div>
 
-        <p className="mt-3 text-3xl font-normal text-balance text-foreground sm:mt-6 sm:text-4xl">
-          {front}
-        </p>
+        <div className="mt-3 flex items-start justify-center gap-2 sm:mt-6">
+          <p className="text-3xl font-normal text-balance text-foreground sm:text-4xl">
+            {front}
+          </p>
+          {showGerman && (
+            <span data-speak-button className="contents">
+              <SpeakButton
+                text={front}
+                label="Listen to the German"
+                size="icon"
+                className="mt-0.5 shrink-0 sm:mt-1.5"
+              />
+            </span>
+          )}
+        </div>
 
         {revealed && (
           <div className="flex w-full flex-col items-center gap-5 animate-in fade-in-0 duration-150">
@@ -407,20 +475,43 @@ function CardView({
               aria-hidden
               className="inline-block h-px w-12 bg-foreground/15"
             />
-            <p className="text-xl italic text-balance text-foreground/70 sm:text-2xl">
-              {back}
-            </p>
+            <div className="flex items-start justify-center gap-2">
+              <p className="text-xl italic text-balance text-foreground/70 sm:text-2xl">
+                {back}
+              </p>
+              {!showGerman && (
+                <span data-speak-button className="contents">
+                  <SpeakButton
+                    text={back}
+                    label="Listen to the German"
+                    className="mt-0.5 shrink-0"
+                  />
+                </span>
+              )}
+            </div>
 
             {examples.length > 0 && (
               <ul className="flex w-full flex-col gap-4 text-left">
                 {examples.map((ex, idx) => (
-                  <li key={idx} className="flex flex-col gap-0.5">
-                    <p className="text-base leading-snug text-foreground">
-                      {ex.de}
-                    </p>
-                    <p className="text-base leading-snug text-zinc-500 dark:text-zinc-400">
-                      {ex.sr}
-                    </p>
+                  <li
+                    key={idx}
+                    className="flex items-start justify-between gap-2"
+                  >
+                    <div className="flex min-w-0 flex-col gap-0.5">
+                      <p className="text-base leading-snug text-foreground">
+                        {ex.de}
+                      </p>
+                      <p className="text-base leading-snug text-zinc-500 dark:text-zinc-400">
+                        {ex.sr}
+                      </p>
+                    </div>
+                    <span data-speak-button className="contents">
+                      <SpeakButton
+                        text={ex.de}
+                        label="Listen to the German"
+                        className="-mt-0.5 shrink-0"
+                      />
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -540,6 +631,38 @@ function NeedsDownload() {
           Connect to the internet once to download your cards. After that,
           reviews work offline and sync back when you reconnect.
         </p>
+      </div>
+    </div>
+  );
+}
+
+function ChallengeDone({
+  done,
+  onContinue,
+}: {
+  done: number;
+  onContinue: () => void;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-foreground/15 px-6 py-14 text-center animate-in fade-in-0 duration-150">
+      <div className="flex size-10 items-center justify-center rounded-full bg-[#0040ff]/10 text-foreground dark:bg-[#ffff01]/10">
+        <TrophyIcon weight="regular" className="size-5" />
+      </div>
+      <div className="flex flex-col gap-1">
+        <p className="text-base font-medium text-foreground">
+          Daily challenge done
+        </p>
+        <p className="text-sm text-zinc-500">
+          <span className="tabular-nums">{done}</span> cards reviewed today.
+        </p>
+      </div>
+      <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+        <Button asChild variant="outline">
+          <Link href="/admin/vocabulary">Back to vocabulary</Link>
+        </Button>
+        <Button variant="ghost" onClick={onContinue}>
+          Keep reviewing
+        </Button>
       </div>
     </div>
   );

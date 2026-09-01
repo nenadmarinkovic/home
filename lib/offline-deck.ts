@@ -238,8 +238,9 @@ export function pickNextCard(
   if (candidates.length === 0) return null;
   const bucket = (c: OfflineCard) =>
     c.state === 1 || c.state === 3 ? 0 : c.state === 2 ? 1 : 2;
-  candidates.sort((a, b) => bucket(a) - bucket(b) || a.due - b.due);
-  return candidates[0];
+  const top = Math.min(...candidates.map(bucket));
+  const pool = candidates.filter((c) => bucket(c) === top);
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
 export function computeStats(deck: OfflineCard[], now: Date): DeckStats {

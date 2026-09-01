@@ -10,6 +10,8 @@ import {
   ArrowRightIcon,
   ArrowsDownUpIcon,
   BookOpenIcon,
+  CaretLeftIcon,
+  CaretRightIcon,
   CheckIcon,
   DotsThreeVerticalIcon,
   FunnelSimpleIcon,
@@ -55,6 +57,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { TagChip } from "@/components/tag-chip";
+import type { Activity } from "@/lib/daily";
 
 import {
   computeStats,
@@ -65,6 +68,7 @@ import {
 
 import { EntryEditor } from "./entry-editor";
 import { QuickAdd } from "./quick-add";
+import { StreakDialog } from "./streak-dialog";
 import {
   emptyDraft,
   entryToDraft,
@@ -81,7 +85,10 @@ type Stats = {
 type Props = {
   initialEntries: ClientEntry[];
   initialStats: Stats;
+  activity: Activity;
 };
+
+const PAGE_SIZE = 25;
 
 type SortKey = "newest" | "oldest" | "title-asc" | "title-desc" | "most-due";
 type FilterKey = "all" | "nouns" | "verbs" | "phrases" | "sentences";
@@ -111,7 +118,25 @@ function matchesFilter(pos: string, filter: FilterKey): boolean {
   return true;
 }
 
-export function VocabularyClient({ initialEntries, initialStats }: Props) {
+function pageNumbers(page: number, pageCount: number): (number | "gap")[] {
+  if (pageCount <= 7) {
+    return Array.from({ length: pageCount }, (_, i) => i + 1);
+  }
+  const start = Math.max(2, page - 1);
+  const end = Math.min(pageCount - 1, page + 1);
+  const out: (number | "gap")[] = [1];
+  if (start > 2) out.push("gap");
+  for (let i = start; i <= end; i++) out.push(i);
+  if (end < pageCount - 1) out.push("gap");
+  out.push(pageCount);
+  return out;
+}
+
+export function VocabularyClient({
+  initialEntries,
+  initialStats,
+  activity,
+}: Props) {
   const router = useRouter();
   const [, startTransition] = useTransition();
 
@@ -204,6 +229,23 @@ export function VocabularyClient({ initialEntries, initialStats }: Props) {
     }
     return sorted;
   }, [entries, search, filter, sort, activeTags]);
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const [page, setPage] = useState(1);
+  const viewKey = `${search}|${filter}|${sort}|${activeTags.join(",")}`;
+  const [lastViewKey, setLastViewKey] = useState(viewKey);
+  if (lastViewKey !== viewKey) {
+    setLastViewKey(viewKey);
+    setPage(1);
+  }
+  const currentPage = Math.min(page, pageCount);
+  const pageStart = (currentPage - 1) * PAGE_SIZE;
+  const paged = filtered.slice(pageStart, pageStart + PAGE_SIZE);
+
+  function goToPage(next: number) {
+    setPage(Math.min(Math.max(next, 1), pageCount));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   function toggleFilterTag(tag: string) {
     setActiveTags((prev) =>
@@ -393,27 +435,16 @@ export function VocabularyClient({ initialEntries, initialStats }: Props) {
             <span title={DUE_TOOLTIP}>
               <span className="tabular-nums">{stats.total}</span> cards
             </span>
-            <span aria-hidden className="text-foreground/20">
-              ·
-            </span>
-            {stats.due > 0 ? (
-              <Link
-                href="/admin/vocabulary/review"
-                title={DUE_TOOLTIP}
-                className="text-[#0040ff] transition-opacity hover:underline hover:opacity-80 dark:text-[#ffff01]"
-              >
-                <span className="tabular-nums">{stats.due}</span> to review
-              </Link>
-            ) : (
-              <span title={DUE_TOOLTIP}>
-                <span className="tabular-nums">{stats.due}</span> to review
-              </span>
-            )}
           </p>
         </div>
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="flex flex-wrap items-center gap-2">
+          <StreakDialog activity={activity} />
           <Button asChild variant="outline" className="h-9">
-            <Link href="/admin/vocabulary/review" className="group">
+            <Link
+              href="/admin/vocabulary/review"
+              title={DUE_TOOLTIP}
+              className="group"
+            >
               <BookOpenIcon weight="bold" />
               Review
               <ArrowRightIcon
@@ -422,7 +453,10 @@ export function VocabularyClient({ initialEntries, initialStats }: Props) {
               />
             </Link>
           </Button>
-          <Button className="h-9" onClick={() => setAddOpen(true)}>
+          <Button
+            className="hidden h-9 md:inline-flex"
+            onClick={() => setAddOpen(true)}
+          >
             <PlusIcon weight="bold" />
             Add new
           </Button>
@@ -488,16 +522,28 @@ export function VocabularyClient({ initialEntries, initialStats }: Props) {
             onNew={openNew}
           />
         ) : (
-          <ul className="flex flex-col divide-y divide-foreground/5">
-            {filtered.map((entry) => (
-              <EntryRow
-                key={entry.id}
-                entry={entry}
-                onEdit={() => openEdit(entry)}
-                onDelete={() => setPendingDelete(entry)}
+          <>
+            <ul className="flex flex-col divide-y divide-foreground/5">
+              {paged.map((entry) => (
+                <EntryRow
+                  key={entry.id}
+                  entry={entry}
+                  onEdit={() => openEdit(entry)}
+                  onDelete={() => setPendingDelete(entry)}
+                />
+              ))}
+            </ul>
+            {pageCount > 1 && (
+              <Pagination
+                page={currentPage}
+                pageCount={pageCount}
+                from={pageStart + 1}
+                to={pageStart + paged.length}
+                total={filtered.length}
+                onPageChange={goToPage}
               />
-            ))}
-          </ul>
+            )}
+          </>
         )}
       </section>
 
@@ -559,6 +605,82 @@ export function VocabularyClient({ initialEntries, initialStats }: Props) {
         </div>
       </div>
     </main>
+  );
+}
+
+function Pagination({
+  page,
+  pageCount,
+  from,
+  to,
+  total,
+  onPageChange,
+}: {
+  page: number;
+  pageCount: number;
+  from: number;
+  to: number;
+  total: number;
+  onPageChange: (page: number) => void;
+}) {
+  return (
+    <nav
+      aria-label="Pagination"
+      className="grid grid-cols-1 items-center justify-items-center gap-3 pt-1 sm:grid-cols-[1fr_auto_1fr]"
+    >
+      <p className="order-2 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 sm:order-1 sm:justify-self-start dark:text-zinc-500">
+        <span className="tabular-nums">
+          {from}–{to}
+        </span>{" "}
+        of <span className="tabular-nums">{total}</span>
+      </p>
+      <div className="order-1 flex items-center gap-1 sm:order-2">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Previous page"
+          disabled={page === 1}
+          onClick={() => onPageChange(page - 1)}
+        >
+          <CaretLeftIcon weight="bold" />
+        </Button>
+        {pageNumbers(page, pageCount).map((item, index) =>
+          item === "gap" ? (
+            <span
+              key={`gap-${index}`}
+              aria-hidden
+              className="px-0.5 text-xs text-zinc-400 dark:text-zinc-600"
+            >
+              …
+            </span>
+          ) : (
+            <Button
+              key={item}
+              type="button"
+              variant={item === page ? "secondary" : "ghost"}
+              size="icon-sm"
+              aria-label={`Page ${item}`}
+              aria-current={item === page ? "page" : undefined}
+              onClick={() => onPageChange(item)}
+              className="text-xs tabular-nums"
+            >
+              {item}
+            </Button>
+          ),
+        )}
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Next page"
+          disabled={page === pageCount}
+          onClick={() => onPageChange(page + 1)}
+        >
+          <CaretRightIcon weight="bold" />
+        </Button>
+      </div>
+    </nav>
   );
 }
 

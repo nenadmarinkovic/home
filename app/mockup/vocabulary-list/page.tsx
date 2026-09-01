@@ -56,6 +56,13 @@ const entries: ClientEntry[] = SEEDS.map((s, i) => ({
   reviewed: s.reviewed,
 }));
 
+const activity = {
+  addedAt: entries.map((e) => e.createdAt.getTime()),
+  reviewedAt: Array.from({ length: 60 }, (_, i) =>
+    Date.now() - Math.floor(i / 22) * 864e5 - i * 6e5,
+  ),
+};
+
 const stats = {
   due: entries.reduce((n, e) => n + e.due, 0),
   newCards: 6,
@@ -63,5 +70,11 @@ const stats = {
 };
 
 export default function VocabularyListMockup() {
-  return <VocabularyClient initialEntries={entries} initialStats={stats} />;
+  return (
+    <VocabularyClient
+      initialEntries={entries}
+      initialStats={stats}
+      activity={activity}
+    />
+  );
 }
