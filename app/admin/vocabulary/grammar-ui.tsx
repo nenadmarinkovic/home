@@ -226,22 +226,31 @@ export function Note({
 export function GTable({
   head,
   rows,
-  wrap = false,
+  cols,
 }: {
   head: React.ReactNode[];
   rows: React.ReactNode[][];
-  /** Let long cells break across lines instead of scrolling sideways. */
-  wrap?: boolean;
+  /**
+   * Optional column widths as CSS percentages, e.g. [18, 27, 27, 28]. Left
+   * out, every column is equal, which is what makes stacked tables of the same
+   * shape line up with each other.
+   */
+  cols?: number[];
 }) {
   return (
     <div className="overflow-hidden rounded-xl border border-foreground/10">
-      <Table>
+      {/*
+        Fixed layout, so two tables with the same number of columns share the
+        same grid instead of each sizing itself to its own longest cell.
+      */}
+      <Table className="table-fixed">
         <TableHeader>
           <TableRow className="border-foreground/10 bg-foreground/3 hover:bg-transparent">
             {head.map((h, i) => (
               <TableHead
                 key={i}
-                className="h-9 px-3 font-sans text-[11px] font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500"
+                style={cols?.[i] ? { width: `${cols[i]}%` } : undefined}
+                className="h-9 whitespace-normal px-3 py-2 align-bottom font-sans text-[11px] font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500"
               >
                 {h}
               </TableHead>
@@ -258,8 +267,7 @@ export function GTable({
                 <TableCell
                   key={j}
                   className={cn(
-                    "px-3 py-2 align-top",
-                    wrap && "whitespace-normal",
+                    "px-3 py-2 align-top whitespace-normal",
                     j === 0
                       ? "font-medium text-zinc-600 dark:text-zinc-400"
                       : "text-foreground",

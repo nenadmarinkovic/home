@@ -28,7 +28,6 @@ const CASES = () => (
   >
     <Block title="Šta koji padež radi">
       <GTable
-        wrap
         head={["Padež", "Pitanje", "Uloga", "Primer", "srpski"]}
         rows={[
           [
@@ -89,6 +88,63 @@ const CASES = () => (
       </Block>
     </Cols>
 
+    <Block title="Isti oblik, više uloga">
+      <P>
+        Tabela iznad se čita *unapred*: znaš rod i padež, pa nađeš član. Kad
+        čitaš nemački tekst ide ti *unazad*, a tu je problem: isti član služi za
+        više stvari. Zato ovo vredi znati i u ovom smeru.
+      </P>
+      <GTable
+        head={["Oblik", "Može biti", "Primeri"]}
+        rows={[
+          [
+            "*der*",
+            "Nominativ muški, Dativ ženski, Genitiv ženski, Genitiv množina",
+            "*der* Mann (Nom), *der* Frau (Dat), *der* Frauen (Gen mn.)",
+          ],
+          [
+            "*die*",
+            "Nominativ i Akkusativ ženski, Nominativ i Akkusativ množina",
+            "*die* Frau, *die* Kinder",
+          ],
+          ["*das*", "Nominativ i Akkusativ srednji", "*das* Kind"],
+          [
+            "*den*",
+            "Akkusativ muški, Dativ množina (imenica dobija n)",
+            "*den* Mann, *den* Kinder*n*",
+          ],
+          ["*dem*", "Dativ muški, Dativ srednji", "*dem* Mann, *dem* Kind"],
+          [
+            "*des*",
+            "Genitiv muški, Genitiv srednji (imenica dobija s)",
+            "*des* Mann*es*, *des* Kind*es*",
+          ],
+        ]}
+      />
+      <Note title="dem Frau ne postoji" tone="trap">
+        *dem* ide samo uz muški i srednji rod. Za ženski rod u Dativu ide
+        *der*: mit *der* Frau, ich helfe *der* Frau. To je isti oblik kao
+        Nominativ muški (der Mann), pa ga treba čitati po ulozi u rečenici, ne
+        po izgledu.
+      </Note>
+      <GTable
+        head={["Fraza", "Padež i rod", "srpski"]}
+        rows={[
+          ["Ich sehe *den* Mann.", "Akkusativ muški", "Vidim čoveka."],
+          ["Ich helfe *dem* Mann.", "Dativ muški", "Pomažem čoveku."],
+          ["Ich sehe *die* Frau.", "Akkusativ ženski", "Vidim ženu."],
+          ["Ich helfe *der* Frau.", "Dativ ženski", "Pomažem ženi."],
+          ["Ich helfe *dem* Kind.", "Dativ srednji", "Pomažem detetu."],
+          ["Ich helfe *den* Kinder*n*.", "Dativ množina", "Pomažem deci."],
+        ]}
+      />
+      <Note title="Pridev razrešava zabunu" tone="tip">
+        Kad je uz član i pridev, nastavak prideva pokazuje o čemu se radi: *der
+        gute* Mann je Nominativ muški, a *der guten* Frau je Dativ ženski. Isti
+        član, različit nastavak.
+      </Note>
+    </Block>
+
     <Note title="Zapamti" tone="remember">
       Sve prisvojne zamenice (mein, dein, sein, ihr, unser, euer, Ihr) i kein
       menjaju se tačno kao ein. Razlika je samo u množini: ein nema množinu, a
@@ -97,7 +153,6 @@ const CASES = () => (
 
     <Block title="Lične zamenice kroz padeže">
       <GTable
-        wrap
         head={[
           "Nominativ",
           "srpski",
@@ -138,7 +193,6 @@ const CASES = () => (
           podrazumevan.
         </P>
         <GTable
-          wrap
           head={["Glagol", "srpski", "Glagol", "srpski"]}
           rows={[
             ["helfen", "pomagati", "gefallen", "dopadati se"],
@@ -166,7 +220,6 @@ const CASES = () => (
           prvo kome, pa šta.
         </P>
         <GTable
-          wrap
           head={["Glagol", "srpski", "Glagol", "srpski"]}
           rows={[
             ["geben", "dati", "schicken", "poslati"],
@@ -226,7 +279,6 @@ const NOUNS = () => (
         većine imenica koje uopšte imaju nastavak.
       </P>
       <GTable
-        wrap
         head={["Rod", "Nastavci napamet"]}
         rows={[
           ["*der* (muški)", "ig · ling · or · ismus · er"],
@@ -238,7 +290,6 @@ const NOUNS = () => (
         ]}
       />
       <GTable
-        wrap
         head={["Rod", "Primeri", "srpski"]}
         rows={[
           [
@@ -281,7 +332,6 @@ const NOUNS = () => (
 
     <Block title="Pet tipova množine">
       <GTable
-        wrap
         head={["Nastavak", "Kada", "Primeri", "srpski"]}
         rows={[
           [
@@ -338,7 +388,6 @@ const NOUNS = () => (
         ]}
       />
       <GTable
-        wrap
         head={["Imenica", "srpski", "Imenica", "srpski"]}
         rows={[
           ["der Junge", "dečak", "der Nachbar", "komšija"],
@@ -387,7 +436,6 @@ const PRONOUNS = () => (
   >
     <Block title="Koju zamenicu kada">
       <GTable
-        wrap
         head={["Šta hoćeš da kažeš", "Vrsta", "Primer", "srpski"]}
         rows={[
           [
@@ -432,7 +480,6 @@ const PRONOUNS = () => (
 
     <Block title="Prisvojne zamenice">
       <GTable
-        wrap
         head={["Osoba", "Osnova", "Primer", "srpski"]}
         rows={[
           ["ich", "mein-", "*mein* Vater", "moj otac"],
@@ -449,6 +496,54 @@ const PRONOUNS = () => (
         Nastavci su isti kao kod ein i kein. Kod euer nestaje e kad dođe
         nastavak: euer → *eure*, *euren*. Lične zamenice kroz sva tri padeža
         nalaziš u oblasti Padeži.
+      </Note>
+    </Block>
+
+    <Block title="Osnova kaže čije, nastavak kaže šta sledi">
+      <P>
+        Prisvojna zamenica se sastoji iz *dva dela*, i svaki odgovara na drugo
+        pitanje. Osnova (ihr-, sein-, mein-) kaže *čije je*. Nastavak (-em, -e,
+        -en) nema veze sa vlasnikom, nego se slaže sa *imenicom koja dolazi
+        posle*, po njenom rodu i padežu.
+      </P>
+      <Formula>ihr *+* em *+* Geburtstag → čije: njen · nastavak: Dativ muški</Formula>
+      <P>
+        Zato ista osnova ihr- daje različite oblike, iako značenje „njen“ ostaje
+        isto:
+      </P>
+      <GTable
+        head={[
+          "Padež",
+          "muški: der Vater",
+          "ženski: die Mutter",
+          "srednji: das Kind",
+          "množina: die Kinder",
+        ]}
+        rows={[
+          ["Nominativ", "ihr Vater", "ihr*e* Mutter", "ihr Kind", "ihr*e* Kinder"],
+          ["Akkusativ", "ihr*en* Vater", "ihr*e* Mutter", "ihr Kind", "ihr*e* Kinder"],
+          ["Dativ", "ihr*em* Vater", "ihr*er* Mutter", "ihr*em* Kind", "ihr*en* Kindern"],
+          ["Genitiv", "ihr*es* Vaters", "ihr*er* Mutter", "ihr*es* Kindes", "ihr*er* Kinder"],
+        ]}
+      />
+      <P>
+        I obrnuto: ako imenica ostane ista, nastavak se *ne menja*, ma ko bio
+        vlasnik. Menja se samo osnova.
+      </P>
+      <GTable
+        head={["Vlasnik", "Osnova", "Dativ uz der Geburtstag", "srpski"]}
+        rows={[
+          ["ich", "mein-", "mein*em* Geburtstag", "mom rođendanu"],
+          ["er", "sein-", "sein*em* Geburtstag", "njegovom rođendanu"],
+          ["sie (ona)", "ihr-", "ihr*em* Geburtstag", "njenom rođendanu"],
+          ["sie (oni)", "ihr-", "ihr*em* Geburtstag", "njihovom rođendanu"],
+        ]}
+      />
+      <Note title="Najčešća greška" tone="trap">
+        Nastavak *nikad* ne pokazuje pol vlasnika. Ne kaže se „ihre
+        Geburtstag“ zato što je vlasnik žensko: Geburtstag je muški rod, pa
+        posle seit ide *ihrem*. Rod vlasnika vidi se samo u osnovi, sein- ili
+        ihr-.
       </Note>
     </Block>
 
@@ -505,7 +600,6 @@ const PRONOUNS = () => (
 
     <Block title="Pokazne zamenice">
       <GTable
-        wrap
         head={["Zamenica", "Značenje", "Primer", "srpski"]}
         rows={[
           [
@@ -544,7 +638,6 @@ const PRONOUNS = () => (
 
     <Block title="Neodređene zamenice">
       <GTable
-        wrap
         head={["Reč", "Značenje", "Primer", "srpski"]}
         rows={[
           [
@@ -613,7 +706,6 @@ const ADJECTIVES = () => (
 
     <Block title="Kada se pridev menja">
       <GTable
-        wrap
         head={["Položaj", "Menja se?", "Primer", "srpski"]}
         rows={[
           [
@@ -697,9 +789,231 @@ const ADJECTIVES = () => (
       </P>
     </Block>
 
+    <Block title="Cela fraza kroz padeže">
+      <P>
+        Isto to, ali sastavljeno: član, pridev i imenica na jednom mestu. Ako ti
+        treba jedna stvar napamet, onda je to ove dve tabele.
+      </P>
+      <GTable
+        head={["Padež", "muški", "ženski", "srednji", "množina"]}
+        rows={[
+          [
+            "Nominativ",
+            "*der* alt*e* Mann",
+            "*die* alt*e* Frau",
+            "*das* alt*e* Haus",
+            "*die* alt*en* Frauen",
+          ],
+          [
+            "Akkusativ",
+            "*den* alt*en* Mann",
+            "*die* alt*e* Frau",
+            "*das* alt*e* Haus",
+            "*die* alt*en* Frauen",
+          ],
+          [
+            "Dativ",
+            "*dem* alt*en* Mann",
+            "*der* alt*en* Frau",
+            "*dem* alt*en* Haus",
+            "*den* alt*en* Frauen",
+          ],
+          [
+            "Genitiv",
+            "*des* alt*en* Mannes",
+            "*der* alt*en* Frau",
+            "*des* alt*en* Hauses",
+            "*der* alt*en* Frauen",
+          ],
+        ]}
+      />
+      <GTable
+        head={["Padež", "muški", "ženski", "srednji", "množina (kein)"]}
+        rows={[
+          [
+            "Nominativ",
+            "*ein* alt*er* Mann",
+            "*eine* alt*e* Frau",
+            "*ein* alt*es* Haus",
+            "*keine* alt*en* Frauen",
+          ],
+          [
+            "Akkusativ",
+            "*einen* alt*en* Mann",
+            "*eine* alt*e* Frau",
+            "*ein* alt*es* Haus",
+            "*keine* alt*en* Frauen",
+          ],
+          [
+            "Dativ",
+            "*einem* alt*en* Mann",
+            "*einer* alt*en* Frau",
+            "*einem* alt*en* Haus",
+            "*keinen* alt*en* Frauen",
+          ],
+          [
+            "Genitiv",
+            "*eines* alt*en* Mannes",
+            "*einer* alt*en* Frau",
+            "*eines* alt*en* Hauses",
+            "*keiner* alt*en* Frauen",
+          ],
+        ]}
+      />
+    </Block>
+
+    <Block title="Kako da sastaviš frazu">
+      <P>
+        Primer: hoćeš da kažeš „dao sam to staroj ženi“. Ide u tri koraka.
+      </P>
+      <GTable
+        head={["Korak", "Pitanje", "Odgovor"]}
+        rows={[
+          ["1. padež", "šta traži glagol ili predlog?", "geben traži *Dativ* za osobu"],
+          ["2. rod", "koji je rod imenice?", "die Frau, dakle *ženski*"],
+          ["3. polje u tabeli", "Dativ + ženski", "*der* alt*en* Frau"],
+        ]}
+      />
+      <Examples
+        items={[
+          [
+            "Ich habe es *der alten Frau* gegeben.",
+            "Dao sam to staroj ženi.",
+            "Dativ ženski",
+          ],
+          [
+            "Ich habe es *einer alten Frau* gegeben.",
+            "Dao sam to jednoj staroj ženi.",
+            "neodređeni član",
+          ],
+          [
+            "Ich habe es *dem alten Mann* gegeben.",
+            "Dao sam to starom čoveku.",
+            "Dativ muški",
+          ],
+          [
+            "Ich habe es *den alten Frauen* gegeben.",
+            "Dao sam to starim ženama.",
+            "Dativ množina",
+          ],
+        ]}
+      />
+      <Note title="Zašto der, a ne dem" tone="trap">
+        Kod „staroj ženi“ prva pomisao je *dem*, jer je Dativ. Ali dem važi samo
+        za muški i srednji rod. Frau je ženski, a ženski rod u Dativu ima *der*:
+        der alten Frau. Isto i sa neodređenim članom: *einer* alten Frau.
+      </Note>
+    </Block>
+
+    <Block title="Više prideva zaredom">
+      <P>
+        Kad ispred iste imenice stoji dva ili više prideva, *svi dobijaju isti
+        nastavak*. Nema posebnog pravila za drugi pridev: nađeš jedno polje u
+        tabeli i primeniš ga na sve.
+      </P>
+      <GTable
+        head={["Fraza", "Šta je ispred", "Padež i rod", "Zašto taj nastavak"]}
+        rows={[
+          [
+            "ein gut*er* groß*er* Mann",
+            "ein",
+            "Nominativ muški",
+            "mešovita kolona, muški rod daje *-er*, i to oba puta",
+          ],
+          [
+            "ein schön*es* groß*es* Auto",
+            "ein",
+            "Nominativ srednji",
+            "mešovita kolona, srednji rod daje *-es*",
+          ],
+          [
+            "der gut*e* alt*e* Wein",
+            "der",
+            "Nominativ muški",
+            "slaba kolona, der već pokazuje rod, pa ide *-e*",
+          ],
+          [
+            "seit ihr*em* zweit*en* Geburtstag",
+            "ihr- (kao ein)",
+            "Dativ muški",
+            "u Dativu je *-en*; redni broj se ponaša kao pridev",
+          ],
+          [
+            "mit mein*en* best*en* alt*en* Freund*en*",
+            "mein-",
+            "Dativ množina",
+            "*-en* na svemu, i imenica dobija dodatno n",
+          ],
+        ]}
+      />
+      <Note title="Pridevi koji se ne menjaju" tone="trap">
+        Nekoliko prideva nikad ne dobija nastavak: *rosa*, *lila*, *orange*,
+        *beige*, *prima*, *super*. Kaže se ein *rosa* Kleid, ne „ein rosanes
+        Kleid“. Isto važi za prideve od imena gradova na -er, koji se pišu
+        velikim slovom: die *Wiener* Küche, der *Berliner* Bahnhof.
+      </Note>
+    </Block>
+
+    <Block title="Redni brojevi">
+      <P>
+        Redni broj se ponaša *tačno kao pridev*: ispred imenice dobija nastavak
+        po istoj tabeli, a iza njega u pisanju stoji tačka (2. = zweite).
+      </P>
+      <GTable
+        head={["Pravilo", "Brojevi", "Primeri"]}
+        rows={[
+          ["od 2 do 19 dodaješ *-te*", "2, 4, 5, 6, 9, 10, 12", "zwei*te*, vier*te*, fünf*te*, zehn*te*, zwölf*te*"],
+          ["od 20 naviše dodaješ *-ste*", "20, 21, 30, 100", "zwanzig*ste*, einundzwanzig*ste*, hundert*ste*"],
+          ["nepravilni", "1, 3, 7, 8", "*erste*, *dritte*, *siebte*, *achte* (jedno t)"],
+        ]}
+      />
+      <Note title="Zašto ihrem zweiten" tone="remember">
+        U *seit ihrem zweiten Geburtstag* rade tri pravila odjednom. *Seit*
+        traži Dativ. Imenica je der Geburtstag, dakle muški rod, pa je cela
+        fraza u Dativu muškog roda. Prisvojna zamenica uzima nastavke kao ein, a
+        ein u Dativu muškog roda glasi einem, pa ihr- postaje *ihrem*. Redni
+        broj se ponaša kao pridev, a posle ein-reči u Dativu svaki pridev ide na
+        -en, pa dobijaš *zweiten*. Ako dodaš još jedan pridev, i on uzima isti
+        nastavak: ihrem zweit*en* groß*en* Geburtstag.
+      </Note>
+      <Examples
+        items={[
+          [
+            "*seit ihrem zweiten* Geburtstag",
+            "od njenog drugog rođendana",
+            "Dativ, muški",
+          ],
+          [
+            "*der erste* Tag war schwer.",
+            "Prvi dan je bio težak.",
+            "Nominativ, muški",
+          ],
+          [
+            "Ich wohne im *dritten* Stock.",
+            "Stanujem na trećem spratu.",
+            "Dativ posle in dem",
+          ],
+          [
+            "*am dritten* Oktober",
+            "trećeg oktobra",
+            "datum ide u dativ",
+          ],
+          [
+            "Heute ist *der fünfte* Mai.",
+            "Danas je peti maj.",
+            "Nominativ",
+          ],
+        ]}
+      />
+      <Note title="Datumi" tone="tip">
+        „am 3. Oktober“ se čita *am dritten Oktober*, a „der 5. Mai“ kao *der
+        fünfte Mai*. Tačka u pisanju zamenjuje ceo nastavak, pa se nastavak i
+        dalje bira po padežu.
+      </Note>
+    </Block>
+
     <Block title="Pridev + predlog">
       <GTable
-        wrap
         head={["Izraz", "srpski", "Padež", "Primer", "srpski"]}
         rows={[
           [
@@ -867,7 +1181,6 @@ const COMPARISON = () => (
 
     <Block title="Poređenje u rečenici">
       <GTable
-        wrap
         head={["Konstrukcija", "Značenje", "Primer", "srpski"]}
         rows={[
           [
@@ -943,7 +1256,6 @@ const ADVERBS = () => (
   >
     <Block title="Vrste priloga">
       <GTable
-        wrap
         head={["Vrsta", "Pitanje", "Primeri", "srpski"]}
         rows={[
           [
@@ -1031,7 +1343,6 @@ const ADVERBS = () => (
         predlog*. R se ubacuje kad predlog počinje samoglasnikom.
       </P>
       <GTable
-        wrap
         head={[
           "Za stvar",
           "Pitanje za stvar",
@@ -1076,7 +1387,6 @@ const PREPOSITIONS = () => (
   >
     <Block title="Uvek Akkusativ">
       <GTable
-        wrap
         head={["Predlog", "Značenje", "Primer", "srpski"]}
         rows={[
           ["durch", "kroz", "Wir gehen *durch den* Park.", "Idemo kroz park."],
@@ -1092,7 +1402,6 @@ const PREPOSITIONS = () => (
 
     <Block title="Uvek Dativ">
       <GTable
-        wrap
         head={["Predlog", "Značenje", "Primer", "srpski"]}
         rows={[
           ["aus", "iz", "Ich komme *aus der* Schweiz.", "Dolazim iz Švajcarske."],
@@ -1116,7 +1425,6 @@ const PREPOSITIONS = () => (
         jeste) → Dativ.
       </P>
       <GTable
-        wrap
         head={["Predlog", "wohin? (Akkusativ)", "srpski", "wo? (Dativ)", "srpski"]}
         rows={[
           [
@@ -1165,7 +1473,6 @@ const PREPOSITIONS = () => (
 
     <Block title="Genitiv predlozi">
       <GTable
-        wrap
         head={["Predlog", "Značenje", "Primer", "srpski"]}
         rows={[
           ["wegen", "zbog", "*wegen des* Wetter*s*", "zbog vremena"],
@@ -1203,7 +1510,6 @@ const PREPOSITIONS = () => (
 
     <Block title="Mesto: in, nach, zu, bei">
       <GTable
-        wrap
         head={["Kada", "Predlog", "Primer", "srpski"]}
         rows={[
           ["gradovi i zemlje bez člana", "nach", "Ich fliege *nach* Wien.", "Letim za Beč."],
@@ -1218,7 +1524,6 @@ const PREPOSITIONS = () => (
 
     <Block title="Vreme">
       <GTable
-        wrap
         head={["Izraz", "Za šta", "Primer", "srpski"]}
         rows={[
           ["am", "dani i delovi dana", "*am* Montag, *am* Abend", "u ponedeljak, uveče"],
@@ -1249,7 +1554,6 @@ const PREPOSITIONS = () => (
         sa glagolom, kao jedna reč.
       </P>
       <GTable
-        wrap
         head={["Glagol + predlog", "Padež", "srpski", "Primer"]}
         rows={[
           ["warten auf", "Akk", "čekati nekoga", "Ich warte *auf den* Bus."],
@@ -1290,7 +1594,6 @@ const VERBS = () => (
   >
     <Block title="Modalni glagoli">
       <GTable
-        wrap
         head={["Glagol", "Značenje", "ich / er", "du", "wir"]}
         rows={[
           ["können", "moći, umeti", "kann", "kannst", "können"],
@@ -1303,7 +1606,6 @@ const VERBS = () => (
         ]}
       />
       <GTable
-        wrap
         head={["Kada", "Modal", "Primer", "srpski"]}
         rows={[
           [
@@ -1402,7 +1704,6 @@ const VERBS = () => (
 
     <Block title="Imperativ">
       <GTable
-        wrap
         head={["Kome", "Kako se gradi", "Primer", "srpski"]}
         rows={[
           ["du", "osnova bez nastavka, bez zamenice", "*Komm!* *Geh!* *Warte!*", "Dođi! Idi! Čekaj!"],
@@ -1422,7 +1723,6 @@ const VERBS = () => (
     </Block>
     <Block title="Koje vreme kada">
       <GTable
-        wrap
         head={["Vreme", "Kako se gradi", "Kada se koristi", "Primer", "srpski"]}
         rows={[
           [
@@ -1492,7 +1792,6 @@ const PRESENT = () => (
   >
     <Block title="Kada se koristi">
       <GTable
-        wrap
         head={["Upotreba", "Primer", "srpski"]}
         rows={[
           ["radnja sada", "Ich *lese* gerade ein Buch.", "Upravo čitam knjigu."],
@@ -1600,7 +1899,6 @@ const PERFECT = () => (
 
     <Block title="Partizip II: pet obrazaca">
       <GTable
-        wrap
         head={["Tip glagola", "Obrazac", "Primeri", "srpski"]}
         rows={[
           [
@@ -1643,7 +1941,6 @@ const PERFECT = () => (
         izuzeci.
       </P>
       <GTable
-        wrap
         head={["Grupa", "Glagoli", "Primer", "srpski"]}
         rows={[
           [
@@ -1687,7 +1984,6 @@ const PRETERITE = () => (
   >
     <Block title="Kada se koristi">
       <GTable
-        wrap
         head={["Situacija", "Primer", "srpski"]}
         rows={[
           ["priče, romani, vesti", "Er *ging* nach Hause.", "Otišao je kući."],
@@ -1800,7 +2096,6 @@ const PLUPERFECT = () => (
         ]}
       />
       <GTable
-        wrap
         head={["Perfekt", "Plusquamperfekt", "srpski"]}
         rows={[
           ["ich *habe* gearbeitet", "ich *hatte* gearbeitet", "radio sam → bio sam radio"],
@@ -1839,7 +2134,6 @@ const FUTURE = () => (
     <Block title="Futur I">
       <Formula>*werden* (po licu) + Infinitiv na kraju</Formula>
       <GTable
-        wrap
         head={["Upotreba", "Primer", "srpski"]}
         rows={[
           [
@@ -1927,7 +2221,6 @@ const PASSIVE = () => (
   >
     <Block title="Kada se koristi">
       <GTable
-        wrap
         head={["Situacija", "Zašto pasiv", "Primer", "srpski"]}
         rows={[
           [
@@ -1985,7 +2278,6 @@ const PASSIVE = () => (
 
     <Block title="Pasiv kroz vremena">
       <GTable
-        wrap
         head={["Vreme", "Oblik", "Primer", "srpski"]}
         rows={[
           ["Präsens", "wird + Partizip II", "Das Haus *wird gebaut*.", "Kuća se gradi."],
@@ -2051,7 +2343,6 @@ const PASSIVE = () => (
         Na B2 se traži da isto značenje umeš da izraziš na više načina.
       </P>
       <GTable
-        wrap
         head={["Konstrukcija", "Značenje", "Primer", "srpski"]}
         rows={[
           ["*man* + aktiv", "najjednostavnija zamena", "*Man* repariert das Auto.", "Auto se popravlja."],
@@ -2103,7 +2394,6 @@ const SUBJUNCTIVE = () => (
 
     <Block title="Kada se koristi">
       <GTable
-        wrap
         head={["Upotreba", "Primer", "srpski"]}
         rows={[
           ["nestvarna želja", "*Wenn* ich doch mehr Zeit *hätte*!", "Kad bih bar imao više vremena!"],
@@ -2187,7 +2477,6 @@ const WORD_ORDER = () => (
         odvojivi prefiks) na kraju. Sve ostalo je zatvoreno između njih.
       </P>
       <GTable
-        wrap
         head={["1. mesto", "2. mesto (glagol)", "sredina", "kraj"]}
         rows={[
           ["Ich", "*fahre*", "morgen nach Berlin", "—"],
@@ -2207,7 +2496,6 @@ const WORD_ORDER = () => (
 
     <Block title="Tri tipa rečenice">
       <GTable
-        wrap
         head={["Tip", "Gde je glagol", "Primer", "srpski"]}
         rows={[
           ["izjava", "2. mesto", "Er *kommt* heute.", "On danas dolazi."],
@@ -2221,7 +2509,6 @@ const WORD_ORDER = () => (
 
     <Block title="Upitne reči">
       <GTable
-        wrap
         head={["Reč", "Značenje", "Primer", "srpski"]}
         rows={[
           ["wer / wen / wem / wessen", "ko / koga / kome / čiji", "*Wem* gehört das?", "Kome ovo pripada?"],
@@ -2238,7 +2525,6 @@ const WORD_ORDER = () => (
 
     <Block title="Sredina rečenice i redosled objekata">
       <GTable
-        wrap
         head={["Situacija", "Pravilo", "Primer", "srpski"]}
         rows={[
           ["dve imenice", "Dativ pre Akkusativa", "Ich gebe *dem Kind das Buch*.", "Dajem detetu knjigu."],
@@ -2266,7 +2552,6 @@ const WORD_ORDER = () => (
         pripada glagolskoj zagradi ili se posebno negira.
       </P>
       <GTable
-        wrap
         head={["nicht stoji ispred", "Primer", "srpski"]}
         rows={[
           ["participa i infinitiva", "Ich habe ihn *nicht* gesehen.", "Nisam ga video."],
@@ -2310,7 +2595,6 @@ const CLAUSES = () => (
 
     <Block title="Veznici zavisnih rečenica">
       <GTable
-        wrap
         head={["Veznik", "Značenje", "Primer", "srpski"]}
         rows={[
           ["dass", "da", "Ich hoffe, *dass* du kommst.", "Nadam se da dolaziš."],
@@ -2377,7 +2661,6 @@ const CLAUSES = () => (
         zu. Kod odvojivih glagola zu ide u sredinu: an*zu*rufen.
       </P>
       <GTable
-        wrap
         head={["Konstrukcija", "Značenje", "Primer", "srpski"]}
         rows={[
           ["glagol + zu + Infinitiv", "posle versuchen, vergessen, hoffen, planen, anfangen, aufhören, beschließen", "Ich versuche, früh *aufzustehen*.", "Pokušavam da rano ustanem."],
@@ -2415,7 +2698,6 @@ const CLAUSES = () => (
     </Block>
     <Block title="Tri grupe">
       <GTable
-        wrap
         head={["Grupa", "Šta radi glagol", "Veznici"]}
         rows={[
           [
@@ -2446,7 +2728,6 @@ const CLAUSES = () => (
 
     <Block title="Parovi koji se mešaju">
       <GTable
-        wrap
         head={["Par", "Razlika", "Primer", "srpski"]}
         rows={[
           ["denn / weil", "isto značenje, drugi red reči", "Ich bleibe, *denn* ich *bin* müde. / ..., *weil* ich müde *bin*.", "Ostajem, jer sam umoran."],
@@ -2460,7 +2741,6 @@ const CLAUSES = () => (
 
     <Block title="Parni veznici">
       <GTable
-        wrap
         head={["Veznik", "Značenje", "Primer", "srpski"]}
         rows={[
           ["entweder ... oder", "ili ... ili", "*Entweder* wir fahren, *oder* wir bleiben.", "Ili idemo, ili ostajemo."],
@@ -2483,7 +2763,6 @@ const ADVANCED = () => (
   >
     <Block title="Particip kao pridev">
       <GTable
-        wrap
         head={["Oblik", "Kako se gradi", "Značenje", "Primer", "srpski"]}
         rows={[
           [
@@ -2521,7 +2800,6 @@ const ADVANCED = () => (
         obavezu ili mogućnost.
       </P>
       <GTable
-        wrap
         head={["Oblik", "Sigurnost", "Primer", "srpski"]}
         rows={[
           ["muss", "gotovo sigurno", "Er *muss* krank sein.", "Sigurno je bolestan."],
@@ -2543,7 +2821,6 @@ const ADVANCED = () => (
         traži na svakom B2 ispitu, u oba smera.
       </P>
       <GTable
-        wrap
         head={["Zavisna rečenica", "Predloška fraza"]}
         rows={[
           ["*weil* er krank war", "*wegen* seiner Krankheit"],
@@ -2564,7 +2841,6 @@ const ADVANCED = () => (
         bira po značenju.
       </P>
       <GTable
-        wrap
         head={["Izraz", "Znači isto što i", "srpski"]}
         rows={[
           ["eine Entscheidung treffen", "entscheiden", "doneti odluku"],
@@ -2586,7 +2862,6 @@ const ADVANCED = () => (
 
     <Block title="lassen, brauchen, sein + zu">
       <GTable
-        wrap
         head={["Konstrukcija", "Značenje", "Primer", "srpski"]}
         rows={[
           ["lassen + Infinitiv", "dati da se nešto uradi", "Ich *lasse* mir die Haare *schneiden*.", "Šišam se (kod frizera)."],
@@ -2623,7 +2898,6 @@ const AUSTRIA = () => (
   >
     <Block title="Gde se gramatika stvarno razlikuje">
       <GTable
-        wrap
         head={["Tema", "Nemačka", "Austrija", "srpski"]}
         rows={[
           [
@@ -2679,7 +2953,6 @@ const AUSTRIA = () => (
 
     <Block title="Svakodnevne reči">
       <GTable
-        wrap
         head={["Austrija", "Nemačka", "srpski"]}
         rows={[
           ["das Sackerl", "die Tüte", "kesa"],
@@ -2706,7 +2979,6 @@ const AUSTRIA = () => (
 
     <Block title="Hrana i kafa">
       <GTable
-        wrap
         head={["Austrija", "Nemačka", "srpski"]}
         rows={[
           ["der Erdapfel", "die Kartoffel", "krompir"],
@@ -2724,7 +2996,6 @@ const AUSTRIA = () => (
         ]}
       />
       <GTable
-        wrap
         head={["Kafa", "Šta dobiješ"]}
         rows={[
           ["ein *kleiner Brauner*", "espreso sa malo mleka ili pavlake"],
@@ -2737,7 +3008,6 @@ const AUSTRIA = () => (
 
     <Block title="Pozdravi">
       <GTable
-        wrap
         head={["Izraz", "Kada", "srpski"]}
         rows={[
           ["*Grüß Gott*", "formalno, pri dolasku, svuda osim Beča među mladima", "dobar dan"],
@@ -2779,7 +3049,6 @@ const AUSTRIA = () => (
         ne od prošlog.
       </P>
       <GTable
-        wrap
         head={["Sat", "Austrija", "Nemačka (i standardno)", "srpski"]}
         rows={[
           ["16:15", "*Viertel fünf*", "Viertel nach vier", "četiri i petnaest"],

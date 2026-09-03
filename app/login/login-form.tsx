@@ -1,5 +1,6 @@
 "use client";
 
+import { EyeIcon, EyeSlashIcon } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -19,6 +20,7 @@ function safeRedirectTarget(raw: string | null): string {
 export function LoginForm() {
   const router = useRouter();
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -52,16 +54,31 @@ export function LoginForm() {
         <Label htmlFor="password" className="text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
           Password
         </Label>
-        <Input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          autoFocus
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="h-11 text-base"
-        />
+        <div className="relative">
+          <Input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
+            autoFocus
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="h-11 pr-11 text-base"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((v) => !v)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            aria-pressed={showPassword}
+            className="absolute inset-y-0 right-0 flex w-11 cursor-pointer items-center justify-center rounded-r-md text-zinc-600 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 dark:text-zinc-400"
+          >
+            {showPassword ? (
+              <EyeSlashIcon className="size-5" />
+            ) : (
+              <EyeIcon className="size-5" />
+            )}
+          </button>
+        </div>
       </div>
       {error && (
         <p
