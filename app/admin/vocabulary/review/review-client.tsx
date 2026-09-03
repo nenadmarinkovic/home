@@ -91,6 +91,7 @@ type SyncResponse = {
 export function ReviewClient({ initialStats }: Props) {
   const deckRef = useRef<OfflineCard[]>([]);
   const flushingRef = useRef(false);
+  const doneTodayRef = useRef(0);
 
   const [current, setCurrent] = useState<OfflineCard | null>(null);
   const [stats, setStats] = useState<DeckStats>(initialStats);
@@ -111,6 +112,10 @@ export function ReviewClient({ initialStats }: Props) {
   }, [activity, pendingAt]);
   const challengeDone = doneToday >= DAILY_GOAL;
 
+  useEffect(() => {
+    doneTodayRef.current = doneToday;
+  }, [doneToday]);
+
   const calendarActivity = useMemo<Activity>(
     () => ({
       addedAt: activity.addedAt,
@@ -125,9 +130,15 @@ export function ReviewClient({ initialStats }: Props) {
     () => false,
   );
 
-  const advance = useCallback(() => {
+  const advance = useCallback((justAnswered?: OfflineCard) => {
     const now = new Date();
-    setCurrent(pickNextCard(deckRef.current, now));
+    const done = doneTodayRef.current + (justAnswered ? 1 : 0);
+    setCurrent(
+      pickNextCard(deckRef.current, now, {
+        doneToday: done,
+        lastEntryId: justAnswered?.entryId ?? null,
+      }),
+    );
     setStats(computeStats(deckRef.current, now));
   }, []);
 
@@ -234,7 +245,7 @@ export function ReviewClient({ initialStats }: Props) {
           err instanceof Error ? err.message : "Couldn't save review locally",
         );
       }
-      advance();
+      advance(card);
       setSubmitting(false);
       if (typeof navigator === "undefined" || navigator.onLine) {
         flushQueue().catch(() => {});

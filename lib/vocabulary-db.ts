@@ -13,8 +13,9 @@ import {
   type SrsCardRow,
   type VocabularyEntryRow,
 } from "@/db/schema";
-import { CALENDAR_WEEKS, type Activity } from "@/lib/daily";
+import { CALENDAR_WEEKS, startOfDay, type Activity } from "@/lib/daily";
 import { cardFromRow, newCard, review } from "@/lib/fsrs";
+import { pickFromDeck } from "@/lib/review-queue";
 
 export type Example = { de: string; sr: string };
 
@@ -364,41 +365,31 @@ export function getActivity(now: Date = new Date()): Activity {
   };
 }
 
-export function getNextDueCard(now: Date = new Date()): DueCard | null {
-  const card = db
-    .select()
-    .from(srsCards)
-    .where(
-      and(
-        eq(srsCards.suspended, false),
-        or(
-          and(
-            sql`${srsCards.state} in (1, 3)`,
-            lte(srsCards.due, now),
-          ),
-          and(
-            eq(srsCards.state, 2),
-            lte(srsCards.due, now),
-          ),
-          eq(srsCards.state, 0),
-        ),
-      ),
-    )
-    .orderBy(
-      sql`case ${srsCards.state} when 1 then 0 when 3 then 0 when 2 then 1 else 2 end`,
-      asc(srsCards.due),
-    )
-    .limit(1)
+export function countReviewsToday(now: Date = new Date()): number {
+  const row = db
+    .select({ n: count(reviewLog.id) })
+    .from(reviewLog)
+    .where(gte(reviewLog.review, startOfDay(now)))
     .get();
+  return Number(row?.n ?? 0);
+}
 
-  if (!card) return null;
-  const entryRow = db
-    .select()
-    .from(vocabularyEntries)
-    .where(eq(vocabularyEntries.id, card.entryId))
-    .get();
-  if (!entryRow) return null;
-  return { card, entry: rowToEntry(entryRow) };
+export function getNextDueCard(now: Date = new Date()): DueCard | null {
+  const deck = listReviewDeck();
+  if (deck.length === 0) return null;
+  const picked = pickFromDeck(
+    deck.map(({ card }) => ({
+      id: card.id,
+      entryId: card.entryId,
+      state: card.state,
+      due: card.due.getTime(),
+      suspended: card.suspended,
+    })),
+    now,
+    { doneToday: countReviewsToday(now), lastEntryId: null },
+  );
+  if (!picked) return null;
+  return deck.find(({ card }) => card.id === picked.id) ?? null;
 }
 
 export function listReviewDeck(): DueCard[] {

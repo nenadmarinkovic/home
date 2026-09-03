@@ -11,6 +11,7 @@ import {
   buildCalendar,
   CALENDAR_WEEKS,
   DAILY_GOAL,
+  DAILY_MAX,
   dayKey,
   streaks,
   type Activity,
@@ -29,12 +30,27 @@ const MIN_WEEKS = 8;
 
 const CELL_BASE = "size-2.5 shrink-0 rounded-[2px]";
 
-const TINTS = [
-  "bg-foreground/[0.07]",
-  "bg-[#0040ff]/20 dark:bg-[#ffff01]/20",
-  "bg-[#0040ff]/40 dark:bg-[#ffff01]/40",
-  "bg-[#0040ff]/65 dark:bg-[#ffff01]/65",
-  "bg-[#0040ff] dark:bg-[#ffff01]",
+const STEPS = [
+  {
+    upTo: 0,
+    tint: "bg-foreground/[0.08]",
+    label: "No reviews",
+  },
+  {
+    upTo: DAILY_GOAL - 1,
+    tint: "bg-[#0040ff]/28 dark:bg-[#ffff01]/28",
+    label: `1-${DAILY_GOAL - 1} reviews, short of the goal`,
+  },
+  {
+    upTo: DAILY_MAX - 1,
+    tint: "bg-[#0040ff]/62 dark:bg-[#ffff01]/62",
+    label: `${DAILY_GOAL}-${DAILY_MAX - 1} reviews`,
+  },
+  {
+    upTo: Infinity,
+    tint: "bg-[#0040ff] dark:bg-[#ffff01]",
+    label: `${DAILY_MAX}+ reviews`,
+  },
 ];
 
 function columnsThatFit(width: number): number {
@@ -43,12 +59,7 @@ function columnsThatFit(width: number): number {
 }
 
 function tint(day: Day): string {
-  if (day.done) return TINTS[4];
-  if (day.reviews === 0) return TINTS[0];
-  const share = day.reviews / DAILY_GOAL;
-  if (share >= 0.5) return TINTS[3];
-  if (share >= 0.25) return TINTS[2];
-  return TINTS[1];
+  return (STEPS.find((step) => day.reviews <= step.upTo) ?? STEPS[0]).tint;
 }
 
 function shortDate(date: Date): string {
@@ -62,10 +73,36 @@ function shortDate(date: Date): string {
 function headline(day: Day, isFuture: boolean): string {
   if (isFuture) return "Upcoming";
   const parts = [
-    day.reviews === 0 ? "No reviews" : `${day.reviews}/${DAILY_GOAL} reviews`,
+    day.reviews === 0
+      ? "No reviews"
+      : day.done
+        ? `${day.reviews} reviews`
+        : `${day.reviews}/${DAILY_GOAL} reviews`,
   ];
   if (day.added > 0) parts.push(`${day.added} added`);
   return parts.join(", ");
+}
+
+const LEGEND_SWATCH =
+  "cursor-pointer transition duration-150 hover:z-10 hover:ring-1 hover:ring-foreground/50 hover:ring-offset-1 hover:ring-offset-card focus-visible:ring-1 focus-visible:ring-foreground/50 focus-visible:ring-offset-1 focus-visible:ring-offset-card outline-none";
+const LEGEND_WORD =
+  "cursor-pointer uppercase tracking-wider outline-none hover:text-foreground focus-visible:text-foreground";
+
+function LegendTip({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactElement;
+}) {
+  return (
+    <Tooltip>
+      <TooltipTrigger render={children} />
+      <TooltipContent side="top" sideOffset={6}>
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  );
 }
 
 type Box = { left: number; top: number; width: number; height: number };
@@ -154,18 +191,29 @@ export function StreakCalendar({ activity }: { activity: Activity }) {
 
   return (
     <div className="flex flex-col gap-5">
-      <p className={cn("flex flex-wrap items-center gap-x-2 gap-y-1", CAPTION)}>
-        <span>
-          <span className="tabular-nums">{data.current}</span> day streak
-        </span>
-        <span aria-hidden className="text-foreground/20">
-          ·
-        </span>
-        <span>
-          <span className="tabular-nums">{data.today}</span>/
-          <span className="tabular-nums">{DAILY_GOAL}</span> today
-        </span>
-      </p>
+      <div
+        className={cn(
+          "flex flex-wrap items-center justify-between gap-x-4 gap-y-1",
+          CAPTION,
+        )}
+      >
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>
+            <span className="tabular-nums">{data.current}</span> day streak
+          </span>
+          <span aria-hidden className="text-foreground/20">
+            ·
+          </span>
+          <span>
+            <span className="tabular-nums">{data.today}</span>/
+            <span className="tabular-nums">{DAILY_GOAL}</span> today
+          </span>
+        </p>
+        <p>
+          <span className="tabular-nums">{grid.reviews}</span> reviews in{" "}
+          {grid.range}
+        </p>
+      </div>
 
       <div className="flex flex-col gap-3">
         <div
@@ -222,8 +270,6 @@ export function StreakCalendar({ activity }: { activity: Activity }) {
                     future ? "bg-foreground/[0.03]" : tint(day),
                     !future &&
                       "hover:z-10 hover:ring-1 hover:ring-foreground/50 hover:ring-offset-1 hover:ring-offset-card",
-                    day.key === data.todayKey &&
-                      "ring-1 ring-foreground/40 ring-offset-1 ring-offset-card",
                   )}
                 />
               );
@@ -253,17 +299,27 @@ export function StreakCalendar({ activity }: { activity: Activity }) {
           )}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5">
-          <p className={cn("leading-none", CAPTION)}>
-            <span className="tabular-nums">{grid.reviews}</span> reviews in{" "}
-            {grid.range}
-          </p>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
           <p className={cn("flex items-center gap-1 leading-none", CAPTION)}>
-            Less
-            {TINTS.map((shade) => (
-              <span key={shade} className={cn(CELL_BASE, shade)} />
+            <LegendTip label="Quiet days, few or no reviews">
+              <button type="button" className={LEGEND_WORD}>
+                Less
+              </button>
+            </LegendTip>
+            {STEPS.map((step) => (
+              <LegendTip key={step.tint} label={step.label}>
+                <button
+                  type="button"
+                  aria-label={step.label}
+                  className={cn(CELL_BASE, step.tint, LEGEND_SWATCH)}
+                />
+              </LegendTip>
             ))}
-            More
+            <LegendTip label={`Heavy days, ${DAILY_MAX} reviews or more`}>
+              <button type="button" className={LEGEND_WORD}>
+                More
+              </button>
+            </LegendTip>
           </p>
         </div>
       </div>

@@ -1,4 +1,9 @@
 import { cardFromRow, previewIntervals, review } from "@/lib/fsrs";
+import {
+  FRESH_START,
+  pickFromDeck,
+  type PickContext,
+} from "@/lib/review-queue";
 import type { CardDirection, Rating } from "@/db/schema";
 import type { EntryListItem, VocabularyEntry } from "@/lib/vocabulary-db";
 
@@ -230,17 +235,9 @@ export function applyReview(
 export function pickNextCard(
   deck: OfflineCard[],
   now: Date,
+  context: PickContext = FRESH_START,
 ): OfflineCard | null {
-  const nowMs = now.getTime();
-  const candidates = deck.filter(
-    (c) => !c.suspended && (c.state === 0 || c.due <= nowMs),
-  );
-  if (candidates.length === 0) return null;
-  const bucket = (c: OfflineCard) =>
-    c.state === 1 || c.state === 3 ? 0 : c.state === 2 ? 1 : 2;
-  const top = Math.min(...candidates.map(bucket));
-  const pool = candidates.filter((c) => bucket(c) === top);
-  return pool[Math.floor(Math.random() * pool.length)];
+  return pickFromDeck(deck, now, context);
 }
 
 export function computeStats(deck: OfflineCard[], now: Date): DeckStats {

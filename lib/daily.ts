@@ -1,4 +1,5 @@
 export const DAILY_GOAL = 20;
+export const DAILY_MAX = 50;
 export const CALENDAR_WEEKS = 53;
 
 export type Activity = {
