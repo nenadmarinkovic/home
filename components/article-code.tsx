@@ -2,8 +2,6 @@
 
 import { useEffect } from "react";
 
-/* Phosphor Copy (regular) and Check (bold), inlined because the buttons are
-   built in the DOM rather than rendered by React — see below. */
 const COPY_PATH =
   "M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z";
 const CHECK_PATH =
@@ -23,9 +21,6 @@ function icon(path: string): SVGSVGElement {
   return svg;
 }
 
-/* The article body is server-rendered HTML, so there is no React tree to hang
-   these off. Building them here also means the button only ever exists when
-   the clipboard call behind it can actually run. */
 export function ArticleCode() {
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];

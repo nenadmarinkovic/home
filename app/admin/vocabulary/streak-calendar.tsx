@@ -28,12 +28,12 @@ const GAP = 3;
 const CELL = 10;
 const MIN_WEEKS = 8;
 
-const CELL_BASE = "size-2.5 shrink-0 rounded-[2px]";
+const CELL_BASE = "size-2.5 shrink-0 rounded-xs";
 
 const STEPS = [
   {
     upTo: 0,
-    tint: "bg-foreground/[0.08]",
+    tint: "bg-foreground/8",
     label: "No reviews",
   },
   {
@@ -166,7 +166,9 @@ export function StreakCalendar({ activity }: { activity: Activity }) {
         0,
       ),
       range:
-        columns === CALENDAR_WEEKS ? "the last 12 months" : `the last ${columns} weeks`,
+        columns === CALENDAR_WEEKS
+          ? "the last 12 months"
+          : `the last ${columns} weeks`,
     };
   }, [data.days, data.todayKey, columns]);
 
@@ -222,7 +224,7 @@ export function StreakCalendar({ activity }: { activity: Activity }) {
           onMouseLeave={() => setHovered(null)}
         >
           <div
-            className={cn("mb-1.5 grid gap-[3px]", CAPTION)}
+            className={cn("mb-1.5 grid gap-0.75", CAPTION)}
             style={{ gridTemplateColumns: grid.template }}
           >
             {grid.months.map((month) => (
@@ -237,7 +239,7 @@ export function StreakCalendar({ activity }: { activity: Activity }) {
           </div>
 
           <div
-            className="grid grid-flow-col gap-[3px] animate-in fade-in-0 duration-300"
+            className="grid grid-flow-col gap-0.75 animate-in fade-in-0 duration-300"
             style={{
               gridTemplateColumns: grid.template,
               gridTemplateRows: grid.rows,
@@ -267,7 +269,7 @@ export function StreakCalendar({ activity }: { activity: Activity }) {
                   className={cn(
                     CELL_BASE,
                     "relative cursor-pointer transition duration-150",
-                    future ? "bg-foreground/[0.03]" : tint(day),
+                    future ? "bg-foreground/3" : tint(day),
                     !future &&
                       "hover:z-10 hover:ring-1 hover:ring-foreground/50 hover:ring-offset-1 hover:ring-offset-card",
                   )}

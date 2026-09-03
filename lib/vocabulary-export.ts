@@ -14,7 +14,10 @@ import {
 
 export type Example = { de: string; sr: string };
 
-export type ExportEntry = Omit<VocabularyEntryRow, "examples" | "conjugations"> & {
+export type ExportEntry = Omit<
+  VocabularyEntryRow,
+  "examples" | "conjugations"
+> & {
   examples: Example[];
   conjugations: Record<string, unknown>;
 };
@@ -59,11 +62,7 @@ export function buildVocabularyExport(at: Date = new Date()): VocabularyExport {
     .from(srsCards)
     .orderBy(asc(srsCards.entryId), asc(srsCards.direction))
     .all();
-  const logRows = db
-    .select()
-    .from(reviewLog)
-    .orderBy(asc(reviewLog.id))
-    .all();
+  const logRows = db.select().from(reviewLog).orderBy(asc(reviewLog.id)).all();
 
   return {
     exportedAt: at.toISOString(),
@@ -149,9 +148,7 @@ export function buildVocabularyMarkdown(data: VocabularyExport): string {
 
   const orderedPos = [
     ...POS_VALUES.filter((pos) => byPos.has(pos)),
-    ...[...byPos.keys()].filter(
-      (pos) => !POS_VALUES.includes(pos as Pos),
-    ),
+    ...[...byPos.keys()].filter((pos) => !POS_VALUES.includes(pos as Pos)),
   ];
 
   for (const pos of orderedPos) {
@@ -167,10 +164,15 @@ export function buildVocabularyMarkdown(data: VocabularyExport): string {
   return `${lines.join("\n").trimEnd()}\n`;
 }
 
-export function buildVocabularyExportFiles(at: Date = new Date()): ExportFile[] {
+export function buildVocabularyExportFiles(
+  at: Date = new Date(),
+): ExportFile[] {
   const data = buildVocabularyExport(at);
   return [
-    { path: "content/vocabulary/entries.md", content: buildVocabularyMarkdown(data) },
+    {
+      path: "content/vocabulary/entries.md",
+      content: buildVocabularyMarkdown(data),
+    },
     {
       path: "content/vocabulary/entries.json",
       content: `${JSON.stringify(data, null, 2)}\n`,

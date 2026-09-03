@@ -122,10 +122,9 @@ const CASES = () => (
         ]}
       />
       <Note title="dem Frau ne postoji" tone="trap">
-        *dem* ide samo uz muški i srednji rod. Za ženski rod u Dativu ide
-        *der*: mit *der* Frau, ich helfe *der* Frau. To je isti oblik kao
-        Nominativ muški (der Mann), pa ga treba čitati po ulozi u rečenici, ne
-        po izgledu.
+        *dem* ide samo uz muški i srednji rod. Za ženski rod u Dativu ide *der*:
+        mit *der* Frau, ich helfe *der* Frau. To je isti oblik kao Nominativ
+        muški (der Mann), pa ga treba čitati po ulozi u rečenici, ne po izgledu.
       </Note>
       <GTable
         head={["Fraza", "Padež i rod", "srpski"]}
@@ -153,14 +152,7 @@ const CASES = () => (
 
     <Block title="Lične zamenice kroz padeže">
       <GTable
-        head={[
-          "Nominativ",
-          "srpski",
-          "Akkusativ",
-          "srpski",
-          "Dativ",
-          "srpski",
-        ]}
+        head={["Nominativ", "srpski", "Akkusativ", "srpski", "Dativ", "srpski"]}
         rows={[
           ["ich", "ja", "mich", "mene", "mir", "meni"],
           ["du", "ti", "dich", "tebe", "dir", "tebi"],
@@ -216,8 +208,8 @@ const CASES = () => (
 
       <Block title="Glagoli sa dva objekta">
         <P>
-          Ovi glagoli traže dva objekta odjednom, i red je skoro uvek isti:
-          prvo kome, pa šta.
+          Ovi glagoli traže dva objekta odjednom, i red je skoro uvek isti: prvo
+          kome, pa šta.
         </P>
         <GTable
           head={["Glagol", "srpski", "Glagol", "srpski"]}
@@ -229,7 +221,9 @@ const CASES = () => (
             ["empfehlen", "preporučiti", "erzählen", "ispričati"],
           ]}
         />
-        <Formula>Subjekat + glagol + *Dativ (kome)* + *Akkusativ (šta)*</Formula>
+        <Formula>
+          Subjekat + glagol + *Dativ (kome)* + *Akkusativ (šta)*
+        </Formula>
         <Examples
           items={[
             ["Ich gebe *dem Kind* *das Buch*.", "Dajem detetu knjigu."],
@@ -324,8 +318,7 @@ const NOUNS = () => (
         <Note title="U Austriji" tone="austria">
           Deminutiv se pravi nastavkom *-erl*, i takođe je srednjeg roda: *das*
           Sackerl, *das* Packerl, *das* Hunderl. Nekoliko svakodnevnih reči ima
-          i drugi član nego u Nemačkoj: *das* E-Mail, *das* Cola, *das*
-          Joghurt.
+          i drugi član nego u Nemačkoj: *das* E-Mail, *das* Cola, *das* Joghurt.
         </Note>
       </Cols>
     </Block>
@@ -395,7 +388,12 @@ const NOUNS = () => (
           ["der Kollege", "kolega", "der Polizist", "policajac"],
           ["der Neffe", "nećak", "der Praktikant", "praktikant"],
           ["der Mensch", "čovek", "der Psychologe", "psiholog"],
-          ["der Herr", "gospodin (jednina -n, množina -en)", "der Name", "ime (Genitiv: des Namens)"],
+          [
+            "der Herr",
+            "gospodin (jednina -n, množina -en)",
+            "der Name",
+            "ime (Genitiv: des Namens)",
+          ],
         ]}
       />
       <Examples
@@ -418,11 +416,7 @@ const NOUNS = () => (
         items={[
           ["das Haus + die Tür → *die* Haustür", "kućna vrata"],
           ["die Arbeit + das Zimmer → *das* Arbeitszimmer", "radna soba"],
-          [
-            "der Geburtstag*s*kuchen",
-            "rođendanska torta",
-            "spojno -s-",
-          ],
+          ["der Geburtstag*s*kuchen", "rođendanska torta", "spojno -s-"],
         ]}
       />
     </Block>
@@ -506,7 +500,9 @@ const PRONOUNS = () => (
         -en) nema veze sa vlasnikom, nego se slaže sa *imenicom koja dolazi
         posle*, po njenom rodu i padežu.
       </P>
-      <Formula>ihr *+* em *+* Geburtstag → čije: njen · nastavak: Dativ muški</Formula>
+      <Formula>
+        ihr *+* em *+* Geburtstag → čije: njen · nastavak: Dativ muški
+      </Formula>
       <P>
         Zato ista osnova ihr- daje različite oblike, iako značenje „njen“ ostaje
         isto:
@@ -520,10 +516,34 @@ const PRONOUNS = () => (
           "množina: die Kinder",
         ]}
         rows={[
-          ["Nominativ", "ihr Vater", "ihr*e* Mutter", "ihr Kind", "ihr*e* Kinder"],
-          ["Akkusativ", "ihr*en* Vater", "ihr*e* Mutter", "ihr Kind", "ihr*e* Kinder"],
-          ["Dativ", "ihr*em* Vater", "ihr*er* Mutter", "ihr*em* Kind", "ihr*en* Kindern"],
-          ["Genitiv", "ihr*es* Vaters", "ihr*er* Mutter", "ihr*es* Kindes", "ihr*er* Kinder"],
+          [
+            "Nominativ",
+            "ihr Vater",
+            "ihr*e* Mutter",
+            "ihr Kind",
+            "ihr*e* Kinder",
+          ],
+          [
+            "Akkusativ",
+            "ihr*en* Vater",
+            "ihr*e* Mutter",
+            "ihr Kind",
+            "ihr*e* Kinder",
+          ],
+          [
+            "Dativ",
+            "ihr*em* Vater",
+            "ihr*er* Mutter",
+            "ihr*em* Kind",
+            "ihr*en* Kindern",
+          ],
+          [
+            "Genitiv",
+            "ihr*es* Vaters",
+            "ihr*er* Mutter",
+            "ihr*es* Kindes",
+            "ihr*er* Kinder",
+          ],
         ]}
       />
       <P>
@@ -540,10 +560,9 @@ const PRONOUNS = () => (
         ]}
       />
       <Note title="Najčešća greška" tone="trap">
-        Nastavak *nikad* ne pokazuje pol vlasnika. Ne kaže se „ihre
-        Geburtstag“ zato što je vlasnik žensko: Geburtstag je muški rod, pa
-        posle seit ide *ihrem*. Rod vlasnika vidi se samo u osnovi, sein- ili
-        ihr-.
+        Nastavak *nikad* ne pokazuje pol vlasnika. Ne kaže se „ihre Geburtstag“
+        zato što je vlasnik žensko: Geburtstag je muški rod, pa posle seit ide
+        *ihrem*. Rod vlasnika vidi se samo u osnovi, sein- ili ihr-.
       </Note>
     </Block>
 
@@ -576,7 +595,11 @@ const PRONOUNS = () => (
         </P>
         <Examples
           items={[
-            ["*Es* regnet. *Es* ist kalt.", "Pada kiša. Hladno je.", "bezlično"],
+            [
+              "*Es* regnet. *Es* ist kalt.",
+              "Pada kiša. Hladno je.",
+              "bezlično",
+            ],
             ["*Es* gibt hier kein Wasser.", "Ovde nema vode.", "es gibt"],
             [
               "Wo ist das Buch? *Es* liegt dort.",
@@ -720,12 +743,7 @@ const ADJECTIVES = () => (
             "Das Auto ist *neu*.",
             "Auto je nov.",
           ],
-          [
-            "kao prilog uz glagol",
-            "*ne*",
-            "Er singt *gut*.",
-            "On dobro peva.",
-          ],
+          ["kao prilog uz glagol", "*ne*", "Er singt *gut*.", "On dobro peva."],
           [
             "kao imenica",
             "*da*, i piše se veliko",
@@ -744,10 +762,28 @@ const ADJECTIVES = () => (
       <GTable
         head={["", "muški", "ženski", "srednji", "množina"]}
         rows={[
-          ["Nominativ", "der gut*e*", "die gut*e*", "das gut*e*", "die gut*en*"],
-          ["Akkusativ", "den gut*en*", "die gut*e*", "das gut*e*", "die gut*en*"],
+          [
+            "Nominativ",
+            "der gut*e*",
+            "die gut*e*",
+            "das gut*e*",
+            "die gut*en*",
+          ],
+          [
+            "Akkusativ",
+            "den gut*en*",
+            "die gut*e*",
+            "das gut*e*",
+            "die gut*en*",
+          ],
           ["Dativ", "dem gut*en*", "der gut*en*", "dem gut*en*", "den gut*en*"],
-          ["Genitiv", "des gut*en*", "der gut*en*", "des gut*en*", "der gut*en*"],
+          [
+            "Genitiv",
+            "des gut*en*",
+            "der gut*en*",
+            "des gut*en*",
+            "der gut*en*",
+          ],
         ]}
       />
       <P>
@@ -760,10 +796,34 @@ const ADJECTIVES = () => (
       <GTable
         head={["", "muški", "ženski", "srednji", "množina"]}
         rows={[
-          ["Nominativ", "ein gut*er*", "eine gut*e*", "ein gut*es*", "keine gut*en*"],
-          ["Akkusativ", "einen gut*en*", "eine gut*e*", "ein gut*es*", "keine gut*en*"],
-          ["Dativ", "einem gut*en*", "einer gut*en*", "einem gut*en*", "keinen gut*en*"],
-          ["Genitiv", "eines gut*en*", "einer gut*en*", "eines gut*en*", "keiner gut*en*"],
+          [
+            "Nominativ",
+            "ein gut*er*",
+            "eine gut*e*",
+            "ein gut*es*",
+            "keine gut*en*",
+          ],
+          [
+            "Akkusativ",
+            "einen gut*en*",
+            "eine gut*e*",
+            "ein gut*es*",
+            "keine gut*en*",
+          ],
+          [
+            "Dativ",
+            "einem gut*en*",
+            "einer gut*en*",
+            "einem gut*en*",
+            "keinen gut*en*",
+          ],
+          [
+            "Genitiv",
+            "eines gut*en*",
+            "einer gut*en*",
+            "eines gut*en*",
+            "keiner gut*en*",
+          ],
         ]}
       />
       <P>
@@ -776,10 +836,34 @@ const ADJECTIVES = () => (
       <GTable
         head={["", "muški", "ženski", "srednji", "množina"]}
         rows={[
-          ["Nominativ", "gut*er* Wein", "gut*e* Milch", "gut*es* Bier", "gut*e* Weine"],
-          ["Akkusativ", "gut*en* Wein", "gut*e* Milch", "gut*es* Bier", "gut*e* Weine"],
-          ["Dativ", "gut*em* Wein", "gut*er* Milch", "gut*em* Bier", "gut*en* Weinen"],
-          ["Genitiv", "gut*en* Weines", "gut*er* Milch", "gut*en* Bieres", "gut*er* Weine"],
+          [
+            "Nominativ",
+            "gut*er* Wein",
+            "gut*e* Milch",
+            "gut*es* Bier",
+            "gut*e* Weine",
+          ],
+          [
+            "Akkusativ",
+            "gut*en* Wein",
+            "gut*e* Milch",
+            "gut*es* Bier",
+            "gut*e* Weine",
+          ],
+          [
+            "Dativ",
+            "gut*em* Wein",
+            "gut*er* Milch",
+            "gut*em* Bier",
+            "gut*en* Weinen",
+          ],
+          [
+            "Genitiv",
+            "gut*en* Weines",
+            "gut*er* Milch",
+            "gut*en* Bieres",
+            "gut*er* Weine",
+          ],
         ]}
       />
       <P>
@@ -863,13 +947,15 @@ const ADJECTIVES = () => (
     </Block>
 
     <Block title="Kako da sastaviš frazu">
-      <P>
-        Primer: hoćeš da kažeš „dao sam to staroj ženi“. Ide u tri koraka.
-      </P>
+      <P>Primer: hoćeš da kažeš „dao sam to staroj ženi“. Ide u tri koraka.</P>
       <GTable
         head={["Korak", "Pitanje", "Odgovor"]}
         rows={[
-          ["1. padež", "šta traži glagol ili predlog?", "geben traži *Dativ* za osobu"],
+          [
+            "1. padež",
+            "šta traži glagol ili predlog?",
+            "geben traži *Dativ* za osobu",
+          ],
           ["2. rod", "koji je rod imenice?", "die Frau, dakle *ženski*"],
           ["3. polje u tabeli", "Dativ + ženski", "*der* alt*en* Frau"],
         ]}
@@ -962,9 +1048,21 @@ const ADJECTIVES = () => (
       <GTable
         head={["Pravilo", "Brojevi", "Primeri"]}
         rows={[
-          ["od 2 do 19 dodaješ *-te*", "2, 4, 5, 6, 9, 10, 12", "zwei*te*, vier*te*, fünf*te*, zehn*te*, zwölf*te*"],
-          ["od 20 naviše dodaješ *-ste*", "20, 21, 30, 100", "zwanzig*ste*, einundzwanzig*ste*, hundert*ste*"],
-          ["nepravilni", "1, 3, 7, 8", "*erste*, *dritte*, *siebte*, *achte* (jedno t)"],
+          [
+            "od 2 do 19 dodaješ *-te*",
+            "2, 4, 5, 6, 9, 10, 12",
+            "zwei*te*, vier*te*, fünf*te*, zehn*te*, zwölf*te*",
+          ],
+          [
+            "od 20 naviše dodaješ *-ste*",
+            "20, 21, 30, 100",
+            "zwanzig*ste*, einundzwanzig*ste*, hundert*ste*",
+          ],
+          [
+            "nepravilni",
+            "1, 3, 7, 8",
+            "*erste*, *dritte*, *siebte*, *achte* (jedno t)",
+          ],
         ]}
       />
       <Note title="Zašto ihrem zweiten" tone="remember">
@@ -993,16 +1091,8 @@ const ADJECTIVES = () => (
             "Stanujem na trećem spratu.",
             "Dativ posle in dem",
           ],
-          [
-            "*am dritten* Oktober",
-            "trećeg oktobra",
-            "datum ide u dativ",
-          ],
-          [
-            "Heute ist *der fünfte* Mai.",
-            "Danas je peti maj.",
-            "Nominativ",
-          ],
+          ["*am dritten* Oktober", "trećeg oktobra", "datum ide u dativ"],
+          ["Heute ist *der fünfte* Mai.", "Danas je peti maj.", "Nominativ"],
         ]}
       />
       <Note title="Datumi" tone="tip">
@@ -1099,7 +1189,10 @@ const ADJECTIVES = () => (
         items={[
           ["*der Deutsche* / *ein Deutscher*", "Nemac"],
           ["*die Bekannte* / *eine Bekannte*", "poznanica"],
-          ["etwas *Neues*, nichts *Gutes*, viel *Interessantes*", "nešto novo, ništa dobro, mnogo zanimljivog"],
+          [
+            "etwas *Neues*, nichts *Gutes*, viel *Interessantes*",
+            "nešto novo, ništa dobro, mnogo zanimljivog",
+          ],
           ["Alles *Gute* zum Geburtstag!", "Sve najbolje za rođendan!"],
         ]}
       />
@@ -1113,9 +1206,7 @@ const COMPARISON = () => (
     lead="Komparativ se gradi nastavkom -er, superlativ oblikom am ...-sten. Nepravilnih ima svega nekoliko i oni pokrivaju najveći deo svakodnevnog govora."
   >
     <Block title="Kako se gradi">
-      <Formula>
-        pozitiv → komparativ *-er* → superlativ *am ...-sten*
-      </Formula>
+      <Formula>pozitiv → komparativ *-er* → superlativ *am ...-sten*</Formula>
       <GTable
         head={["Pozitiv", "Komparativ", "Superlativ", "srpski"]}
         rows={[
@@ -1171,10 +1262,7 @@ const COMPARISON = () => (
             "Ich trinke *lieber* Tee als Kaffee.",
             "Radije pijem čaj nego kafu.",
           ],
-          [
-            "Am *liebsten* bleibe ich zu Hause.",
-            "Najradije ostajem kod kuće.",
-          ],
+          ["Am *liebsten* bleibe ich zu Hause.", "Najradije ostajem kod kuće."],
         ]}
       />
     </Block>
@@ -1391,11 +1479,31 @@ const PREPOSITIONS = () => (
         rows={[
           ["durch", "kroz", "Wir gehen *durch den* Park.", "Idemo kroz park."],
           ["für", "za", "Das ist *für meinen* Bruder.", "To je za mog brata."],
-          ["gegen", "protiv, oko (vreme)", "Ich komme *gegen* 8 Uhr.", "Dolazim oko 8."],
+          [
+            "gegen",
+            "protiv, oko (vreme)",
+            "Ich komme *gegen* 8 Uhr.",
+            "Dolazim oko 8.",
+          ],
           ["ohne", "bez", "Ich gehe *ohne einen* Plan.", "Idem bez plana."],
-          ["um", "oko, u (sat)", "Wir sitzen *um den* Tisch.", "Sedimo oko stola."],
-          ["bis", "do", "Ich bleibe *bis nächsten* Montag.", "Ostajem do sledećeg ponedeljka."],
-          ["entlang", "duž (ide iza imenice)", "Wir gehen die Straße *entlang*.", "Idemo duž ulice."],
+          [
+            "um",
+            "oko, u (sat)",
+            "Wir sitzen *um den* Tisch.",
+            "Sedimo oko stola.",
+          ],
+          [
+            "bis",
+            "do",
+            "Ich bleibe *bis nächsten* Montag.",
+            "Ostajem do sledećeg ponedeljka.",
+          ],
+          [
+            "entlang",
+            "duž (ide iza imenice)",
+            "Wir gehen die Straße *entlang*.",
+            "Idemo duž ulice.",
+          ],
         ]}
       />
     </Block>
@@ -1404,16 +1512,51 @@ const PREPOSITIONS = () => (
       <GTable
         head={["Predlog", "Značenje", "Primer", "srpski"]}
         rows={[
-          ["aus", "iz", "Ich komme *aus der* Schweiz.", "Dolazim iz Švajcarske."],
+          [
+            "aus",
+            "iz",
+            "Ich komme *aus der* Schweiz.",
+            "Dolazim iz Švajcarske.",
+          ],
           ["bei", "kod, pri", "Ich bin *bei meinem* Freund.", "Kod druga sam."],
           ["mit", "sa", "Ich fahre *mit dem* Auto.", "Idem autom."],
-          ["nach", "posle, ka (grad ili zemlja)", "*Nach dem* Essen schlafe ich.", "Posle jela spavam."],
-          ["seit", "od (traje do sada)", "Ich wohne hier *seit einem* Jahr.", "Živim ovde godinu dana."],
+          [
+            "nach",
+            "posle, ka (grad ili zemlja)",
+            "*Nach dem* Essen schlafe ich.",
+            "Posle jela spavam.",
+          ],
+          [
+            "seit",
+            "od (traje do sada)",
+            "Ich wohne hier *seit einem* Jahr.",
+            "Živim ovde godinu dana.",
+          ],
           ["von", "od", "Das ist *von meiner* Mutter.", "To je od moje majke."],
-          ["zu", "ka, kod (osoba ili ustanova)", "Ich gehe *zum* Arzt.", "Idem kod lekara."],
-          ["gegenüber", "preko puta", "Er wohnt *dem* Bahnhof *gegenüber*.", "Stanuje preko puta stanice."],
-          ["ab", "od (nadalje)", "*Ab* Montag arbeite ich.", "Od ponedeljka radim."],
-          ["außer", "osim", "Alle *außer mir* sind da.", "Svi osim mene su tu."],
+          [
+            "zu",
+            "ka, kod (osoba ili ustanova)",
+            "Ich gehe *zum* Arzt.",
+            "Idem kod lekara.",
+          ],
+          [
+            "gegenüber",
+            "preko puta",
+            "Er wohnt *dem* Bahnhof *gegenüber*.",
+            "Stanuje preko puta stanice.",
+          ],
+          [
+            "ab",
+            "od (nadalje)",
+            "*Ab* Montag arbeite ich.",
+            "Od ponedeljka radim.",
+          ],
+          [
+            "außer",
+            "osim",
+            "Alle *außer mir* sind da.",
+            "Svi osim mene su tu.",
+          ],
         ]}
       />
     </Block>
@@ -1425,7 +1568,13 @@ const PREPOSITIONS = () => (
         jeste) → Dativ.
       </P>
       <GTable
-        head={["Predlog", "wohin? (Akkusativ)", "srpski", "wo? (Dativ)", "srpski"]}
+        head={[
+          "Predlog",
+          "wohin? (Akkusativ)",
+          "srpski",
+          "wo? (Dativ)",
+          "srpski",
+        ]}
         rows={[
           [
             "in",
@@ -1478,10 +1627,25 @@ const PREPOSITIONS = () => (
           ["wegen", "zbog", "*wegen des* Wetter*s*", "zbog vremena"],
           ["während", "tokom", "*während der* Ferien", "tokom raspusta"],
           ["trotz", "uprkos", "*trotz des* Regen*s*", "uprkos kiši"],
-          ["statt / anstatt", "umesto", "*statt eines* Anruf*s*", "umesto poziva"],
+          [
+            "statt / anstatt",
+            "umesto",
+            "*statt eines* Anruf*s*",
+            "umesto poziva",
+          ],
           ["außerhalb", "izvan", "*außerhalb der* Stadt", "izvan grada"],
-          ["innerhalb", "unutar, u roku od", "*innerhalb einer* Woche", "u roku od nedelju dana"],
-          ["aufgrund", "na osnovu, usled", "*aufgrund der* Krise", "usled krize"],
+          [
+            "innerhalb",
+            "unutar, u roku od",
+            "*innerhalb einer* Woche",
+            "u roku od nedelju dana",
+          ],
+          [
+            "aufgrund",
+            "na osnovu, usled",
+            "*aufgrund der* Krise",
+            "usled krize",
+          ],
           ["laut", "prema (izvoru)", "*laut des* Berichts", "prema izveštaju"],
         ]}
       />
@@ -1512,12 +1676,42 @@ const PREPOSITIONS = () => (
       <GTable
         head={["Kada", "Predlog", "Primer", "srpski"]}
         rows={[
-          ["gradovi i zemlje bez člana", "nach", "Ich fliege *nach* Wien.", "Letim za Beč."],
-          ["zemlje sa članom", "in + Akkusativ", "Ich fahre *in die* Türkei.", "Idem u Tursku."],
-          ["osobe i ustanove (cilj)", "zu", "Ich gehe *zum* Arzt.", "Idem kod lekara."],
-          ["osobe i ustanove (gde si)", "bei", "Ich bin *beim* Arzt.", "Kod lekara sam."],
-          ["ulazak u prostor", "in + Akkusativ", "Ich gehe *ins* Kino.", "Idem u bioskop."],
-          ["kuća", "nach / zu", "*nach* Hause / *zu* Hause", "kući (idem) / kod kuće (jesam)"],
+          [
+            "gradovi i zemlje bez člana",
+            "nach",
+            "Ich fliege *nach* Wien.",
+            "Letim za Beč.",
+          ],
+          [
+            "zemlje sa članom",
+            "in + Akkusativ",
+            "Ich fahre *in die* Türkei.",
+            "Idem u Tursku.",
+          ],
+          [
+            "osobe i ustanove (cilj)",
+            "zu",
+            "Ich gehe *zum* Arzt.",
+            "Idem kod lekara.",
+          ],
+          [
+            "osobe i ustanove (gde si)",
+            "bei",
+            "Ich bin *beim* Arzt.",
+            "Kod lekara sam.",
+          ],
+          [
+            "ulazak u prostor",
+            "in + Akkusativ",
+            "Ich gehe *ins* Kino.",
+            "Idem u bioskop.",
+          ],
+          [
+            "kuća",
+            "nach / zu",
+            "*nach* Hause / *zu* Hause",
+            "kući (idem) / kod kuće (jesam)",
+          ],
         ]}
       />
     </Block>
@@ -1526,25 +1720,55 @@ const PREPOSITIONS = () => (
       <GTable
         head={["Izraz", "Za šta", "Primer", "srpski"]}
         rows={[
-          ["am", "dani i delovi dana", "*am* Montag, *am* Abend", "u ponedeljak, uveče"],
-          ["im", "meseci i godišnja doba", "*im* Januar, *im* Sommer", "u januaru, leti"],
+          [
+            "am",
+            "dani i delovi dana",
+            "*am* Montag, *am* Abend",
+            "u ponedeljak, uveče",
+          ],
+          [
+            "im",
+            "meseci i godišnja doba",
+            "*im* Januar, *im* Sommer",
+            "u januaru, leti",
+          ],
           ["um", "tačan sat", "*um* 8 Uhr", "u 8 sati"],
-          ["in + Dativ", "za koliko vremena", "*in* einer Woche", "za nedelju dana"],
-          ["vor + Dativ", "pre koliko vremena", "*vor* zwei Jahren", "pre dve godine"],
+          [
+            "in + Dativ",
+            "za koliko vremena",
+            "*in* einer Woche",
+            "za nedelju dana",
+          ],
+          [
+            "vor + Dativ",
+            "pre koliko vremena",
+            "*vor* zwei Jahren",
+            "pre dve godine",
+          ],
           ["seit + Dativ", "od kada traje", "*seit* 2020", "od 2020."],
           ["ab", "od kada nadalje", "*ab* Montag", "od ponedeljka"],
           ["bis", "do kada", "*bis* Freitag", "do petka"],
-          ["während + Genitiv", "tokom", "*während* der Ferien", "tokom raspusta"],
-          ["bez predloga (Akkusativ)", "trajanje i tačan dan", "*jeden* Tag, *letzten* Montag", "svaki dan, prošlog ponedeljka"],
+          [
+            "während + Genitiv",
+            "tokom",
+            "*während* der Ferien",
+            "tokom raspusta",
+          ],
+          [
+            "bez predloga (Akkusativ)",
+            "trajanje i tačan dan",
+            "*jeden* Tag, *letzten* Montag",
+            "svaki dan, prošlog ponedeljka",
+          ],
         ]}
       />
       <Note title="Izuzetak" tone="warn">
         *in der* Nacht, ne „am Nacht“.
       </Note>
       <Note title="U Austriji" tone="austria">
-        Prvi mesec se zove *Jänner*, ne Januar. To je zvanični austrijski
-        oblik, i tako stoji na dokumentima i u kalendaru. Za februar se pored
-        Februar sreće i *Feber*, uglavnom u zvaničnom jeziku.
+        Prvi mesec se zove *Jänner*, ne Januar. To je zvanični austrijski oblik,
+        i tako stoji na dokumentima i u kalendaru. Za februar se pored Februar
+        sreće i *Feber*, uglavnom u zvaničnom jeziku.
       </Note>
     </Block>
 
@@ -1557,30 +1781,110 @@ const PREPOSITIONS = () => (
         head={["Glagol + predlog", "Padež", "srpski", "Primer"]}
         rows={[
           ["warten auf", "Akk", "čekati nekoga", "Ich warte *auf den* Bus."],
-          ["sich freuen auf", "Akk", "radovati se nečemu što dolazi", "Ich freue mich *auf* den Urlaub."],
-          ["sich freuen über", "Akk", "radovati se nečemu što se desilo", "Ich freue mich *über* das Geschenk."],
+          [
+            "sich freuen auf",
+            "Akk",
+            "radovati se nečemu što dolazi",
+            "Ich freue mich *auf* den Urlaub.",
+          ],
+          [
+            "sich freuen über",
+            "Akk",
+            "radovati se nečemu što se desilo",
+            "Ich freue mich *über* das Geschenk.",
+          ],
           ["denken an", "Akk", "misliti na", "Ich denke *an dich*."],
-          ["sich erinnern an", "Akk", "sećati se", "Erinnerst du dich *an* ihn?"],
-          ["sich gewöhnen an", "Akk", "navikavati se na", "Ich gewöhne mich *an* das Wetter."],
-          ["sich interessieren für", "Akk", "zanimati se za", "Er interessiert sich *für* Musik."],
-          ["sich kümmern um", "Akk", "brinuti se o", "Sie kümmert sich *um* die Kinder."],
-          ["sich bewerben um / bei", "Akk / Dat", "konkurisati za / kod", "Ich bewerbe mich *um* die Stelle."],
+          [
+            "sich erinnern an",
+            "Akk",
+            "sećati se",
+            "Erinnerst du dich *an* ihn?",
+          ],
+          [
+            "sich gewöhnen an",
+            "Akk",
+            "navikavati se na",
+            "Ich gewöhne mich *an* das Wetter.",
+          ],
+          [
+            "sich interessieren für",
+            "Akk",
+            "zanimati se za",
+            "Er interessiert sich *für* Musik.",
+          ],
+          [
+            "sich kümmern um",
+            "Akk",
+            "brinuti se o",
+            "Sie kümmert sich *um* die Kinder.",
+          ],
+          [
+            "sich bewerben um / bei",
+            "Akk / Dat",
+            "konkurisati za / kod",
+            "Ich bewerbe mich *um* die Stelle.",
+          ],
           ["achten auf", "Akk", "paziti na", "Achte *auf* deine Sachen!"],
-          ["sich verlassen auf", "Akk", "osloniti se na", "Ich verlasse mich *auf dich*."],
+          [
+            "sich verlassen auf",
+            "Akk",
+            "osloniti se na",
+            "Ich verlasse mich *auf dich*.",
+          ],
           ["bitten um", "Akk", "moliti za", "Ich bitte *um* Hilfe."],
           ["danken für", "Akk", "zahvaliti za", "Ich danke dir *für* alles."],
-          ["sich ärgern über", "Akk", "ljutiti se zbog", "Ich ärgere mich *über* den Lärm."],
-          ["sich beschweren über", "Akk", "žaliti se na", "Er beschwert sich *über* das Essen."],
-          ["teilnehmen an", "Dat", "učestvovati u", "Ich nehme *am* Kurs teil."],
+          [
+            "sich ärgern über",
+            "Akk",
+            "ljutiti se zbog",
+            "Ich ärgere mich *über* den Lärm.",
+          ],
+          [
+            "sich beschweren über",
+            "Akk",
+            "žaliti se na",
+            "Er beschwert sich *über* das Essen.",
+          ],
+          [
+            "teilnehmen an",
+            "Dat",
+            "učestvovati u",
+            "Ich nehme *am* Kurs teil.",
+          ],
           ["gehören zu", "Dat", "spadati u", "Das gehört *zu* meiner Arbeit."],
           ["leiden unter", "Dat", "patiti od", "Er leidet *unter* Stress."],
-          ["bestehen aus", "Dat", "sastojati se od", "Das Team besteht *aus* fünf Leuten."],
+          [
+            "bestehen aus",
+            "Dat",
+            "sastojati se od",
+            "Das Team besteht *aus* fünf Leuten.",
+          ],
           ["zweifeln an", "Dat", "sumnjati u", "Ich zweifle *an* der Idee."],
           ["abhängen von", "Dat", "zavisiti od", "Das hängt *vom* Wetter ab."],
-          ["anfangen mit", "Dat", "početi sa", "Ich fange *mit* der Arbeit an."],
-          ["aufhören mit", "Dat", "prestati sa", "Er hört *mit* dem Rauchen auf."],
-          ["sprechen über / von", "Akk / Dat", "govoriti o", "Wir sprechen *über* das Projekt."],
-          ["sich handeln um", "Akk", "raditi se o", "Es handelt sich *um* einen Fehler."],
+          [
+            "anfangen mit",
+            "Dat",
+            "početi sa",
+            "Ich fange *mit* der Arbeit an.",
+          ],
+          [
+            "aufhören mit",
+            "Dat",
+            "prestati sa",
+            "Er hört *mit* dem Rauchen auf.",
+          ],
+          [
+            "sprechen über / von",
+            "Akk / Dat",
+            "govoriti o",
+            "Wir sprechen *über* das Projekt.",
+          ],
+          [
+            "sich handeln um",
+            "Akk",
+            "raditi se o",
+            "Es handelt sich *um* einen Fehler.",
+          ],
         ]}
       />
     </Block>
@@ -1677,8 +1981,14 @@ const VERBS = () => (
             ["Ich *rufe* dich morgen *an*.", "Zvaću te sutra."],
             ["Der Zug *kommt* um 8 Uhr *an*.", "Voz stiže u 8."],
             ["Ich habe dich *angerufen*.", "Zvao sam te. (ge- ide u sredinu)"],
-            ["Ich versuche, dich *anzurufen*.", "Pokušavam da te nazovem. (zu u sredini)"],
-            ["Ich weiß, dass er heute *ankommt*.", "Znam da danas stiže. (u zavisnoj ostaje spojen)"],
+            [
+              "Ich versuche, dich *anzurufen*.",
+              "Pokušavam da te nazovem. (zu u sredini)",
+            ],
+            [
+              "Ich weiß, dass er heute *ankommt*.",
+              "Znam da danas stiže. (u zavisnoj ostaje spojen)",
+            ],
           ]}
         />
       </Block>
@@ -1690,9 +2000,18 @@ const VERBS = () => (
         </P>
         <Examples
           items={[
-            ["Ich *besuche* meine Oma. → Ich habe sie *besucht*.", "Posećujem baku. → Posetio sam je."],
-            ["Er *verkauft* das Auto. → Er hat es *verkauft*.", "Prodaje auto. → Prodao ga je."],
-            ["Sie *erklärt* die Regel. → Sie hat sie *erklärt*.", "Objašnjava pravilo. → Objasnila ga je."],
+            [
+              "Ich *besuche* meine Oma. → Ich habe sie *besucht*.",
+              "Posećujem baku. → Posetio sam je.",
+            ],
+            [
+              "Er *verkauft* das Auto. → Er hat es *verkauft*.",
+              "Prodaje auto. → Prodao ga je.",
+            ],
+            [
+              "Sie *erklärt* die Regel. → Sie hat sie *erklärt*.",
+              "Objašnjava pravilo. → Objasnila ga je.",
+            ],
           ]}
         />
         <Note title="Još jedan izuzetak" tone="warn">
@@ -1706,9 +2025,24 @@ const VERBS = () => (
       <GTable
         head={["Kome", "Kako se gradi", "Primer", "srpski"]}
         rows={[
-          ["du", "osnova bez nastavka, bez zamenice", "*Komm!* *Geh!* *Warte!*", "Dođi! Idi! Čekaj!"],
-          ["ihr", "oblik za ihr, bez zamenice", "*Kommt!* *Geht!*", "Dođite! Idite!"],
-          ["Sie", "infinitiv + Sie", "*Kommen Sie!* *Gehen Sie!*", "Dođite! Idite! (učtivo)"],
+          [
+            "du",
+            "osnova bez nastavka, bez zamenice",
+            "*Komm!* *Geh!* *Warte!*",
+            "Dođi! Idi! Čekaj!",
+          ],
+          [
+            "ihr",
+            "oblik za ihr, bez zamenice",
+            "*Kommt!* *Geht!*",
+            "Dođite! Idite!",
+          ],
+          [
+            "Sie",
+            "infinitiv + Sie",
+            "*Kommen Sie!* *Gehen Sie!*",
+            "Dođite! Idite! (učtivo)",
+          ],
           ["wir (predlog)", "infinitiv + wir", "*Gehen wir!*", "Hajdemo!"],
         ]}
       />
@@ -1794,9 +2128,21 @@ const PRESENT = () => (
       <GTable
         head={["Upotreba", "Primer", "srpski"]}
         rows={[
-          ["radnja sada", "Ich *lese* gerade ein Buch.", "Upravo čitam knjigu."],
-          ["navika i ponavljanje", "Ich *stehe* jeden Tag um 7 auf.", "Ustajem svaki dan u 7."],
-          ["opšta istina", "Wasser *kocht* bei 100 Grad.", "Voda ključa na 100 stepeni."],
+          [
+            "radnja sada",
+            "Ich *lese* gerade ein Buch.",
+            "Upravo čitam knjigu.",
+          ],
+          [
+            "navika i ponavljanje",
+            "Ich *stehe* jeden Tag um 7 auf.",
+            "Ustajem svaki dan u 7.",
+          ],
+          [
+            "opšta istina",
+            "Wasser *kocht* bei 100 Grad.",
+            "Voda ključa na 100 stepeni.",
+          ],
           [
             "budućnost sa odredbom",
             "Morgen *fahre* ich nach Berlin.",
@@ -1819,7 +2165,12 @@ const PRESENT = () => (
     <Cols>
       <Block title="Präsens: pravilni">
         <GTable
-          head={["Lice", "lernen (učiti)", "arbeiten (raditi)", "heißen (zvati se)"]}
+          head={[
+            "Lice",
+            "lernen (učiti)",
+            "arbeiten (raditi)",
+            "heißen (zvati se)",
+          ]}
           rows={[
             ["ich", "lern*e*", "arbeit*e*", "heiß*e*"],
             ["du", "lern*st*", "arbeit*est*", "heiß*t*"],
@@ -1880,7 +2231,9 @@ const PERFECT = () => (
     lead="Prošlo vreme govornog nemačkog. Sastoji se od dva dela: pomoćni glagol na drugom mestu i particip na kraju rečenice."
   >
     <Block title="Kada se koristi">
-      <Formula>*haben* ili *sein* na 2. mestu + ... + *Partizip II* na kraju</Formula>
+      <Formula>
+        *haben* ili *sein* na 2. mestu + ... + *Partizip II* na kraju
+      </Formula>
       <Bullets
         items={[
           "Sve što pričaš o prošlosti u razgovoru, mejlu ili poruci.",
@@ -1987,7 +2340,11 @@ const PRETERITE = () => (
         head={["Situacija", "Primer", "srpski"]}
         rows={[
           ["priče, romani, vesti", "Er *ging* nach Hause.", "Otišao je kući."],
-          ["formalno pisanje i izveštaji", "Die Firma *stellte* zehn Leute ein.", "Firma je zaposlila deset ljudi."],
+          [
+            "formalno pisanje i izveštaji",
+            "Die Firma *stellte* zehn Leute ein.",
+            "Firma je zaposlila deset ljudi.",
+          ],
           [
             "sein, haben i modali, i u govoru",
             "Ich *war* müde. Ich *hatte* keine Zeit.",
@@ -2001,12 +2358,12 @@ const PRETERITE = () => (
         ]}
       />
       <Note title="U govoru" tone="tip">
-        Ako nisi siguran, u razgovoru uzmi Perfekt. Präteritum od običnih glagola
-        (ich arbeitete) u govoru zvuči knjiški.
+        Ako nisi siguran, u razgovoru uzmi Perfekt. Präteritum od običnih
+        glagola (ich arbeitete) u govoru zvuči knjiški.
       </Note>
       <Note title="U Austriji" tone="austria">
-        Präteritum se u govoru gotovo i ne čuje, više nego u Nemačkoj. Čak i
-        war i hatte često ustupe mesto Perfektu: *ich bin gewesen*, *ich habe
+        Präteritum se u govoru gotovo i ne čuje, više nego u Nemačkoj. Čak i war
+        i hatte često ustupe mesto Perfektu: *ich bin gewesen*, *ich habe
         gehabt*. U pisanju ostaje isto pravilo kao svuda.
       </Note>
     </Block>
@@ -2023,17 +2380,32 @@ const PRETERITE = () => (
         ]}
         rows={[
           ["ich", "mach*te*", "ging", "war", "hatte", "konnte"],
-          ["du", "mach*test*", "ging*st*", "war*st*", "hatte*st*", "konnte*st*"],
+          [
+            "du",
+            "mach*test*",
+            "ging*st*",
+            "war*st*",
+            "hatte*st*",
+            "konnte*st*",
+          ],
           ["er / sie / es", "mach*te*", "ging", "war", "hatte", "konnte"],
           ["wir", "mach*ten*", "ging*en*", "war*en*", "hatte*n*", "konnte*n*"],
           ["ihr", "mach*tet*", "ging*t*", "war*t*", "hatte*t*", "konnte*t*"],
-          ["sie / Sie", "mach*ten*", "ging*en*", "war*en*", "hatte*n*", "konnte*n*"],
+          [
+            "sie / Sie",
+            "mach*ten*",
+            "ging*en*",
+            "war*en*",
+            "hatte*n*",
+            "konnte*n*",
+          ],
         ]}
       />
       <P>
         Prvo i treće lice jednine su *ista* u svim vremenima osim Präsensa, a u
-        Präsensu se poklapaju kod modalnih glagola (ich kann, er kann). Modali u Präteritumu gube Umlaut: können → konnte, müssen →
-        musste, dürfen → durfte, mögen → mochte.
+        Präsensu se poklapaju kod modalnih glagola (ich kann, er kann). Modali u
+        Präteritumu gube Umlaut: können → konnte, müssen → musste, dürfen →
+        durfte, mögen → mochte.
       </P>
     </Block>
 
@@ -2098,8 +2470,16 @@ const PLUPERFECT = () => (
       <GTable
         head={["Perfekt", "Plusquamperfekt", "srpski"]}
         rows={[
-          ["ich *habe* gearbeitet", "ich *hatte* gearbeitet", "radio sam → bio sam radio"],
-          ["ich *bin* gegangen", "ich *war* gegangen", "otišao sam → bio sam otišao"],
+          [
+            "ich *habe* gearbeitet",
+            "ich *hatte* gearbeitet",
+            "radio sam → bio sam radio",
+          ],
+          [
+            "ich *bin* gegangen",
+            "ich *war* gegangen",
+            "otišao sam → bio sam otišao",
+          ],
         ]}
       />
       <Examples
@@ -2141,11 +2521,7 @@ const FUTURE = () => (
             "Ich *werde* dich morgen *anrufen*.",
             "Nazvaću te sutra.",
           ],
-          [
-            "predviđanje",
-            "Es *wird* bald *regnen*.",
-            "Uskoro će padati kiša.",
-          ],
+          ["predviđanje", "Es *wird* bald *regnen*.", "Uskoro će padati kiša."],
           [
             "pretpostavka o sadašnjosti",
             "Er *wird* wohl krank *sein*.",
@@ -2262,7 +2638,9 @@ const PASSIVE = () => (
     </Block>
 
     <Block title="Kako se pravi">
-      <Formula>*werden* (menja se po licu i vremenu) + *Partizip II* na kraju</Formula>
+      <Formula>
+        *werden* (menja se po licu i vremenu) + *Partizip II* na kraju
+      </Formula>
       <P>
         Akkusativ objekat iz aktiva postaje subjekat u nominativu. Vršilac se
         dodaje sa *von + Dativ* (osoba) ili *durch + Akkusativ* (sredstvo,
@@ -2270,8 +2648,16 @@ const PASSIVE = () => (
       </P>
       <Examples
         items={[
-          ["Der Mechaniker repariert *das Auto*.", "Mehaničar popravlja auto.", "Aktiv"],
-          ["*Das Auto* wird (*vom* Mechaniker) repariert.", "Auto se popravlja (od strane mehaničara).", "Pasiv"],
+          [
+            "Der Mechaniker repariert *das Auto*.",
+            "Mehaničar popravlja auto.",
+            "Aktiv",
+          ],
+          [
+            "*Das Auto* wird (*vom* Mechaniker) repariert.",
+            "Auto se popravlja (od strane mehaničara).",
+            "Pasiv",
+          ],
         ]}
       />
     </Block>
@@ -2280,11 +2666,36 @@ const PASSIVE = () => (
       <GTable
         head={["Vreme", "Oblik", "Primer", "srpski"]}
         rows={[
-          ["Präsens", "wird + Partizip II", "Das Haus *wird gebaut*.", "Kuća se gradi."],
-          ["Präteritum", "wurde + Partizip II", "Das Haus *wurde gebaut*.", "Kuća se gradila."],
-          ["Perfekt", "ist + Partizip II + *worden*", "Das Haus *ist gebaut worden*.", "Kuća je izgrađena."],
-          ["Plusquamperfekt", "war + Partizip II + *worden*", "Das Haus *war gebaut worden*.", "Kuća je bila izgrađena."],
-          ["Futur I", "wird + Partizip II + *werden*", "Das Haus *wird gebaut werden*.", "Kuća će se graditi."],
+          [
+            "Präsens",
+            "wird + Partizip II",
+            "Das Haus *wird gebaut*.",
+            "Kuća se gradi.",
+          ],
+          [
+            "Präteritum",
+            "wurde + Partizip II",
+            "Das Haus *wurde gebaut*.",
+            "Kuća se gradila.",
+          ],
+          [
+            "Perfekt",
+            "ist + Partizip II + *worden*",
+            "Das Haus *ist gebaut worden*.",
+            "Kuća je izgrađena.",
+          ],
+          [
+            "Plusquamperfekt",
+            "war + Partizip II + *worden*",
+            "Das Haus *war gebaut worden*.",
+            "Kuća je bila izgrađena.",
+          ],
+          [
+            "Futur I",
+            "wird + Partizip II + *werden*",
+            "Das Haus *wird gebaut werden*.",
+            "Kuća će se graditi.",
+          ],
         ]}
       />
       <Note title="Zamka" tone="trap">
@@ -2298,9 +2709,18 @@ const PASSIVE = () => (
       <Examples
         items={[
           ["Das Auto *muss repariert werden*.", "Auto mora da se popravi."],
-          ["Die Rechnung *kann* online *bezahlt werden*.", "Račun može da se plati onlajn."],
-          ["Der Antrag *musste* neu *geschrieben werden*.", "Zahtev je morao ponovo da se napiše."],
-          ["Ich weiß, dass das Auto repariert werden *muss*.", "Znam da auto mora da se popravi."],
+          [
+            "Die Rechnung *kann* online *bezahlt werden*.",
+            "Račun može da se plati onlajn.",
+          ],
+          [
+            "Der Antrag *musste* neu *geschrieben werden*.",
+            "Zahtev je morao ponovo da se napiše.",
+          ],
+          [
+            "Ich weiß, dass das Auto repariert werden *muss*.",
+            "Znam da auto mora da se popravi.",
+          ],
         ]}
       />
     </Block>
@@ -2308,14 +2728,17 @@ const PASSIVE = () => (
     <Cols>
       <Block title="Bezlični pasiv">
         <P>
-          Glagoli bez Akkusativ objekta ipak mogu u pasiv, samo bez pravog subjekta.
-          Ako rečenica počinje nečim drugim, es nestaje.
+          Glagoli bez Akkusativ objekta ipak mogu u pasiv, samo bez pravog
+          subjekta. Ako rečenica počinje nečim drugim, es nestaje.
         </P>
         <Examples
           items={[
             ["*Es wird* getanzt.", "Igra se."],
             ["Hier *wird* nicht *geraucht*.", "Ovde se ne puši."],
-            ["Am Wochenende *wird* viel *gearbeitet*.", "Vikendom se mnogo radi."],
+            [
+              "Am Wochenende *wird* viel *gearbeitet*.",
+              "Vikendom se mnogo radi.",
+            ],
           ]}
         />
         <Note title="Dativ ostaje" tone="rule">
@@ -2325,9 +2748,7 @@ const PASSIVE = () => (
       </Block>
 
       <Block title="Zustandspassiv (pasiv stanja)">
-        <P>
-          sein + Partizip II opisuje *rezultat*, a ne radnju u toku.
-        </P>
+        <P>sein + Partizip II opisuje *rezultat*, a ne radnju u toku.</P>
         <Examples
           items={[
             ["Das Fenster *wird geöffnet*.", "Prozor se otvara.", "radnja"],
@@ -2339,18 +2760,46 @@ const PASSIVE = () => (
     </Cols>
 
     <Block title="Zamene za pasiv">
-      <P>
-        Na B2 se traži da isto značenje umeš da izraziš na više načina.
-      </P>
+      <P>Na B2 se traži da isto značenje umeš da izraziš na više načina.</P>
       <GTable
         head={["Konstrukcija", "Značenje", "Primer", "srpski"]}
         rows={[
-          ["*man* + aktiv", "najjednostavnija zamena", "*Man* repariert das Auto.", "Auto se popravlja."],
-          ["*sich lassen* + Infinitiv", "može da se uradi", "Das Auto *lässt sich* reparieren.", "Auto može da se popravi."],
-          ["*sein + zu* + Infinitiv", "može ili mora da se uradi", "Das Auto *ist zu reparieren*.", "Auto treba popraviti."],
-          ["pridev na *-bar*", "izvodljivo", "Das ist *machbar* / *essbar* / *lesbar*.", "To je izvodljivo / jestivo / čitljivo."],
-          ["povratni glagol", "opisuje osobinu", "Das Buch *verkauft sich* gut.", "Knjiga se dobro prodaje."],
-          ["*bekommen / kriegen* + Part. II", "pasiv iz ugla primaoca", "Er *bekommt* das Buch *geschenkt*.", "On dobija knjigu na poklon."],
+          [
+            "*man* + aktiv",
+            "najjednostavnija zamena",
+            "*Man* repariert das Auto.",
+            "Auto se popravlja.",
+          ],
+          [
+            "*sich lassen* + Infinitiv",
+            "može da se uradi",
+            "Das Auto *lässt sich* reparieren.",
+            "Auto može da se popravi.",
+          ],
+          [
+            "*sein + zu* + Infinitiv",
+            "može ili mora da se uradi",
+            "Das Auto *ist zu reparieren*.",
+            "Auto treba popraviti.",
+          ],
+          [
+            "pridev na *-bar*",
+            "izvodljivo",
+            "Das ist *machbar* / *essbar* / *lesbar*.",
+            "To je izvodljivo / jestivo / čitljivo.",
+          ],
+          [
+            "povratni glagol",
+            "opisuje osobinu",
+            "Das Buch *verkauft sich* gut.",
+            "Knjiga se dobro prodaje.",
+          ],
+          [
+            "*bekommen / kriegen* + Part. II",
+            "pasiv iz ugla primaoca",
+            "Er *bekommt* das Buch *geschenkt*.",
+            "On dobija knjigu na poklon.",
+          ],
         ]}
       />
     </Block>
@@ -2396,22 +2845,50 @@ const SUBJUNCTIVE = () => (
       <GTable
         head={["Upotreba", "Primer", "srpski"]}
         rows={[
-          ["nestvarna želja", "*Wenn* ich doch mehr Zeit *hätte*!", "Kad bih bar imao više vremena!"],
-          ["nestvarni uslov", "*Wenn* ich Zeit *hätte*, *würde* ich kommen.", "Da imam vremena, došao bih."],
-          ["učtiva molba", "*Könnten* Sie mir bitte helfen?", "Da li biste mogli da mi pomognete?"],
+          [
+            "nestvarna želja",
+            "*Wenn* ich doch mehr Zeit *hätte*!",
+            "Kad bih bar imao više vremena!",
+          ],
+          [
+            "nestvarni uslov",
+            "*Wenn* ich Zeit *hätte*, *würde* ich kommen.",
+            "Da imam vremena, došao bih.",
+          ],
+          [
+            "učtiva molba",
+            "*Könnten* Sie mir bitte helfen?",
+            "Da li biste mogli da mi pomognete?",
+          ],
           ["učtiva želja", "Ich *hätte* gern einen Kaffee.", "Želeo bih kafu."],
-          ["savet", "An deiner Stelle *würde* ich bleiben.", "Na tvom mestu bih ostao."],
-          ["savet (blaži)", "Du *solltest* mehr schlafen.", "Trebalo bi više da spavaš."],
-          ["pretpostavka", "Das *könnte* stimmen.", "To bi moglo da bude tačno."],
-          ["poređenje", "Er tut so, *als ob* er alles *wüsste*.", "Pravi se kao da sve zna."],
+          [
+            "savet",
+            "An deiner Stelle *würde* ich bleiben.",
+            "Na tvom mestu bih ostao.",
+          ],
+          [
+            "savet (blaži)",
+            "Du *solltest* mehr schlafen.",
+            "Trebalo bi više da spavaš.",
+          ],
+          [
+            "pretpostavka",
+            "Das *könnte* stimmen.",
+            "To bi moglo da bude tačno.",
+          ],
+          [
+            "poređenje",
+            "Er tut so, *als ob* er alles *wüsste*.",
+            "Pravi se kao da sve zna.",
+          ],
         ]}
       />
     </Block>
 
     <Block title="Konjunktiv II u prošlosti">
       <P>
-        Postoji samo jedan oblik za svu prošlost: *hätte* ili *wäre* +
-        Partizip II. Koristi se za ono što se moglo desiti, a nije.
+        Postoji samo jedan oblik za svu prošlost: *hätte* ili *wäre* + Partizip
+        II. Koristi se za ono što se moglo desiti, a nije.
       </P>
       <Examples
         items={[
@@ -2488,9 +2965,9 @@ const WORD_ORDER = () => (
         ]}
       />
       <Note title="Prvo mesto" tone="rule">
-        Na prvom mestu stoji *tačno jedan* element: subjekat, vremenska
-        odredba, cela zavisna rečenica, bilo šta. Čim tu nije subjekat, subjekat
-        se seli odmah iza glagola.
+        Na prvom mestu stoji *tačno jedan* element: subjekat, vremenska odredba,
+        cela zavisna rečenica, bilo šta. Čim tu nije subjekat, subjekat se seli
+        odmah iza glagola.
       </Note>
     </Block>
 
@@ -2499,10 +2976,25 @@ const WORD_ORDER = () => (
         head={["Tip", "Gde je glagol", "Primer", "srpski"]}
         rows={[
           ["izjava", "2. mesto", "Er *kommt* heute.", "On danas dolazi."],
-          ["W-pitanje", "2. mesto, iza upitne reči", "Wann *kommt* er?", "Kada dolazi?"],
-          ["ja/ne pitanje", "*1. mesto*", "*Kommt* er heute?", "Da li danas dolazi?"],
+          [
+            "W-pitanje",
+            "2. mesto, iza upitne reči",
+            "Wann *kommt* er?",
+            "Kada dolazi?",
+          ],
+          [
+            "ja/ne pitanje",
+            "*1. mesto*",
+            "*Kommt* er heute?",
+            "Da li danas dolazi?",
+          ],
           ["imperativ", "*1. mesto*", "*Komm* her!", "Dođi ovamo!"],
-          ["zavisna rečenica", "*na kraju*", "..., weil er heute *kommt*.", "..., jer danas dolazi."],
+          [
+            "zavisna rečenica",
+            "*na kraju*",
+            "..., weil er heute *kommt*.",
+            "..., jer danas dolazi.",
+          ],
         ]}
       />
     </Block>
@@ -2511,14 +3003,49 @@ const WORD_ORDER = () => (
       <GTable
         head={["Reč", "Značenje", "Primer", "srpski"]}
         rows={[
-          ["wer / wen / wem / wessen", "ko / koga / kome / čiji", "*Wem* gehört das?", "Kome ovo pripada?"],
+          [
+            "wer / wen / wem / wessen",
+            "ko / koga / kome / čiji",
+            "*Wem* gehört das?",
+            "Kome ovo pripada?",
+          ],
           ["was", "šta", "*Was* machst du?", "Šta radiš?"],
-          ["wo / wohin / woher", "gde / kuda / odakle", "*Woher* kommst du?", "Odakle si?"],
-          ["wann / seit wann / bis wann", "kada / otkad / dokad", "*Wann* fängt es an?", "Kada počinje?"],
-          ["wie / wie lange / wie oft / wie viel", "kako / koliko dugo / koliko često / koliko", "*Wie lange* dauert das?", "Koliko dugo to traje?"],
-          ["warum / wieso / weshalb", "zašto", "*Warum* lachst du?", "Zašto se smeješ?"],
-          ["welcher, welche, welches", "koji (bira iz grupe)", "*Welches* Buch liest du?", "Koju knjigu čitaš?"],
-          ["was für ein", "kakav", "*Was für ein* Auto hast du?", "Kakav auto imaš?"],
+          [
+            "wo / wohin / woher",
+            "gde / kuda / odakle",
+            "*Woher* kommst du?",
+            "Odakle si?",
+          ],
+          [
+            "wann / seit wann / bis wann",
+            "kada / otkad / dokad",
+            "*Wann* fängt es an?",
+            "Kada počinje?",
+          ],
+          [
+            "wie / wie lange / wie oft / wie viel",
+            "kako / koliko dugo / koliko često / koliko",
+            "*Wie lange* dauert das?",
+            "Koliko dugo to traje?",
+          ],
+          [
+            "warum / wieso / weshalb",
+            "zašto",
+            "*Warum* lachst du?",
+            "Zašto se smeješ?",
+          ],
+          [
+            "welcher, welche, welches",
+            "koji (bira iz grupe)",
+            "*Welches* Buch liest du?",
+            "Koju knjigu čitaš?",
+          ],
+          [
+            "was für ein",
+            "kakav",
+            "*Was für ein* Auto hast du?",
+            "Kakav auto imaš?",
+          ],
         ]}
       />
     </Block>
@@ -2527,18 +3054,38 @@ const WORD_ORDER = () => (
       <GTable
         head={["Situacija", "Pravilo", "Primer", "srpski"]}
         rows={[
-          ["dve imenice", "Dativ pre Akkusativa", "Ich gebe *dem Kind das Buch*.", "Dajem detetu knjigu."],
-          ["imenica + zamenica", "zamenica prva, bez obzira na padež", "Ich gebe *ihm* das Buch. / Ich gebe *es* dem Kind.", "Dajem mu knjigu. / Dajem je detetu."],
-          ["dve zamenice", "Akkusativ pre Dativa", "Ich gebe *es ihm*.", "Dajem mu je."],
-          ["odredbe", "TeKaMoLo: vreme, razlog, način, mesto", "Ich fahre *morgen mit dem Auto nach Wien*.", "Sutra idem kolima u Beč."],
+          [
+            "dve imenice",
+            "Dativ pre Akkusativa",
+            "Ich gebe *dem Kind das Buch*.",
+            "Dajem detetu knjigu.",
+          ],
+          [
+            "imenica + zamenica",
+            "zamenica prva, bez obzira na padež",
+            "Ich gebe *ihm* das Buch. / Ich gebe *es* dem Kind.",
+            "Dajem mu knjigu. / Dajem je detetu.",
+          ],
+          [
+            "dve zamenice",
+            "Akkusativ pre Dativa",
+            "Ich gebe *es ihm*.",
+            "Dajem mu je.",
+          ],
+          [
+            "odredbe",
+            "TeKaMoLo: vreme, razlog, način, mesto",
+            "Ich fahre *morgen mit dem Auto nach Wien*.",
+            "Sutra idem kolima u Beč.",
+          ],
         ]}
       />
     </Block>
 
     <Block title="Negacija">
       <P>
-        *kein-* negira imenicu koja ima neodređeni član ili nema član.
-        *nicht* negira sve ostalo.
+        *kein-* negira imenicu koja ima neodređeni član ili nema član. *nicht*
+        negira sve ostalo.
       </P>
       <Examples
         items={[
@@ -2558,12 +3105,28 @@ const WORD_ORDER = () => (
       <GTable
         head={["nicht stoji ispred", "Primer", "srpski"]}
         rows={[
-          ["participa i infinitiva", "Ich habe ihn *nicht* gesehen.", "Nisam ga video."],
+          [
+            "participa i infinitiva",
+            "Ich habe ihn *nicht* gesehen.",
+            "Nisam ga video.",
+          ],
           ["odvojivog prefiksa", "Ich rufe dich *nicht* an.", "Ne zovem te."],
-          ["prideva i priloga", "Das Buch ist *nicht* interessant.", "Knjiga nije zanimljiva."],
+          [
+            "prideva i priloga",
+            "Das Buch ist *nicht* interessant.",
+            "Knjiga nije zanimljiva.",
+          ],
           ["predloške dopune", "Ich warte *nicht* auf dich.", "Ne čekam te."],
-          ["dela rečenice koji se poredi", "Ich fahre *nicht* nach Berlin, sondern nach Wien.", "Ne idem u Berlin nego u Beč."],
-          ["ničega, na samom kraju", "Ich kenne ihn *nicht*.", "Ne poznajem ga."],
+          [
+            "dela rečenice koji se poredi",
+            "Ich fahre *nicht* nach Berlin, sondern nach Wien.",
+            "Ne idem u Berlin nego u Beč.",
+          ],
+          [
+            "ničega, na samom kraju",
+            "Ich kenne ihn *nicht*.",
+            "Ne poznajem ga.",
+          ],
         ]}
       />
     </Block>
@@ -2579,10 +3142,22 @@ const CLAUSES = () => (
       <Formula>veznik + subjekat + ostalo + *glagol na kraju*</Formula>
       <Examples
         items={[
-          ["Ich bleibe zu Hause, *weil* ich krank *bin*.", "Ostajem kod kuće jer sam bolestan."],
-          ["Ich weiß, *dass* er morgen *arbeiten muss*.", "Znam da sutra mora da radi."],
-          ["Er sagt, *dass* er viel *gearbeitet hat*.", "Kaže da je mnogo radio."],
-          ["*Weil* ich krank *bin*, bleibe ich zu Hause.", "Pošto sam bolestan, ostajem kod kuće."],
+          [
+            "Ich bleibe zu Hause, *weil* ich krank *bin*.",
+            "Ostajem kod kuće jer sam bolestan.",
+          ],
+          [
+            "Ich weiß, *dass* er morgen *arbeiten muss*.",
+            "Znam da sutra mora da radi.",
+          ],
+          [
+            "Er sagt, *dass* er viel *gearbeitet hat*.",
+            "Kaže da je mnogo radio.",
+          ],
+          [
+            "*Weil* ich krank *bin*, bleibe ich zu Hause.",
+            "Pošto sam bolestan, ostajem kod kuće.",
+          ],
         ]}
       />
       <Note title="Kad zavisna ide prva" tone="rule">
@@ -2601,24 +3176,114 @@ const CLAUSES = () => (
       <GTable
         head={["Veznik", "Značenje", "Primer", "srpski"]}
         rows={[
-          ["dass", "da", "Ich hoffe, *dass* du kommst.", "Nadam se da dolaziš."],
-          ["ob", "da li", "Ich weiß nicht, *ob* er kommt.", "Ne znam da li dolazi."],
-          ["weil", "jer (odgovor na warum)", "Ich gehe, *weil* es spät ist.", "Idem jer je kasno."],
-          ["da", "pošto (razlog već poznat)", "*Da* es regnet, bleiben wir hier.", "Pošto pada kiša, ostajemo ovde."],
-          ["obwohl", "iako", "*Obwohl* es regnet, gehe ich raus.", "Iako pada kiša, izlazim."],
-          ["wenn", "ako / kad (sada, buduće, ponovljeno)", "*Wenn* ich Zeit habe, komme ich.", "Ako budem imao vremena, doći ću."],
-          ["als", "kad (jednom u prošlosti)", "*Als* ich Kind war, wohnte ich dort.", "Kad sam bio dete, živeo sam tamo."],
-          ["während", "dok (istovremeno) / dok (suprotnost)", "*Während* ich koche, liest er.", "Dok ja kuvam, on čita."],
-          ["bevor", "pre nego što", "*Bevor* du gehst, ruf mich an.", "Pre nego što odeš, nazovi me."],
-          ["nachdem", "nakon što", "*Nachdem* er gegessen hatte, ging er.", "Nakon što je jeo, otišao je."],
-          ["seitdem", "otkako", "*Seitdem* er hier ist, geht alles besser.", "Otkako je on tu, sve ide bolje."],
-          ["bis", "dok ne", "Warte, *bis* ich fertig bin.", "Čekaj dok ne završim."],
-          ["sobald", "čim", "*Sobald* ich ankomme, rufe ich an.", "Čim stignem, javiću se."],
-          ["damit", "da bi (različit subjekat)", "Ich erkläre es, *damit* du es verstehst.", "Objašnjavam da bi ti razumeo."],
-          ["sodass", "tako da (posledica)", "Er sprach leise, *sodass* ich nichts hörte.", "Govorio je tiho, tako da ništa nisam čuo."],
-          ["falls", "ukoliko", "*Falls* es regnet, bleiben wir hier.", "Ukoliko pada kiša, ostajemo ovde."],
-          ["indem", "tako što (način)", "Man lernt, *indem* man übt.", "Uči se tako što se vežba."],
-          ["je ... desto", "što ... to", "*Je* mehr ich übe, *desto* besser werde ich.", "Što više vežbam, to sam bolji."],
+          [
+            "dass",
+            "da",
+            "Ich hoffe, *dass* du kommst.",
+            "Nadam se da dolaziš.",
+          ],
+          [
+            "ob",
+            "da li",
+            "Ich weiß nicht, *ob* er kommt.",
+            "Ne znam da li dolazi.",
+          ],
+          [
+            "weil",
+            "jer (odgovor na warum)",
+            "Ich gehe, *weil* es spät ist.",
+            "Idem jer je kasno.",
+          ],
+          [
+            "da",
+            "pošto (razlog već poznat)",
+            "*Da* es regnet, bleiben wir hier.",
+            "Pošto pada kiša, ostajemo ovde.",
+          ],
+          [
+            "obwohl",
+            "iako",
+            "*Obwohl* es regnet, gehe ich raus.",
+            "Iako pada kiša, izlazim.",
+          ],
+          [
+            "wenn",
+            "ako / kad (sada, buduće, ponovljeno)",
+            "*Wenn* ich Zeit habe, komme ich.",
+            "Ako budem imao vremena, doći ću.",
+          ],
+          [
+            "als",
+            "kad (jednom u prošlosti)",
+            "*Als* ich Kind war, wohnte ich dort.",
+            "Kad sam bio dete, živeo sam tamo.",
+          ],
+          [
+            "während",
+            "dok (istovremeno) / dok (suprotnost)",
+            "*Während* ich koche, liest er.",
+            "Dok ja kuvam, on čita.",
+          ],
+          [
+            "bevor",
+            "pre nego što",
+            "*Bevor* du gehst, ruf mich an.",
+            "Pre nego što odeš, nazovi me.",
+          ],
+          [
+            "nachdem",
+            "nakon što",
+            "*Nachdem* er gegessen hatte, ging er.",
+            "Nakon što je jeo, otišao je.",
+          ],
+          [
+            "seitdem",
+            "otkako",
+            "*Seitdem* er hier ist, geht alles besser.",
+            "Otkako je on tu, sve ide bolje.",
+          ],
+          [
+            "bis",
+            "dok ne",
+            "Warte, *bis* ich fertig bin.",
+            "Čekaj dok ne završim.",
+          ],
+          [
+            "sobald",
+            "čim",
+            "*Sobald* ich ankomme, rufe ich an.",
+            "Čim stignem, javiću se.",
+          ],
+          [
+            "damit",
+            "da bi (različit subjekat)",
+            "Ich erkläre es, *damit* du es verstehst.",
+            "Objašnjavam da bi ti razumeo.",
+          ],
+          [
+            "sodass",
+            "tako da (posledica)",
+            "Er sprach leise, *sodass* ich nichts hörte.",
+            "Govorio je tiho, tako da ništa nisam čuo.",
+          ],
+          [
+            "falls",
+            "ukoliko",
+            "*Falls* es regnet, bleiben wir hier.",
+            "Ukoliko pada kiša, ostajemo ovde.",
+          ],
+          [
+            "indem",
+            "tako što (način)",
+            "Man lernt, *indem* man übt.",
+            "Uči se tako što se vežba.",
+          ],
+          [
+            "je ... desto",
+            "što ... to",
+            "*Je* mehr ich übe, *desto* besser werde ich.",
+            "Što više vežbam, to sam bolji.",
+          ],
         ]}
       />
       <Note title="wenn, als ili wann" tone="compare">
@@ -2644,12 +3309,35 @@ const CLAUSES = () => (
       />
       <Examples
         items={[
-          ["Der Mann, *der* dort steht, ist mein Chef.", "Čovek koji tamo stoji je moj šef.", "Nominativ"],
-          ["Der Mann, *den* ich gestern traf, ist Arzt.", "Čovek koga sam juče sreo je lekar.", "Akkusativ"],
-          ["Der Mann, *dem* ich geholfen habe, dankte mir.", "Čovek kome sam pomogao mi je zahvalio.", "Dativ"],
-          ["Der Mann, *dessen* Auto kaputt ist, wartet.", "Čovek čiji je auto pokvaren čeka.", "Genitiv"],
-          ["Der Kollege, *mit dem* ich arbeite, ist nett.", "Kolega sa kojim radim je fin.", "predlog ispred"],
-          ["Die Stadt, *in der* ich wohne, ist klein.", "Grad u kom živim je mali."],
+          [
+            "Der Mann, *der* dort steht, ist mein Chef.",
+            "Čovek koji tamo stoji je moj šef.",
+            "Nominativ",
+          ],
+          [
+            "Der Mann, *den* ich gestern traf, ist Arzt.",
+            "Čovek koga sam juče sreo je lekar.",
+            "Akkusativ",
+          ],
+          [
+            "Der Mann, *dem* ich geholfen habe, dankte mir.",
+            "Čovek kome sam pomogao mi je zahvalio.",
+            "Dativ",
+          ],
+          [
+            "Der Mann, *dessen* Auto kaputt ist, wartet.",
+            "Čovek čiji je auto pokvaren čeka.",
+            "Genitiv",
+          ],
+          [
+            "Der Kollege, *mit dem* ich arbeite, ist nett.",
+            "Kolega sa kojim radim je fin.",
+            "predlog ispred",
+          ],
+          [
+            "Die Stadt, *in der* ich wohne, ist klein.",
+            "Grad u kom živim je mali.",
+          ],
         ]}
       />
       <Note title="was i wo" tone="rule">
@@ -2667,11 +3355,36 @@ const CLAUSES = () => (
       <GTable
         head={["Konstrukcija", "Značenje", "Primer", "srpski"]}
         rows={[
-          ["glagol + zu + Infinitiv", "posle versuchen, vergessen, hoffen, planen, anfangen, aufhören, beschließen", "Ich versuche, früh *aufzustehen*.", "Pokušavam da rano ustanem."],
-          ["izraz + zu + Infinitiv", "posle Lust haben, Zeit haben, es ist wichtig / schwer / schön", "Es ist wichtig, jeden Tag *zu üben*.", "Važno je vežbati svaki dan."],
-          ["*um ... zu*", "da bi (isti subjekat, cilj)", "Ich lerne, *um* die Prüfung *zu bestehen*.", "Učim da bih položio ispit."],
-          ["*ohne ... zu*", "bez da", "Er ging, *ohne* etwas *zu sagen*.", "Otišao je ne rekavši ništa."],
-          ["*(an)statt ... zu*", "umesto da", "*Statt* zu arbeiten, schläft er.", "Umesto da radi, spava."],
+          [
+            "glagol + zu + Infinitiv",
+            "posle versuchen, vergessen, hoffen, planen, anfangen, aufhören, beschließen",
+            "Ich versuche, früh *aufzustehen*.",
+            "Pokušavam da rano ustanem.",
+          ],
+          [
+            "izraz + zu + Infinitiv",
+            "posle Lust haben, Zeit haben, es ist wichtig / schwer / schön",
+            "Es ist wichtig, jeden Tag *zu üben*.",
+            "Važno je vežbati svaki dan.",
+          ],
+          [
+            "*um ... zu*",
+            "da bi (isti subjekat, cilj)",
+            "Ich lerne, *um* die Prüfung *zu bestehen*.",
+            "Učim da bih položio ispit.",
+          ],
+          [
+            "*ohne ... zu*",
+            "bez da",
+            "Er ging, *ohne* etwas *zu sagen*.",
+            "Otišao je ne rekavši ništa.",
+          ],
+          [
+            "*(an)statt ... zu*",
+            "umesto da",
+            "*Statt* zu arbeiten, schläft er.",
+            "Umesto da radi, spava.",
+          ],
         ]}
       />
       <Note title="Bez zu" tone="rule">
@@ -2681,8 +3394,16 @@ const CLAUSES = () => (
       </Note>
       <Examples
         items={[
-          ["Ich lerne, *um* die Prüfung zu bestehen.", "Učim da bih položio ispit.", "isti subjekat"],
-          ["Ich erkläre es, *damit* du es verstehst.", "Objašnjavam da bi ti razumeo.", "drugi subjekat"],
+          [
+            "Ich lerne, *um* die Prüfung zu bestehen.",
+            "Učim da bih položio ispit.",
+            "isti subjekat",
+          ],
+          [
+            "Ich erkläre es, *damit* du es verstehst.",
+            "Objašnjavam da bi ti razumeo.",
+            "drugi subjekat",
+          ],
         ]}
       />
     </Block>
@@ -2694,9 +3415,18 @@ const CLAUSES = () => (
       </P>
       <Examples
         items={[
-          ["Wann kommt er? → Ich weiß nicht, *wann* er *kommt*.", "Ne znam kada dolazi."],
-          ["Kommt er? → Ich weiß nicht, *ob* er *kommt*.", "Ne znam da li dolazi."],
-          ["Können Sie mir sagen, *wo* der Bahnhof *ist*?", "Možete li mi reći gde je stanica?"],
+          [
+            "Wann kommt er? → Ich weiß nicht, *wann* er *kommt*.",
+            "Ne znam kada dolazi.",
+          ],
+          [
+            "Kommt er? → Ich weiß nicht, *ob* er *kommt*.",
+            "Ne znam da li dolazi.",
+          ],
+          [
+            "Können Sie mir sagen, *wo* der Bahnhof *ist*?",
+            "Možete li mi reći gde je stanica?",
+          ],
         ]}
       />
     </Block>
@@ -2723,9 +3453,21 @@ const CLAUSES = () => (
       />
       <Examples
         items={[
-          ["Es regnet, *aber* ich gehe raus.", "Pada kiša, ali izlazim.", "pozicija 0"],
-          ["Es regnet, *trotzdem* gehe ich raus.", "Pada kiša, ipak izlazim.", "inverzija"],
-          ["*Obwohl* es regnet, gehe ich raus.", "Iako pada kiša, izlazim.", "glagol na kraju"],
+          [
+            "Es regnet, *aber* ich gehe raus.",
+            "Pada kiša, ali izlazim.",
+            "pozicija 0",
+          ],
+          [
+            "Es regnet, *trotzdem* gehe ich raus.",
+            "Pada kiša, ipak izlazim.",
+            "inverzija",
+          ],
+          [
+            "*Obwohl* es regnet, gehe ich raus.",
+            "Iako pada kiša, izlazim.",
+            "glagol na kraju",
+          ],
         ]}
       />
     </Block>
@@ -2734,11 +3476,36 @@ const CLAUSES = () => (
       <GTable
         head={["Par", "Razlika", "Primer", "srpski"]}
         rows={[
-          ["denn / weil", "isto značenje, drugi red reči", "Ich bleibe, *denn* ich *bin* müde. / ..., *weil* ich müde *bin*.", "Ostajem, jer sam umoran."],
-          ["aber / sondern", "sondern samo posle negacije, kao ispravka", "Nicht heute, *sondern* morgen.", "Ne danas, nego sutra."],
-          ["weil / deshalb", "weil daje razlog, deshalb posledicu", "Ich bleibe, *weil* es regnet. / Es regnet, *deshalb* bleibe ich.", "Ostajem jer pada kiša. / Pada kiša, zato ostajem."],
-          ["obwohl / trotzdem", "obwohl uvodi ustupak, trotzdem posledicu", "*Obwohl* es regnet, gehe ich. / Es regnet, *trotzdem* gehe ich.", "Iako pada kiša, idem. / Pada kiša, ipak idem."],
-          ["wenn / als", "wenn za sada i ponovljeno, als za jednom u prošlosti", "*Immer wenn* es regnet... / *Als* ich klein war...", "Uvek kada pada kiša... / Kad sam bio mali..."],
+          [
+            "denn / weil",
+            "isto značenje, drugi red reči",
+            "Ich bleibe, *denn* ich *bin* müde. / ..., *weil* ich müde *bin*.",
+            "Ostajem, jer sam umoran.",
+          ],
+          [
+            "aber / sondern",
+            "sondern samo posle negacije, kao ispravka",
+            "Nicht heute, *sondern* morgen.",
+            "Ne danas, nego sutra.",
+          ],
+          [
+            "weil / deshalb",
+            "weil daje razlog, deshalb posledicu",
+            "Ich bleibe, *weil* es regnet. / Es regnet, *deshalb* bleibe ich.",
+            "Ostajem jer pada kiša. / Pada kiša, zato ostajem.",
+          ],
+          [
+            "obwohl / trotzdem",
+            "obwohl uvodi ustupak, trotzdem posledicu",
+            "*Obwohl* es regnet, gehe ich. / Es regnet, *trotzdem* gehe ich.",
+            "Iako pada kiša, idem. / Pada kiša, ipak idem.",
+          ],
+          [
+            "wenn / als",
+            "wenn za sada i ponovljeno, als za jednom u prošlosti",
+            "*Immer wenn* es regnet... / *Als* ich klein war...",
+            "Uvek kada pada kiša... / Kad sam bio mali...",
+          ],
         ]}
       />
     </Block>
@@ -2747,13 +3514,48 @@ const CLAUSES = () => (
       <GTable
         head={["Veznik", "Značenje", "Primer", "srpski"]}
         rows={[
-          ["entweder ... oder", "ili ... ili", "*Entweder* wir fahren, *oder* wir bleiben.", "Ili idemo, ili ostajemo."],
-          ["weder ... noch", "ni ... ni", "Er spricht *weder* Deutsch *noch* Englisch.", "Ne govori ni nemački ni engleski."],
-          ["sowohl ... als auch", "i ... i", "Sie spricht *sowohl* Deutsch *als auch* Französisch.", "Govori i nemački i francuski."],
-          ["nicht nur ... sondern auch", "ne samo ... nego i", "*Nicht nur* ich, *sondern auch* er kommt.", "Ne dolazim samo ja, nego i on."],
-          ["zwar ... aber", "doduše ... ali", "Es ist *zwar* teuer, *aber* sehr gut.", "Jeste skupo, ali je vrlo dobro."],
-          ["je ... desto / umso", "što ... to", "*Je* länger, *desto* besser.", "Što duže, to bolje."],
-          ["einerseits ... andererseits", "s jedne strane ... s druge", "*Einerseits* mag ich es, *andererseits* ist es teuer.", "S jedne strane mi se dopada, s druge je skupo."],
+          [
+            "entweder ... oder",
+            "ili ... ili",
+            "*Entweder* wir fahren, *oder* wir bleiben.",
+            "Ili idemo, ili ostajemo.",
+          ],
+          [
+            "weder ... noch",
+            "ni ... ni",
+            "Er spricht *weder* Deutsch *noch* Englisch.",
+            "Ne govori ni nemački ni engleski.",
+          ],
+          [
+            "sowohl ... als auch",
+            "i ... i",
+            "Sie spricht *sowohl* Deutsch *als auch* Französisch.",
+            "Govori i nemački i francuski.",
+          ],
+          [
+            "nicht nur ... sondern auch",
+            "ne samo ... nego i",
+            "*Nicht nur* ich, *sondern auch* er kommt.",
+            "Ne dolazim samo ja, nego i on.",
+          ],
+          [
+            "zwar ... aber",
+            "doduše ... ali",
+            "Es ist *zwar* teuer, *aber* sehr gut.",
+            "Jeste skupo, ali je vrlo dobro.",
+          ],
+          [
+            "je ... desto / umso",
+            "što ... to",
+            "*Je* länger, *desto* besser.",
+            "Što duže, to bolje.",
+          ],
+          [
+            "einerseits ... andererseits",
+            "s jedne strane ... s druge",
+            "*Einerseits* mag ich es, *andererseits* ist es teuer.",
+            "S jedne strane mi se dopada, s druge je skupo.",
+          ],
         ]}
       />
     </Block>
@@ -2806,12 +3608,37 @@ const ADVANCED = () => (
       <GTable
         head={["Oblik", "Sigurnost", "Primer", "srpski"]}
         rows={[
-          ["muss", "gotovo sigurno", "Er *muss* krank sein.", "Sigurno je bolestan."],
-          ["dürfte", "verovatno", "Er *dürfte* zu Hause sein.", "Verovatno je kod kuće."],
+          [
+            "muss",
+            "gotovo sigurno",
+            "Er *muss* krank sein.",
+            "Sigurno je bolestan.",
+          ],
+          [
+            "dürfte",
+            "verovatno",
+            "Er *dürfte* zu Hause sein.",
+            "Verovatno je kod kuće.",
+          ],
           ["könnte", "moguće", "Das *könnte* stimmen.", "Moglo bi biti tačno."],
-          ["kann nicht", "isključeno", "Das *kann* nicht stimmen.", "To ne može biti tačno."],
-          ["will", "on tako tvrdi za sebe", "Er *will* alles gewusst haben.", "Tvrdi da je sve znao."],
-          ["soll", "tako se priča", "Er *soll* sehr reich sein.", "Kažu da je vrlo bogat."],
+          [
+            "kann nicht",
+            "isključeno",
+            "Das *kann* nicht stimmen.",
+            "To ne može biti tačno.",
+          ],
+          [
+            "will",
+            "on tako tvrdi za sebe",
+            "Er *will* alles gewusst haben.",
+            "Tvrdi da je sve znao.",
+          ],
+          [
+            "soll",
+            "tako se priča",
+            "Er *soll* sehr reich sein.",
+            "Kažu da je vrlo bogat.",
+          ],
         ]}
       />
       <Note title="U prošlosti" tone="tip">
@@ -2850,7 +3677,11 @@ const ADVANCED = () => (
           ["eine Entscheidung treffen", "entscheiden", "doneti odluku"],
           ["eine Frage stellen", "fragen", "postaviti pitanje"],
           ["in Frage stellen", "bezweifeln", "dovesti u pitanje"],
-          ["zur Verfügung stehen / stellen", "verfügbar sein", "biti / staviti na raspolaganje"],
+          [
+            "zur Verfügung stehen / stellen",
+            "verfügbar sein",
+            "biti / staviti na raspolaganje",
+          ],
           ["Bescheid geben / wissen", "informieren / wissen", "javiti / znati"],
           ["eine Rolle spielen", "wichtig sein", "igrati ulogu"],
           ["Rücksicht nehmen auf", "berücksichtigen", "imati obzira prema"],
@@ -2868,14 +3699,54 @@ const ADVANCED = () => (
       <GTable
         head={["Konstrukcija", "Značenje", "Primer", "srpski"]}
         rows={[
-          ["lassen + Infinitiv", "dati da se nešto uradi", "Ich *lasse* mir die Haare *schneiden*.", "Šišam se (kod frizera)."],
-          ["lassen (dozvola)", "pustiti, dozvoliti", "Meine Eltern *lassen* mich gehen.", "Roditelji me puštaju da idem."],
-          ["sich lassen + Infinitiv", "može da se uradi", "Das Fenster *lässt sich* nicht öffnen.", "Prozor ne može da se otvori."],
-          ["Perfekt od lassen", "dva infinitiva na kraju", "Ich *habe* die Haare schneiden *lassen*.", "Ošišao sam se."],
-          ["nicht brauchen + zu", "ne moraš", "Du *brauchst* nicht *zu kommen*.", "Ne moraš da dođeš."],
-          ["nur brauchen + zu", "dovoljno je da", "Du *brauchst* nur *anzurufen*.", "Dovoljno je da se javiš."],
-          ["sein + zu + Infinitiv", "može ili mora da se uradi", "Das Formular *ist auszufüllen*.", "Formular treba popuniti."],
-          ["haben + zu + Infinitiv", "mora (obaveza)", "Du *hast* zu warten.", "Moraš da čekaš."],
+          [
+            "lassen + Infinitiv",
+            "dati da se nešto uradi",
+            "Ich *lasse* mir die Haare *schneiden*.",
+            "Šišam se (kod frizera).",
+          ],
+          [
+            "lassen (dozvola)",
+            "pustiti, dozvoliti",
+            "Meine Eltern *lassen* mich gehen.",
+            "Roditelji me puštaju da idem.",
+          ],
+          [
+            "sich lassen + Infinitiv",
+            "može da se uradi",
+            "Das Fenster *lässt sich* nicht öffnen.",
+            "Prozor ne može da se otvori.",
+          ],
+          [
+            "Perfekt od lassen",
+            "dva infinitiva na kraju",
+            "Ich *habe* die Haare schneiden *lassen*.",
+            "Ošišao sam se.",
+          ],
+          [
+            "nicht brauchen + zu",
+            "ne moraš",
+            "Du *brauchst* nicht *zu kommen*.",
+            "Ne moraš da dođeš.",
+          ],
+          [
+            "nur brauchen + zu",
+            "dovoljno je da",
+            "Du *brauchst* nur *anzurufen*.",
+            "Dovoljno je da se javiš.",
+          ],
+          [
+            "sein + zu + Infinitiv",
+            "može ili mora da se uradi",
+            "Das Formular *ist auszufüllen*.",
+            "Formular treba popuniti.",
+          ],
+          [
+            "haben + zu + Infinitiv",
+            "mora (obaveza)",
+            "Du *hast* zu warten.",
+            "Moraš da čekaš.",
+          ],
         ]}
       />
     </Block>
@@ -2934,24 +3805,14 @@ const AUSTRIA = () => (
             "*das* E-Mail, *das* Cola, *das* Joghurt",
             "mejl, kola, jogurt",
           ],
-          [
-            "množina",
-            "die Wagen",
-            "često die W*ä*gen",
-            "kola, vozila",
-          ],
-          [
-            "prvi mesec",
-            "Januar",
-            "*Jänner*",
-            "januar",
-          ],
+          ["množina", "die Wagen", "često die W*ä*gen", "kola, vozila"],
+          ["prvi mesec", "Januar", "*Jänner*", "januar"],
         ]}
       />
       <Note title="Nije greška" tone="austria">
-        Ovo su priznati oblici austrijskog standarda, ne nemarnost. Na
-        Goethe i ÖSD ispitima prolaze oba, ali ako pišeš po nemačkom udžbeniku,
-        drži se oblika iz leve kolone.
+        Ovo su priznati oblici austrijskog standarda, ne nemarnost. Na Goethe i
+        ÖSD ispitima prolaze oba, ali ako pišeš po nemačkom udžbeniku, drži se
+        oblika iz leve kolone.
       </Note>
     </Block>
 
@@ -2993,7 +3854,11 @@ const AUSTRIA = () => (
           ["die Fisolen", "die grünen Bohnen", "boranija"],
           ["die Melanzani", "die Aubergine", "plavi patlidžan"],
           ["der Topfen", "der Quark", "mladi sir"],
-          ["das Obers, das Schlagobers", "die Sahne, die Schlagsahne", "pavlaka, šlag"],
+          [
+            "das Obers, das Schlagobers",
+            "die Sahne, die Schlagsahne",
+            "pavlaka, šlag",
+          ],
           ["die Palatschinke", "der Pfannkuchen", "palačinka"],
           ["das Faschierte", "das Hackfleisch", "mleveno meso"],
           ["der Kren", "der Meerrettich", "ren"],
@@ -3014,12 +3879,24 @@ const AUSTRIA = () => (
       <GTable
         head={["Izraz", "Kada", "srpski"]}
         rows={[
-          ["*Grüß Gott*", "formalno, pri dolasku, svuda osim Beča među mladima", "dobar dan"],
-          ["*Servus*", "neformalno, i pri dolasku i pri odlasku", "zdravo, ćao"],
+          [
+            "*Grüß Gott*",
+            "formalno, pri dolasku, svuda osim Beča među mladima",
+            "dobar dan",
+          ],
+          [
+            "*Servus*",
+            "neformalno, i pri dolasku i pri odlasku",
+            "zdravo, ćao",
+          ],
           ["*Grüß dich*", "neformalno, pri dolasku", "zdravo"],
           ["*Baba*, *Pfiat di*", "neformalno, pri odlasku", "ćao, prijatno"],
           ["*Mahlzeit*", "oko podneva, na poslu", "prijatno"],
-          ["*Habe die Ehre*, *Habidere*", "staromodno, šaljivo", "moje poštovanje"],
+          [
+            "*Habe die Ehre*, *Habidere*",
+            "staromodno, šaljivo",
+            "moje poštovanje",
+          ],
         ]}
       />
       <Note title="Tschüss" tone="austria">
@@ -3031,18 +3908,18 @@ const AUSTRIA = () => (
     <Block title="Izrazi tipični za Austriju">
       <Examples
         items={[
-          ["*Heuer* war der Sommer heiß.", "Ove godine je leto bilo vrelo.", "heuer = dieses Jahr"],
+          [
+            "*Heuer* war der Sommer heiß.",
+            "Ove godine je leto bilo vrelo.",
+            "heuer = dieses Jahr",
+          ],
           [
             "Das *geht sich* nicht *aus*.",
             "To ne stiže, nema dovoljno vremena ili mesta.",
             "sich ausgehen",
           ],
           ["*Passt schon.*", "U redu je, nema veze.", "passt schon"],
-          [
-            "Das ist mir *wurscht*.",
-            "Svejedno mi je.",
-            "wurscht",
-          ],
+          ["Das ist mir *wurscht*.", "Svejedno mi je.", "wurscht"],
         ]}
       />
     </Block>
@@ -3057,7 +3934,12 @@ const AUSTRIA = () => (
         rows={[
           ["16:15", "*Viertel fünf*", "Viertel nach vier", "četiri i petnaest"],
           ["16:30", "halb fünf", "halb fünf", "pola pet"],
-          ["16:45", "*dreiviertel fünf*", "Viertel vor fünf", "petnaest do pet"],
+          [
+            "16:45",
+            "*dreiviertel fünf*",
+            "Viertel vor fünf",
+            "petnaest do pet",
+          ],
         ]}
       />
       <Note title="Kako da ne pogrešiš" tone="tip">
@@ -3070,23 +3952,118 @@ const AUSTRIA = () => (
 );
 
 export const GRAMMAR_SECTIONS: GrammarSection[] = [
-  { id: "padezi", label: "Padeži", hint: "Nominativ do Genitiva", render: CASES },
-  { id: "imenice", label: "Imenice", hint: "rod, množina, n-deklinacija", render: NOUNS },
-  { id: "zamenice", label: "Zamenice", hint: "lične, prisvojne, povratne", render: PRONOUNS },
-  { id: "pridevi", label: "Pridevi", hint: "deklinacija i nastavci", render: ADJECTIVES },
-  { id: "poredjenje", label: "Poređenje", hint: "gut, besser, am besten", render: COMPARISON },
-  { id: "prilozi", label: "Prilozi", hint: "vrste i TeKaMoLo", render: ADVERBS },
-  { id: "predlozi", label: "Predlozi", hint: "padeži i Wechsel", render: PREPOSITIONS },
-  { id: "prezent", label: "Präsens", hint: "sadašnjost i budućnost", render: PRESENT },
-  { id: "glagoli", label: "Glagoli", hint: "modali, prefiksi, pregled vremena", render: VERBS },
-  { id: "perfekt", label: "Perfekt", hint: "prošlost u govoru", render: PERFECT },
-  { id: "preterit", label: "Präteritum", hint: "prošlost u pisanju", render: PRETERITE },
-  { id: "pluskvamperfekt", label: "Plusquamperfekt", hint: "radnja pre prošle", render: PLUPERFECT },
-  { id: "futur", label: "Futur", hint: "namera i pretpostavka", render: FUTURE },
-  { id: "pasiv", label: "Pasiv", hint: "werden, sein, zamene", render: PASSIVE },
-  { id: "konjunktiv", label: "Konjunktiv", hint: "würde, hätte, wäre", render: SUBJUNCTIVE },
-  { id: "red-reci", label: "Red reči", hint: "glagolska zagrada i negacija", render: WORD_ORDER },
-  { id: "zavisne", label: "Zavisne rečenice", hint: "veznici, relativne, zu", render: CLAUSES },
-  { id: "b2", label: "B2 dodatno", hint: "particip, nominalizacija", render: ADVANCED },
-  { id: "austrija", label: "Austrija", hint: "Jänner, Servus, Erdapfel", render: AUSTRIA },
+  {
+    id: "padezi",
+    label: "Padeži",
+    hint: "Nominativ do Genitiva",
+    render: CASES,
+  },
+  {
+    id: "imenice",
+    label: "Imenice",
+    hint: "rod, množina, n-deklinacija",
+    render: NOUNS,
+  },
+  {
+    id: "zamenice",
+    label: "Zamenice",
+    hint: "lične, prisvojne, povratne",
+    render: PRONOUNS,
+  },
+  {
+    id: "pridevi",
+    label: "Pridevi",
+    hint: "deklinacija i nastavci",
+    render: ADJECTIVES,
+  },
+  {
+    id: "poredjenje",
+    label: "Poređenje",
+    hint: "gut, besser, am besten",
+    render: COMPARISON,
+  },
+  {
+    id: "prilozi",
+    label: "Prilozi",
+    hint: "vrste i TeKaMoLo",
+    render: ADVERBS,
+  },
+  {
+    id: "predlozi",
+    label: "Predlozi",
+    hint: "padeži i Wechsel",
+    render: PREPOSITIONS,
+  },
+  {
+    id: "prezent",
+    label: "Präsens",
+    hint: "sadašnjost i budućnost",
+    render: PRESENT,
+  },
+  {
+    id: "glagoli",
+    label: "Glagoli",
+    hint: "modali, prefiksi, pregled vremena",
+    render: VERBS,
+  },
+  {
+    id: "perfekt",
+    label: "Perfekt",
+    hint: "prošlost u govoru",
+    render: PERFECT,
+  },
+  {
+    id: "preterit",
+    label: "Präteritum",
+    hint: "prošlost u pisanju",
+    render: PRETERITE,
+  },
+  {
+    id: "pluskvamperfekt",
+    label: "Plusquamperfekt",
+    hint: "radnja pre prošle",
+    render: PLUPERFECT,
+  },
+  {
+    id: "futur",
+    label: "Futur",
+    hint: "namera i pretpostavka",
+    render: FUTURE,
+  },
+  {
+    id: "pasiv",
+    label: "Pasiv",
+    hint: "werden, sein, zamene",
+    render: PASSIVE,
+  },
+  {
+    id: "konjunktiv",
+    label: "Konjunktiv",
+    hint: "würde, hätte, wäre",
+    render: SUBJUNCTIVE,
+  },
+  {
+    id: "red-reci",
+    label: "Red reči",
+    hint: "glagolska zagrada i negacija",
+    render: WORD_ORDER,
+  },
+  {
+    id: "zavisne",
+    label: "Zavisne rečenice",
+    hint: "veznici, relativne, zu",
+    render: CLAUSES,
+  },
+  {
+    id: "b2",
+    label: "B2 dodatno",
+    hint: "particip, nominalizacija",
+    render: ADVANCED,
+  },
+  {
+    id: "austrija",
+    label: "Austrija",
+    hint: "Jänner, Servus, Erdapfel",
+    render: AUSTRIA,
+  },
 ];

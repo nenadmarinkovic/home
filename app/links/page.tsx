@@ -60,7 +60,8 @@ export default async function LinksPage({
     for (const tag of link.tags) {
       const entry = tagCounts.get(tag.slug);
       if (entry) entry.count += 1;
-      else tagCounts.set(tag.slug, { slug: tag.slug, name: tag.name, count: 1 });
+      else
+        tagCounts.set(tag.slug, { slug: tag.slug, name: tag.name, count: 1 });
     }
   }
   const tags: ClientTag[] = Array.from(tagCounts.values()).sort((a, b) =>

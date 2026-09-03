@@ -19,15 +19,15 @@ import { pickFromDeck } from "@/lib/review-queue";
 
 export type Example = { de: string; sr: string };
 
-export type VocabularyEntry = Omit<VocabularyEntryRow, "examples" | "conjugations"> & {
+export type VocabularyEntry = Omit<
+  VocabularyEntryRow,
+  "examples" | "conjugations"
+> & {
   examples: Example[];
   conjugations: Record<string, unknown>;
 };
 
-const generateSlug = customAlphabet(
-  "23456789abcdefghijkmnpqrstuvwxyz",
-  10,
-);
+const generateSlug = customAlphabet("23456789abcdefghijkmnpqrstuvwxyz", 10);
 
 function nextSlug(): string {
   for (let i = 0; i < 5; i++) {
@@ -206,7 +206,10 @@ function ensureCards(entryId: number, now: Date) {
 }
 
 export function deleteEntry(id: number): boolean {
-  const res = db.delete(vocabularyEntries).where(eq(vocabularyEntries.id, id)).run();
+  const res = db
+    .delete(vocabularyEntries)
+    .where(eq(vocabularyEntries.id, id))
+    .run();
   return res.changes > 0;
 }
 

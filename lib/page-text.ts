@@ -14,12 +14,12 @@ function ipv4IsPrivate(ip: string): boolean {
   if (p.length !== 4 || p.some((n) => !Number.isInteger(n) || n < 0 || n > 255))
     return true;
   const [a, b] = p;
-  if (a === 0 || a === 10 || a === 127) return true; // this-host, private, loopback
-  if (a === 169 && b === 254) return true; // link-local (incl. metadata)
-  if (a === 172 && b >= 16 && b <= 31) return true; // private
-  if (a === 192 && b === 168) return true; // private
-  if (a === 100 && b >= 64 && b <= 127) return true; // CGNAT
-  if (a >= 224) return true; // multicast + reserved
+  if (a === 0 || a === 10 || a === 127) return true;
+  if (a === 169 && b === 254) return true;
+  if (a === 172 && b >= 16 && b <= 31) return true;
+  if (a === 192 && b === 168) return true;
+  if (a === 100 && b >= 64 && b <= 127) return true;
+  if (a >= 224) return true;
   return false;
 }
 
@@ -28,15 +28,15 @@ function ipIsPrivate(ip: string): boolean {
   if (kind === 4) return ipv4IsPrivate(ip);
   if (kind === 6) {
     const lower = ip.toLowerCase();
-    if (lower === "::1" || lower === "::") return true; // loopback / unspecified
+    if (lower === "::1" || lower === "::") return true;
     const mapped = lower.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/);
     if (mapped) return ipv4IsPrivate(mapped[1]);
-    if (lower.startsWith("fe8") || lower.startsWith("fe9")) return true; // link-local
-    if (lower.startsWith("fea") || lower.startsWith("feb")) return true; // link-local
-    if (lower.startsWith("fc") || lower.startsWith("fd")) return true; // unique-local
+    if (lower.startsWith("fe8") || lower.startsWith("fe9")) return true;
+    if (lower.startsWith("fea") || lower.startsWith("feb")) return true;
+    if (lower.startsWith("fc") || lower.startsWith("fd")) return true;
     return false;
   }
-  return true; // not a parseable IP → unsafe
+  return true;
 }
 
 async function assertPublicHost(hostname: string): Promise<void> {
