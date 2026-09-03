@@ -4,7 +4,7 @@ export function SiteFooter() {
   return (
     <footer className="flex flex-col items-center gap-6 pt-26 pb-8 text-center font-sans text-sm text-zinc-600 md:flex-row md:items-center md:justify-between md:text-left dark:text-zinc-400">
       <p>© {new Date().getFullYear()} Nenad Marinković</p>
-      <nav className="hidden flex-wrap items-center gap-x-4 gap-y-2 text-xs uppercase tracking-wider sm:flex">
+      <nav className="hidden flex-wrap items-center gap-x-4 gap-y-2 text-xs uppercase tracking-wider md:flex">
         <a
           href="https://github.com/nenadmarinkovic"
           target="_blank"
@@ -31,9 +31,7 @@ export function SiteFooter() {
           RSS
         </a>
       </nav>
-      <div className="hidden sm:block">
-        <ThemeToggle />
-      </div>
+      <ThemeToggle />
     </footer>
   );
 }

@@ -64,8 +64,8 @@ type RatingButton = {
 
 const RATING_BUTTONS: RatingButton[] = [
   { rating: 1, label: "Again", key: "1", dotClass: "bg-destructive" },
-  { rating: 2, label: "Hard", key: "2", dotClass: "bg-foreground/40" },
-  { rating: 3, label: "Good", key: "3", dotClass: "bg-foreground" },
+  { rating: 2, label: "Hard", key: "2", dotClass: "bg-warning" },
+  { rating: 3, label: "Good", key: "3", dotClass: "bg-success" },
   { rating: 4, label: "Easy", key: "4", dotClass: "bg-[#0040ff] dark:bg-[#ffff01]" },
 ];
 
@@ -440,7 +440,7 @@ function CardView({
     <section className="flex flex-1 flex-col items-center gap-6 sm:gap-8">
       <article
         className={cn(
-          "flex w-full max-w-xl flex-col items-center gap-5 rounded-2xl border border-foreground/10 bg-foreground/2 px-4 py-7 text-center sm:gap-6 sm:px-6 sm:py-12",
+          "flex w-full max-w-xl flex-col items-center gap-5 rounded-2xl border border-foreground/10 bg-foreground/2 p-4 pb-8 text-center sm:gap-6 sm:p-6 sm:pb-12",
           "animate-in fade-in-0 duration-150",
         )}
       >
