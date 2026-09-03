@@ -31,7 +31,7 @@ export function SiteFooter() {
           RSS
         </a>
       </nav>
-      <ThemeToggle />
+      <ThemeToggle className="hidden md:inline-flex" />
     </footer>
   );
 }
