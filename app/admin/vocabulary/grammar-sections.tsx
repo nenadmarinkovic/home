@@ -2544,7 +2544,11 @@ const WORD_ORDER = () => (
         items={[
           ["Ich habe *kein* Auto.", "Nemam auto."],
           ["Ich habe *keine* Zeit.", "Nemam vremena."],
-          ["Das ist *nicht* mein Auto.", "To nije moj auto, jer uz prisvojnu zamenicu ide nicht."],
+          [
+            "Das ist *nicht* mein Auto.",
+            "To nije moj auto.",
+            "uz prisvojnu ide nicht",
+          ],
         ]}
       />
       <P>
@@ -2964,7 +2968,7 @@ const AUSTRIA = () => (
           ["die Trafik", "der Kiosk, der Tabakladen", "trafika"],
           ["das Gewand", "die Kleidung", "odeća"],
           ["die Kassa", "die Kasse", "kasa"],
-          ["die Jause", "die Brotzeit", "užina"],
+          ["die Jause", "die Zwischenmahlzeit", "užina"],
           ["die Bim (Beč, razgovorno)", "die Straßenbahn", "tramvaj"],
           ["der Bankomat", "der Geldautomat", "bankomat"],
           ["der Lift", "der Aufzug", "lift"],
@@ -3015,7 +3019,7 @@ const AUSTRIA = () => (
           ["*Grüß dich*", "neformalno, pri dolasku", "zdravo"],
           ["*Baba*, *Pfiat di*", "neformalno, pri odlasku", "ćao, prijatno"],
           ["*Mahlzeit*", "oko podneva, na poslu", "prijatno"],
-          ["*Habedere*", "staromodno, šaljivo", "moje poštovanje"],
+          ["*Habe die Ehre*, *Habidere*", "staromodno, šaljivo", "moje poštovanje"],
         ]}
       />
       <Note title="Tschüss" tone="austria">
@@ -3024,7 +3028,7 @@ const AUSTRIA = () => (
       </Note>
     </Block>
 
-    <Block title="Izrazi koje ćeš čuti samo ovde">
+    <Block title="Izrazi tipični za Austriju">
       <Examples
         items={[
           ["*Heuer* war der Sommer heiß.", "Ove godine je leto bilo vrelo.", "heuer = dieses Jahr"],
@@ -3035,9 +3039,9 @@ const AUSTRIA = () => (
           ],
           ["*Passt schon.*", "U redu je, nema veze.", "passt schon"],
           [
-            "Ich habe einen Termin beim *Amt*.",
-            "Imam zakazano u opštini.",
-            "Amt",
+            "Das ist mir *wurscht*.",
+            "Svejedno mi je.",
+            "wurscht",
           ],
         ]}
       />
