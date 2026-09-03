@@ -75,7 +75,7 @@ export function LoginForm() {
         type="submit"
         size="lg"
         disabled={Boolean(pending) || password.length === 0}
-        className="w-full"
+        className="h-11 w-full text-base"
       >
         {pending ? "Signing in…" : "Sign in"}
       </Button>
