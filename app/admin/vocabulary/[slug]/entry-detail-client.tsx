@@ -42,7 +42,15 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@/components/ui/table";
 import { TagChip } from "@/components/tag-chip";
+import { cn } from "@/lib/utils";
 
 import type { SrsCardRow } from "@/db/schema";
 import type { VocabularyEntry } from "@/lib/vocabulary-db";
@@ -103,35 +111,142 @@ function relativeFromNow(d: Date, now: Date): string {
   return rtf.format(diffYr, "year");
 }
 
-function formatConjugations(
-  conj: Record<string, unknown>,
-): { heading: string; rows: { label: string; value: string }[] }[] {
-  const sections: {
-    heading: string;
-    rows: { label: string; value: string }[];
-  }[] = [];
-  for (const [key, value] of Object.entries(conj)) {
-    if (value === null || value === undefined) continue;
-    if (typeof value === "object" && !Array.isArray(value)) {
-      const rows: { label: string; value: string }[] = [];
-      for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
-        if (v === null || v === undefined || v === "") continue;
-        rows.push({ label: String(k), value: String(v) });
-      }
-      if (rows.length) sections.push({ heading: key, rows });
-    } else if (Array.isArray(value)) {
+const SECTION_ORDER = [
+  "praesens",
+  "perfekt",
+  "partizip2",
+  "genitiv_sg",
+  "nominativ_pl",
+  "praeteritum",
+];
+
+const SECTION_LABEL: Record<string, string> = {
+  praesens: "Präsens",
+  praeteritum: "Präteritum",
+  perfekt: "Perfekt",
+  partizip2: "Partizip II",
+  genitiv_sg: "Genitiv Sg.",
+  nominativ_pl: "Nominativ Pl.",
+};
+
+const PERSON_ORDER = ["ich", "du", "er/sie/es", "wir", "ihr", "sie/Sie"];
+
+type ConjRow = { label: string; value: string };
+type ConjSection = {
+  heading: string;
+  rows: ConjRow[];
+  split: boolean;
+  wide: boolean;
+  order: number;
+};
+
+function rank(order: string[], key: string): number {
+  const i = order.indexOf(key);
+  return i === -1 ? order.length : i;
+}
+
+function labelFor(key: string): string {
+  return SECTION_LABEL[key] ?? key;
+}
+
+function formatConjugations(conj: Record<string, unknown>): ConjSection[] {
+  const sections: ConjSection[] = [];
+  const forms: ConjRow[] = [];
+  let formsOrder = SECTION_ORDER.length;
+  const keys = Object.keys(conj).sort(
+    (a, b) => rank(SECTION_ORDER, a) - rank(SECTION_ORDER, b),
+  );
+
+  for (const key of keys) {
+    const value = conj[key];
+    if (value === null || value === undefined || value === "") continue;
+
+    if (Array.isArray(value)) {
       const rows = value
         .filter((v) => v !== null && v !== undefined && v !== "")
         .map((v, i) => ({ label: String(i + 1), value: String(v) }));
-      if (rows.length) sections.push({ heading: key, rows });
-    } else if (value !== "") {
-      sections.push({
-        heading: key,
-        rows: [{ label: "", value: String(value) }],
-      });
+      if (rows.length) {
+        sections.push({
+          heading: labelFor(key),
+          rows,
+          split: rows.length >= 4,
+          wide: false,
+          order: rank(SECTION_ORDER, key),
+        });
+      }
+      continue;
     }
+
+    if (typeof value === "object") {
+      const rows = Object.entries(value as Record<string, unknown>)
+        .filter(([, v]) => v !== null && v !== undefined && v !== "")
+        .sort(([a], [b]) => rank(PERSON_ORDER, a) - rank(PERSON_ORDER, b))
+        .map(([k, v]) => ({ label: k, value: String(v) }));
+      if (rows.length) {
+        sections.push({
+          heading: labelFor(key),
+          rows,
+          split: rows.length >= 4,
+          wide: false,
+          order: rank(SECTION_ORDER, key),
+        });
+      }
+      continue;
+    }
+
+    formsOrder = Math.min(formsOrder, rank(SECTION_ORDER, key));
+    forms.push({ label: labelFor(key), value: String(value) });
   }
-  return sections;
+
+  if (forms.length) {
+    sections.push({
+      heading: "Forms",
+      rows: forms,
+      split: false,
+      wide: true,
+      order: formsOrder,
+    });
+  }
+  return sections.sort((a, b) => a.order - b.order);
+}
+
+function ConjugationTable({ section }: { section: ConjSection }) {
+  const half = section.split
+    ? Math.ceil(section.rows.length / 2)
+    : section.rows.length;
+  const left = section.rows.slice(0, half);
+  const right = section.split ? section.rows.slice(half) : [];
+  const labelWidth = section.wide ? "w-32" : "w-24";
+
+  return (
+    <Table>
+      <TableBody>
+        {left.map((row, i) => (
+          <TableRow key={row.label}>
+            <TableHead scope="row" className={cn("h-auto py-2 pl-0", labelWidth)}>
+              {row.label}
+            </TableHead>
+            <TableCell className="py-2 text-foreground sm:text-base">
+              {row.value}
+            </TableCell>
+            {section.split ? (
+              <>
+                <TableHead
+                  scope="row"
+                  className={cn("h-auto py-2", labelWidth)}
+                >
+                  {right[i]?.label ?? ""}
+                </TableHead>
+                <TableCell className="py-2 pr-0 text-foreground sm:text-base">
+                  {right[i]?.value ?? ""}
+                </TableCell>
+              </>
+            ) : null}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
 }
 
 export function EntryDetailClient({ entry, cards: initialCards }: Props) {
@@ -389,7 +504,7 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_18rem]">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="flex min-w-0 flex-col gap-10">
           <Section title="Examples">
             {entry.examples.length === 0 ? (
@@ -428,36 +543,11 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
             </Section>
           )}
 
-          {conjugationSections.length > 0 && (
-            <Section title="Grammar">
-              <div className="flex flex-col gap-6">
-                {conjugationSections.map((section) => (
-                  <div key={section.heading} className="flex flex-col gap-2">
-                    <h3 className="font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
-                      {section.heading}
-                    </h3>
-                    <dl className="grid grid-cols-1 gap-x-6 gap-y-1.5 sm:grid-cols-2">
-                      {section.rows.map((row, i) => (
-                        <div
-                          key={`${row.label}-${i}`}
-                          className="flex items-baseline gap-2 border-b border-foreground/5 py-1"
-                        >
-                          {row.label ? (
-                            <dt className="shrink-0 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
-                              {row.label}
-                            </dt>
-                          ) : null}
-                          <dd className="text-sm text-foreground sm:text-base">
-                            {row.value}
-                          </dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </div>
-                ))}
-              </div>
+          {conjugationSections.map((section) => (
+            <Section key={section.heading} title={section.heading}>
+              <ConjugationTable section={section} />
             </Section>
-          )}
+          ))}
         </div>
 
         <aside className="flex flex-col gap-8">
