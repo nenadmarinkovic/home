@@ -6,6 +6,7 @@ import { useMemo, useState, useTransition } from "react";
 import {
   ArrowRightIcon,
   DotsThreeVerticalIcon,
+  InfoIcon,
   PauseIcon,
   PencilSimpleIcon,
   PlayIcon,
@@ -56,6 +57,7 @@ import type { SrsCardRow } from "@/db/schema";
 import type { VocabularyEntry } from "@/lib/vocabulary-db";
 
 import { EntryEditor } from "../entry-editor";
+import { GrammarDialog } from "../grammar-dialog";
 import { SpeakButton } from "../speak-button";
 import { entryToDraft, type DraftEntry } from "../types";
 import { EntryChat } from "./entry-chat";
@@ -261,6 +263,8 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
   const [generatingExamples, setGeneratingExamples] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  const [grammarOpen, setGrammarOpen] = useState(false);
+
   const [pendingDelete, setPendingDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -465,6 +469,10 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
             <DropdownMenuItem onClick={openEdit}>
               <PencilSimpleIcon weight="bold" />
               Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setGrammarOpen(true)}>
+              <InfoIcon weight="bold" />
+              Grammar
             </DropdownMenuItem>
             <DropdownMenuItem
               variant="destructive"
@@ -701,6 +709,8 @@ export function EntryDetailClient({ entry, cards: initialCards }: Props) {
           </Section>
         </aside>
       </div>
+
+      <GrammarDialog open={grammarOpen} onOpenChange={setGrammarOpen} />
 
       <EntryEditor
         open={draft !== null}

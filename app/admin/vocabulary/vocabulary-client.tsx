@@ -67,6 +67,7 @@ import {
 } from "@/lib/offline-deck";
 
 import { EntryEditor } from "./entry-editor";
+import { GrammarInfoButton } from "./grammar-dialog";
 import { QuickAdd } from "./quick-add";
 import { StreakDialog } from "./streak-dialog";
 import {
@@ -426,6 +427,10 @@ export function VocabularyClient({
             Vocabulary
           </h1>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+            <GrammarInfoButton />
+            <span aria-hidden className="text-foreground/20">
+              ·
+            </span>
             <span>
               <span className="tabular-nums">{entries.length}</span> entries
             </span>
