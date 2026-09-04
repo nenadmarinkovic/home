@@ -32,7 +32,10 @@ export function ArticleEmbeds({ origins }: { origins: string[] }) {
   const theme = useRef<string | undefined>(undefined);
   const [panels, setPanels] = useState<Record<number, Panel>>({});
 
+  const ready = useRef(new WeakSet<HTMLIFrameElement>());
+
   const post = useCallback((frame: HTMLIFrameElement, message: unknown) => {
+    if (!ready.current.has(frame)) return;
     frame.contentWindow?.postMessage(message, new URL(frame.src).origin);
   }, []);
 
@@ -64,7 +67,10 @@ export function ArticleEmbeds({ origins }: { origins: string[] }) {
         frame.title = host.dataset.embedTitle ?? "";
         frame.loading = "lazy";
         frame.allow = "geolocation";
-        frame.addEventListener("load", () => sendTheme(frame));
+        frame.addEventListener("load", () => {
+          ready.current.add(frame);
+          sendTheme(frame);
+        });
         host.append(frame);
         host.dataset.embedMounted = "1";
         return frame;
@@ -85,7 +91,10 @@ export function ArticleEmbeds({ origins }: { origins: string[] }) {
         (frame) => frame.contentWindow === event.source,
       );
       if (index < 0) return;
-      if (event.data?.type === "embed:ready") sendTheme(frames.current[index]);
+      if (event.data?.type === "embed:ready") {
+        ready.current.add(frames.current[index]);
+        sendTheme(frames.current[index]);
+      }
       if (event.data?.type === "controls") {
         const host = hosts[index];
         const slot =
