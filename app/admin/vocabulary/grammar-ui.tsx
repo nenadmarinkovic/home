@@ -22,11 +22,6 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
-/**
- * Cells and prose are authored as plain strings; text wrapped in asterisks is
- * rendered in the accent colour, which is how endings and key words are
- * highlighted throughout the reference.
- */
 export function rich(node: React.ReactNode): React.ReactNode {
   if (typeof node !== "string" || !node.includes("*")) return node;
   return node.split("*").map((part, i) =>
@@ -46,18 +41,23 @@ export function rich(node: React.ReactNode): React.ReactNode {
 export function Section({
   title,
   lead,
+  action,
   children,
 }: {
   title: string;
   lead?: string;
+  action?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <section className="flex min-w-0 flex-col gap-9">
       <header className="flex flex-col gap-2">
-        <h2 className="text-2xl font-normal tracking-tight text-balance text-foreground">
-          {title}
-        </h2>
+        <div className="flex min-w-0 items-start justify-between gap-4">
+          <h2 className="text-2xl font-normal tracking-tight text-balance text-foreground">
+            {title}
+          </h2>
+          {action}
+        </div>
         {lead && (
           <p className="max-w-prose text-sm leading-relaxed text-zinc-600 text-pretty dark:text-zinc-400">
             {rich(lead)}
@@ -110,11 +110,6 @@ export function Bullets({ items }: { items: React.ReactNode[] }) {
   );
 }
 
-/**
- * A German line paired with its Serbian reading, plus an optional label for
- * the role the line plays (Aktiv, Dativ, ...). The pair sits side by side once
- * the content column is wide enough, and stacks below that.
- */
 export type Example = [de: string, sr: string, label?: string];
 
 export function Examples({ items }: { items: Example[] }) {
@@ -141,7 +136,6 @@ export function Examples({ items }: { items: Example[] }) {
   );
 }
 
-/** A pattern or formula, set apart from the prose. */
 export function Formula({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-start gap-2.5 rounded-xl border border-foreground/10 bg-foreground/3 px-3.5 py-3">
@@ -160,17 +154,11 @@ export function Formula({ children }: { children: React.ReactNode }) {
 const NOTE_ICONS = {
   info: InfoIcon,
   warn: WarningIcon,
-  /** Worth memorising as-is: same mark as a warning, without the alarm colour. */
   remember: WarningIcon,
-  /** A shortcut or mnemonic. */
   tip: LightbulbIcon,
-  /** Two forms that are easy to mix up. */
   compare: ArrowsLeftRightIcon,
-  /** A hard rule with no exceptions. */
   rule: ScalesIcon,
-  /** Something that looks right and is not. */
   trap: ProhibitIcon,
-  /** Differs in Austria from the standard taught in most textbooks. */
   austria: MapPinIcon,
 } as const;
 
@@ -184,7 +172,6 @@ export function Note({
   tone?: keyof typeof NOTE_ICONS;
 }) {
   const Icon = NOTE_ICONS[tone];
-  // Zapamti, Pazi and Zamka all carry the same warning ground.
   const loud = tone === "warn" || tone === "trap" || tone === "remember";
 
   return (
@@ -230,19 +217,10 @@ export function GTable({
 }: {
   head: React.ReactNode[];
   rows: React.ReactNode[][];
-  /**
-   * Optional column widths as CSS percentages, e.g. [18, 27, 27, 28]. Left
-   * out, every column is equal, which is what makes stacked tables of the same
-   * shape line up with each other.
-   */
   cols?: number[];
 }) {
   return (
     <div className="overflow-hidden rounded-xl border border-foreground/10">
-      {/*
-        Fixed layout, so two tables with the same number of columns share the
-        same grid instead of each sizing itself to its own longest cell.
-      */}
       <Table className="table-fixed">
         <TableHeader>
           <TableRow className="border-foreground/10 bg-foreground/3 hover:bg-transparent">
@@ -284,7 +262,6 @@ export function GTable({
   );
 }
 
-/** Two columns of blocks on wide screens, stacked on narrow ones. */
 export function Cols({ children }: { children: React.ReactNode }) {
   return (
     <div className="grid min-w-0 grid-cols-1 gap-6 @4xl:grid-cols-2 @4xl:gap-8">

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
 const DUE_TOOLTIP =
   "Each word becomes two flashcards — German→Serbian and Serbian→German. This counts how many of those are scheduled for review.";
@@ -10,6 +10,8 @@ import {
   ArrowRightIcon,
   ArrowsDownUpIcon,
   BookOpenIcon,
+  CaretDoubleLeftIcon,
+  CaretDoubleRightIcon,
   CaretLeftIcon,
   CaretRightIcon,
   CheckIcon,
@@ -58,6 +60,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { TagChip } from "@/components/tag-chip";
 import type { Activity } from "@/lib/daily";
+import { cn } from "@/lib/utils";
 
 import {
   computeStats,
@@ -119,17 +122,28 @@ function matchesFilter(pos: string, filter: FilterKey): boolean {
   return true;
 }
 
-function pageNumbers(page: number, pageCount: number): (number | "gap")[] {
-  if (pageCount <= 7) {
+const PAGE_SLOTS = 7;
+
+type PageSlot = number | { jumpTo: number };
+
+function pageNumbers(page: number, pageCount: number): PageSlot[] {
+  if (pageCount <= PAGE_SLOTS) {
     return Array.from({ length: pageCount }, (_, i) => i + 1);
   }
-  const start = Math.max(2, page - 1);
-  const end = Math.min(pageCount - 1, page + 1);
-  const out: (number | "gap")[] = [1];
-  if (start > 2) out.push("gap");
+  const inner = PAGE_SLOTS - 2;
+  let start = Math.max(2, page - Math.floor((inner - 1) / 2));
+  let end = start + inner - 1;
+  if (end > pageCount - 1) {
+    end = pageCount - 1;
+    start = end - inner + 1;
+  }
+  const out: PageSlot[] = [1];
   for (let i = start; i <= end; i++) out.push(i);
-  if (end < pageCount - 1) out.push("gap");
   out.push(pageCount);
+  if (start > 2) out[1] = { jumpTo: Math.max(2, page - inner) };
+  if (end < pageCount - 1) {
+    out[out.length - 2] = { jumpTo: Math.min(pageCount - 1, page + inner) };
+  }
   return out;
 }
 
@@ -239,13 +253,21 @@ export function VocabularyClient({
     setLastViewKey(viewKey);
     setPage(1);
   }
+  const listRef = useRef<HTMLElement | null>(null);
   const currentPage = Math.min(page, pageCount);
   const pageStart = (currentPage - 1) * PAGE_SIZE;
   const paged = filtered.slice(pageStart, pageStart + PAGE_SIZE);
 
   function goToPage(next: number) {
-    setPage(Math.min(Math.max(next, 1), pageCount));
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const target = Math.min(Math.max(next, 1), pageCount);
+    if (target === currentPage) return;
+    setPage(target);
+    listRef.current?.scrollIntoView({
+      block: "start",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
   }
 
   function toggleFilterTag(tag: string) {
@@ -484,7 +506,7 @@ export function VocabularyClient({
         </DialogContent>
       </Dialog>
 
-      <section className="flex flex-col gap-5">
+      <section ref={listRef} className="flex scroll-mt-6 flex-col gap-5">
         <div className="flex items-center gap-2">
           <SearchField search={search} onSearchChange={setSearch} />
           <FilterMenu filter={filter} onFilterChange={setFilter} />
@@ -628,12 +650,27 @@ function Pagination({
   total: number;
   onPageChange: (page: number) => void;
 }) {
+  function onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+    if (event.key === "ArrowLeft" && page > 1) {
+      event.preventDefault();
+      onPageChange(page - 1);
+    }
+    if (event.key === "ArrowRight" && page < pageCount) {
+      event.preventDefault();
+      onPageChange(page + 1);
+    }
+  }
+
   return (
     <nav
       aria-label="Pagination"
+      onKeyDown={onKeyDown}
       className="grid grid-cols-1 items-center justify-items-center gap-3 pt-1 sm:grid-cols-[1fr_auto_1fr]"
     >
-      <p className="order-2 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 sm:order-1 sm:justify-self-start dark:text-zinc-500">
+      <p
+        aria-live="polite"
+        className="order-2 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 sm:order-1 sm:justify-self-start dark:text-zinc-500"
+      >
         <span className="tabular-nums">
           {from}–{to}
         </span>{" "}
@@ -650,30 +687,59 @@ function Pagination({
         >
           <CaretLeftIcon weight="bold" />
         </Button>
-        {pageNumbers(page, pageCount).map((item, index) =>
-          item === "gap" ? (
-            <span
-              key={`gap-${index}`}
-              aria-hidden
-              className="px-0.5 text-xs text-zinc-400 dark:text-zinc-600"
-            >
-              …
-            </span>
-          ) : (
-            <Button
-              key={item}
-              type="button"
-              variant={item === page ? "secondary" : "ghost"}
-              size="icon-sm"
-              aria-label={`Page ${item}`}
-              aria-current={item === page ? "page" : undefined}
-              onClick={() => onPageChange(item)}
-              className="text-xs tabular-nums"
-            >
-              {item}
-            </Button>
-          ),
-        )}
+
+        <span className="px-2 font-sans text-xs font-medium uppercase tracking-wider text-zinc-500 sm:hidden dark:text-zinc-500">
+          Page <span className="tabular-nums">{page}</span> of{" "}
+          <span className="tabular-nums">{pageCount}</span>
+        </span>
+
+        <span className="hidden items-center gap-1 sm:flex">
+          {pageNumbers(page, pageCount).map((slot, index) =>
+            typeof slot === "object" ? (
+              <Button
+                key={`gap-${index}`}
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                aria-label={`Jump to page ${slot.jumpTo}`}
+                onClick={() => onPageChange(slot.jumpTo)}
+                className="text-xs text-zinc-400 dark:text-zinc-600"
+              >
+                <span className="group-hover/button:hidden group-focus-visible/button:hidden">
+                  …
+                </span>
+                {slot.jumpTo < page ? (
+                  <CaretDoubleLeftIcon
+                    weight="bold"
+                    className="hidden size-3 group-hover/button:block group-focus-visible/button:block"
+                  />
+                ) : (
+                  <CaretDoubleRightIcon
+                    weight="bold"
+                    className="hidden size-3 group-hover/button:block group-focus-visible/button:block"
+                  />
+                )}
+              </Button>
+            ) : (
+              <Button
+                key={slot}
+                type="button"
+                variant={slot === page ? "secondary" : "ghost"}
+                size="icon-sm"
+                aria-label={`Page ${slot}`}
+                aria-current={slot === page ? "page" : undefined}
+                onClick={() => onPageChange(slot)}
+                className={cn(
+                  "text-xs tabular-nums",
+                  slot === page && "font-semibold text-foreground",
+                )}
+              >
+                {slot}
+              </Button>
+            ),
+          )}
+        </span>
+
         <Button
           type="button"
           variant="ghost"

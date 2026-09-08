@@ -529,7 +529,7 @@ function CardView({
             )}
 
             {card.entry.notes && (
-              <p className="max-w-prose px-2 text-sm leading-relaxed text-zinc-500">
+              <p className="w-full text-left text-sm leading-relaxed text-zinc-500">
                 {card.entry.notes}
               </p>
             )}

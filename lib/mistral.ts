@@ -219,6 +219,48 @@ export async function chatAboutEntry(
   );
 }
 
+export type GrammarChatContext = {
+  label: string;
+  hint: string;
+  content: string;
+  siblings: string[];
+};
+
+function buildGrammarSystemPrompt(section: GrammarChatContext): string {
+  return `You are a warm, patient German tutor who speaks to the learner in Serbian.
+
+You are discussing ONE area of German grammar with the user: „${section.label}“ (${section.hint}).
+
+Below is the full reference text of that area, exactly as the learner sees it in the app. Treat it as the source of truth and stay consistent with its terminology, tables and examples:
+
+<gradivo>
+${section.content}
+</gradivo>
+
+Other areas of the same reference, in case the user asks something that belongs elsewhere: ${section.siblings.join(", ")}.
+
+Rules:
+- Reply ONLY in Serbian, Latin script (Gajica). Never use Cyrillic.
+- Stay on this area of grammar. If the question belongs to another area, answer briefly and say which area covers it.
+- Keep answers concise (2–6 sentences). Use short examples when they help.
+- When you give German examples, always pair them with a Serbian translation in parentheses or on the next line.
+- If the user writes a German sentence, correct it and explain the correction with the rule from this area.
+- No markdown headings, no bullet lists unless absolutely needed for clarity. Plain conversational prose.`;
+}
+
+export async function chatAboutGrammar(
+  section: GrammarChatContext,
+  messages: ChatMessage[],
+  signal?: AbortSignal,
+): Promise<string> {
+  const system = buildGrammarSystemPrompt(section);
+  return chatText(
+    CHAT_MODEL,
+    [{ role: "system", content: system }, ...messages],
+    signal,
+  );
+}
+
 async function chatJSON(
   model: string,
   messages: ChatMessage[],

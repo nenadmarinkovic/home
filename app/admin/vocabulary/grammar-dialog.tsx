@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  cloneElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   CaretLeftIcon,
   CaretRightIcon,
@@ -21,7 +28,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-import { GRAMMAR_SECTIONS } from "./grammar-sections";
+import { AiChat } from "./ai-chat";
+import { GRAMMAR_SECTIONS, type GrammarSection } from "./grammar-sections";
 
 const FADE = "2rem";
 const EDGE_MASK: Record<string, string | undefined> = {
@@ -32,7 +40,6 @@ const EDGE_MASK: Record<string, string | undefined> = {
 };
 import { searchGrammar, type Hit } from "./grammar-search";
 
-/** The reference itself, opened by whatever trigger the page provides. */
 export function GrammarDialog({
   open,
   onOpenChange,
@@ -62,8 +69,6 @@ export function GrammarDialog({
   const resultTotal = results.reduce((sum, r) => sum + r.total, 0);
   const maskKey = `${fade.start ? "s" : ""}${fade.end ? "e" : ""}` || "none";
 
-  // On narrow screens the section list is a horizontal strip, so the current
-  // section has to be brought into view when it changes from elsewhere.
   useEffect(() => {
     if (!open || searching) return;
     navRef.current
@@ -71,10 +76,6 @@ export function GrammarDialog({
       ?.scrollIntoView({ block: "nearest", inline: "center" });
   }, [open, searching, activeId]);
 
-  /**
-   * The strip hides its scrollbar, so the only cue that it scrolls is a fade on
-   * whichever edge still has sections behind it.
-   */
   const updateFade = useCallback(() => {
     const el = navRef.current;
     if (!el) return setFade({ start: false, end: false });
@@ -92,10 +93,6 @@ export function GrammarDialog({
     return () => window.removeEventListener("resize", updateFade);
   }, [open, searching, activeId, updateFade]);
 
-  /**
-   * Touch already scrolls the strip; this adds the same grab-and-drag with a
-   * mouse, which is how the strip behaves on a tablet with a trackpad.
-   */
   function onPointerDown(e: React.PointerEvent<HTMLElement>) {
     const el = navRef.current;
     if (!el || e.pointerType !== "mouse") return;
@@ -127,7 +124,6 @@ export function GrammarDialog({
     if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
   }
 
-  /** A drag that ends on a section button must not also select that section. */
   function onNavClickCapture(e: React.MouseEvent) {
     if (!dragged.current) return;
     dragged.current = false;
@@ -159,12 +155,6 @@ export function GrammarDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {/*
-       * A fixed height rather than max-height only: the section list is taller
-       * than some sections, so an auto-height dialog would resize every time
-       * you switched section. dvh plus the safe-area insets keeps it inside
-       * the notch and home indicator when installed as a PWA.
-       */}
       <DialogContent className="h-[calc(100dvh-var(--inset-top)-var(--inset-bottom)-2rem)] sm:w-[min(96vw,84rem)]">
         <DialogHeader className="[@media(max-height:560px)]:py-2.5">
           <DialogTitle>Nemačka gramatika od A1 do B2</DialogTitle>
@@ -281,7 +271,16 @@ export function GrammarDialog({
                 onClear={clearQuery}
               />
             ) : (
-              active.render()
+              cloneElement(
+                active.render() as React.ReactElement<{
+                  action?: React.ReactNode;
+                }>,
+                {
+                  action: (
+                    <GrammarSectionChat key={active.id} section={active} />
+                  ),
+                },
+              )
             )}
           </div>
         </div>
@@ -309,6 +308,21 @@ export function GrammarDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function GrammarSectionChat({ section }: { section: GrammarSection }) {
+  return (
+    <AiChat
+      endpoint="/api/vocabulary/grammar-chat"
+      payload={{ sectionId: section.id }}
+      title={section.label}
+      description={`Razgovaraj sa AI tutorom o ovoj oblasti: ${section.hint}.`}
+      intro={`Pitaj me bilo šta o oblasti „${section.label}“. Objašnjavam pravila, dajem primere i ispravljam tvoje rečenice.`}
+      triggerLabel="Chat"
+      triggerAriaLabel={`Chat o oblasti: ${section.label}`}
+      triggerClassName="shrink-0"
+    />
   );
 }
 
@@ -415,8 +429,6 @@ function SectionPager({
   const next =
     index < GRAMMAR_SECTIONS.length - 1 ? GRAMMAR_SECTIONS[index + 1] : null;
 
-  // Three equal slots so the counter sits dead centre whatever the button
-  // labels are, and does not shift as you page through the sections.
   return (
     <>
       <div className="flex min-w-0 flex-1 justify-start">
@@ -462,7 +474,6 @@ function SectionPager({
   );
 }
 
-/** Icon trigger plus the dialog, for pages that want a standalone entry point. */
 export function GrammarInfoButton() {
   const [open, setOpen] = useState(false);
 
