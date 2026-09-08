@@ -41,6 +41,34 @@ type Props = {
   triggerClassName?: string;
 };
 
+const MARKUP = /\*\*([^\n]+?)\*\*|\*([^*\n]+?)\*|`([^`\n]+?)`/g;
+
+function formatReply(text: string): React.ReactNode {
+  if (!/[*`]/.test(text)) return text;
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  for (const match of text.matchAll(MARKUP)) {
+    const at = match.index;
+    if (at > last) out.push(text.slice(last, at));
+    last = at + match[0].length;
+    const [, bold, emphasis, code] = match;
+    out.push(
+      <span
+        key={at}
+        className={
+          bold === undefined
+            ? "font-semibold text-[#0040ff] dark:text-[#ffff01]"
+            : "font-semibold"
+        }
+      >
+        {bold ?? emphasis ?? code}
+      </span>,
+    );
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+
 const MAX_HEIGHT_PX = 180;
 
 const NARROW_QUERY = "(max-width: 639px)";
@@ -241,7 +269,9 @@ export function AiChat({
                         : "bg-foreground/6 text-foreground",
                     )}
                   >
-                    {m.content}
+                    {m.role === "assistant"
+                      ? formatReply(m.content)
+                      : m.content}
                   </div>
                 </li>
               ))}

@@ -203,7 +203,7 @@ Rules:
 - Stay focused on this entry — grammar, usage, register, etymology, common collocations, pitfalls, related words. Politely steer back if the user drifts off-topic.
 - Keep answers concise (2–6 sentences). Use short examples when they help.
 - When you give German examples, always pair them with a Serbian translation in parentheses or on the next line.
-- No markdown headings, no lists with bullets unless absolutely needed for clarity. Plain conversational prose.`;
+- Plain conversational prose. No markdown headings, no bullet lists, no ** for bold, no backticks. To stress a single German form, wrap it in single asterisks, like *das*.`;
 }
 
 export async function chatAboutEntry(
@@ -245,7 +245,7 @@ Rules:
 - Keep answers concise (2–6 sentences). Use short examples when they help.
 - When you give German examples, always pair them with a Serbian translation in parentheses or on the next line.
 - If the user writes a German sentence, correct it and explain the correction with the rule from this area.
-- No markdown headings, no bullet lists unless absolutely needed for clarity. Plain conversational prose.`;
+- Plain conversational prose. No markdown headings, no bullet lists, no ** for bold, no backticks. To stress a single German form, wrap it in single asterisks, like *das*.`;
 }
 
 export async function chatAboutGrammar(
