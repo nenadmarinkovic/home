@@ -53,12 +53,18 @@ const STEPS = [
   },
 ];
 
+const ADDED_MIN = 5;
+const ADDED_TINT = "bg-[#0040ff]/12 dark:bg-[#ffff01]/12";
+
 function columnsThatFit(width: number): number {
   const fits = Math.floor((width - GUTTER + GAP) / (CELL + GAP));
   return Math.max(MIN_WEEKS, Math.min(CALENDAR_WEEKS, fits));
 }
 
 function tint(day: Day): string {
+  if (day.reviews === 0) {
+    return day.added >= ADDED_MIN ? ADDED_TINT : STEPS[0].tint;
+  }
   return (STEPS.find((step) => day.reviews <= step.upTo) ?? STEPS[0]).tint;
 }
 
