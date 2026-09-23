@@ -64,7 +64,7 @@ function Testimonial({ t }: { t: (typeof testimonials)["hakon"] }) {
       </blockquote>
       <figcaption className="mt-4 flex flex-col gap-1">
         <span className="text-sm font-medium text-foreground">{t.name}</span>
-        <span className={labelClass}>
+        <span className="font-sans text-[11px] font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
           {t.role} <External href={t.href}>{t.company}</External>
         </span>
       </figcaption>
@@ -117,12 +117,14 @@ export default function AboutPage() {
           well-designed, fast, and user-friendly websites and applications.
         </p>
         <p className={paragraphClass}>
-          My career began at the web agency{" "}
+          My career began with an internship at{" "}
+          <External href="https://www.vegaitglobal.com/">Vega IT</External> in
+          Novi Sad, Serbia. From there I moved to the web agency{" "}
           <External href="https://www.popwebdesign.net/">
             PopArt Studio
-          </External>{" "}
-          in Novi Sad, Serbia, where I built custom websites and learned the
-          craft by working closely with project managers and designers.
+          </External>
+          , where I built custom websites and learned the craft by working
+          closely with project managers and designers.
         </p>
         <p className={paragraphClass}>
           After moving to Vienna, I worked with companies such as{" "}
@@ -144,7 +146,9 @@ export default function AboutPage() {
           These days my work reaches well past the interface. I run my own
           server in the EU and build things from the database up. Right now
           I&rsquo;m developing a German-learning platform and laying the
-          groundwork for my first software studio.
+          groundwork for my first software studio. I also love experimenting and
+          playing with code, usually on small side projects for learning and
+          fun.
         </p>
         <div className="py-6">
           <Testimonial t={testimonials.toni} />
