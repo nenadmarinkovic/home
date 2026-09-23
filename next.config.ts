@@ -63,7 +63,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       { source: "/feed", destination: "/rss.xml", permanent: true },
-      { source: "/about", destination: "/", permanent: true },
     ];
   },
   async rewrites() {
