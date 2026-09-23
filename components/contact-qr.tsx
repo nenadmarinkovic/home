@@ -1,6 +1,6 @@
 export function ContactQR() {
   return (
-    <figure className="flex flex-col items-center gap-3 md:items-start">
+    <figure className="flex shrink-0 flex-col items-center gap-3 md:items-start">
       <div className="rounded-xl border border-foreground/10 bg-white p-2">
         <svg
           viewBox="0 0 31 31"

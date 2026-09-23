@@ -163,7 +163,7 @@ export default function AboutPage() {
           About this website
         </h2>
         <p className={paragraphClass}>
-          This site is built with Next.js and runs on my own server. Behind the
+          This site is built with Next.js and runs on my own Hetzner VPS. Behind the
           public pages sit a few small tools I use every day. The code is open
           source on{" "}
           <External href="https://github.com/nenadmarinkovic/home">

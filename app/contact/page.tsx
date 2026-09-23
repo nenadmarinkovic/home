@@ -47,11 +47,14 @@ export default function ContactPage() {
         </p>
       </hgroup>
       <section className="grid w-full gap-10 md:grid-cols-[auto_minmax(0,1fr)] md:items-start md:gap-14">
-        <aside className="flex flex-col items-center gap-6 md:items-start">
+        <aside className="flex flex-col items-center gap-6 text-center sm:flex-row sm:gap-8 sm:text-left md:flex-col md:items-start md:gap-6">
           <ContactQR />
-          <dl className="flex w-full flex-col items-center gap-4 text-center md:items-start md:text-left">
+          <dl className="grid w-full gap-4 sm:grid-cols-2 sm:gap-x-8 md:grid-cols-1">
             {links.map((l) => (
-              <div key={l.label} className="flex flex-col gap-1">
+              <div
+                key={l.label}
+                className="flex flex-col gap-1 first:sm:col-span-2 first:md:col-span-1"
+              >
                 <dt className="font-sans text-xs font-medium uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
                   {l.label}
                 </dt>
